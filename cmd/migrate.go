@@ -1,11 +1,8 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
-package migrate
+package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"promise-migration/cmd/migrate/db"
+	"promise-migration/cmd/subcmd"
 )
 
 var MigrateCmd = &cobra.Command{
@@ -17,12 +14,6 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-
-	/*
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("migrate called")
-		},
-	*/
 }
 
 func init() {
@@ -39,6 +30,6 @@ func init() {
 
 	//MigrateCmd.Flags().StringVarP(&parentName, "parent", "p", "rootCmd", "variable name of parent command for this command")
 
-	MigrateCmd.AddCommand(db.SippanCmd)
+	MigrateCmd.AddCommand(subcmd.SippanCmd)
 
 }

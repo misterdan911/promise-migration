@@ -21,3 +21,15 @@ $env:GOOS = "linux"
 set GOOS=linux
 go build -o bin/promise main.go
 ```
+
+## Development
+
+Gunakan Air - Live Reload untuk auto build
+
+```bash
+go install github.com/air-verse/air@latest
+```
+
+```bash
+air
+```

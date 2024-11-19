@@ -1,7 +1,7 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
-package subcmd_migrate
+package subcmd
 
 import (
 	"fmt"
