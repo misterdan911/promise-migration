@@ -1,17 +1,16 @@
 /*
 Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 */
-package cmd
+package migrate
 
 import (
 	"github.com/spf13/cobra"
+	"promise-migration/cmd/migrate/db"
 )
 
-// MigrateCmd represents the submigrate command
 var MigrateCmd = &cobra.Command{
-	Use:     "migrate",
-	Aliases: []string{"command"},
-	Short:   "A brief description of your command",
+	Use:   "migrate [database]",
+	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -27,7 +26,6 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
-	rootCmd.AddCommand(MigrateCmd)
 
 	// Here you will define your flags and configuration settings.
 
@@ -37,8 +35,10 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// MigrateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//MigrateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	//MigrateCmd.Flags().StringVarP(&parentName, "parent", "p", "rootCmd", "variable name of parent command for this command")
+
+	MigrateCmd.AddCommand(db.SippanCmd)
 
 }
