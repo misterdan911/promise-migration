@@ -24,12 +24,11 @@ go build -o bin/promise main.go
 
 ## Development
 
+### Auto Build
+
 Gunakan Air - Live Reload untuk auto build
 
 ```bash
 go install github.com/air-verse/air@latest
-```
-
-```bash
 air
 ```

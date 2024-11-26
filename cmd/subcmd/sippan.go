@@ -4,9 +4,9 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package subcmd
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 	"promise-migration/db"
+	"promise-migration/internal/sippan"
 )
 
 var SippanCmd = &cobra.Command{
@@ -23,7 +23,11 @@ to quickly create a Cobra application.`,
 		db.ConnectProSippan()
 		defer db.ProSippan.Close()
 
-		fmt.Println("sippan called")
+		db.ConnectDbSippan()
+		defer db.DbSippan.Close()
+
+		sippan.MigrateTblRupUt()
+		//sippan.UpdateProvKabKota()
 	},
 }
 
