@@ -100,9 +100,9 @@ func MigrateTblRupUt() {
 		isPraDrauk := sql.NullBool{Valid: true}
 		kategoriDipa := oldRup.PraDipa
 		if kategoriDipa.String == "ya" {
-            isPraDrauk.Bool = true
+			isPraDrauk.Bool = true
 		} else if kategoriDipa.String == "tidak" {
-            isPraDrauk.Bool = false
+			isPraDrauk.Bool = false
 		}
 
 		kodeMetodePengadaan := arrMetodePengadaan[oldRup.MetodePengadaan.String]
@@ -114,8 +114,8 @@ func MigrateTblRupUt() {
 		tglRencPemanfaatanAwal := helper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
 		tglRencPemanfaatanAkhir := helper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
 
-		qInsert := `INSERT INTO ref_rup (kode_rup, no_rup, no_drauk, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, ucr, uch, udcr, udch)
-		VALUES (@kode_rup, @no_rup, @no_drauk, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @ucr, @uch, @udcr, @udch)`
+		qInsert := `INSERT INTO ref_rup (kode_rup, no_rup, no_drauk, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
+		VALUES (@kode_rup, @no_rup, @no_drauk, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
 		args := pgx.NamedArgs{
 			"kode_rup":                   oldRup.IdRupUt,
 			"no_rup":                     oldRup.NomorRupUt.String,
@@ -134,7 +134,7 @@ func MigrateTblRupUt() {
 			"is_kualifikasi_b":           isKualifikasiBesar,
 			"jml_pagu":                   oldRup.JumlahPagu,
 			"is_pra_drauk":               isPraDrauk,
-            "kode_jenis_pengadaan":       kodeJenisPengadaan,
+			"kode_jenis_pengadaan":       kodeJenisPengadaan,
 			"kode_metode_pengadaan":      kodeMetodePengadaan,
 			"tgl_renc_pemilihan_awal":    tglRencPemilihanAwal,
 			"tgl_renc_pemilihan_akhir":   tglRencPemilihanAkhir,
@@ -142,6 +142,7 @@ func MigrateTblRupUt() {
 			"tgl_renc_pelaksanaan_akhir": tglRencPelaksanaanAkhir,
 			"tgl_renc_pemanfaatan_awal":  tglRencPemanfaatanAwal,
 			"tgl_renc_pemanfaatan_akhir": tglRencPemanfaatanAkhir,
+			"status_rup":                 sql.NullString{Valid: true, String: "diajukan"},
 			"ucr":                        sql.NullTime{Valid: false},
 			"uch":                        sql.NullTime{Valid: false},
 			"udcr":                       oldRup.CreatedAt,

@@ -26,8 +26,8 @@ to quickly create a Cobra application.`,
 		db.ConnectDbSippan()
 		defer db.DbSippan.Close()
 
-		sippan.MigrateTblRupUt()
-		//sippan.UpdateProvKabKota()
+		//sippan.MigrateTblRupUt()
+		sippan.UpdateProvKabKota()
 	},
 }
 

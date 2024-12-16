@@ -2,6 +2,12 @@
 
 Tools untuk migrasi database Promise v.1.0 ke v.2.0
 
+## How to Use
+```bash
+  main.exe migrate sippan
+```
+
+
 ## Build Instruction
 
 Cara build tools ini di Windows
@@ -32,3 +38,4 @@ Gunakan Air - Live Reload untuk auto build
 go install github.com/air-verse/air@latest
 air
 ```
+
