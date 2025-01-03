@@ -20,6 +20,7 @@ type VmsPaket struct {
 	TglEvalAwal    pgtype.Timestamptz
 	TglEvalAkhir   pgtype.Timestamptz
 	TglUmumPaket   pgtype.Timestamptz
+	CreatedAt   pgtype.Timestamptz
 }
 
 func MigrateTblPaket() {
@@ -29,7 +30,8 @@ func MigrateTblPaket() {
 	// loop semua data tbl_paket
 	ctx := context.Background()
 
-	qTblPaket := "SELECT nama_paket, metode, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket FROM tbl_paket ORDER BY id_paket"
+	qTblPaket := `SELECT nama_paket, metode, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket, created_at
+				  FROM tbl_paket ORDER BY id_paket`
 	rwTblPaket, err := db.VmsDb.Query(ctx, qTblPaket)
 	if err != nil {
 		log.Fatal("qTblPaket Failed, " + err.Error() + " " + qTblPaket)
@@ -51,7 +53,7 @@ func MigrateTblPaket() {
 			statusPersetujuan = "terima"
 		}
 
-		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman") VALUES (@nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman)`
+		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
 		args := pgx.NamedArgs{
 			"nama_penjaringan":   vmsPaket.NamaPaket,
 			"metode":             strings.ToLower(vmsPaket.Metode.String),
@@ -61,6 +63,8 @@ func MigrateTblPaket() {
 			"tgl_evaluasi_awal":  vmsPaket.TglEvalAwal,
 			"tgl_evaluasi_akhir": vmsPaket.TglEvalAkhir,
 			"tgl_pengumuman":     vmsPaket.TglUmumPaket,
+			"udcr":     vmsPaket.CreatedAt,
+			"udch":     vmsPaket.CreatedAt,
 		}
 		_, errInsert := db.DbSidapet.Exec(ctx, qInsertPenjaringan, args)
 		if errInsert != nil {

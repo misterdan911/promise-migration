@@ -54,8 +54,11 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 		var kode_trx_kategori int32
 
 		if len(allTrxKategori) < 1 {
-			qInsertTrxKat := `INSERT INTO trx_kategori ("kode_kategori") VALUES ($1) RETURNING kode_trx_kategori`
-			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, strconv.Itoa(int(kw.KodeKategori.Int32)))
+			qInsertTrxKat := `INSERT INTO trx_kategori ("kode_kategori", "kode_jenis_pengadaan", "is_pembuka") VALUES ($1, $2, $3) RETURNING kode_trx_kategori`
+			kodeKategori := strconv.Itoa(int(kw.KodeKategori.Int32))
+			kodeJenisPengadaan := strconv.Itoa(int(kw.KodeJenisPengadaan.Int32))
+			isPembuka := strconv.FormatBool(false)
+			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, kodeKategori, kodeJenisPengadaan, isPembuka)
 			if errInsert != nil {
 				log.Fatal("qInsertTrxKat Failed, " + errInsert.Error() + " " + qInsertTrxKat)
 			}
