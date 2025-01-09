@@ -40,7 +40,8 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 
 		// cek apakah di tabel trx_kategori, apakah kode_kategori dari tabel helper sudah ada yg pakai atau belum
 		qCheckTrxkat := "SELECT kode_trx_kategori FROM trx_kategori WHERE kode_kategori = $1"
-		rCheckTrxkat, errCheckTrxkat := db.DbSidapet.Query(ctx, qCheckTrxkat, strconv.Itoa(int(kw.KodeKategori.Int32)))
+		kodeKategori := strconv.Itoa(int(kw.KodeKategori.Int32))
+		rCheckTrxkat, errCheckTrxkat := db.DbSidapet.Query(ctx, qCheckTrxkat, kodeKategori)
 		if errCheckTrxkat != nil {
 			log.Fatal("qCheckTrxkat Failed, " + errCheckTrxkat.Error() + " " + qCheckTrxkat)
 		}
@@ -54,19 +55,24 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 		var kode_trx_kategori int32
 
 		if len(allTrxKategori) < 1 {
-			qInsertTrxKat := `INSERT INTO trx_kategori ("kode_kategori", "kode_jenis_pengadaan", "is_pembuka") VALUES ($1, $2, $3) RETURNING kode_trx_kategori`
+			qInsertTrxKat := `INSERT INTO trx_kategori ("kode_kategori", "kode_jenis_pengadaan", "is_pembuka", "status_pengajuan_kat") VALUES ($1, $2, $3, $4) RETURNING kode_trx_kategori`
+
 			kodeKategori := strconv.Itoa(int(kw.KodeKategori.Int32))
 			kodeJenisPengadaan := strconv.Itoa(int(kw.KodeJenisPengadaan.Int32))
 			isPembuka := strconv.FormatBool(false)
-			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, kodeKategori, kodeJenisPengadaan, isPembuka)
+			statusPengajuanKat := "selesai" 
+
+			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, kodeKategori, kodeJenisPengadaan, isPembuka, statusPengajuanKat)
 			if errInsert != nil {
 				log.Fatal("qInsertTrxKat Failed, " + errInsert.Error() + " " + qInsertTrxKat)
 			}
+			defer rInsertTrxKat.Close()
+
 			allTrxKat, errCollect := pgx.CollectRows(rInsertTrxKat, pgx.RowToStructByName[TrxKategori])
 			if errCollect != nil {
 				log.Fatal("failed collecting rInsertTrxKat, " + errCollect.Error())
 			}
-			defer rInsertTrxKat.Close()
+
 			kode_trx_kategori = allTrxKat[0].KodeTrxKategori.Int32
 		} else {
 			kode_trx_kategori = allTrxKategori[0].KodeTrxKategori.Int32

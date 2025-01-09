@@ -19,6 +19,7 @@ var SidapetCmd = &cobra.Command{
 		defer db.DbSidapet.Close()
 
 		sidapet.MigrateTblPaket()
+		sidapet.MigrateTblPaketUndang()
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
 	},
 }

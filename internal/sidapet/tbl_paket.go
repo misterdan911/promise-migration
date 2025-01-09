@@ -12,6 +12,7 @@ import (
 )
 
 type VmsPaket struct {
+	IdPaket        pgtype.Int4
 	NamaPaket      pgtype.Text
 	Metode         pgtype.Text
 	Status         pgtype.Int4
@@ -20,7 +21,7 @@ type VmsPaket struct {
 	TglEvalAwal    pgtype.Timestamptz
 	TglEvalAkhir   pgtype.Timestamptz
 	TglUmumPaket   pgtype.Timestamptz
-	CreatedAt   pgtype.Timestamptz
+	CreatedAt      pgtype.Timestamptz
 }
 
 func MigrateTblPaket() {
@@ -30,7 +31,7 @@ func MigrateTblPaket() {
 	// loop semua data tbl_paket
 	ctx := context.Background()
 
-	qTblPaket := `SELECT nama_paket, metode, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket, created_at
+	qTblPaket := `SELECT id_paket, nama_paket, metode, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket, created_at
 				  FROM tbl_paket ORDER BY id_paket`
 	rwTblPaket, err := db.VmsDb.Query(ctx, qTblPaket)
 	if err != nil {
@@ -53,8 +54,11 @@ func MigrateTblPaket() {
 			statusPersetujuan = "terima"
 		}
 
-		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
+		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("kode_penjaringan", "nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@kode_penjaringan, @nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
+		fmt.Println(qInsertPenjaringan)
+		fmt.Println(statusPersetujuan)
 		args := pgx.NamedArgs{
+			"kode_penjaringan":   vmsPaket.IdPaket,
 			"nama_penjaringan":   vmsPaket.NamaPaket,
 			"metode":             strings.ToLower(vmsPaket.Metode.String),
 			"status_persetujuan": statusPersetujuan,
@@ -63,8 +67,8 @@ func MigrateTblPaket() {
 			"tgl_evaluasi_awal":  vmsPaket.TglEvalAwal,
 			"tgl_evaluasi_akhir": vmsPaket.TglEvalAkhir,
 			"tgl_pengumuman":     vmsPaket.TglUmumPaket,
-			"udcr":     vmsPaket.CreatedAt,
-			"udch":     vmsPaket.CreatedAt,
+			"udcr":               vmsPaket.CreatedAt,
+			"udch":               vmsPaket.CreatedAt,
 		}
 		_, errInsert := db.DbSidapet.Exec(ctx, qInsertPenjaringan, args)
 		if errInsert != nil {
@@ -72,6 +76,12 @@ func MigrateTblPaket() {
 		}
 
 		fmt.Println(vmsPaket.NamaPaket.String)
+	}
+
+	qUpdateKodePjrSeq := `SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan))`
+	_, errUpdateSeq := db.DbSidapet.Exec(ctx, qUpdateKodePjrSeq)
+	if errUpdateSeq != nil {
+		log.Fatal("qUpdateKodePjrSeq Failed, " + errUpdateSeq.Error() + " " + qUpdateKodePjrSeq)
 	}
 
 }
