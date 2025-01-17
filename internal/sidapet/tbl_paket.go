@@ -44,6 +44,8 @@ func MigrateTblPaket() {
 	}
 	defer rwTblPaket.Close()
 
+	fmt.Println("Migrating tbl_paket...")
+
 	for _, vmsPaket := range allVmsPaket {
 
 		var statusPersetujuan string
@@ -55,8 +57,6 @@ func MigrateTblPaket() {
 		}
 
 		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("kode_penjaringan", "nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@kode_penjaringan, @nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
-		fmt.Println(qInsertPenjaringan)
-		fmt.Println(statusPersetujuan)
 		args := pgx.NamedArgs{
 			"kode_penjaringan":   vmsPaket.IdPaket,
 			"nama_penjaringan":   vmsPaket.NamaPaket,
@@ -74,8 +74,6 @@ func MigrateTblPaket() {
 		if errInsert != nil {
 			fmt.Println("unable to insert trx_penjaringan, " + errInsert.Error())
 		}
-
-		fmt.Println(vmsPaket.NamaPaket.String)
 	}
 
 	qUpdateKodePjrSeq := `SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan))`
@@ -83,5 +81,7 @@ func MigrateTblPaket() {
 	if errUpdateSeq != nil {
 		log.Fatal("qUpdateKodePjrSeq Failed, " + errUpdateSeq.Error() + " " + qUpdateKodePjrSeq)
 	}
+
+	fmt.Println("Migrating tbl_paket... SELESAI")
 
 }
