@@ -25,9 +25,15 @@ type VmsPaket struct {
 	CreatedAt      pgtype.Timestamptz
 }
 
+type TblVerifPaket struct {
+	IdVerifPaket pgtype.Int4
+	Email        pgtype.Text
+}
+
 func MigrateTblPaket() {
 	helper.TruncateTable("trx_kategori")
 	helper.TruncateTable("trx_penjaringan")
+	helper.TruncateTable("trx_verifikator_penjr")
 
 	// loop semua data tbl_paket
 	ctx := context.Background()
@@ -76,6 +82,43 @@ func MigrateTblPaket() {
 		if errInsert != nil {
 			fmt.Println("unable to insert trx_penjaringan, " + errInsert.Error())
 		}
+
+		qTblVerifpaket := `
+    SELECT
+        id_verif_paket,
+        users.email AS email
+    FROM tbl_verif_paket
+    INNER JOIN users ON users.id = tbl_verif_paket.id_pegawai
+    WHERE id_paket = $1
+    ORDER BY id_verif_paket ASC`
+
+		rwTblVerifPaket, err := db.VmsDb.Query(ctx, qTblVerifpaket, vmsPaket.IdPaket)
+		if err != nil {
+			log.Fatal("qTblVerifpaket Failed, " + err.Error() + " " + qTblVerifpaket)
+		}
+
+		allTblVerifPaket, err := pgx.CollectRows(rwTblVerifPaket, pgx.RowToStructByName[TblVerifPaket])
+		if err != nil {
+			log.Fatal("failed collecting rwTblVerifPaket, " + err.Error())
+		}
+		defer rwTblVerifPaket.Close()
+
+		for _, tblVerifPaket := range allTblVerifPaket {
+			qInsertTrxVerPjr := `
+      INSERT INTO trx_verifikator_penjr (kode_verifikator_penjr, kode_penjaringan, user_verif)
+      VALUES ( @kode_verifikator_penjr, @kode_penjaringan, @user_verif )`
+
+			args := pgx.NamedArgs{
+				"kode_verifikator_penjr": tblVerifPaket.IdVerifPaket,
+				"kode_penjaringan":       vmsPaket.IdPaket,
+				"user_verif":             tblVerifPaket.Email,
+			}
+			_, errInsertTrxVerPjr := db.DbSidapet.Exec(ctx, qInsertTrxVerPjr, args)
+			if errInsertTrxVerPjr != nil {
+				fmt.Println("unable to insert trx_verifikator_penjr, " + errInsertTrxVerPjr.Error())
+			}
+		}
+
 	}
 
 	qUpdateKodePjrSeq := `SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan))`
