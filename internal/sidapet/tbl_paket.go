@@ -15,6 +15,7 @@ type VmsPaket struct {
 	IdPaket        pgtype.Int4
 	NamaPaket      pgtype.Text
 	Metode         pgtype.Text
+	IdCabang       pgtype.Int4
 	Status         pgtype.Int4
 	TglDaftarAwal  pgtype.Timestamptz
 	TglDaftarAkhir pgtype.Timestamptz
@@ -31,7 +32,7 @@ func MigrateTblPaket() {
 	// loop semua data tbl_paket
 	ctx := context.Background()
 
-	qTblPaket := `SELECT id_paket, nama_paket, metode, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket, created_at
+	qTblPaket := `SELECT id_paket, nama_paket, metode, id_cabang, status, tgl_daftar_awal, tgl_daftar_akhir, tgl_eval_awal, tgl_eval_akhir, tgl_umum_paket, created_at
 				  FROM tbl_paket ORDER BY id_paket`
 	rwTblPaket, err := db.VmsDb.Query(ctx, qTblPaket)
 	if err != nil {
@@ -56,9 +57,10 @@ func MigrateTblPaket() {
 			statusPersetujuan = "terima"
 		}
 
-		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("kode_penjaringan", "nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@kode_penjaringan, @nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
+		qInsertPenjaringan := `INSERT INTO trx_penjaringan ("kode_penjaringan", "kode_cabang_ut", "nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@kode_penjaringan, @kode_cabang_ut, @nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
 		args := pgx.NamedArgs{
 			"kode_penjaringan":   vmsPaket.IdPaket,
+			"kode_cabang_ut":     vmsPaket.IdCabang,
 			"nama_penjaringan":   vmsPaket.NamaPaket,
 			"metode":             strings.ToLower(vmsPaket.Metode.String),
 			"status_persetujuan": statusPersetujuan,

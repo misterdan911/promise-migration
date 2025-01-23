@@ -19,27 +19,10 @@ var SidapetCmd = &cobra.Command{
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
-		/*
-			path := filepath.Join("files", "sidapet", "sql", "foreign_key_create.sql")
-			data, err := os.ReadFile(path)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			qAddFk := string(data)
-			ctx := context.Background()
-			_, errQAddFk := db.DbSidapet.Exec(ctx, qAddFk)
-			if errQAddFk != nil {
-				log.Fatal("qAddFk Failed, " + err.Error())
-			}
-		*/
-
 		helper.DropAllForeignKey()
-
 		sidapet.MigrateTblPaket()
-		//sidapet.MigrateTblPaketUndang()
-		//sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-
+		sidapet.MigrateTblPaketUndang()
+		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
 		helper.CreateAllForeignKey()
 
 	},

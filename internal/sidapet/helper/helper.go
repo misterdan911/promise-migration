@@ -10,7 +10,7 @@ import (
 )
 
 func TruncateTable(tblName string) {
-	qTruncate := "TRUNCATE TABLE " + tblName + " RESTART IDENTITY CASCADE"
+	qTruncate := "TRUNCATE TABLE " + tblName + " RESTART IDENTITY"
 	_, err := db.DbSidapet.Exec(context.Background(), qTruncate)
 	if err != nil {
 		log.Fatal("Truncate " + tblName + " Failed, " + err.Error())
