@@ -17,6 +17,7 @@ type TblVerifPaket struct {
 
 func MigrateTblVerifPaket(idPaket pgtype.Int4) {
 
+
 	ctx := context.Background()
 
   qTblVerifpaket := `
