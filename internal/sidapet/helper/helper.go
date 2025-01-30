@@ -41,13 +41,13 @@ func AlterAllForeignKey(action string) {
 
 	data, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error ReadFile: " + err.Error())
 	}
 
 	qFk := string(data)
 	ctx := context.Background()
 	_, errQFk := db.DbSidapet.Exec(ctx, qFk)
 	if errQFk != nil {
-		log.Fatal("qFk Failed, action: " + action + ", " + err.Error())
+		log.Fatal("qFk Failed, action: " + action + ", " + errQFk.Error())
 	}
 }

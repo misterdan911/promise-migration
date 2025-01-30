@@ -20,6 +20,7 @@ var SidapetCmd = &cobra.Command{
 		defer db.DbSidapet.Close()
 
 		helper.DropAllForeignKey()
+		sidapet.MigrateTblProfilePenyedia()
 		sidapet.MigrateTblPaket()
 		sidapet.MigrateTblPaketUndang()
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
