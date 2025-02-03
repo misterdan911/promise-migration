@@ -25,7 +25,6 @@ type VmsPaket struct {
 	CreatedAt      pgtype.Timestamptz
 }
 
-
 func MigrateTblPaket() {
 	helper.TruncateTable("trx_kategori")
 	helper.TruncateTable("trx_penjaringan")
@@ -79,7 +78,7 @@ func MigrateTblPaket() {
 			fmt.Println("unable to insert trx_penjaringan, " + errInsert.Error())
 		}
 
-    MigrateTblVerifPaket(vmsPaket.IdPaket)
+		MigrateTblVerifPaket(vmsPaket.IdPaket)
 	}
 
 	qUpdateKodePjrSeq := `SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan))`

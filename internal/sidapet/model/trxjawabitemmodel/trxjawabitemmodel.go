@@ -1,4 +1,5 @@
-package trxjawabprofilmodel
+package trxjawabitemmodel
+
 
 import (
 	"context"
@@ -10,22 +11,24 @@ import (
 	"promise-migration/internal/sidapet/structs"
 )
 
-func InsertTrxJawabProfil(profilePenyedia structs.TblProfilePenyedia, mapJawabItem map[string]structs.JawabItem) {
+func InsertTrxJawabItem(profilePenyedia structs.TblProfilePenyedia, mapJawabItem map[string]structs.JawabItem) {
 	ctx := context.Background()
 
   for _, jawabItem := range mapJawabItem {
 
     qInsJawabProfil := `
-      INSERT INTO trx_jawab_profil (kode_vendor, kode_item, isian)
+      INSERT INTO trx_jawab_item (kode_vendor, kode_item, kode_paket, isian)
       VALUES (
         @kode_vendor,
         @kode_item,
+        @kode_trx_kategori,
         @isian
       )`
 
     args := pgx.NamedArgs{
       "kode_vendor": profilePenyedia.IdProfilPenyedia,
       "kode_item":   jawabItem.KodeItem,
+      "kode_trx_kategori":  profilePenyedia.IdPaket,
       "isian":       jawabItem.Isian,
     }
 

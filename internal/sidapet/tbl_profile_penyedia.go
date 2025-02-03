@@ -9,10 +9,11 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/model/rdomisilimodel"
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
-	"promise-migration/internal/sidapet/model/usermodel"
 	"promise-migration/internal/sidapet/model/trxjawabprofilmodel"
+	"promise-migration/internal/sidapet/model/usermodel"
 	"promise-migration/internal/sidapet/structs"
 )
 
@@ -32,11 +33,36 @@ func MigrateTblProfilePenyedia() {
 
 	qTblProfilePenyedia := `
     SELECT
-      email,
-      id_user,
       id_profil_penyedia,
+      id_user,
       id_jenis_penyedia,
+      id_paket,
       nama,
+      path_ktp,
+      id_domisili,
+      path_domisili,
+      id_cabang_ut,
+      alamat,
+      no_telp,
+      no_fax,
+      email,
+      nm_bank,
+      pemilik_rek,
+      kode_bank,
+      no_rek,
+      path_rek,
+      npwp,
+      path_npwp,
+      lap_uang_perus,
+      path_lap_perus,
+      path_ikut_serta,
+      path_kuasa,
+      path_skb,
+      path_skpp23,
+      path_pph_dibebaskan,
+      contact_person,
+      p_status,
+      klarifikasi,
       penyedia_terpilih,
       create_time,
       update_time
@@ -110,7 +136,8 @@ func MigrateTblProfilePenyedia() {
 		// Insert to ref_vendor_reg_history
 		rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, user, kodeRegister)
 
-		// TODO: Store Domisili in an Associative array
+		// Store Domisili in an Associative array
+		mapDomisili := rdomisilimodel.GetMapDomisili()
 
 		// var item JawabItem
 		mapJawabItem := make(map[string]structs.JawabItem)
@@ -118,19 +145,84 @@ func MigrateTblProfilePenyedia() {
 		// default untuk jenis_vendor 'perusahaan'
 		mapJawabItem["pakta_integritas"] = structs.JawabItem{KodeItem: 1, Isian: "1"}
 		mapJawabItem["nama_badan_usaha"] = structs.JawabItem{KodeItem: 2, Isian: profilePenyedia.Nama.String}
+		mapJawabItem["domisili"] = structs.JawabItem{KodeItem: 3, Isian: mapDomisili[profilePenyedia.IdDomisili.Int32]}
+		mapJawabItem["alamat"] = structs.JawabItem{KodeItem: 4, Isian: profilePenyedia.Alamat.String}
+		mapJawabItem["no_telp"] = structs.JawabItem{KodeItem: 6, Isian: profilePenyedia.NoTelp.String}
+		mapJawabItem["no_fax"] = structs.JawabItem{KodeItem: 7, Isian: profilePenyedia.NoFax.String}
+		mapJawabItem["nm_bank"] = structs.JawabItem{KodeItem: 8, Isian: profilePenyedia.NmBank.String}
+		mapJawabItem["pemilik_rek"] = structs.JawabItem{KodeItem: 10, Isian: profilePenyedia.PemilikRek.String}
+		mapJawabItem["no_rek"] = structs.JawabItem{KodeItem: 11, Isian: profilePenyedia.NoRek.String}
+		mapJawabItem["path_rek"] = structs.JawabItem{KodeItem: 12, Isian: profilePenyedia.PathRek.String}
+		mapJawabItem["npwp"] = structs.JawabItem{KodeItem: 29, Isian: profilePenyedia.Npwp.String}
+		mapJawabItem["path_npwp"] = structs.JawabItem{KodeItem: 30, Isian: profilePenyedia.PathNpwp.String}
+		mapJawabItem["lap_uang_perus"] = structs.JawabItem{KodeItem: 46, Isian: profilePenyedia.LapUangPerus.String}
+		mapJawabItem["path_lap_perus"] = structs.JawabItem{KodeItem: 47, Isian: profilePenyedia.PathLapPerus.String}
+		mapJawabItem["path_ikut_serta"] = structs.JawabItem{KodeItem: 13, Isian: profilePenyedia.PathIkutSerta.String}
+		mapJawabItem["path_kuasa"] = structs.JawabItem{KodeItem: 14, Isian: profilePenyedia.PathKuasa.String}
+		mapJawabItem["path_skb"] = structs.JawabItem{KodeItem: 34, Isian: profilePenyedia.PathSkb.String}
+		mapJawabItem["path_skpp23"] = structs.JawabItem{KodeItem: 38, Isian: profilePenyedia.PathSkpp23.String}
 
-    trxjawabprofilmodel.InsertTrxJawabProfil(profilePenyedia, mapJawabItem)
+		item := structs.JawabItem{}
 
-		// fmt.Println(mapJawabItem["pakta_integritas"].Isian)
-		//
-		// item = mapJawabItem["pakta_integritas"]
-		// item.Isian = "2"
-		// mapJawabItem["pakta_integritas"] = item
-		// fmt.Println(mapJawabItem["pakta_integritas"].Isian)
-		//
-		// item = mapJawabItem["pakta_integritas"]
-		// item.Isian = "3"
-		// mapJawabItem["pakta_integritas"] = item
-		// fmt.Println(mapJawabItem["pakta_integritas"].Isian)
+		if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
+			item = mapJawabItem["pakta_integritas"]
+			item.KodeItem = 51
+			mapJawabItem["pakta_integritas"] = item
+      
+			item = mapJawabItem["nama_badan_usaha"]
+			item.KodeItem = 52
+			mapJawabItem["nama_badan_usaha"] = item
+      
+			item = mapJawabItem["domisili"]
+			item.KodeItem = 53
+			mapJawabItem["domisili"] = item
+      
+			item = mapJawabItem["alamat"]
+			item.KodeItem = 54
+			mapJawabItem["alamat"] = item
+			
+      item = mapJawabItem["no_telp"]
+			item.KodeItem = 56
+			mapJawabItem["no_telp"] = item
+			
+      item = mapJawabItem["email"]
+			item.KodeItem = 57
+			mapJawabItem["email"] = item
+			
+      item = mapJawabItem["nm_bank"]
+			item.KodeItem = 58
+			mapJawabItem["nm_bank"] = item
+			
+      item = mapJawabItem["pemilik_rek"]
+			item.KodeItem = 59
+			mapJawabItem["pemilik_rek"] = item
+			
+      item = mapJawabItem["no_rek"]
+			item.KodeItem = 60
+			mapJawabItem["no_rek"] = item
+			
+      item = mapJawabItem["path_rek"]
+			item.KodeItem = 61
+			mapJawabItem["path_rek"] = item
+			
+      item = mapJawabItem["npwp"]
+			item.KodeItem = 64
+			mapJawabItem["npwp"] = item
+			
+      item = mapJawabItem["path_npwp"]
+			item.KodeItem = 65
+			mapJawabItem["path_npwp"] = item
+			
+      item = mapJawabItem["path_skb"]
+			item.KodeItem = 73
+			mapJawabItem["path_skb"] = item
+			
+      item = mapJawabItem["path_skpp23"]
+			item.KodeItem = 77
+			mapJawabItem["path_skpp23"] = item
+		}
+
+		trxjawabprofilmodel.InsertTrxJawabProfil(profilePenyedia, mapJawabItem)
+
 	}
 }
