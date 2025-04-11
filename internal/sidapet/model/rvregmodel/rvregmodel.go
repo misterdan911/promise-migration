@@ -32,7 +32,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user st
       nama_perusahaan,
       email,
       "password",
-      nomor_handphone,
+      no_telp,
       swafoto,
       status_register,
       alasan_ditolak,
@@ -50,7 +50,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user st
       @nama_perusahaan,
       @email,
       @password,
-      @nomor_handphone,
+      @no_telp,
       @swafoto,
       @status_register,
       @alasan_ditolak,
@@ -70,7 +70,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user st
 		"nama_perusahaan":     profilePenyedia.Nama,
 		"email":               profilePenyedia.Email,
 		"password":            user.Password,
-		"nomor_handphone":     sql.NullString{Valid: false},
+		"no_telp":             profilePenyedia.NoTelp,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},
 		"alasan_ditolak":      sql.NullString{Valid: false},
@@ -90,7 +90,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user st
 		fmt.Println("unable to insert ref_vendor_register, " + errIns.Error())
 	}
 	defer rwInsRefVenReg.Close()
-  
+
 	allRefVenReg, errRwIns := pgx.CollectRows(rwInsRefVenReg, pgx.RowToStructByName[RefVenReg])
 	if errRwIns != nil {
 		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())

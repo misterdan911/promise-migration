@@ -1,6 +1,6 @@
 // ref_vendor_register_history model
 
-package rvreghismodel 
+package rvreghismodel
 
 import (
 	"context"
@@ -28,7 +28,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
       nama_perusahaan,
       email,
       "password",
-      nomor_handphone,
+      no_telp,
       swafoto,
       status_register,
       alasan_ditolak,
@@ -47,7 +47,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
       @nama_perusahaan,
       @email,
       @password,
-      @nomor_handphone,
+      @no_telp,
       @swafoto,
       @status_register,
       @alasan_ditolak,
@@ -63,12 +63,12 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
     ) RETURNING kode_register`
 
 	args := pgx.NamedArgs{
-		"kode_register":     kodeRegister,
+		"kode_register":       kodeRegister,
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
 		"email":               profilePenyedia.Email,
 		"password":            user.Password,
-		"nomor_handphone":     sql.NullString{Valid: false},
+		"no_telp":             profilePenyedia.NoTelp,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},
 		"alasan_ditolak":      sql.NullString{Valid: false},

@@ -51,3 +51,14 @@ func AlterAllForeignKey(action string) {
 		log.Fatal("qFk Failed, action: " + action + ", " + errQFk.Error())
 	}
 }
+
+func UpdatePkSequence(tableName string, pkFieldname string) {
+	ctx := context.Background()
+
+	seqName := tableName + "_" + pkFieldname + "_seq"
+	qUpdateSeq := `SELECT setval('` + seqName + `', (SELECT MAX(` + pkFieldname + `) FROM ` + tableName + `))`
+	_, errUpdateSeq := db.DbSidapet.Exec(ctx, qUpdateSeq)
+	if errUpdateSeq != nil {
+		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
+	}
+}

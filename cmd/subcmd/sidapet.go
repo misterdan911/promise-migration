@@ -5,6 +5,8 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/helper"
+	// "promise-migration/internal/sidapet"
+	// "promise-migration/internal/sidapet/helper"
 )
 
 var SidapetCmd = &cobra.Command{
@@ -20,12 +22,12 @@ var SidapetCmd = &cobra.Command{
 		defer db.DbSidapet.Close()
 
 		helper.DropAllForeignKey()
-		sidapet.MigrateTblDomisili()
+		// sidapet.MigrateTblDomisili()
 		sidapet.MigrateTblProfilePenyedia()
-		sidapet.MigrateTblPaket()
-		sidapet.MigrateTblPaketUndang()
-		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-		helper.CreateAllForeignKey()
+		// sidapet.MigrateTblPaket()
+		// sidapet.MigrateTblPaketUndang()
+		// sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
+		// helper.CreateAllForeignKey()
 
 	},
 }
