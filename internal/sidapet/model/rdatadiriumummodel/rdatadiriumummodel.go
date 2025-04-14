@@ -2,6 +2,7 @@ package rdatadiriumummodel
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"promise-migration/db"
@@ -12,19 +13,34 @@ import (
 func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia) {
 	ctx := context.Background()
 
-	var nama string
-	var namaBadanUsaha string
-	var kodeKabKota string
-	var alamatDomisili string
-	var alamatBU string
+	var nama sql.NullString
+	var namaBadanUsaha sql.NullString
+	var kodeKabKota sql.NullString
+	var alamatDomisili sql.NullString
+	var alamatBU sql.NullString
 
-	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
-		namaBadanUsaha = profilePenyedia.Nama.String
-		alamatBU = profilePenyedia.Alamat.String
-	} else if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
-		nama = profilePenyedia.Nama.String
-		kodeKabKota = hdomisilimodel.GetKodeKabKotaByKodeDomisili(profilePenyedia.IdDomisili.Int32)
-		alamatDomisili = profilePenyedia.Alamat.String
+	if profilePenyedia.IdJenisPenyedia.Int32 == 1 { // kalau badan usaha
+		if profilePenyedia.Nama.String != "" {
+			namaBadanUsaha = sql.NullString{Valid: true, String: profilePenyedia.Nama.String}
+		}
+
+		if profilePenyedia.Alamat.String != "" {
+			alamatBU = sql.NullString{Valid: true, String: profilePenyedia.Alamat.String}
+		}
+
+	} else if profilePenyedia.IdJenisPenyedia.Int32 == 2 { // kalau perorangan
+		if profilePenyedia.Nama.String != "" {
+			nama = sql.NullString{Valid: true, String: profilePenyedia.Nama.String}
+		}
+
+		strKodeKabKota := hdomisilimodel.GetKodeKabKotaByKodeDomisili(profilePenyedia.IdDomisili.Int32)
+		if strKodeKabKota != "" {
+			kodeKabKota = sql.NullString{Valid: true, String: strKodeKabKota}
+		}
+
+		if profilePenyedia.Alamat.String != "" {
+			alamatDomisili = sql.NullString{Valid: true, String: profilePenyedia.Alamat.String}
+		}
 	}
 
 	qIns := `

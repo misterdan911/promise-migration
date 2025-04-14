@@ -38,10 +38,6 @@ ALTER TABLE "trx_kat_j_vendor" ADD FOREIGN KEY ("kode_trx_kategori") REFERENCES 
 
 ALTER TABLE "trx_kat_j_vendor" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
 
-ALTER TABLE "ref_pengalaman_pero" ADD FOREIGN KEY ("kode_personalia") REFERENCES "ref_personalia_pero" ("kode_personalia");
-
-ALTER TABLE "ref_sertif_pero" ADD FOREIGN KEY ("kode_personalia") REFERENCES "ref_personalia_pero" ("kode_personalia");
-
 ALTER TABLE "ref_pengurus_bu" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
 
 ALTER TABLE "ref_izin_usaha_bu" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
@@ -171,3 +167,17 @@ ALTER TABLE "ref_verif_keuangan_bu" ADD FOREIGN KEY ("kode_vendor_penjr") REFERE
 ALTER TABLE "ref_verif_keuangan_bu" ADD FOREIGN KEY ("kode_keuangan") REFERENCES "ref_keuangan_bu" ("kode_keuangan");
 
 ALTER TABLE "trx_nilai_akhir" ADD FOREIGN KEY ("kode_vendor_penjr") REFERENCES "trx_vendor_penjr" ("kode_vendor_penjr");
+
+ALTER TABLE "ref_adm_bu" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_lan_hukum_bu" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_keuangan_bu" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_pengalaman_pero" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_sertif_pero" ADD FOREIGN KEY ("kode_vendor") REFERENCES "ref_vendor" ("kode_vendor");
+
+ALTER TABLE "ref_kantor_bu" ADD FOREIGN KEY ("kode_kepemilikan") REFERENCES "ref_kepemilikan" ("kode_kepemilikan");
+
+ALTER TABLE "ref_fasilitas_bu" ADD FOREIGN KEY ("kode_kepemilikan") REFERENCES "ref_kepemilikan" ("kode_kepemilikan");

@@ -27,7 +27,7 @@ var SidapetCmd = &cobra.Command{
 		// sidapet.MigrateTblPaket()
 		// sidapet.MigrateTblPaketUndang()
 		// sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-		// helper.CreateAllForeignKey()
+		helper.CreateAllForeignKey()
 
 	},
 }
