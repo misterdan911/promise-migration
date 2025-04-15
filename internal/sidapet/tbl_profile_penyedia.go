@@ -4,7 +4,9 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
+	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
 
@@ -27,6 +29,8 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_vendor_register")
 	helper.TruncateTable("ref_vendor_reg_history")
 	helper.TruncateTable("ref_datadiri_umum")
+	helper.TruncateTable("ref_administrasi_pero")
+	helper.TruncateTable("ref_personalia_pero")
 
 	ctx := context.Background()
 
@@ -137,9 +141,12 @@ func MigrateTblProfilePenyedia() {
 
 		// Insert to ref_datadiri_umum
 		rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia)
+
+		radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
+		rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
 	}
 
-	// Update ref_vendor_kode_vendor_seq
+	// Update sequence
 	helper.UpdatePkSequence("ref_vendor", "kode_vendor")
 	helper.UpdatePkSequence("ref_vendor_register", "kode_register")
 	helper.UpdatePkSequence("ref_vendor_reg_history", "kode_register")
