@@ -9,6 +9,7 @@ import (
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
+	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 
 	"github.com/jackc/pgx/v5"
 	"log"
@@ -144,6 +145,7 @@ func MigrateTblProfilePenyedia() {
 
 		radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
 		rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
+		rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
 	}
 
 	// Update sequence
