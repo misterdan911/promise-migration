@@ -10,6 +10,7 @@ import (
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
+	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 
 	"github.com/jackc/pgx/v5"
 	"log"
@@ -32,6 +33,8 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_datadiri_umum")
 	helper.TruncateTable("ref_administrasi_pero")
 	helper.TruncateTable("ref_personalia_pero")
+	helper.TruncateTable("ref_pengalaman_pero")
+	helper.TruncateTable("ref_sertif_pero")
 
 	ctx := context.Background()
 
@@ -146,6 +149,7 @@ func MigrateTblProfilePenyedia() {
 		radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
 		rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
 		rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
+		rsertifperomodel.InsertRefSertifPero(profilePenyedia)
 	}
 
 	// Update sequence
