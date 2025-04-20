@@ -9,7 +9,9 @@ import (
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
+	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
+	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 
@@ -153,6 +155,21 @@ func MigrateTblProfilePenyedia() {
 		rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
 		rsertifperomodel.InsertRefSertifPero(profilePenyedia)
 		rkeuanganpero.InsertRefKeuanganPero(profilePenyedia)
+
+		radmbumodel.InsertRefAdmBu(profilePenyedia)
+		rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia)
+		//ref_pengurus_bu.Insertref_pengurus_bu(profilePenyedia)
+		//ref_komisaris_bu.Insertref_komisaris_bu(profilePenyedia)
+		//ref_direksi_bu.Insertref_direksi_bu(profilePenyedia)
+		//ref_izin_usaha_bu.Insertref_izin_usaha_bu(profilePenyedia)
+		//ref_sertifikat_usaha_bu.Insertref_sertifikat_usaha_bu(profilePenyedia)
+		//ref_saham_bu.Insertref_saham_bu(profilePenyedia)
+		//ref_data_pajak_bu.Insertref_data_pajak_bu(profilePenyedia)
+		//ref_tenaga_ahli_bu.Insertref_tenaga_ahli_bu(profilePenyedia)
+		//ref_tenaga_pendukung_bu.Insertref_tenaga_pendukung_bu(profilePenyedia)
+		//ref_fasilitas_bu.Insertref_fasilitas_bu(profilePenyedia)
+		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)
+
 	}
 
 	// Update sequence
