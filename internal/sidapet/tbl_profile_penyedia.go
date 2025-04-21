@@ -13,6 +13,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
 	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
+	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 
 	"github.com/jackc/pgx/v5"
@@ -39,6 +40,8 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_pengalaman_pero")
 	helper.TruncateTable("ref_sertif_pero")
 	helper.TruncateTable("ref_keuangan_pero")
+	helper.TruncateTable("ref_lan_hukum_bu")
+	helper.TruncateTable("ref_pengurus_bu")
 
 	ctx := context.Background()
 
@@ -157,8 +160,8 @@ func MigrateTblProfilePenyedia() {
 		rkeuanganpero.InsertRefKeuanganPero(profilePenyedia)
 
 		radmbumodel.InsertRefAdmBu(profilePenyedia)
-		rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia)
-		//ref_pengurus_bu.Insertref_pengurus_bu(profilePenyedia)
+		rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia) // TODO tgl_akta_awal, tgl_akta_akhir belum diproses
+		rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
 		//ref_komisaris_bu.Insertref_komisaris_bu(profilePenyedia)
 		//ref_direksi_bu.Insertref_direksi_bu(profilePenyedia)
 		//ref_izin_usaha_bu.Insertref_izin_usaha_bu(profilePenyedia)
