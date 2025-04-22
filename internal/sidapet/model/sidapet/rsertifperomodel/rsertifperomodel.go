@@ -55,11 +55,10 @@ func InsertRefSertifPero(profilePenyedia structs.TblProfilePenyedia) {
 			"file_bukti":    vSP.PathSertif,
 		}
 
-		rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
 			fmt.Println("unable to insert ref_sertif_pero, " + errIns.Error())
 		}
-		defer rwIns.Close()
 
 	}
 

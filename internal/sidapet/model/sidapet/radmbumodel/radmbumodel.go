@@ -32,9 +32,9 @@ func InsertRefAdmBu(profilePenyedia structs.TblProfilePenyedia) {
 		"file_s_kuasa": profilePenyedia.PathKuasa,
 	}
 
-	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_adm_bu, " + errIns.Error())
 	}
-	defer rwIns.Close()
+	//defer rwIns.Close()
 }

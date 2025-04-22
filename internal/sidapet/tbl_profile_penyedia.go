@@ -10,7 +10,9 @@ import (
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
+	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
@@ -42,6 +44,8 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_keuangan_pero")
 	helper.TruncateTable("ref_lan_hukum_bu")
 	helper.TruncateTable("ref_pengurus_bu")
+	helper.TruncateTable("ref_komisaris_bu")
+	helper.TruncateTable("ref_direksi_bu")
 
 	ctx := context.Background()
 
@@ -162,9 +166,9 @@ func MigrateTblProfilePenyedia() {
 		radmbumodel.InsertRefAdmBu(profilePenyedia)
 		rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia) // TODO tgl_akta_awal, tgl_akta_akhir belum diproses
 		rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
-		//ref_komisaris_bu.Insertref_komisaris_bu(profilePenyedia)
-		//ref_direksi_bu.Insertref_direksi_bu(profilePenyedia)
-		//ref_izin_usaha_bu.Insertref_izin_usaha_bu(profilePenyedia)
+		rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
+		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
+		//rizinusahabu.InsertRefIzinUsahaBu(profilePenyedia)
 		//ref_sertifikat_usaha_bu.Insertref_sertifikat_usaha_bu(profilePenyedia)
 		//ref_saham_bu.Insertref_saham_bu(profilePenyedia)
 		//ref_data_pajak_bu.Insertref_data_pajak_bu(profilePenyedia)

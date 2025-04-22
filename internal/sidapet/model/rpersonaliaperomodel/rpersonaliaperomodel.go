@@ -29,10 +29,9 @@ func InsertRefPersonaliaPero(profilePenyedia structs.TblProfilePenyedia) {
 		"nama":        profilePenyedia.Nama,
 	}
 
-	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_personalia_pero, " + errIns.Error())
 	}
-	defer rwIns.Close()
 
 }

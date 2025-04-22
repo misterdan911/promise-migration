@@ -18,6 +18,16 @@ func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
 
 	var bentukBu string
 	bentukBu = strings.ToLower(profilePenyedia.Nama.String[0:2])
+	if bentukBu != "pt" || bentukBu != "cv" {
+		if strings.Contains(strings.ToLower(profilePenyedia.Nama.String), "pt") {
+			bentukBu = "pt"
+		} else if strings.Contains(strings.ToLower(profilePenyedia.Nama.String), "cv") {
+			bentukBu = "cv"
+		} else {
+			// kalo gak ke detek pt atau cv maka program jangan dilanjutkan
+			return
+		}
+	}
 
 	qIns := `
     INSERT INTO ref_pengurus_bu (
@@ -33,9 +43,8 @@ func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
 		"bentuk_bu":   bentukBu,
 	}
 
-	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_pengurus_bu, " + errIns.Error())
 	}
-	defer rwIns.Close()
 }

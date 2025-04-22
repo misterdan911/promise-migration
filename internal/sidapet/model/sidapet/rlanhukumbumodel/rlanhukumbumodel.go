@@ -92,11 +92,10 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 			"file_akta_rubah": vTA.PathAktaAkhir,
 		}
 
-		rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
 			fmt.Println("unable to insert ref_lan_hukum_bu, " + errIns.Error())
 		}
-		defer rwIns.Close()
 	}
 
 }
