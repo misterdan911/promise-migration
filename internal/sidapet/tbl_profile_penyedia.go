@@ -170,8 +170,8 @@ func MigrateTblProfilePenyedia() {
 		rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
 		rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
 		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
-		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia)
-		//ref_sertifikat_usaha_bu.Insertref_sertifikat_usaha_bu(profilePenyedia)
+		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia) // TODO jenis_izin_usaha & is_izin_selamanya belum diproses
+		// ref_sertifikat_usaha_bu.Insertref_sertifikat_usaha_bu(profilePenyedia)
 		//ref_saham_bu.Insertref_saham_bu(profilePenyedia)
 		//ref_data_pajak_bu.Insertref_data_pajak_bu(profilePenyedia)
 		//ref_tenaga_ahli_bu.Insertref_tenaga_ahli_bu(profilePenyedia)
