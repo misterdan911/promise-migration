@@ -2,6 +2,7 @@ package rizinusahabumodel
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -14,14 +15,14 @@ import (
 type VTblIzin struct {
 	IdIjinUsaha      pgtype.Int4
 	IdProfilPenyedia pgtype.Int4
-	NamaIzin          pgtype.Text
-	NoIzin            pgtype.Text
-	MasaIzin          pgtype.Text
-	PemberiIzin       pgtype.Text
-	KualifikasiUsaha  pgtype.Text
-	KlasifikasiUsaha  pgtype.Text
-	Tdp                pgtype.Text
-	Pathzin          pgtype.Text
+	NamaIzin         pgtype.Text
+	NoIzin           pgtype.Text
+	MasaIzin         pgtype.Text
+	PemberiIzin      pgtype.Text
+	KualifikasiUsaha pgtype.Text
+	KlasifikasiUsaha pgtype.Text
+	Tdp              pgtype.Text
+	PathIzin         pgtype.Text
 }
 
 func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
@@ -46,7 +47,7 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 	    path_izin
 	  FROM tbl_ijin_usaha_perusahaan
 	  WHERE id_profil_penyedia = $1
-	  ORDER BY id_direksi_perus`
+	  ORDER BY id_ijin_usaha`
 
 	rVTI, errVTK := db.VmsDb.Query(ctx, qVmsTblIzinUsaha, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
 	if errVTK != nil {
@@ -67,7 +68,6 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 		  nama,
 		  nomor_izin,
 		  kode,
-		  judul,
 		  file_izin,
 		  is_izin_selamanya
 		) VALUES (
@@ -76,18 +76,18 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 		  @nama,
 		  @nomor_izin,
 		  @kode,
-		  @judul,
 		  @file_izin,
 		  @is_izin_selamanya
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":      profilePenyedia.IdProfilPenyedia,
-			"jenis_izin_usaha":       vTI.,
-			"jbtn_direksi":     vTD.JbtnDireksi,
-			"hp_direksi":       vTD.HpDireksi,
-			"no_ktp_direksi":   vTD.NoKtpDireksi,
-			"path_ktp_direksi": vTD.PathKtpDireksi,
+			"kode_vendor":       profilePenyedia.IdProfilPenyedia,
+			"jenis_izin_usaha":  sql.NullInt16{},
+			"nama":              vTI.NamaIzin,
+			"nomor_izin":        vTI.NoIzin,
+			"kode":              sql.NullString{},
+			"file_izin":         vTI.PathIzin,
+			"is_izin_selamanya": sql.NullBool{},
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
