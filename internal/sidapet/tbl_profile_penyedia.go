@@ -20,6 +20,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
+	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
 
 	"github.com/jackc/pgx/v5"
 	"log"
@@ -176,9 +177,10 @@ func MigrateTblProfilePenyedia() {
 		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)
 		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapeting is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
-		rtenagaahlibumodel.InsertrefTenagaAhliBu(profilePenyedia)
+		rtenagaahlibumodel.InsertRefTenagaAhliBu(profilePenyedia)
 		//ref_tenaga_pendukung_bu.Insertref_tenaga_pendukung_bu(profilePenyedia)
 		//ref_fasilitas_bu.Insertref_fasilitas_bu(profilePenyedia)
+		//ref_pengalaman_bu.Insertref_pengalaman_bu(profilePenyedia)
 		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)
 
 	}
