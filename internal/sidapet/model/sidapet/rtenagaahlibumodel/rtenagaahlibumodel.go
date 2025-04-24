@@ -8,21 +8,14 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/model/sidapet/rpengalamantamodel"
+	"promise-migration/internal/sidapet/model/sidapet/rsertiftamodel"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 )
 
-type VmsTblPersonaliaPerush struct {
-	IdPersonalia       pgtype.Int4
-	IdProfilPenyedia   pgtype.Int4
-	NmPersonal         pgtype.Text
-	TglPersonal        pgtype.Text
-	PendidikanPersonal pgtype.Text
-	JbtnPersonal       pgtype.Text
-	PengalamanPersonal pgtype.Text
-	KeahlianPersonal   pgtype.Text
-	SertifPersonal     pgtype.Text
-	PathPersonal       pgtype.Text
+type RefTenagaAhli struct {
+	KodeTenagaAhli pgtype.Int4
 }
 
 func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
@@ -52,7 +45,7 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
 		log.Fatal("qVmsTblPersonaliaP Failed, " + errVTPP.Error() + " " + qVmsTblPersonaliaP)
 	}
 
-	allVTPP, errCollect := pgx.CollectRows(rVTPP, pgx.RowToStructByName[VmsTblPersonaliaPerush])
+	allVTPP, errCollect := pgx.CollectRows(rVTPP, pgx.RowToStructByName[structs.VmsTblPersonaliaPerush])
 	if errCollect != nil {
 		log.Fatal("failed collecting rows, " + errCollect.Error())
 	}
@@ -84,7 +77,7 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
 		  @program_studi,
 		  @file_ijazah,
 		  @file_cv
-		)`
+		) RETURNING kode_tenaga_ahli`
 
 		args := pgx.NamedArgs{
 			"kode_vendor":             profilePenyedia.IdProfilPenyedia,
@@ -100,10 +93,21 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
 			"file_cv":                 sql.NullString{},
 		}
 
-		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
+		rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
 		if errIns != nil {
 			fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
 		}
+
+		defer rwIns.Close()
+
+		allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
+		if errRwIns != nil {
+			log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+		}
+
+		kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
+		rpengalamantamodel.InsertRefPengalamanTa(kodeTenagaAhli, vTPP)
+		rsertiftamodel.InserRefSertifTa(kodeTenagaAhli, vTPP)
 	}
 
 }

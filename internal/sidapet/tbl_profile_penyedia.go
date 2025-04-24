@@ -51,6 +51,9 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_komisaris_bu")
 	helper.TruncateTable("ref_direksi_bu")
 	helper.TruncateTable("ref_data_pajak_bu")
+	helper.TruncateTable("ref_tenaga_ahli_bu")
+	helper.TruncateTable("ref_pengalaman_ta")
+	helper.TruncateTable("ref_sertif_ta")
 
 	ctx := context.Background()
 

@@ -52,3 +52,16 @@ type RefDomisili struct {
 	KodeDomisili pgtype.Int4
 	NamaDomisili pgtype.Text
 }
+
+type VmsTblPersonaliaPerush struct {
+	IdPersonalia       pgtype.Int4
+	IdProfilPenyedia   pgtype.Int4
+	NmPersonal         pgtype.Text
+	TglPersonal        pgtype.Text
+	PendidikanPersonal pgtype.Text
+	JbtnPersonal       pgtype.Text
+	PengalamanPersonal pgtype.Text
+	KeahlianPersonal   pgtype.Text
+	SertifPersonal     pgtype.Text
+	PathPersonal       pgtype.Text
+}
