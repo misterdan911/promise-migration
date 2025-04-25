@@ -180,7 +180,7 @@ func MigrateTblProfilePenyedia() {
 		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)
 		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapeting is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
-		rtenagaahlibumodel.InsertRefTenagaAhliBu(profilePenyedia)
+		rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
 		//ref_tenaga_pendukung_bu.Insertref_tenaga_pendukung_bu(profilePenyedia)
 		//ref_fasilitas_bu.Insertref_fasilitas_bu(profilePenyedia)
 		//ref_pengalaman_bu.Insertref_pengalaman_bu(profilePenyedia)

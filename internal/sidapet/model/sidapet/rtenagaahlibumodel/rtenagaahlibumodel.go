@@ -12,13 +12,14 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsertiftamodel"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
+	"strings"
 )
 
 type RefTenagaAhli struct {
 	KodeTenagaAhli pgtype.Int4
 }
 
-func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertPersonalia(profilePenyedia structs.TblProfilePenyedia) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
 	}
@@ -52,7 +53,20 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
 	defer rVTPP.Close()
 
 	for _, vTPP := range allVTPP {
-		qIns := `
+		if strings.Contains(strings.ToLower(vTPP.JbtnPersonal.String), "pendukung") {
+			//InsertRefTenagaPendukungBu(profilePenyedia,vTPP)
+		} else {
+			InsertRefTenagaAhliBu(profilePenyedia, vTPP)
+		}
+	}
+
+}
+
+func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+
+	ctx := context.Background()
+
+	qIns := `
 		INSERT INTO ref_tenaga_ahli_bu (
 		  kode_vendor,
 		  nama,
@@ -79,35 +93,96 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia) {
 		  @file_cv
 		) RETURNING kode_tenaga_ahli`
 
-		args := pgx.NamedArgs{
-			"kode_vendor":             profilePenyedia.IdProfilPenyedia,
-			"nama":                    vTPP.NmPersonal,
-			"no_ktp":                  sql.NullString{},
-			"file_ktp":                sql.NullString{},
-			"tempat_lahir":            sql.NullString{},
-			"tgl_lahir":               sql.NullString{},
-			"posisi":                  vTPP.JbtnPersonal,
-			"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
-			"program_studi":           sql.NullString{},
-			"file_ijazah":             vTPP.PathPersonal,
-			"file_cv":                 sql.NullString{},
-		}
-
-		rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
-		if errIns != nil {
-			fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
-		}
-
-		defer rwIns.Close()
-
-		allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
-		if errRwIns != nil {
-			log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
-		}
-
-		kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
-		rpengalamantamodel.InsertRefPengalamanTa(kodeTenagaAhli, vTPP)
-		rsertiftamodel.InserRefSertifTa(kodeTenagaAhli, vTPP)
+	args := pgx.NamedArgs{
+		"kode_vendor":             profilePenyedia.IdProfilPenyedia,
+		"nama":                    vTPP.NmPersonal,
+		"no_ktp":                  sql.NullString{},
+		"file_ktp":                sql.NullString{},
+		"tempat_lahir":            sql.NullString{},
+		"tgl_lahir":               sql.NullString{},
+		"posisi":                  vTPP.JbtnPersonal,
+		"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
+		"program_studi":           sql.NullString{},
+		"file_ijazah":             vTPP.PathPersonal,
+		"file_cv":                 sql.NullString{},
 	}
 
+	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+	if errIns != nil {
+		fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
+	}
+
+	defer rwIns.Close()
+
+	allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
+	if errRwIns != nil {
+		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+	}
+
+	kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
+	rpengalamantamodel.InsertRefPengalamanTa(kodeTenagaAhli, vTPP)
+	rsertiftamodel.InserRefSertifTa(kodeTenagaAhli, vTPP)
+
+}
+
+func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+	fmt.Println("Jabatan: " + vTPP.JbtnPersonal.String)
+	ctx := context.Background()
+
+	qIns := `
+		INSERT INTO ref_tenaga_ahli_bu (
+		  kode_vendor,
+		  nama,
+		  no_ktp,
+		  file_ktp,
+		  tempat_lahir,
+		  tgl_lahir,
+		  posisi,
+		  kode_jenjang_pendidikan,
+		  program_studi,
+		  file_ijazah,
+		  file_cv
+		) VALUES (
+		  @kode_vendor,
+		  @nama,
+		  @no_ktp,
+		  @file_ktp,
+		  @tempat_lahir,
+		  @tgl_lahir,
+		  @posisi,
+		  @kode_jenjang_pendidikan,
+		  @program_studi,
+		  @file_ijazah,
+		  @file_cv
+		) RETURNING kode_tenaga_ahli`
+
+	args := pgx.NamedArgs{
+		"kode_vendor":             profilePenyedia.IdProfilPenyedia,
+		"nama":                    vTPP.NmPersonal,
+		"no_ktp":                  sql.NullString{},
+		"file_ktp":                sql.NullString{},
+		"tempat_lahir":            sql.NullString{},
+		"tgl_lahir":               sql.NullString{},
+		"posisi":                  vTPP.JbtnPersonal,
+		"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
+		"program_studi":           sql.NullString{},
+		"file_ijazah":             vTPP.PathPersonal,
+		"file_cv":                 sql.NullString{},
+	}
+
+	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
+	if errIns != nil {
+		fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
+	}
+
+	defer rwIns.Close()
+
+	allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
+	if errRwIns != nil {
+		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+	}
+
+	kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
+	rpengalamantamodel.InsertRefPengalamanTa(kodeTenagaAhli, vTPP)
+	rsertiftamodel.InserRefSertifTa(kodeTenagaAhli, vTPP)
 }
