@@ -54,6 +54,8 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_tenaga_ahli_bu")
 	helper.TruncateTable("ref_pengalaman_ta")
 	helper.TruncateTable("ref_sertif_ta")
+	helper.TruncateTable("ref_tenaga_pendukung_bu")
+	helper.TruncateTable("ref_pengalaman_tp")
 
 	ctx := context.Background()
 
@@ -178,10 +180,9 @@ func MigrateTblProfilePenyedia() {
 		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
 		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia) // TODO jenis_izin_usaha & is_izin_selamanya belum diproses
 		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)
-		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapeting is_saham_selamanya
+		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
 		rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
-		//ref_tenaga_pendukung_bu.Insertref_tenaga_pendukung_bu(profilePenyedia)
 		//ref_fasilitas_bu.Insertref_fasilitas_bu(profilePenyedia)
 		//ref_pengalaman_bu.Insertref_pengalaman_bu(profilePenyedia)
 		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)

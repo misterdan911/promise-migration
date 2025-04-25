@@ -9,7 +9,9 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamantamodel"
+	"promise-migration/internal/sidapet/model/sidapet/rpengalamantpmodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertiftamodel"
+	"promise-migration/internal/sidapet/model/sidapet/rsertiftpmodel"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 	"strings"
@@ -17,6 +19,9 @@ import (
 
 type RefTenagaAhli struct {
 	KodeTenagaAhli pgtype.Int4
+}
+type RefTenagaPendukung struct {
+	KodeTenagaPendukung pgtype.Int4
 }
 
 func InsertPersonalia(profilePenyedia structs.TblProfilePenyedia) {
@@ -54,7 +59,7 @@ func InsertPersonalia(profilePenyedia structs.TblProfilePenyedia) {
 
 	for _, vTPP := range allVTPP {
 		if strings.Contains(strings.ToLower(vTPP.JbtnPersonal.String), "pendukung") {
-			//InsertRefTenagaPendukungBu(profilePenyedia,vTPP)
+			InsertRefTenagaPendukungBu(profilePenyedia, vTPP)
 		} else {
 			InsertRefTenagaAhliBu(profilePenyedia, vTPP)
 		}
@@ -130,7 +135,7 @@ func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP
 	ctx := context.Background()
 
 	qIns := `
-		INSERT INTO ref_tenaga_ahli_bu (
+		INSERT INTO ref_tenaga_pendukung_bu (
 		  kode_vendor,
 		  nama,
 		  no_ktp,
@@ -154,7 +159,7 @@ func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP
 		  @program_studi,
 		  @file_ijazah,
 		  @file_cv
-		) RETURNING kode_tenaga_ahli`
+		) RETURNING kode_tenaga_pendukung`
 
 	args := pgx.NamedArgs{
 		"kode_vendor":             profilePenyedia.IdProfilPenyedia,
@@ -172,17 +177,17 @@ func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP
 
 	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
+		fmt.Println("unable to insert ref_tenaga_pendukung_bu, " + errIns.Error())
 	}
 
 	defer rwIns.Close()
 
-	allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
+	allTenagaPendukung, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaPendukung])
 	if errRwIns != nil {
 		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
 	}
 
-	kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
-	rpengalamantamodel.InsertRefPengalamanTa(kodeTenagaAhli, vTPP)
-	rsertiftamodel.InserRefSertifTa(kodeTenagaAhli, vTPP)
+	kodeTenagaPendukung := allTenagaPendukung[0].KodeTenagaPendukung.Int32
+	rpengalamantpmodel.InsertRefPengalamanTp(kodeTenagaPendukung, vTPP)
+	rsertiftpmodel.InsertRefSertifTp(kodeTenagaPendukung, vTPP)
 }
