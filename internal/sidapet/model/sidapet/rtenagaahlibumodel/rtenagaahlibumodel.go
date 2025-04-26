@@ -131,7 +131,6 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia, vTPP stru
 }
 
 func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
-	fmt.Println("Jabatan: " + vTPP.JbtnPersonal.String)
 	ctx := context.Background()
 
 	qIns := `

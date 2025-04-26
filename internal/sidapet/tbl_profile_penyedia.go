@@ -12,6 +12,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
 	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
@@ -183,7 +184,10 @@ func MigrateTblProfilePenyedia() {
 		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
 		rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
-		//ref_fasilitas_bu.Insertref_fasilitas_bu(profilePenyedia)
+
+		// data kantor tidak ada
+
+		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia) // Masih ada yg harus diproses lebih lanjut, panjang field ada yg berubah
 		//ref_pengalaman_bu.Insertref_pengalaman_bu(profilePenyedia)
 		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)
 
