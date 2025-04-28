@@ -17,6 +17,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
 	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
@@ -180,7 +181,7 @@ func MigrateTblProfilePenyedia() {
 		rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
 		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
 		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia) // TODO jenis_izin_usaha & is_izin_selamanya belum diproses
-		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)
+		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)	// gak ada sertifikat di db lama
 		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
 		rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
@@ -188,7 +189,7 @@ func MigrateTblProfilePenyedia() {
 		// data kantor tidak ada
 
 		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia) // Masih ada yg harus diproses lebih lanjut, panjang field ada yg berubah
-		//ref_pengalaman_bu.Insertref_pengalaman_bu(profilePenyedia)
+		rpengalamanbumodel.InsertPengalaman(profilePenyedia)    // Masih ada yg harus diproses lebih lanjut)
 		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)
 
 	}
