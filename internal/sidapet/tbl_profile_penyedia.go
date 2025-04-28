@@ -14,6 +14,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
 	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
@@ -58,6 +59,9 @@ func MigrateTblProfilePenyedia() {
 	helper.TruncateTable("ref_sertif_ta")
 	helper.TruncateTable("ref_tenaga_pendukung_bu")
 	helper.TruncateTable("ref_pengalaman_tp")
+	helper.TruncateTable("ref_fasilitas_bu")
+	helper.TruncateTable("ref_pengalaman_bu")
+	helper.TruncateTable("ref_keuangan_bu")
 
 	ctx := context.Background()
 
@@ -190,7 +194,7 @@ func MigrateTblProfilePenyedia() {
 
 		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia) // Masih ada yg harus diproses lebih lanjut, panjang field ada yg berubah
 		rpengalamanbumodel.InsertPengalaman(profilePenyedia)    // Masih ada yg harus diproses lebih lanjut)
-		//ref_keuangan_bu.Insertref_keuangan_bu(profilePenyedia)
+		rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
 
 	}
 
