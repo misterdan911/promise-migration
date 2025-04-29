@@ -34,40 +34,6 @@ func MigrateTblPaket() {
 	// loop semua data tbl_paket
 	//ctx := context.Background()
 
-	/*
-		qTblPaket := `
-		SELECT
-		  id_paket,
-		  nama_paket,
-		  metode,
-		  id_kategori_belanja,
-		  id_cabang,
-		  tahun_anggaran,
-		  tgl_daftar_awal,
-		  tgl_daftar_akhir,
-		  tgl_eval_awal,
-		  tgl_eval_akhir,
-		  tgl_umum_paket,
-		  path_paket,
-		  created_at,
-		  updated_at,
-		  status
-		FROM tbl_paket ORDER BY id_paket`
-
-		rwTblPaket, err := db.VmsDb.Query(ctx, qTblPaket)
-		if err != nil {
-			log.Fatal("qTblPaket Failed, " + err.Error() + " " + qTblPaket)
-		}
-
-		allVmsPaket, err := pgx.CollectRows(rwTblPaket, pgx.RowToStructByName[VmsPaket])
-		if err != nil {
-			log.Fatal("failed collecting rwTblPaket, " + err.Error())
-		}
-		defer rwTblPaket.Close()
-
-		fmt.Println("Migrating tbl_paket...")
-	*/
-
 	allVmsPaket := tpaketmodel.GetAllPaket()
 
 	for _, vmsPaket := range allVmsPaket {
