@@ -14,7 +14,7 @@ type BankKw struct {
 	SandiBank pgtype.Text
 }
 
-func GetSandiBankByArbitaryText(text string) string {
+func GetSandiBankFromArbitaryText(text string) string {
 	var sandiBank string
 	ctx := context.Background()
 	qBankKw := `SELECT keyword, sandi_bank FROM helper_bank_kw ORDER BY id ASC`

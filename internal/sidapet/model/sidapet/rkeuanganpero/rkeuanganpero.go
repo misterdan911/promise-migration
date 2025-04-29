@@ -19,7 +19,7 @@ func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia) {
 	var sandiBank sql.NullString
 
 	if profilePenyedia.KodeBank.String == "" {
-		strTmp := hbankkwmodel.GetSandiBankByArbitaryText(profilePenyedia.NmBank.String)
+		strTmp := hbankkwmodel.GetSandiBankFromArbitaryText(profilePenyedia.NmBank.String)
 		if strTmp != "" {
 			sandiBank = sql.NullString{Valid: true, String: strTmp}
 		}

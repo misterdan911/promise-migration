@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/model/sidapet/hbankkwmodel"
 	"promise-migration/internal/sidapet/structs"
 )
 
@@ -16,6 +17,17 @@ func InsertRefKeuanganBu(profilePenyedia structs.TblProfilePenyedia) {
 	}
 
 	ctx := context.Background()
+
+	var sandiBank sql.NullString
+
+	if profilePenyedia.KodeBank.String == "" {
+		strTmp := hbankkwmodel.GetSandiBankFromArbitaryText(profilePenyedia.NmBank.String)
+		if strTmp != "" {
+			sandiBank = sql.NullString{Valid: true, String: strTmp}
+		}
+	} else {
+		sandiBank = sql.NullString{Valid: true, String: profilePenyedia.KodeBank.String}
+	}
 
 	qIns := `
 		INSERT INTO ref_keuangan_bu (
@@ -40,7 +52,7 @@ func InsertRefKeuanganBu(profilePenyedia structs.TblProfilePenyedia) {
 		"kode_vendor":          profilePenyedia.IdProfilPenyedia,
 		"nm_pemilik_rek":       profilePenyedia.PemilikRek,
 		"no_rek":               profilePenyedia.NoRek,
-		"sandi_bank":           sql.NullString{}, // TODO
+		"sandi_bank":           sandiBank,
 		"file_buku_rek":        profilePenyedia.PathRek,
 		"file_lap_keu":         profilePenyedia.PathLapPerus,
 		"file_lap_keu_audited": sql.NullString{},
