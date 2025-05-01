@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamantamodel"
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamantpmodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertiftamodel"
@@ -114,14 +115,17 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia, vTPP stru
 
 	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
+		log.Fatal("unable to insert ref_tenaga_ahli_bu, " + errIns.Error())
 	}
 
 	defer rwIns.Close()
 
 	allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
 	if errRwIns != nil {
-		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+		fmt.Println("nama: " + vTPP.NmPersonal.String + helper.GetLen(vTPP.NmPersonal.String))
+		fmt.Println("posisi: " + vTPP.JbtnPersonal.String + helper.GetLen(vTPP.JbtnPersonal.String))
+		fmt.Println("file_ijazah: " + vTPP.PathPersonal.String + helper.GetLen(vTPP.PathPersonal.String))
+		log.Fatal("failed collecting RefTenagaAhli, " + errRwIns.Error())
 	}
 
 	kodeTenagaAhli := allRefTenagaAhli[0].KodeTenagaAhli.Int32
@@ -183,7 +187,7 @@ func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP
 
 	allTenagaPendukung, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaPendukung])
 	if errRwIns != nil {
-		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+		log.Fatal("failed collecting RefTenagaPendukung, " + errRwIns.Error())
 	}
 
 	kodeTenagaPendukung := allTenagaPendukung[0].KodeTenagaPendukung.Int32

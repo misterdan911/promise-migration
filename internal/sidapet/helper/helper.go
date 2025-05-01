@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"promise-migration/db"
+	"strconv"
 )
 
 func TruncateTable(tblName string) {
@@ -48,6 +49,7 @@ func AlterAllForeignKey(action string) {
 	ctx := context.Background()
 	_, errQFk := db.DbSidapet.Exec(ctx, qFk)
 	if errQFk != nil {
+		//fmt.Println("qFk: " + qFk)
 		log.Fatal("qFk Failed, action: " + action + ", " + errQFk.Error())
 	}
 }
@@ -61,4 +63,13 @@ func UpdatePkSequence(tableName string, pkFieldname string) {
 	if errUpdateSeq != nil {
 		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
 	}
+}
+
+type Lengthable interface {
+	//~string | ~[]int | ~[]string
+	~string | ~[]int
+}
+
+func GetLen[T Lengthable](myValue T) string {
+	return " (" + strconv.Itoa(len(myValue)) + ")"
 }

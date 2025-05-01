@@ -3,30 +3,12 @@ package tpaketmodel
 import (
 	"context"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/structs"
 )
 
-type VmsTblPaket struct {
-	IdPaket           pgtype.Int4
-	NamaPaket         pgtype.Text
-	Metode            pgtype.Text
-	IdKategoriBelanja pgtype.Int4
-	IdCabang          pgtype.Int4
-	TahunAnggaran     pgtype.Int4
-	TglDaftarAwal     pgtype.Timestamptz
-	TglDaftarAkhir    pgtype.Timestamptz
-	TglEvalAwal       pgtype.Timestamptz
-	TglEvalAkhir      pgtype.Timestamptz
-	TglUmumPaket      pgtype.Timestamptz
-	PathPaket         pgtype.Text
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	Status            pgtype.Int4
-}
-
-func GetAllPaket() []VmsTblPaket {
+func GetAllPaket() []structs.VmsTblPaket {
 	ctx := context.Background()
 
 	qSelect := `
@@ -53,7 +35,7 @@ func GetAllPaket() []VmsTblPaket {
 		log.Fatal("qSelect Failed, " + err.Error() + " " + qSelect)
 	}
 
-	allRows, err := pgx.CollectRows(rSelect, pgx.RowToStructByName[VmsTblPaket])
+	allRows, err := pgx.CollectRows(rSelect, pgx.RowToStructByName[structs.VmsTblPaket])
 	if err != nil {
 		log.Fatal("failed collecting tbl_select, " + err.Error())
 	}

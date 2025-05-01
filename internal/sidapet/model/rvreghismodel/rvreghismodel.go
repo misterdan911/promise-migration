@@ -5,6 +5,7 @@ package rvreghismodel
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/jackc/pgx/v5"
@@ -84,7 +85,8 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
 	}
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		log.Fatal("unable to insert ref_vendor_register_history, " + errIns.Error())
+		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String)
+		log.Fatal("unable to insert ref_vendor_reg_history, " + errIns.Error())
 	}
 
 }

@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"promise-migration/internal/sidapet/helper"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -93,7 +94,11 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user st
 
 	allRefVenReg, errRwIns := pgx.CollectRows(rwInsRefVenReg, pgx.RowToStructByName[RefVenReg])
 	if errRwIns != nil {
-		log.Fatal("failed collecting errRwIns, " + errRwIns.Error())
+		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + helper.GetLen(profilePenyedia.Nama.String))
+		fmt.Println("email: " + profilePenyedia.Email.String + helper.GetLen(profilePenyedia.Email.String))
+		fmt.Println("password: " + user.Password.String + helper.GetLen(user.Password.String))
+		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + helper.GetLen(profilePenyedia.NoTelp.String))
+		log.Fatal("failed collecting RefVenReg, " + errRwIns.Error())
 	}
 
 	return allRefVenReg[0].KodeRegister

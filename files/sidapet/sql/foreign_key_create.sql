@@ -2,6 +2,10 @@ COMMENT ON TABLE "helper_kategori_kw" IS 'table sementara untuk bantu migrasi';
 
 COMMENT ON TABLE "helper_pengusul_pjr" IS 'table sementara untuk bantu migrasi';
 
+COMMENT ON COLUMN "ref_item_tanya"."jenis_item" IS 'default, custom';
+
+COMMENT ON TABLE "ref_item_tanya_tpl" IS 'Master Custom Item';
+
 COMMENT ON TABLE "ref_kategori" IS 'Daftar kategori yang bisa digunakan PPK bila ada pengajuan';
 
 COMMENT ON TABLE "ref_jenis_pengadaan" IS 'Barang, Jasa Konsultansi, Konstruksi, Jasa Lainnya';
@@ -15,6 +19,8 @@ COMMENT ON COLUMN "trx_kategori"."kode_unit_pbj" IS 'Unit yang mengajukan katego
 COMMENT ON COLUMN "trx_kategori"."ucr" IS 'Email User yang membuat paket';
 
 COMMENT ON COLUMN "trx_penjaringan"."metode" IS 'pengumuman, undangan';
+
+COMMENT ON COLUMN "trx_penjaringan"."file_persyaratan" IS 'File PDF Persyaratan';
 
 COMMENT ON COLUMN "trx_penjaringan"."status_persetujuan" IS 'Flag pengajuan paket diterima atau tidak (belum_diproses, proses, terima, tolak)';
 
@@ -50,6 +56,8 @@ COMMENT ON TABLE "trx_undangan_verif" IS 'Untuk mencatat jadwal verifikasi penye
 
 COMMENT ON TABLE "ref_jenis_vendor" IS 'Badan Usaha, Perorangan';
 
+COMMENT ON TABLE "ref_kualifikasi_usaha" IS 'Kecil, Menengah, Besar';
+
 COMMENT ON TABLE "ref_vendor_register" IS 'Vendor yang baru register ditampung disini dulu untuk diverifikasi';
 
 COMMENT ON COLUMN "ref_vendor_register"."no_telp" IS 'No Handphone whatsapp aktif kalau perorangan/ No. Telp kantor kalau badan usaha';
@@ -76,7 +84,7 @@ COMMENT ON COLUMN "ref_datadiri_umum"."nama_narahubung" IS 'Contact Person';
 
 COMMENT ON COLUMN "ref_datadiri_umum"."nomor_telp" IS 'Nomor telepon kantor atau rumah';
 
-COMMENT ON COLUMN "ref_datadiri_umum"."nomor_handphone" IS 'Nomor HP Whatsapp';
+COMMENT ON COLUMN "ref_datadiri_umum"."no_handphone" IS 'Nomor HP Whatsapp';
 
 COMMENT ON COLUMN "ref_datadiri_umum"."is_alamat_sama" IS 'Apakah alamat KTP dg Domisili sama ?';
 
@@ -224,11 +232,11 @@ COMMENT ON TABLE "ref_pengalaman_tp" IS 'Daftar pengalaman tenaga pendukung bada
 
 COMMENT ON TABLE "ref_sertif_tp" IS 'Daftar sertifikat tenaga pendukung badan usaha';
 
-COMMENT ON COLUMN "ref_kantor_bu"."is_bukti_selamanya" IS 'Apakah bukti berlaku selamanya?';
+COMMENT ON COLUMN "ref_kantor_bu"."file_bukti" IS 'Bukti kepemilikan';
+
+COMMENT ON COLUMN "ref_kantor_bu"."is_bukti_selamanya" IS 'Apakah berlaku selamanya?';
 
 COMMENT ON COLUMN "ref_kantor_bu"."is_foto_selamanya" IS 'Apakah foto berlaku selamanya?';
-
-COMMENT ON COLUMN "ref_fasilitas_bu"."kondisi" IS 'baik, sedang, kurang_baik';
 
 COMMENT ON COLUMN "ref_fasilitas_bu"."is_kepemilikan_selamanya" IS 'Apakah kepemilikan berlaku selamanya?';
 
@@ -334,7 +342,7 @@ ALTER TABLE "ref_subkat_persyaratan" ADD FOREIGN KEY ("kode_kat_persyaratan") RE
 
 ALTER TABLE "ref_kat_item_tanya" ADD FOREIGN KEY ("kode_subkat") REFERENCES "ref_subkat_persyaratan" ("kode_subkat");
 
-ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_kat_item_tanya") REFERENCES "ref_kat_item_tanya" ("ref_kat_item_tanya");
+ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_kat_item_tanya") REFERENCES "ref_kat_item_tanya" ("kode_kat_item_tanya");
 
 ALTER TABLE "trx_ketentuan_umum_khusus" ADD FOREIGN KEY ("kode_subkat") REFERENCES "ref_subkat_persyaratan" ("kode_subkat");
 
@@ -396,6 +404,8 @@ ALTER TABLE "ref_verif_pengalaman_bu" ADD FOREIGN KEY ("kode_pengalaman_bu") REF
 
 ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("tipe_input") REFERENCES "ref_tipe_input" ("tipe_input");
 
+ALTER TABLE "ref_item_tanya_tpl" ADD FOREIGN KEY ("tipe_input") REFERENCES "ref_tipe_input" ("tipe_input");
+
 ALTER TABLE "ref_verif_keuangan_bu" ADD FOREIGN KEY ("kode_vendor_penjr") REFERENCES "trx_vendor_penjr" ("kode_vendor_penjr");
 
 ALTER TABLE "ref_verif_keuangan_bu" ADD FOREIGN KEY ("kode_keuangan") REFERENCES "ref_keuangan_bu" ("kode_keuangan");
@@ -418,6 +428,12 @@ ALTER TABLE "ref_fasilitas_bu" ADD FOREIGN KEY ("kode_kepemilikan") REFERENCES "
 
 ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
 
-ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_kualifikasi_penjr") REFERENCES "ref_kualifikasi_penjr" ("kode_kualifikasi_penjr");
-
 ALTER TABLE "trx_ketentuan_umum_khusus" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
+
+ALTER TABLE "ref_kantor_bu" ADD FOREIGN KEY ("kode_kondisi") REFERENCES "ref_kondisi" ("kode_kondisi");
+
+ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_kualifikasi_usaha") REFERENCES "ref_kualifikasi_usaha" ("kode_kualifikasi_usaha");
+
+ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
+
+ALTER TABLE "ref_item_tanya_tpl" ADD FOREIGN KEY ("kode_kat_item_tanya") REFERENCES "ref_kat_item_tanya" ("kode_kat_item_tanya");

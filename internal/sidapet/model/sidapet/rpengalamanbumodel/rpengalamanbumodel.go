@@ -304,7 +304,7 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 			fmt.Println("pemberi_kerja: " + pengalaman.PemberiKerja.String)
 			fmt.Println("file_kontrak: " + pengalaman.FileKontrak.String)
 			fmt.Println("file_bast: " + pengalaman.FileBast.String)
-			fmt.Println("unable to insert ref_pengalaman_bu, " + errIns.Error())
+			log.Fatal("unable to insert ref_pengalaman_bu, " + errIns.Error())
 		}
 	}
 }

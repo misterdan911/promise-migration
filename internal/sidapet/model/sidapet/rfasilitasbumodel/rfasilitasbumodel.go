@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 )
@@ -66,7 +67,7 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 		  kode_vendor,
 		  nama,
 		  jumlah,
-		  kondisi,
+		  kode_kondisi,
 		  kode_kepemilikan,
 		  file_kepemilikan,
 		  file_foto
@@ -74,7 +75,7 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 		  @kode_vendor,
 		  @nama,
 		  @jumlah,
-		  @kondisi,
+		  @kode_kondisi,
 		  @kode_kepemilikan,
 		  @file_kepemilikan,
 		  @file_foto
@@ -83,8 +84,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 		args := pgx.NamedArgs{
 			"kode_vendor":      profilePenyedia.IdProfilPenyedia,
 			"nama":             vTFP.NmFasilitas,
-			"jumlah":           sql.NullString{},                            // Masih harus diproses lebih lanjut
-			"kondisi":          sql.NullString{Valid: true, String: "baik"}, // Masih harus diproses lebuh lanjut
+			"jumlah":           sql.NullString{},                     // Masih harus diproses lebih lanjut
+			"kode_kondisi":     sql.NullInt32{Valid: true, Int32: 1}, // Masih harus diproses lebuh lanjut
 			"kode_kepemilikan": sql.NullInt32{},
 			"file_kepemilikan": sql.NullString{},
 			"file_foto":        vTFP.PathFasilitas,
@@ -92,7 +93,9 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("unable to insert ref_fasilitas_bu, " + errIns.Error())
+			fmt.Println("nama: " + vTFP.NmFasilitas.String + helper.GetLen(vTFP.NmFasilitas.String))
+			fmt.Println("file_foto: " + vTFP.PathFasilitas.String + helper.GetLen(vTFP.PathFasilitas.String))
+			log.Fatal("unable to insert ref_fasilitas_bu, " + errIns.Error())
 		}
 
 	}

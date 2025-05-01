@@ -65,3 +65,21 @@ type VmsTblPersonaliaPerush struct {
 	SertifPersonal     pgtype.Text
 	PathPersonal       pgtype.Text
 }
+
+type VmsTblPaket struct {
+	IdPaket           pgtype.Int4
+	NamaPaket         pgtype.Text
+	Metode            pgtype.Text
+	IdKategoriBelanja pgtype.Int4
+	IdCabang          pgtype.Int4
+	TahunAnggaran     pgtype.Int4
+	TglDaftarAwal     pgtype.Timestamptz
+	TglDaftarAkhir    pgtype.Timestamptz
+	TglEvalAwal       pgtype.Timestamptz
+	TglEvalAkhir      pgtype.Timestamptz
+	TglUmumPaket      pgtype.Timestamptz
+	PathPaket         pgtype.Text
+	CreatedAt         pgtype.Timestamptz
+	UpdatedAt         pgtype.Timestamptz
+	Status            pgtype.Int4
+}

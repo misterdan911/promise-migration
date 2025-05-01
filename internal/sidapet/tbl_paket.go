@@ -3,84 +3,23 @@ package sidapet
 import (
 	"fmt"
 	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
 	"promise-migration/internal/sidapet/model/vmsdb/tpaketmodel"
 )
-
-/*
-type VmsPaket struct {
-	IdPaket           pgtype.Int4
-	NamaPaket         pgtype.Text
-	Metode            pgtype.Text
-	IdKategoriBelanja pgtype.Int4
-	IdCabang          pgtype.Int4
-	TahunAnggaran     pgtype.Int4
-	TglDaftarAwal     pgtype.Timestamptz
-	TglDaftarAkhir    pgtype.Timestamptz
-	TglEvalAwal       pgtype.Timestamptz
-	TglEvalAkhir      pgtype.Timestamptz
-	TglUmumPaket      pgtype.Timestamptz
-	PathPaket         pgtype.Text
-	CreatedAt         pgtype.Timestamptz
-	UpdatedAt         pgtype.Timestamptz
-	Status            pgtype.Int4
-}
-*/
 
 func MigrateTblPaket() {
 	helper.TruncateTable("trx_kategori")
 	helper.TruncateTable("trx_penjaringan")
 	helper.TruncateTable("trx_verifikator_penjr")
 
-	// loop semua data tbl_paket
-	//ctx := context.Background()
-
 	allVmsPaket := tpaketmodel.GetAllPaket()
 
+	// loop semua data tbl_paket
 	for _, vmsPaket := range allVmsPaket {
-		fmt.Println("nama paket: " + vmsPaket.NamaPaket.String)
+		trxpenjaringanmodel.InsertTrxPenjaringan(vmsPaket)
 	}
 
-	/*
-		for _, vmsPaket := range allVmsPaket {
-
-			var statusPersetujuan string
-			if vmsPaket.Status.Int32 == 1 {
-				statusPersetujuan = "tolak"
-			}
-			if vmsPaket.Status.Int32 == 2 {
-				statusPersetujuan = "terima"
-			}
-
-			qInsertPenjaringan := `INSERT INTO trx_penjaringan ("kode_penjaringan", "kode_cabang_ut", "nama_penjaringan", "metode", "status_persetujuan", "tgl_daftar_awal", "tgl_daftar_akhir", "tgl_evaluasi_awal", "tgl_evaluasi_akhir", "tgl_pengumuman", "udcr", "udch") VALUES (@kode_penjaringan, @kode_cabang_ut, @nama_penjaringan, @metode, @status_persetujuan, @tgl_daftar_awal, @tgl_daftar_akhir, @tgl_evaluasi_awal, @tgl_evaluasi_akhir, @tgl_pengumuman, @udcr, @udch)`
-			args := pgx.NamedArgs{
-				"kode_penjaringan":   vmsPaket.IdPaket,
-				"kode_cabang_ut":     vmsPaket.IdCabang,
-				"nama_penjaringan":   vmsPaket.NamaPaket,
-				"metode":             strings.ToLower(vmsPaket.Metode.String),
-				"status_persetujuan": statusPersetujuan,
-				"tgl_daftar_awal":    vmsPaket.TglDaftarAwal,
-				"tgl_daftar_akhir":   vmsPaket.TglDaftarAkhir,
-				"tgl_evaluasi_awal":  vmsPaket.TglEvalAwal,
-				"tgl_evaluasi_akhir": vmsPaket.TglEvalAkhir,
-				"tgl_pengumuman":     vmsPaket.TglUmumPaket,
-				"udcr":               vmsPaket.CreatedAt,
-				"udch":               vmsPaket.CreatedAt,
-			}
-			_, errInsert := db.DbSidapet.Exec(ctx, qInsertPenjaringan, args)
-			if errInsert != nil {
-				fmt.Println("unable to insert trx_penjaringan, " + errInsert.Error())
-			}
-
-			MigrateTblVerifPaket(vmsPaket.IdPaket)
-		}
-
-		qUpdateKodePjrSeq := `SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan))`
-		_, errUpdateSeq := db.DbSidapet.Exec(ctx, qUpdateKodePjrSeq)
-		if errUpdateSeq != nil {
-			log.Fatal("qUpdateKodePjrSeq Failed, " + errUpdateSeq.Error() + " " + qUpdateKodePjrSeq)
-		}
-	*/
+	helper.UpdatePkSequence("trx_penjaringan", "kode_penjaringan")
 
 	fmt.Println("Migrating tbl_paket... SELESAI")
-
 }
