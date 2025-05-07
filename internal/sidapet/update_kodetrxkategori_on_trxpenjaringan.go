@@ -11,9 +11,8 @@ import (
 )
 
 type RefKeyword struct {
-	Keyword            pgtype.Text
-	KodeKategori       pgtype.Int4
-	KodeJenisPengadaan pgtype.Int4
+	Keyword      pgtype.Text
+	KodeKategori pgtype.Int4
 }
 
 type TrxKategori struct {
@@ -22,7 +21,12 @@ type TrxKategori struct {
 
 func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 	ctx := context.Background()
-	qKeyword := `SELECT keyword, kode_kategori, kode_jenis_pengadaan FROM helper_kategori_kw ORDER BY id`
+	qKeyword := `
+	SELECT
+	  keyword,
+	  kode_kategori
+	FROM helper_kategori_kw
+	ORDER BY id`
 	rKeyword, errKw := db.DbSidapet.Query(ctx, qKeyword)
 	if errKw != nil {
 		log.Fatal("qRuptUt Failed, " + errKw.Error() + " " + qKeyword)
@@ -55,14 +59,19 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 		var kode_trx_kategori int32
 
 		if len(allTrxKategori) < 1 {
-			qInsertTrxKat := `INSERT INTO trx_kategori ("kode_kategori", "kode_jenis_pengadaan", "is_pembuka", "status_pengajuan_kat") VALUES ($1, $2, $3, $4) RETURNING kode_trx_kategori`
+			qInsertTrxKat := `
+			INSERT INTO trx_kategori (
+			  "kode_kategori",
+			  "status_persetujuan"
+			) VALUES (
+		      $1,
+		      $2
+		    ) RETURNING kode_trx_kategori`
 
 			kodeKategori := strconv.Itoa(int(kw.KodeKategori.Int32))
-			kodeJenisPengadaan := strconv.Itoa(int(kw.KodeJenisPengadaan.Int32))
-			isPembuka := strconv.FormatBool(false)
-			statusPengajuanKat := "selesai" 
+			statusPersetujuan := "terima"
 
-			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, kodeKategori, kodeJenisPengadaan, isPembuka, statusPengajuanKat)
+			rInsertTrxKat, errInsert := db.DbSidapet.Query(ctx, qInsertTrxKat, kodeKategori, statusPersetujuan)
 			if errInsert != nil {
 				log.Fatal("qInsertTrxKat Failed, " + errInsert.Error() + " " + qInsertTrxKat)
 			}

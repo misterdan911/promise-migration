@@ -4,11 +4,45 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
+	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/model/sidapet/tverifikatorpenjrmodel"
 	"promise-migration/internal/sidapet/structs"
+	"strconv"
 	"strings"
 )
+
+type TrxPenjaringan struct {
+	KodePenjaringan      pgtype.Int4
+	KodeTrxKategori      pgtype.Int4
+	NamaPenjaringan      pgtype.Text
+	Keperluan            pgtype.Text
+	KodeJenisPengadaan   pgtype.Int4
+	KodeJenisVendor      pgtype.Int4
+	Metode               pgtype.Text
+	KodeKualifikasiUsaha pgtype.Bool
+	FilePersyaratan      pgtype.Text
+	StatusPersetujuan    pgtype.Text
+	UserPersetujuan      pgtype.Text
+	AlasanDitolak        pgtype.Text
+	StatusPengajuanPjr   pgtype.Text
+	StatusProsesPjr      pgtype.Text
+	StatusPengumumanDpt  pgtype.Text
+	TglDaftarAwal        pgtype.Timestamptz
+	TglDaftarAkhir       pgtype.Timestamptz
+	TglVerifikasiAwal    pgtype.Timestamptz
+	TglVerifikasiAkhir   pgtype.Timestamptz
+	TglEvaluasiAwal      pgtype.Timestamptz
+	TglEvaluasiAkhir     pgtype.Timestamptz
+	TglPengumuman        pgtype.Timestamptz
+	StatusSTugas         pgtype.Text
+	FileSTugas           pgtype.Text
+	FilePengumuman       pgtype.Text
+	Ucr                  pgtype.Text
+	Udcr                 pgtype.Timestamptz
+	Udch                 pgtype.Timestamptz
+}
 
 func InsertTrxPenjaringan(vmsPaket structs.VmsTblPaket) {
 
@@ -67,4 +101,60 @@ func InsertTrxPenjaringan(vmsPaket structs.VmsTblPaket) {
 	}
 
 	tverifikatorpenjrmodel.InsertTrxVerifikatorPenjr(vmsPaket)
+}
+
+func GetPenjaringanByKodePenjaringan(kodePenjaringan int) TrxPenjaringan {
+	ctx := context.Background()
+
+	var penjaringan TrxPenjaringan
+
+	qPenjaringan := `
+    SELECT
+			kode_penjaringan,
+			kode_trx_kategori,
+			nama_penjaringan,
+			keperluan,
+			kode_jenis_pengadaan,
+			kode_jenis_vendor,
+			metode,
+			kode_kualifikasi_usaha,
+			file_persyaratan,
+			status_persetujuan,
+			user_persetujuan,
+			alasan_ditolak,
+			status_pengajuan_pjr,
+			status_proses_pjr,
+			status_pengumuman_dpt,
+			tgl_daftar_awal,
+			tgl_daftar_akhir,
+			tgl_verifikasi_awal,
+			tgl_verifikasi_akhir,
+			tgl_evaluasi_awal,
+			tgl_evaluasi_akhir,
+			tgl_pengumuman,
+			status_s_tugas,
+			file_s_tugas,
+			file_pengumuman,
+			ucr,
+			udcr,
+			udch
+    FROM trx_penjaringan
+    WHERE kode_penjaringan = $1`
+
+	rPenjaringan, errPjr := db.DbSidapet.Query(ctx, qPenjaringan, strconv.Itoa(kodePenjaringan))
+	if errPjr != nil {
+		log.Fatal("qPenjaringan Failed, " + errPjr.Error() + " " + qPenjaringan)
+	}
+
+	allPjr, errCollect := pgx.CollectRows(rPenjaringan, pgx.RowToStructByName[TrxPenjaringan])
+	if errCollect != nil {
+		log.Fatal("failed collecting allPjr, " + errCollect.Error())
+	}
+	defer rPenjaringan.Close()
+
+	if len(allPjr) > 0 {
+		penjaringan = allPjr[0]
+	}
+
+	return penjaringan
 }

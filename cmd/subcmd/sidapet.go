@@ -20,11 +20,17 @@ var SidapetCmd = &cobra.Command{
 		defer db.DbSidapet.Close()
 
 		helper.DropAllForeignKey()
+
 		//sidapet.MigrateTblDomisili()
 		sidapet.MigrateTblProfilePenyedia()
-		sidapet.MigrateTblPaket() // Belum di cek detail outputnya
+		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
 		sidapet.MigrateTblPaketUndang()
-		// sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
+
+		// Cari tahu trx_kategori.kode_unit_pbj
+		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
+
+		sidapet.MigrateTblVerif()
+
 		helper.CreateAllForeignKey()
 
 	},
