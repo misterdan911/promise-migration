@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/sidapet/rvendormodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxvendorpenjrmodel"
@@ -13,6 +14,9 @@ import (
 )
 
 func MigrateTblVerif() {
+
+	helper.TruncateTable("trx_vendor_penjr")
+	helper.TruncateTable("trx_nilai_akhir")
 
 	ctx := context.Background()
 
@@ -66,8 +70,6 @@ func MigrateTblVerif() {
 
 		kodeJenisVendor := int(vendor.KodeJenisVendor.Int32)
 		trxvendorpenjrmodel.InsertTrxVendorPenjr(vTV, kodeJenisVendor)
-
-		//trxnilaiakhirmodel.InsertTrxNilaiakhir(kodeJenisVendor, vTV)
 	}
 
 }
