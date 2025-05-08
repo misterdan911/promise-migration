@@ -2,11 +2,13 @@ package rpengalamanbumodel
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 )
@@ -270,7 +272,8 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 		  tahun_pekerjaan,
 		  pemberi_kerja,
 		  nilai_pekerjaan,
-		  jangka_waktu,
+		  tgl_awal_pekerjaan,
+		  tgl_akhir_pekerjaan,
 		  no_kontrak,
 		  file_kontrak,
 		  file_bast
@@ -280,30 +283,32 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 		  @tahun_pekerjaan,
 		  @pemberi_kerja,
 		  @nilai_pekerjaan,
-		  @jangka_waktu,
+		  @tgl_awal_pekerjaan,
+		  @tgl_akhir_pekerjaan,
 		  @no_kontrak,
 		  @file_kontrak,
 		  @file_bast
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":     pengalaman.KodeVendor,
-			"nama_pekerjaan":  pengalaman.NamaPekerjaan,
-			"tahun_pekerjaan": pengalaman.TahunPekerjaan,
-			"pemberi_kerja":   pengalaman.PemberiKerja,
-			"nilai_pekerjaan": pengalaman.NilaiPekerjaan,
-			"jangka_waktu":    pengalaman.JangkaWaktu,
-			"no_kontrak":      pengalaman.NoKontrak,
-			"file_kontrak":    pengalaman.FileKontrak,
-			"file_bast":       pengalaman.FileBast,
+			"kode_vendor":         pengalaman.KodeVendor,
+			"nama_pekerjaan":      pengalaman.NamaPekerjaan,
+			"tahun_pekerjaan":     pengalaman.TahunPekerjaan,
+			"pemberi_kerja":       pengalaman.PemberiKerja,
+			"nilai_pekerjaan":     pengalaman.NilaiPekerjaan,
+			"tgl_awal_pekerjaan":  sql.NullTime{},
+			"tgl_akhir_pekerjaan": sql.NullTime{},
+			"no_kontrak":          pengalaman.NoKontrak,
+			"file_kontrak":        pengalaman.FileKontrak,
+			"file_bast":           pengalaman.FileBast,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("nama_pekerjaan: " + pengalaman.NamaPekerjaan.String)
-			fmt.Println("pemberi_kerja: " + pengalaman.PemberiKerja.String)
-			fmt.Println("file_kontrak: " + pengalaman.FileKontrak.String)
-			fmt.Println("file_bast: " + pengalaman.FileBast.String)
+			fmt.Println("nama_pekerjaan: " + pengalaman.NamaPekerjaan.String + helper.GetLen(pengalaman.NamaPekerjaan.String))
+			fmt.Println("pemberi_kerja: " + pengalaman.PemberiKerja.String + helper.GetLen(pengalaman.PemberiKerja.String))
+			fmt.Println("file_kontrak: " + pengalaman.FileKontrak.String + helper.GetLen(pengalaman.FileKontrak.String))
+			fmt.Println("file_bast: " + pengalaman.FileBast.String + helper.GetLen(pengalaman.FileBast.String))
 			log.Fatal("unable to insert ref_pengalaman_bu, " + errIns.Error())
 		}
 	}
