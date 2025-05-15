@@ -64,6 +64,12 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 	for _, vTI := range allVTI {
 
 		jenisIzinusaha := helper.GetJenisIzinUsaha(vTI.NamaIzin.String)
+		isIzinSelamanya, tglBerlakuAkhir := helper.ParseMasaIzin(vTI.MasaIzin.String)
+
+		var izinBerlakuAkhir sql.NullString
+		if tglBerlakuAkhir != "" {
+			izinBerlakuAkhir = sql.NullString{Valid: true, String: tglBerlakuAkhir}
+		}
 
 		qIns := `
  		INSERT INTO ref_izin_usaha_bu (
@@ -73,7 +79,8 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 		  nomor_izin,
 		  kode,
 		  file_izin,
-		  is_izin_selamanya
+		  is_izin_selamanya,
+			izin_berlaku_akhir
 		) VALUES (
 		  @kode_vendor,
 		  @jenis_izin_usaha,
@@ -81,17 +88,19 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 		  @nomor_izin,
 		  @kode,
 		  @file_izin,
-		  @is_izin_selamanya
+		  @is_izin_selamanya,
+			@izin_berlaku_akhir
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":       profilePenyedia.IdProfilPenyedia,
-			"jenis_izin_usaha":  jenisIzinusaha,
-			"nama":              vTI.NamaIzin,
-			"nomor_izin":        vTI.NoIzin,
-			"kode":              sql.NullString{},
-			"file_izin":         vTI.PathIzin,
-			"is_izin_selamanya": sql.NullBool{},
+			"kode_vendor":        profilePenyedia.IdProfilPenyedia,
+			"jenis_izin_usaha":   jenisIzinusaha,
+			"nama":               vTI.NamaIzin,
+			"nomor_izin":         vTI.NoIzin,
+			"kode":               sql.NullString{},
+			"file_izin":          vTI.PathIzin,
+			"is_izin_selamanya":  sql.NullBool{Valid: true, Bool: isIzinSelamanya},
+			"izin_berlaku_akhir": izinBerlakuAkhir,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

@@ -190,7 +190,7 @@ func MigrateTblProfilePenyedia() {
 		rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
 		rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
 		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
-		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia) // TODO is_izin_selamanya belum diproses
+		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia)
 		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)	// gak ada sertifikat di db lama
 		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
 		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
