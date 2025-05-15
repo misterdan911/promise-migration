@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 )
@@ -61,8 +62,11 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 	defer rVTI.Close()
 
 	for _, vTI := range allVTI {
+
+		jenisIzinusaha := helper.GetJenisIzinUsaha(vTI.NamaIzin.String)
+
 		qIns := `
-		INSERT INTO ref_izin_usaha_bu (
+ 		INSERT INTO ref_izin_usaha_bu (
 		  kode_vendor,
 		  jenis_izin_usaha,
 		  nama,
@@ -82,7 +86,7 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		args := pgx.NamedArgs{
 			"kode_vendor":       profilePenyedia.IdProfilPenyedia,
-			"jenis_izin_usaha":  sql.NullInt16{},
+			"jenis_izin_usaha":  jenisIzinusaha,
 			"nama":              vTI.NamaIzin,
 			"nomor_izin":        vTI.NoIzin,
 			"kode":              sql.NullString{},
