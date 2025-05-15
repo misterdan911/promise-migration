@@ -2,11 +2,13 @@ package rlanhukumbumodel
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/structs"
 	"strconv"
 )
@@ -60,23 +62,45 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 
 	for _, vTA := range allVTA {
 
+		tglAktaAwal := sql.NullString{}
+		tglAkta, errConvert := helper.ConvertToPostgresDate(vTA.TglAkta.String)
+		if errConvert != nil {
+			fmt.Println("errConvert:", errConvert)
+		} else {
+			tglAktaAwal.Valid = true
+			tglAktaAwal.String = tglAkta
+		}
+
+		tglAktaRubah := sql.NullString{}
+		tglAktaAkhir, errConvert2 := helper.ConvertToPostgresDate(vTA.TglAktaAkhir.String)
+		if errConvert2 != nil {
+			fmt.Println("errConvert2:", errConvert2)
+		} else {
+			tglAktaRubah.Valid = true
+			tglAktaRubah.String = tglAktaAkhir
+		}
+
 		qIns := `
 		INSERT INTO ref_lan_hukum_bu (
 		  kode_vendor,
 		  no_akta_awal,
+		  tgl_akta_awal,
 		  notaris_awal,
 		  no_sah_awal,
 		  file_akta_awal,
 		  no_akta_rubah,
+		  tgl_akta_rubah,
 		  notaris_rubah,
 		  file_akta_rubah
 		) VALUES (
 		  @kode_vendor,
 		  @no_akta_awal,
+		  @tgl_akta_awal,
 		  @notaris_awal,
 		  @no_sah_awal,
 		  @file_akta_awal,
 		  @no_akta_rubah,
+		  @tgl_akta_rubah,
 		  @notaris_rubah,
 		  @file_akta_rubah
 		)`
@@ -84,10 +108,12 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 		args := pgx.NamedArgs{
 			"kode_vendor":     profilePenyedia.IdProfilPenyedia,
 			"no_akta_awal":    vTA.NoAkta,
+			"tgl_akta_awal":   tglAktaAwal,
 			"notaris_awal":    vTA.NotaAkta,
 			"no_sah_awal":     vTA.NoSahAkta,
 			"file_akta_awal":  vTA.PathAkta,
 			"no_akta_rubah":   vTA.NoAktaAkhir,
+			"tgl_akta_rubah":  tglAktaRubah,
 			"notaris_rubah":   vTA.NotaAktaAkhir,
 			"file_akta_rubah": vTA.PathAktaAkhir,
 		}
