@@ -4,6 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/jackc/pgx/v5"
+	"log"
+	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
@@ -24,11 +28,6 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
-
-	"github.com/jackc/pgx/v5"
-	"log"
-	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/usermodel"
 	"promise-migration/internal/sidapet/structs"
 )
@@ -128,6 +127,13 @@ func MigrateTblProfilePenyedia() {
 		// }
 		//
 
+		if profilePenyedia.IdUser.Int32 == 18324 {
+			//log.Fatal("Stop")
+		} else {
+			//fmt.Println(strconv.Itoa(int(profilePenyedia.IdUser.Int32)))
+		}
+
+		// TODO: Catat profile penyedia yg tidak bisa dimigrasi karena tidak ada data user nya di tabel users
 		user := usermodel.GetUserById(profilePenyedia.IdUser)
 		if user == (structs.User{}) {
 			continue
@@ -198,8 +204,8 @@ func MigrateTblProfilePenyedia() {
 
 		// data kantor tidak ada
 
-		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia) // Masih ada yg harus diproses lebih lanjut, panjang field ada yg berubah
-		rpengalamanbumodel.InsertPengalaman(profilePenyedia)    // Masih ada yg harus diproses lebih lanjut)
+		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia)
+		rpengalamanbumodel.InsertPengalaman(profilePenyedia) // Masih ada yg harus diproses lebih lanjut)
 		rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
 
 	}

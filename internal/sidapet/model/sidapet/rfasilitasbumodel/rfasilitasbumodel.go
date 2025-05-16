@@ -62,6 +62,15 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 	defer rVTFP.Close()
 
 	for _, vTFP := range allVTFP {
+
+		var kodeKondisi sql.NullInt32
+		ptrKodeKondisi := helper.ParseKondisiFasilitas(vTFP.KondisiFasilitas.String)
+
+		if ptrKodeKondisi != nil {
+			kodeKondisi.Valid = true
+			kodeKondisi.Int32 = int32(*ptrKodeKondisi)
+		}
+
 		qIns := `
 		INSERT INTO ref_fasilitas_bu (
 		  kode_vendor,
@@ -84,8 +93,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 		args := pgx.NamedArgs{
 			"kode_vendor":      profilePenyedia.IdProfilPenyedia,
 			"nama":             vTFP.NmFasilitas,
-			"jumlah":           sql.NullString{},                     // Masih harus diproses lebih lanjut
-			"kode_kondisi":     sql.NullInt32{Valid: true, Int32: 1}, // Masih harus diproses lebuh lanjut
+			"jumlah":           vTFP.JumlahFasilitas, // Masih harus diproses lebih lanjut
+			"kode_kondisi":     kodeKondisi,
 			"kode_kepemilikan": sql.NullInt32{},
 			"file_kepemilikan": sql.NullString{},
 			"file_foto":        vTFP.PathFasilitas,
@@ -94,6 +103,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
 			fmt.Println("nama: " + vTFP.NmFasilitas.String + helper.GetLen(vTFP.NmFasilitas.String))
+			fmt.Println("jumlah: " + vTFP.JumlahFasilitas.String + helper.GetLen(vTFP.JumlahFasilitas.String))
+			fmt.Println("kode_kondisi: " + strconv.Itoa(int(kodeKondisi.Int32)) + helper.GetLen(strconv.Itoa(int(kodeKondisi.Int32))))
 			fmt.Println("file_foto: " + vTFP.PathFasilitas.String + helper.GetLen(vTFP.PathFasilitas.String))
 			log.Fatal("unable to insert ref_fasilitas_bu, " + errIns.Error())
 		}
