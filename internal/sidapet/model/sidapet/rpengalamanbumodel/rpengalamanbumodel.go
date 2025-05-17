@@ -95,11 +95,11 @@ func InsertPengalaman(profilePenyedia structs.TblProfilePenyedia) {
   allPengalaman = GetPengalaman10(profilePenyedia)
   InsertRefPengalamanBu(allPengalaman)
 
-  //allPengalaman = GetPengalaman3(profilePenyedia)
-  //InsertRefPengalamanBu(allPengalaman)
+  allPengalaman = GetPengalaman3(profilePenyedia)
+  InsertRefPengalamanBu(allPengalaman)
 
-  //allPengalaman = GetPengalamanSekarang(profilePenyedia)
-  //InsertRefPengalamanBu(allPengalaman)
+  allPengalaman = GetPengalamanSekarang(profilePenyedia)
+  InsertRefPengalamanBu(allPengalaman)
 }
 
 func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanBu {
@@ -139,19 +139,6 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
   var allRefPengalaman []RefPengalamanBu
 
   for _, pengalaman := range allPengalaman {
-
-    /*
-    	nP, errNP := helper.ParseNilaiPengalaman(pengalaman.NilaiPnglmn10.String)
-    	var nilaiPekerjaan pgtype.Int8
-    	if errNP != nil {
-    		fmt.Println("errNP", errNP)
-    		helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
-    	}
-    	nilaiPekerjaan = pgtype.Int8{Valid: true, Int64: nP}
-    	//helper.Log("pengalaman_bu.txt", "id_pengalaman_10: "+strconv.Itoa(int(pengalaman.IdPengalaman10.Int32)))
-    	//helper.Log("pengalaman_bu.txt", "nilai_pengalaman: "+pengalaman.NilaiPnglmn10.String+" --> "+strconv.FormatInt(nP, 10))
-    	//helper.Log("pengalaman_bu.txt", "")
-    */
 
     nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalaman10.Int32, pengalaman.NilaiPnglmn10.String, "id_pengalaman_10")
 
@@ -209,22 +196,14 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 
   for _, pengalaman := range allPengalaman {
 
-    nP, errNP := helper.ParseNilaiPengalaman(pengalaman.NilaiPnglmn3.String)
-    if errNP != nil {
-      fmt.Println("errNP", errNP)
-      helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
-    }
-    nilaiPerkerjaan := pgtype.Int8{Valid: true, Int64: nP}
-    helper.Log("pengalaman_bu.txt", "id_pengalaman_3: "+strconv.Itoa(int(pengalaman.IdPengalaman3.Int32)))
-    helper.Log("pengalaman_bu.txt", "nilai_pengalaman: "+pengalaman.NilaiPnglmn3.String+" --> "+strconv.FormatInt(nP, 10))
-    helper.Log("pengalaman_bu.txt", "")
+    nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalaman3.Int32, pengalaman.NilaiPnglmn3.String, "id_pengalaman_3")
 
     allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
       KodeVendor:     profilePenyedia.IdProfilPenyedia,
       NamaPekerjaan:  pengalaman.NmPnglmn3,
       TahunPekerjaan: pgtype.Int4{}, // harus ada proses lebih lanjut
       PemberiKerja:   pengalaman.PemberiPnglmn3,
-      NilaiPekerjaan: nilaiPerkerjaan, // harus ada proses lebuh lanjut
+      NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
       JangkaWaktu:    pgtype.Text{},
       NoKontrak:      pgtype.Text{},
       FileKontrak:    pengalaman.PathPnglmn3,
@@ -272,12 +251,15 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
   var allRefPengalaman []RefPengalamanBu
 
   for _, pengalaman := range allPengalaman {
+
+    nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalamanSekarang.Int32, pengalaman.NilaiPnglmnSekarang.String, "id_pengalaman_sekarang")
+
     allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
       KodeVendor:     profilePenyedia.IdProfilPenyedia,
       NamaPekerjaan:  pengalaman.NmPnglmnSekarang,
       TahunPekerjaan: pgtype.Int4{}, // harus ada proses lebih lanjut
       PemberiKerja:   pengalaman.PemberiPnglmnSekarang,
-      NilaiPekerjaan: pgtype.Int8{}, // harus ada proses lebuh lanjut
+      NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
       JangkaWaktu:    pgtype.Text{},
       NoKontrak:      pgtype.Text{},
       FileKontrak:    pengalaman.PathPnglmnSkrg,
@@ -350,7 +332,7 @@ func GetNilaiPekerjaan(idPengalaman int32, strNilaiPengalaman string, fieldName 
     helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
   }
   nilaiPekerjaan = pgtype.Int8{Valid: true, Int64: nP}
-  helper.Log("pengalaman_bu.txt", fieldName+":"+strconv.Itoa(int(idPengalaman)))
+  helper.Log("pengalaman_bu.txt", fieldName+": "+strconv.Itoa(int(idPengalaman)))
   helper.Log("pengalaman_bu.txt", "nilai_pengalaman: "+strNilaiPengalaman+" --> "+strconv.FormatInt(nP, 10))
   helper.Log("pengalaman_bu.txt", "")
 
