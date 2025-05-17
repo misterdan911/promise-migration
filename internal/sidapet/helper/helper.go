@@ -1,75 +1,75 @@
 package helper
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"path/filepath"
-	"promise-migration/db"
-	"strconv"
+  "context"
+  "fmt"
+  "log"
+  "os"
+  "path/filepath"
+  "promise-migration/db"
+  "strconv"
 )
 
 func TruncateTable(tblName string) {
-	qTruncate := "TRUNCATE TABLE " + tblName + " RESTART IDENTITY"
-	_, err := db.DbSidapet.Exec(context.Background(), qTruncate)
-	if err != nil {
-		log.Fatal("Truncate " + tblName + " Failed, " + err.Error())
-	}
+  qTruncate := "TRUNCATE TABLE " + tblName + " RESTART IDENTITY"
+  _, err := db.DbSidapet.Exec(context.Background(), qTruncate)
+  if err != nil {
+    log.Fatal("Truncate " + tblName + " Failed, " + err.Error())
+  }
 
-	fmt.Println(qTruncate)
+  fmt.Println(qTruncate)
 }
 
 func DropAllForeignKey() {
-	AlterAllForeignKey("drop")
+  AlterAllForeignKey("drop")
 }
 
 func CreateAllForeignKey() {
-	AlterAllForeignKey("create")
+  AlterAllForeignKey("create")
 }
 
 func AlterAllForeignKey(action string) {
 
-	var path string
+  var path string
 
-	if action == "create" {
-		path = filepath.Join("files", "sidapet", "sql", "foreign_key_create.sql")
-	} else if action == "drop" {
-		path = filepath.Join("files", "sidapet", "sql", "foreign_key_drop.sql")
-	} else {
-		log.Fatal("Invalid action for AlterAllForeignKey")
-	}
+  if action == "create" {
+    path = filepath.Join("files", "sidapet", "sql", "foreign_key_create.sql")
+  } else if action == "drop" {
+    path = filepath.Join("files", "sidapet", "sql", "foreign_key_drop.sql")
+  } else {
+    log.Fatal("Invalid action for AlterAllForeignKey")
+  }
 
-	data, err := os.ReadFile(path)
-	if err != nil {
-		log.Fatal("Error ReadFile: " + err.Error())
-	}
+  data, err := os.ReadFile(path)
+  if err != nil {
+    log.Fatal("Error ReadFile: " + err.Error())
+  }
 
-	qFk := string(data)
-	ctx := context.Background()
-	_, errQFk := db.DbSidapet.Exec(ctx, qFk)
-	if errQFk != nil {
-		//fmt.Println("qFk: " + qFk)
-		log.Fatal("qFk Failed, action: " + action + ", " + errQFk.Error())
-	}
+  qFk := string(data)
+  ctx := context.Background()
+  _, errQFk := db.DbSidapet.Exec(ctx, qFk)
+  if errQFk != nil {
+    //fmt.Println("qFk: " + qFk)
+    log.Fatal("qFk Failed, action: " + action + ", " + errQFk.Error())
+  }
 }
 
 func UpdatePkSequence(tableName string, pkFieldname string) {
-	ctx := context.Background()
+  ctx := context.Background()
 
-	seqName := tableName + "_" + pkFieldname + "_seq"
-	qUpdateSeq := `SELECT setval('` + seqName + `', (SELECT MAX(` + pkFieldname + `) FROM ` + tableName + `))`
-	_, errUpdateSeq := db.DbSidapet.Exec(ctx, qUpdateSeq)
-	if errUpdateSeq != nil {
-		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
-	}
+  seqName := tableName + "_" + pkFieldname + "_seq"
+  qUpdateSeq := `SELECT setval('` + seqName + `', (SELECT MAX(` + pkFieldname + `) FROM ` + tableName + `))`
+  _, errUpdateSeq := db.DbSidapet.Exec(ctx, qUpdateSeq)
+  if errUpdateSeq != nil {
+    fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
+  }
 }
 
 type Lengthable interface {
-	//~string | ~[]int | ~[]string
-	~string | ~[]int
+  //~string | ~[]int | ~[]string
+  ~string | ~[]int
 }
 
 func GetLen[T Lengthable](myValue T) string {
-	return " (" + strconv.Itoa(len(myValue)) + ")"
+  return " (" + strconv.Itoa(len(myValue)) + ")"
 }
