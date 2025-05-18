@@ -11,6 +11,7 @@ import (
   "promise-migration/internal/sidapet/helper"
   "promise-migration/internal/sidapet/structs"
   "strconv"
+  "strings"
 )
 
 type VmsTblPengalaman10 struct {
@@ -141,11 +142,12 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
   for _, pengalaman := range allPengalaman {
 
     nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalaman10.Int32, pengalaman.NilaiPnglmn10.String, "id_pengalaman_10")
+    tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmn10.String)
 
     allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
       KodeVendor:     profilePenyedia.IdProfilPenyedia,
       NamaPekerjaan:  pengalaman.NmPnglmn10,
-      TahunPekerjaan: pgtype.Int4{}, // harus ada proses lebih lanjut
+      TahunPekerjaan: tahunPekerjaan, // harus ada proses lebih lanjut
       PemberiKerja:   pengalaman.PemberiPnglmn10,
       NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
       JangkaWaktu:    pgtype.Text{},
@@ -197,11 +199,12 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
   for _, pengalaman := range allPengalaman {
 
     nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalaman3.Int32, pengalaman.NilaiPnglmn3.String, "id_pengalaman_3")
+    tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmn3.String)
 
     allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
       KodeVendor:     profilePenyedia.IdProfilPenyedia,
       NamaPekerjaan:  pengalaman.NmPnglmn3,
-      TahunPekerjaan: pgtype.Int4{}, // harus ada proses lebih lanjut
+      TahunPekerjaan: tahunPekerjaan, // harus ada proses lebih lanjut
       PemberiKerja:   pengalaman.PemberiPnglmn3,
       NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
       JangkaWaktu:    pgtype.Text{},
@@ -253,11 +256,12 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
   for _, pengalaman := range allPengalaman {
 
     nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalamanSekarang.Int32, pengalaman.NilaiPnglmnSekarang.String, "id_pengalaman_sekarang")
+    tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmnSekarang.String)
 
     allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
       KodeVendor:     profilePenyedia.IdProfilPenyedia,
       NamaPekerjaan:  pengalaman.NmPnglmnSekarang,
-      TahunPekerjaan: pgtype.Int4{}, // harus ada proses lebih lanjut
+      TahunPekerjaan: tahunPekerjaan, // harus ada proses lebih lanjut
       PemberiKerja:   pengalaman.PemberiPnglmnSekarang,
       NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
       JangkaWaktu:    pgtype.Text{},
@@ -337,4 +341,17 @@ func GetNilaiPekerjaan(idPengalaman int32, strNilaiPengalaman string, fieldName 
   helper.Log("pengalaman_bu.txt", "")
 
   return nilaiPekerjaan
+}
+
+func GetTahunpekerjaan(tglPengalaman string) pgtype.Int4 {
+  year := 2006
+
+  for year < 2026 {
+    if strings.Contains(tglPengalaman, strconv.Itoa(year)) {
+      return pgtype.Int4{Valid: true, Int32: int32(year)}
+    }
+    year++
+  }
+
+  return pgtype.Int4{}
 }
