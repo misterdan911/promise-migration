@@ -8,9 +8,6 @@ import (
 )
 
 func MigrateTblPaket() {
-	helper.TruncateTable("trx_kategori")
-	helper.TruncateTable("trx_penjaringan")
-	helper.TruncateTable("trx_verifikator_penjr")
 
 	allVmsPaket := tpaketmodel.GetAllPaket()
 

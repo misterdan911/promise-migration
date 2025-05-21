@@ -20,6 +20,7 @@ var SidapetCmd = &cobra.Command{
 		defer db.DbSidapet.Close()
 
 		helper.DropAllForeignKey()
+		helper.TruncateTableAndLog()
 
 		//sidapet.MigrateTblDomisili()
 		sidapet.MigrateTblProfilePenyedia()
