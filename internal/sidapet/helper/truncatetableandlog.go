@@ -34,6 +34,10 @@ func TruncateTableAndLog() {
 	TruncateTable("trx_kategori")
 	TruncateTable("trx_penjaringan")
 	TruncateTable("trx_verifikator_penjr")
+	TruncateTable("trx_undangan_penjr")
+
+	TruncateTable("trx_vendor_penjr")
+	TruncateTable("trx_nilai_akhir")
 
 	// Truncate Log File
 	TruncateLog("pengalaman_bu.txt")

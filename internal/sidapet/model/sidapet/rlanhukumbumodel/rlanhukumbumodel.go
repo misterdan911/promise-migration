@@ -75,6 +75,7 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 		tglAktaAkhir, errConvert2 := helper.ConvertToPostgresDate(vTA.TglAktaAkhir.String)
 		if errConvert2 != nil {
 			fmt.Println("errConvert2:", errConvert2)
+			helper.Log("ref_lan_hukum_bu.txt", "Error converting tgl_akta_akhir"+errConvert2.Error())
 		} else {
 			tglAktaRubah.Valid = true
 			tglAktaRubah.String = tglAktaAkhir

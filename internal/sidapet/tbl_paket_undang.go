@@ -7,7 +7,6 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
 )
 
 type PaketUndang struct {
@@ -18,7 +17,7 @@ type PaketUndang struct {
 
 func MigrateTblPaketUndang() {
 
-	helper.TruncateTable("trx_undangan_penjr")
+	//helper.TruncateTable("trx_undangan_penjr")
 	ctx := context.Background()
 
 	qTblPaket := `
