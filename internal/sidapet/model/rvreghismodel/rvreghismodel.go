@@ -7,6 +7,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -19,7 +20,7 @@ type RefVenReg struct {
 	KodeRegister pgtype.Int4
 }
 
-func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user structs.User, kodeRegister pgtype.Int4) {
+func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user usermodel.User, kodeRegister pgtype.Int4) {
 	ctx := context.Background()
 
 	qIns := `

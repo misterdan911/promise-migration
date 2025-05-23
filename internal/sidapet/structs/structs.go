@@ -38,11 +38,6 @@ type TblProfilePenyedia struct {
 	UpdateTime        pgtype.Timestamptz
 }
 
-type User struct {
-	Email    pgtype.Text
-	Password pgtype.Text
-}
-
 type JawabItem struct {
 	KodeItem int
 	Isian    string

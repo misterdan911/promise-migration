@@ -31,6 +31,7 @@ func init() {
 	//MigrateCmd.Flags().StringVarP(&parentName, "parent", "p", "rootCmd", "variable name of parent command for this command")
 
 	MigrateCmd.AddCommand(subcmd.SippanCmd)
+	MigrateCmd.AddCommand(subcmd.UsmanCmd)
 	MigrateCmd.AddCommand(subcmd.SidapetCmd)
 
 }

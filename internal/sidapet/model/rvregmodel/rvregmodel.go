@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -20,7 +21,7 @@ type RefVenReg struct {
 	KodeRegister pgtype.Int4
 }
 
-func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user structs.User) pgtype.Int4 {
+func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user usermodel.User) pgtype.Int4 {
 	ctx := context.Background()
 
 	if profilePenyedia.Email.Valid == false {

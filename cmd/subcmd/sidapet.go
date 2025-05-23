@@ -22,6 +22,12 @@ var SidapetCmd = &cobra.Command{
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
+		//allUser := usermodel.GetAllUser()
+		//
+		//for user, _ := range allUser {
+		//	sidapet.InsertToDbUsman(user)
+		//}
+
 		//sidapet.MigrateTblDomisili()
 		sidapet.MigrateTblProfilePenyedia()
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail

@@ -28,7 +28,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
-	"promise-migration/internal/sidapet/model/usermodel"
+	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
 	"promise-migration/internal/sidapet/structs"
 )
 
@@ -106,7 +106,7 @@ func MigrateTblProfilePenyedia() {
 
 		// TODO: Catat profile penyedia yg tidak bisa dimigrasi karena tidak ada data user nya di tabel users
 		user := usermodel.GetUserById(profilePenyedia.IdUser)
-		if user == (structs.User{}) {
+		if user == (usermodel.User{}) {
 			continue
 		}
 
