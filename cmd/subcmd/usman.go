@@ -3,6 +3,8 @@ package subcmd
 import (
 	"github.com/spf13/cobra"
 	"promise-migration/db"
+	"promise-migration/internal/usman"
+	"promise-migration/internal/usman/helper"
 )
 
 var UsmanCmd = &cobra.Command{
@@ -17,12 +19,12 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectDbUsman()
 		defer db.DbUsman.Close()
 
-		//helper.DropAllForeignKey()
-		//helper.TruncateTableAndLog()
-		//
-		//sidapet.MigrateTblProfilePenyedia()
-		//
-		//helper.CreateAllForeignKey()
+		helper.DropAllForeignKey()
+		helper.TruncateTableAndLog()
+
+		usman.MigrateUser()
+
+		helper.CreateAllForeignKey()
 
 	},
 }

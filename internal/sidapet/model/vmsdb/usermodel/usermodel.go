@@ -6,6 +6,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"runtime"
+	"strconv"
 )
 
 type User struct {
@@ -22,11 +24,16 @@ type User struct {
 	Undang          pgtype.Int2
 	Internasional   pgtype.Int2
 	RememberToken   pgtype.Text
-	CreatedAt       pgtype.Text
-	UpdatedAt       pgtype.Text
-	EmailVerifiedAt pgtype.Text
+	CreatedAt       pgtype.Timestamptz
+	UpdatedAt       pgtype.Timestamptz
+	EmailVerifiedAt pgtype.Timestamptz
 	AndroUser       pgtype.Text
-	AnggdroPassword pgtype.Text
+	AndroPassword   pgtype.Text
+}
+
+func GetCurrentLine() string {
+	_, _, line, _ := runtime.Caller(1)
+	return strconv.Itoa(line)
 }
 
 func GetAllUser() []User {
@@ -62,7 +69,7 @@ func GetAllUser() []User {
 
 	allUser, err = pgx.CollectRows(rwUser, pgx.RowToStructByName[User])
 	if err != nil {
-		log.Fatal("failed collecting rwUser, " + err.Error())
+		log.Fatal("failed collecting rwUser (usermodel.go line: " + GetCurrentLine() + "), " + err.Error())
 	}
 	defer rwUser.Close()
 
@@ -82,7 +89,8 @@ func GetUserById(userId pgtype.Int4) User {
 
 	allUser, errUser := pgx.CollectRows(rwUser, pgx.RowToStructByName[User])
 	if errUser != nil {
-		log.Fatal("failed collecting rwUser, " + errUser.Error())
+		//log.Fatal("failed collecting rwUser, " + errUser.Error())
+		log.Fatal("failed collecting rwUser (usermodel.go line: " + GetCurrentLine() + "), " + errUser.Error())
 	}
 	defer rwUser.Close()
 
