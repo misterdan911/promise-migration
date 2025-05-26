@@ -2,6 +2,7 @@ package helper
 
 func TruncateTableAndLog() {
 
+	TruncatedbSidapetHelperUser()
 	TruncateTable("ref_user")
 
 	TruncateTable("ref_user_external")

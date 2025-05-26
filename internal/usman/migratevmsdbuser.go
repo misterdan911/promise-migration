@@ -2,9 +2,9 @@ package usman
 
 import (
 	"github.com/jackc/pgx/v5/pgtype"
-	"promise-migration/internal/usman/model/usman/refuserexternalmodel"
-	"promise-migration/internal/usman/model/usman/refusermodel"
-	"promise-migration/internal/usman/model/usman/trxgroupusermodel"
+	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
+	"promise-migration/internal/usman/model/dbusman/refusermodel"
+	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
 )
 
