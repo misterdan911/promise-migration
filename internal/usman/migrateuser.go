@@ -2,10 +2,10 @@ package usman
 
 import (
 	"github.com/jackc/pgx/v5/pgtype"
-	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
 	"promise-migration/internal/usman/model/usman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/usman/refusermodel"
 	"promise-migration/internal/usman/model/usman/trxgroupusermodel"
+	"promise-migration/internal/usman/model/vmsdb/usermodel"
 )
 
 func MigrateVmsDbUser() {
@@ -39,6 +39,7 @@ func MigrateVmsDbUser() {
 			refUserExternal := refuserexternalmodel.RefUserExternal{
 				Nama:   vmsUser.Name,
 				IdUser: refUser.Id,
+				//StatusPengguna: <perseorangan / perushaan>,
 			}
 			refuserexternalmodel.InsertNew(refUserExternal)
 
