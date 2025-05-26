@@ -10,7 +10,8 @@ func PopulateHelperUser() {
 
 	for _, vmsUser := range allVmsUser {
 		helperUser := helperusermodel.HelperUser{
-			VmsUserId: vmsUser.Id,
+			VmsUserId:   vmsUser.Id,
+			VmsUserName: vmsUser.Name,
 		}
 
 		helperusermodel.InsertNew(helperUser)
