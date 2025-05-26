@@ -19,10 +19,13 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectDbUsman()
 		defer db.DbUsman.Close()
 
+		db.ConnectDbSidapet()
+		defer db.DbSidapet.Close()
+
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
-		usman.MigrateUser()
+		usman.MigrateVmsDbUser()
 
 		helper.CreateAllForeignKey()
 

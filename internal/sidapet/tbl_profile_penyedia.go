@@ -98,12 +98,6 @@ func MigrateTblProfilePenyedia() {
 		// }
 		//
 
-		if profilePenyedia.IdUser.Int32 == 18324 {
-			//log.Fatal("Stop")
-		} else {
-			//fmt.Println(strconv.Itoa(int(profilePenyedia.IdUser.Int32)))
-		}
-
 		// TODO: Catat profile penyedia yg tidak bisa dimigrasi karena tidak ada data user nya di tabel users
 		user := usermodel.GetUserById(profilePenyedia.IdUser)
 		if user == (usermodel.User{}) {

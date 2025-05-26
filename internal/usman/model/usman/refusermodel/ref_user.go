@@ -84,7 +84,7 @@ func InsertNew(refUser RefUser) RefUser {
 
 	allUser, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefUser])
 	if err != nil {
-		log.Fatal("failed collecting RefUserExternal, " + err.Error())
+		log.Fatal("failed collecting RefUser (ref_user.go), " + err.Error())
 	}
 
 	return allUser[0]

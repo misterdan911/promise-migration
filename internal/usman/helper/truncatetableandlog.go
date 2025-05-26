@@ -3,7 +3,12 @@ package helper
 func TruncateTableAndLog() {
 
 	TruncateTable("ref_user")
+
 	TruncateTable("ref_user_external")
+	ResetSequence("ref_user_external_id_seq")
+
+	TruncateTable("trx_group_user")
+	ResetSequence("trx_group_user_id_seq")
 
 	// Truncate Log File
 	//TruncateLog("pengalaman_bu.txt")

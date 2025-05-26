@@ -65,6 +65,15 @@ func UpdatePkSequence(tableName string, pkFieldname string) {
 	}
 }
 
+func ResetSequence(seqName string) {
+	ctx := context.Background()
+	qUpdateSeq := `ALTER SEQUENCE ` + seqName + ` RESTART WITH 1`
+	_, err := db.DbUsman.Exec(ctx, qUpdateSeq)
+	if err != nil {
+		fmt.Println("unable to ResetSequence: " + seqName + ", " + err.Error())
+	}
+}
+
 type Lengthable interface {
 	//~string | ~[]int | ~[]string
 	~string | ~[]int
