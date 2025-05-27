@@ -18,6 +18,8 @@ func PopulateHelperUser() {
 		penyedia := vmspenyedia.GetPenyediaByUserId(vmsUser.Id)
 		var dbPenyedia pgtype.Text
 		var strDbPenyedia string
+		var namaPenyedia pgtype.Text
+		var jenisPenyedia pgtype.Text
 
 		if (penyedia == structs.TblProfilePenyedia{}) {
 			// kalau di vms_db gak ada, coba cari di db promise_sibela
@@ -32,12 +34,21 @@ func PopulateHelperUser() {
 
 		if (penyedia != structs.TblProfilePenyedia{}) {
 			dbPenyedia = pgtype.Text{Valid: true, String: strDbPenyedia}
+			namaPenyedia = pgtype.Text{Valid: true, String: penyedia.Nama.String}
+
+			if penyedia.IdJenisPenyedia.Int32 == 1 {
+				jenisPenyedia = pgtype.Text{Valid: true, String: "perusahaan"}
+			} else if penyedia.IdProfilPenyedia.Int32 == 2 {
+				jenisPenyedia = pgtype.Text{Valid: true, String: "perorangan"}
+			}
 		}
 
 		helperUser := helperusermodel.HelperUser{
-			VmsUserId:   vmsUser.Id,
-			VmsUserName: vmsUser.Name,
-			DbPenyedia:  dbPenyedia,
+			VmsUserId:     vmsUser.Id,
+			VmsUserName:   vmsUser.Name,
+			DbPenyedia:    dbPenyedia,
+			NamaPenyedia:  namaPenyedia,
+			JenisPenyedia: jenisPenyedia,
 		}
 
 		helperusermodel.InsertNew(helperUser)
