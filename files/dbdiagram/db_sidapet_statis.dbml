@@ -216,6 +216,7 @@ Table ref_item_tanya_tpl {
   nama_item varchar(100)
   nama_field varchar(50)
   tipe_input varchar(20)
+  nama_custom_field varchar(50)
 
   note: "Master Custom Item"
 }
@@ -327,6 +328,7 @@ Table trx_verifikator_penjr {
 Table trx_undangan_penjr {
   kode_und_penjr serial [pk, note: "kode undangan penjaringan"]
   kode_penjaringan int4
+  kode_vendor int4
   nama varchar
   email varchar
   alamat varchar
@@ -1723,3 +1725,5 @@ Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia_pero".
 Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."kode_status_pengajuan"
 
 Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif"
+
+Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor"

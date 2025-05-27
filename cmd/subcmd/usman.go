@@ -22,6 +22,9 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
+		db.ConnectPromiseSibela()
+		defer db.PromiseSibela.Close()
+
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
@@ -30,7 +33,6 @@ var UsmanCmd = &cobra.Command{
 		usman.MigrateVmsDbUser()
 
 		helper.CreateAllForeignKey()
-
 	},
 }
 
