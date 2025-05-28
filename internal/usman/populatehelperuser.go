@@ -1,12 +1,15 @@
 package usman
 
 import (
-	"github.com/jackc/pgx/v5/pgtype"
+	"fmt"
 	"promise-migration/internal/usman/model/dbsidapet/helperusermodel"
 	promisesibela "promise-migration/internal/usman/model/promise_sibela/tblprofilepenyediamodel"
 	vmspenyedia "promise-migration/internal/usman/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
 	"promise-migration/internal/usman/structs"
+	"strconv"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func PopulateHelperUser() {
@@ -38,14 +41,21 @@ func PopulateHelperUser() {
 
 			if penyedia.IdJenisPenyedia.Int32 == 1 {
 				jenisPenyedia = pgtype.Text{Valid: true, String: "perusahaan"}
-			} else if penyedia.IdProfilPenyedia.Int32 == 2 {
+			} else if penyedia.IdJenisPenyedia.Int32 == 2 {
 				jenisPenyedia = pgtype.Text{Valid: true, String: "perorangan"}
+			}
+		} else {
+			if vmsUser.IdLevel.Int32 == 5 || vmsUser.IdLevel.Int32 == 9 {
+				fmt.Println("UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan")
 			}
 		}
 
 		helperUser := helperusermodel.HelperUser{
 			VmsUserId:     vmsUser.Id,
 			VmsUserName:   vmsUser.Name,
+			VmsUserLevel:  vmsUser.IdLevel,
+			VmsUserEmail:  vmsUser.Email,
+			VmsUserPass:   vmsUser.Password,
 			DbPenyedia:    dbPenyedia,
 			NamaPenyedia:  namaPenyedia,
 			JenisPenyedia: jenisPenyedia,
