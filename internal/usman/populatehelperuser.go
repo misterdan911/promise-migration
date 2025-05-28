@@ -51,14 +51,16 @@ func PopulateHelperUser() {
 		}
 
 		helperUser := helperusermodel.HelperUser{
-			VmsUserId:     vmsUser.Id,
-			VmsUserName:   vmsUser.Name,
-			VmsUserLevel:  vmsUser.IdLevel,
-			VmsUserEmail:  vmsUser.Email,
-			VmsUserPass:   vmsUser.Password,
-			DbPenyedia:    dbPenyedia,
-			NamaPenyedia:  namaPenyedia,
-			JenisPenyedia: jenisPenyedia,
+			VmsUserId:        vmsUser.Id,
+			VmsUserName:      vmsUser.Name,
+			VmsUserLevel:     vmsUser.IdLevel,
+			VmsUserEmail:     vmsUser.Email,
+			VmsUserPass:      vmsUser.Password,
+			VmsUserCreatedAt: vmsUser.CreatedAt,
+			VmsUserUpdatedAt: vmsUser.UpdatedAt,
+			DbPenyedia:       dbPenyedia,
+			NamaPenyedia:     namaPenyedia,
+			JenisPenyedia:    jenisPenyedia,
 		}
 
 		helperusermodel.InsertNew(helperUser)

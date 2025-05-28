@@ -11,15 +11,17 @@ import (
 )
 
 type HelperUser struct {
-	Id            pgtype.Int4
-	VmsUserId     pgtype.Int4
-	VmsUserName   pgtype.Text
-	VmsUserLevel  pgtype.Int4
-	VmsUserEmail  pgtype.Text
-	VmsUserPass   pgtype.Text
-	DbPenyedia    pgtype.Text
-	NamaPenyedia  pgtype.Text
-	JenisPenyedia pgtype.Text
+	Id               pgtype.Int4
+	VmsUserId        pgtype.Int4
+	VmsUserName      pgtype.Text
+	VmsUserLevel     pgtype.Int4
+	VmsUserEmail     pgtype.Text
+	VmsUserPass      pgtype.Text
+	VmsUserCreatedAt pgtype.Timestamptz
+	VmsUserUpdatedAt pgtype.Timestamptz
+	DbPenyedia       pgtype.Text
+	NamaPenyedia     pgtype.Text
+	JenisPenyedia    pgtype.Text
 }
 
 func InsertNew(helperUser HelperUser) {
@@ -33,6 +35,8 @@ func InsertNew(helperUser HelperUser) {
     vms_user_level,
     vms_user_email,
     vms_user_pass,
+    vms_user_created_at,
+    vms_user_updated_at,
     db_penyedia,
     nama_penyedia,
     jenis_penyedia
@@ -42,20 +46,24 @@ func InsertNew(helperUser HelperUser) {
     @vms_user_level,
     @vms_user_email,
     @vms_user_pass,
+    @vms_user_created_at,
+    @vms_user_updated_at,
     @db_penyedia,
     @nama_penyedia,
     @jenis_penyedia
   )`
 
 	args := pgx.NamedArgs{
-		"vms_user_id":    helperUser.VmsUserId,
-		"vms_user_name":  helperUser.VmsUserName,
-		"vms_user_level": helperUser.VmsUserLevel,
-		"vms_user_email": helperUser.VmsUserEmail,
-		"vms_user_pass":  helperUser.VmsUserPass,
-		"db_penyedia":    helperUser.DbPenyedia,
-		"nama_penyedia":  helperUser.NamaPenyedia,
-		"jenis_penyedia": helperUser.JenisPenyedia,
+		"vms_user_id":         helperUser.VmsUserId,
+		"vms_user_name":       helperUser.VmsUserName,
+		"vms_user_level":      helperUser.VmsUserLevel,
+		"vms_user_email":      helperUser.VmsUserEmail,
+		"vms_user_pass":       helperUser.VmsUserPass,
+		"vms_user_created_at": helperUser.VmsUserCreatedAt,
+		"vms_user_updated_at": helperUser.VmsUserUpdatedAt,
+		"db_penyedia":         helperUser.DbPenyedia,
+		"nama_penyedia":       helperUser.NamaPenyedia,
+		"jenis_penyedia":      helperUser.JenisPenyedia,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
@@ -70,16 +78,21 @@ func GetAllUser() []HelperUser {
 	ctx := context.Background()
 
 	qHUser := `
-	SELECT
+  SELECT
     id,
     vms_user_id,
     vms_user_name,
+    vms_user_level,
+    vms_user_email,
+    vms_user_pass,
+    vms_user_created_at,
+    vms_user_updated_at,
     db_penyedia,
     nama_penyedia,
     jenis_penyedia
-	FROM helper_user`
+  FROM helper_user`
 
-	rwHUser, err := db.VmsDb.Query(ctx, qHUser)
+	rwHUser, err := db.DbSidapet.Query(ctx, qHUser)
 	if err != nil {
 		log.Fatal("qHUser Failed, " + err.Error() + " " + qHUser)
 	}

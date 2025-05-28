@@ -1,21 +1,22 @@
 package usman
 
 import (
-	"github.com/jackc/pgx/v5/pgtype"
+	"promise-migration/internal/usman/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refusermodel"
 	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
-	"promise-migration/internal/usman/model/vmsdb/usermodel"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func MigrateVmsDbUser() {
 
-	allVmsUser := usermodel.GetAllUser()
+	allUser := helperusermodel.GetAllUser()
 
-	for _, vmsUser := range allVmsUser {
+	for _, helperUser := range allUser {
 
 		var statusUser string
-		idLevel := vmsUser.IdLevel.Int32
+		idLevel := helperUser.VmsUserLevel.Int32
 
 		if idLevel == 5 || idLevel == 9 {
 			statusUser = "eksternal"
@@ -24,27 +25,27 @@ func MigrateVmsDbUser() {
 		}
 
 		refUser := refusermodel.RefUser{
-			Email:      vmsUser.Email,
-			Password:   vmsUser.Password,
+			Email:      helperUser.VmsUserEmail,
+			Password:   helperUser.VmsUserPass,
 			StatusUser: pgtype.Text{Valid: true, String: statusUser},
-			Udcr:       vmsUser.CreatedAt,
-			Udch:       vmsUser.UpdatedAt,
+			Udcr:       helperUser.VmsUserCreatedAt,
+			Udch:       helperUser.VmsUserUpdatedAt,
 		}
 
 		// masukan data ke tabel ref_user
 		refUser = refusermodel.InsertNew(refUser)
 
 		if statusUser == "eksternal" {
-			// masukan data ke tabel ref_user_external kalau vmsUser external
+			// masukan data ke tabel ref_user_external kalau helperUser external
 			refUserExternal := refuserexternalmodel.RefUserExternal{
-				Nama:   vmsUser.Name,
-				IdUser: refUser.Id,
-				//StatusPengguna: <perseorangan / perushaan>,
+				Nama:           helperUser.VmsUserName,
+				StatusPengguna: helperUser.JenisPenyedia,
+				IdUser:         refUser.Id,
 			}
 			refuserexternalmodel.InsertNew(refUserExternal)
 
 			// kasih akses masuk ke Si-Dapet
-			// karena semua vmsUser external pasti bisa masuk Si-Dapet
+			// karena semua helperUser external pasti bisa masuk Si-Dapet
 			trxgroupusermodel.InsertNew(refUser, "G01.8")
 		}
 
