@@ -1,16 +1,17 @@
 package subcmd
 
 import (
-	"github.com/spf13/cobra"
 	"promise-migration/db"
 	"promise-migration/internal/usman"
 	"promise-migration/internal/usman/helper"
+
+	"github.com/spf13/cobra"
 )
 
 var UsmanCmd = &cobra.Command{
 	Use:   "usman",
-	Short: "Migrasi database Usman",
-	Long:  `Perintah ini untuk melakukan migrasi database dari vms_db ke db_usman`,
+	Short: "Migrasi user ke database Usman",
+	Long:  `Perintah ini untuk melakukan migrasi user dari vms_db ke db_usman`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		db.ConnectVmsDb()
@@ -29,8 +30,7 @@ var UsmanCmd = &cobra.Command{
 		helper.TruncateTableAndLog()
 
 		usman.PopulateHelperUser()
-		//usman.MigrateUserToUsman()
-		usman.MigrateVmsDbUser()
+		usman.MigrateUserToUsman()
 
 		helper.CreateAllForeignKey()
 	},
