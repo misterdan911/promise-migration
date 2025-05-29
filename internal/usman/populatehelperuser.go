@@ -3,6 +3,7 @@ package usman
 import (
 	"fmt"
 	"promise-migration/internal/usman/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/usman/model/dbsidapet/helperusernipmodel"
 	promisesibela "promise-migration/internal/usman/model/promise_sibela/tblprofilepenyediamodel"
 	vmspenyedia "promise-migration/internal/usman/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
@@ -12,10 +13,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+var allHUserNip []helperusernipmodel.HelperUserNip
+
 func PopulateHelperUser() {
 	allVmsUser := usermodel.GetAllUser()
+	allHUserNip = helperusernipmodel.GetAllHelperUserNip()
 
 	for _, vmsUser := range allVmsUser {
+
+		nip := pgtype.Text{}
 
 		// coba cari data penyedia di db vms_db
 		penyedia := vmspenyedia.GetPenyediaByUserId(vmsUser.Id)
@@ -51,6 +57,11 @@ func PopulateHelperUser() {
 			}
 		}
 
+		if (vmsUser.IdLevel.Int32 != 5) || (vmsUser.IdLevel.Int32 != 9) {
+			// GetNip
+			nip = GetNipByUserId(vmsUser.Id)
+		}
+
 		helperUser := helperusermodel.HelperUser{
 			VmsUserId:        vmsUser.Id,
 			VmsUserName:      vmsUser.Name,
@@ -59,6 +70,7 @@ func PopulateHelperUser() {
 			VmsUserPass:      vmsUser.Password,
 			VmsUserCreatedAt: vmsUser.CreatedAt,
 			VmsUserUpdatedAt: vmsUser.UpdatedAt,
+			Nip:              nip,
 			DbPenyedia:       dbPenyedia,
 			NamaPenyedia:     namaPenyedia,
 			JenisPenyedia:    jenisPenyedia,
@@ -67,4 +79,13 @@ func PopulateHelperUser() {
 		helperusermodel.InsertNew(helperUser)
 	}
 
+}
+
+func GetNipByUserId(userId pgtype.Int4) pgtype.Text {
+	for _, userNip := range allHUserNip {
+		if userNip.IdUser.Int32 == userId.Int32 {
+			return userNip.Nip
+		}
+	}
+	return pgtype.Text{}
 }

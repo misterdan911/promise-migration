@@ -38,3 +38,26 @@ func InsertNew(helperUserNip HelperUserNip) {
 		fmt.Println("unable to insert helper_user_nip, " + errIns.Error())
 	}
 }
+
+func GetAllHelperUserNip() []HelperUserNip {
+	ctx := context.Background()
+
+	qGetAll := `
+	SELECT id, id_user, nip FROM helper_user_nip
+	ORDER BY id_user`
+
+	rwUserNip, err := db.DbSidapet.Query(ctx, qGetAll)
+	if err != nil {
+		fmt.Println("qGetAll Failed, " + err.Error() + " " + qGetAll)
+		return nil
+	}
+
+	allUserNip, err := pgx.CollectRows(rwUserNip, pgx.RowToStructByName[HelperUserNip])
+	if err != nil {
+		fmt.Println("failed collecting rwUserNip (GetAllHelperUserNip), " + err.Error())
+		return nil
+	}
+	defer rwUserNip.Close()
+
+	return allUserNip
+}

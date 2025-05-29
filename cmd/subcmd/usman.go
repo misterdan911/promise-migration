@@ -29,8 +29,8 @@ var UsmanCmd = &cobra.Command{
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
-		// usman.PopulateHelperUser()
 		usman.PopulateHelperUserNip()
+		usman.PopulateHelperUser()
 		// usman.MigrateUserToUsman()
 
 		helper.CreateAllForeignKey()
