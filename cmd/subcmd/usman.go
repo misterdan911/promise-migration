@@ -31,7 +31,7 @@ var UsmanCmd = &cobra.Command{
 
 		usman.PopulateHelperUserNip()
 		usman.PopulateHelperUser()
-		// usman.MigrateUserToUsman()
+		usman.MigrateUserToUsman()
 
 		helper.CreateAllForeignKey()
 	},

@@ -19,7 +19,7 @@ type HelperUser struct {
 	VmsUserPass      pgtype.Text
 	VmsUserCreatedAt pgtype.Timestamptz
 	VmsUserUpdatedAt pgtype.Timestamptz
-	Nip pgtype.Text
+	Nip              pgtype.Text
 	DbPenyedia       pgtype.Text
 	NamaPenyedia     pgtype.Text
 	JenisPenyedia    pgtype.Text
@@ -64,7 +64,7 @@ func InsertNew(helperUser HelperUser) {
 		"vms_user_pass":       helperUser.VmsUserPass,
 		"vms_user_created_at": helperUser.VmsUserCreatedAt,
 		"vms_user_updated_at": helperUser.VmsUserUpdatedAt,
-		"nip": helperUser.Nip,
+		"nip":                 helperUser.Nip,
 		"db_penyedia":         helperUser.DbPenyedia,
 		"nama_penyedia":       helperUser.NamaPenyedia,
 		"jenis_penyedia":      helperUser.JenisPenyedia,
@@ -91,12 +91,11 @@ func GetAllUser() []HelperUser {
     vms_user_pass,
     vms_user_created_at,
     vms_user_updated_at,
-    hun.nip,
+    nip,
     db_penyedia,
     nama_penyedia,
     jenis_penyedia
-  FROM helper_user hu
-  INNER JOIN helper_user_nip hun ON hun.id_user = hu.vms_user_id`
+  FROM helper_user hu`
 
 	rwHUser, err := db.DbSidapet.Query(ctx, qHUser)
 	if err != nil {

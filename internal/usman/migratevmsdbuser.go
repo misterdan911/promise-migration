@@ -57,7 +57,7 @@ func MigrateUserToUsman() {
 		} else if statusUser == "internal" {
 
 			refUserInternal := refuserinternalmodel.RefUserInternal{
-				Nip:      pgtype.Text{},
+				Nip:      helperUser.Nip,
 				Username: helperUser.VmsUserName,
 				Udcr:     helperUser.VmsUserCreatedAt,
 				Udch:     helperUser.VmsUserUpdatedAt,
