@@ -30,6 +30,15 @@ func TruncatedbSidapetHelperUser() {
 	fmt.Println(qTruncate)
 }
 
+func TruncatedbSidapetHelperUserNip() {
+	qTruncate := "TRUNCATE TABLE helper_user_nip RESTART IDENTITY"
+	_, err := db.DbSidapet.Exec(context.Background(), qTruncate)
+	if err != nil {
+		log.Fatal("Truncate helper_user_nip Failed, " + err.Error())
+	}
+
+	fmt.Println(qTruncate)
+}
 func DropAllForeignKey() {
 	AlterAllForeignKey("drop")
 }

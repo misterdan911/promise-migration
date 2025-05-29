@@ -35,6 +35,7 @@ func PopulateHelperUser() {
 			strDbPenyedia = "vms_db"
 		}
 
+		// kalau penyedia ditemukan, set nilai dbPenyedia, namaPenyedia, dan jenisPenyedia
 		if (penyedia != structs.TblProfilePenyedia{}) {
 			dbPenyedia = pgtype.Text{Valid: true, String: strDbPenyedia}
 			namaPenyedia = pgtype.Text{Valid: true, String: penyedia.Nama.String}
