@@ -1,10 +1,11 @@
 package subcmd
 
 import (
-	"github.com/spf13/cobra"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/helper"
+
+	"github.com/spf13/cobra"
 )
 
 var SidapetCmd = &cobra.Command{
@@ -22,7 +23,7 @@ var SidapetCmd = &cobra.Command{
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
-		//allUser := usermodel.GetAllUser()
+		// allHelperUser := usermodel.GetAllUser()
 		//
 		//for user, _ := range allUser {
 		//	sidapet.InsertToDbUsman(user)
