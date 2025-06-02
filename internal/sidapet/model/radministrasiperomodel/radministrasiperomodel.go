@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/structs"
 )
 
 func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia) {
@@ -37,7 +39,8 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_administrasi_pero, " + errIns.Error())
+		fmt.Println("npwp" + profilePenyedia.Npwp.String + helper.GetLen(profilePenyedia.Npwp.String))
+		log.Fatal("unable to insert ref_administrasi_pero, " + errIns.Error())
 	}
 
 }

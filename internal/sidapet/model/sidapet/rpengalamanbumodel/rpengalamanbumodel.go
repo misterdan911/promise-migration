@@ -9,7 +9,7 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/helper"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strconv"
 	"strings"
 )

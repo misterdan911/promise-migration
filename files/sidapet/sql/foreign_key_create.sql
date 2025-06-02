@@ -428,12 +428,12 @@ ALTER TABLE "ref_fasilitas_bu" ADD FOREIGN KEY ("kode_kepemilikan") REFERENCES "
 
 ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_jenis_vendor") REFERENCES "ref_jenis_vendor" ("kode_jenis_vendor");
 
-ALTER TABLE "trx_ketentuan_umum_khusus" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
+-- ALTER TABLE "trx_ketentuan_umum_khusus" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
 
 ALTER TABLE "ref_kantor_bu" ADD FOREIGN KEY ("kode_kondisi") REFERENCES "ref_kondisi" ("kode_kondisi");
 
 ALTER TABLE "trx_penjaringan" ADD FOREIGN KEY ("kode_kualifikasi_usaha") REFERENCES "ref_kualifikasi_usaha" ("kode_kualifikasi_usaha");
 
-ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
+-- ALTER TABLE "ref_item_tanya" ADD FOREIGN KEY ("kode_penjaringan") REFERENCES "trx_penjaringan" ("kode_penjaringan");
 
 ALTER TABLE "ref_item_tanya_tpl" ADD FOREIGN KEY ("kode_kat_item_tanya") REFERENCES "ref_kat_item_tanya" ("kode_kat_item_tanya");

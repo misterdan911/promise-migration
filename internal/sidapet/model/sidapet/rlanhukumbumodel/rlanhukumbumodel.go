@@ -9,7 +9,7 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/helper"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strconv"
 )
 
@@ -121,7 +121,7 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("unable to insert ref_lan_hukum_bu, " + errIns.Error())
+			log.Fatal("unable to insert ref_lan_hukum_bu, " + errIns.Error())
 		}
 	}
 

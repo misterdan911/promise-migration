@@ -7,20 +7,20 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 type RefVenReg struct {
 	KodeRegister pgtype.Int4
 }
 
-func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user usermodel.User, kodeRegister pgtype.Int4) {
+func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user helperusermodel.HelperUser, kodeRegister pgtype.Int4) {
 	ctx := context.Background()
 
 	qIns := `
@@ -69,7 +69,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
 		"email":               profilePenyedia.Email,
-		"password":            user.Password,
+		"password":            user.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},

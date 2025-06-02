@@ -14,6 +14,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsertiftamodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertiftpmodel"
 	"promise-migration/internal/sidapet/structs"
+	structs2 "promise-migration/internal/structs"
 	"strconv"
 	"strings"
 )
@@ -25,7 +26,7 @@ type RefTenagaPendukung struct {
 	KodeTenagaPendukung pgtype.Int4
 }
 
-func InsertPersonalia(profilePenyedia structs.TblProfilePenyedia) {
+func InsertPersonalia(profilePenyedia structs2.TblProfilePenyedia) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
 	}
@@ -68,7 +69,7 @@ func InsertPersonalia(profilePenyedia structs.TblProfilePenyedia) {
 
 }
 
-func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+func InsertRefTenagaAhliBu(profilePenyedia structs2.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
 
 	ctx := context.Background()
 
@@ -134,7 +135,7 @@ func InsertRefTenagaAhliBu(profilePenyedia structs.TblProfilePenyedia, vTPP stru
 
 }
 
-func InsertRefTenagaPendukungBu(profilePenyedia structs.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+func InsertRefTenagaPendukungBu(profilePenyedia structs2.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
 	ctx := context.Background()
 
 	qIns := `

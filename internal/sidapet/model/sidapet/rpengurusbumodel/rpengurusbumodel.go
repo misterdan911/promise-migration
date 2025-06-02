@@ -2,10 +2,10 @@ package rpengurusbumodel
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strings"
 )
 
@@ -15,9 +15,13 @@ func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
 	}
 
 	ctx := context.Background()
-
 	var bentukBu string
-	bentukBu = strings.ToLower(profilePenyedia.Nama.String[0:2])
+
+	if len(profilePenyedia.Nama.String) < 2 {
+		return
+	}
+
+	bentukBu = strings.ToLower(profilePenyedia.Nama.String[0:2]) // Extracts the first two characters using slice notation
 	if bentukBu != "pt" || bentukBu != "cv" {
 		if strings.Contains(strings.ToLower(profilePenyedia.Nama.String), "pt") {
 			bentukBu = "pt"
@@ -45,6 +49,6 @@ func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_pengurus_bu, " + errIns.Error())
+		log.Fatal("unable to insert ref_pengurus_bu, " + errIns.Error())
 	}
 }

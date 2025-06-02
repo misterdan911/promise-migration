@@ -38,5 +38,5 @@ var UsmanCmd = &cobra.Command{
 }
 
 func init() {
-	// Emang Kosong
+	// Emang Kosongz
 }

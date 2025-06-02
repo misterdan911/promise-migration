@@ -2,12 +2,11 @@ package rpengalamanperomodel
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strconv"
 )
 
@@ -57,7 +56,7 @@ func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("unable to insert ref_pengalaman_pero, " + errIns.Error())
+			log.Fatal("unable to insert ref_pengalaman_pero, " + errIns.Error())
 		}
 
 	}

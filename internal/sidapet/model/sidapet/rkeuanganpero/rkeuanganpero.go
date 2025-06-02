@@ -3,11 +3,11 @@ package rkeuanganpero
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/model/sidapet/hbankkwmodel"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia) {
@@ -52,6 +52,6 @@ func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_keuangan_pero, " + errIns.Error())
+		log.Fatal("unable to insert ref_keuangan_pero, " + errIns.Error())
 	}
 }

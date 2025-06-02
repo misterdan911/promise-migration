@@ -1,11 +1,12 @@
 package subcmd
 
 import (
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/spf13/cobra"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/helper"
-
-	"github.com/spf13/cobra"
 )
 
 var SidapetCmd = &cobra.Command{
@@ -20,17 +21,30 @@ var SidapetCmd = &cobra.Command{
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
+		db.ConnectPromiseSibela()
+		defer db.PromiseSibela.Close()
+
 		helper.DropAllForeignKey()
 		helper.TruncateTableAndLog()
 
-		// allHelperUser := usermodel.GetAllUser()
-		//
+		allHelperUser := helperusermodel.GetAllUser()
+
 		//for user, _ := range allUser {
 		//	sidapet.InsertToDbUsman(user)
 		//}
 
 		//sidapet.MigrateTblDomisili()
-		sidapet.MigrateTblProfilePenyedia()
+
+		for _, helperUser := range allHelperUser {
+
+			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
+				sidapet.MigrateTblProfilePenyedia(helperUser)
+			} else {
+				continue
+			}
+
+		}
+
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
 		sidapet.MigrateTblPaketUndang()
 

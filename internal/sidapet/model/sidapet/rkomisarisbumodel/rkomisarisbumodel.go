@@ -2,12 +2,11 @@ package rkomisarisbumodel
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strconv"
 )
 
@@ -79,7 +78,7 @@ func InsertRefKomisarisBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("unable to insert ref_komisaris_bu, " + errIns.Error())
+			log.Fatal("unable to insert ref_komisaris_bu, " + errIns.Error())
 		}
 	}
 }

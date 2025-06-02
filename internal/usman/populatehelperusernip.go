@@ -2,11 +2,10 @@ package usman
 
 import (
 	"context"
+	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/usman/model/dbsidapet/helperusernipmodel"
-
-	"github.com/jackc/pgx/v5"
+	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
 )
 
 func PopulateHelperUserNip() {

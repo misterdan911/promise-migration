@@ -2,10 +2,10 @@ package rpersonaliaperomodel
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 func InsertRefPersonaliaPero(profilePenyedia structs.TblProfilePenyedia) {
@@ -31,7 +31,7 @@ func InsertRefPersonaliaPero(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_personalia_pero, " + errIns.Error())
+		log.Fatal("unable to insert ref_personalia_pero, " + errIns.Error())
 	}
 
 }

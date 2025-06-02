@@ -8,7 +8,7 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/helper"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 	"strconv"
 )
 
@@ -84,7 +84,7 @@ func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia) {
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
 			fmt.Println("no_ktp_direksi: " + vTD.NoKtpDireksi.String + helper.GetLen(vTD.NoKtpDireksi.String))
-			fmt.Println("unable to insert ref_direksi_bu, " + errIns.Error())
+			log.Fatal("unable to insert ref_direksi_bu, " + errIns.Error())
 		}
 
 	}

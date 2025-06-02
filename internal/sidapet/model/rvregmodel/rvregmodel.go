@@ -7,21 +7,21 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/helper"
-	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 type RefVenReg struct {
 	KodeRegister pgtype.Int4
 }
 
-func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user usermodel.User) pgtype.Int4 {
+func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) pgtype.Int4 {
 	ctx := context.Background()
 
 	if profilePenyedia.Email.Valid == false {
@@ -71,7 +71,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user us
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
 		"email":               profilePenyedia.Email,
-		"password":            user.Password,
+		"password":            helperUser.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},
@@ -97,7 +97,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, user us
 	if errRwIns != nil {
 		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + helper.GetLen(profilePenyedia.Nama.String))
 		fmt.Println("email: " + profilePenyedia.Email.String + helper.GetLen(profilePenyedia.Email.String))
-		fmt.Println("password: " + user.Password.String + helper.GetLen(user.Password.String))
+		fmt.Println("password: " + helperUser.VmsUserPass.String + helper.GetLen(helperUser.VmsUserPass.String))
 		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + helper.GetLen(profilePenyedia.NoTelp.String))
 		log.Fatal("failed collecting RefVenReg, " + errRwIns.Error())
 	}

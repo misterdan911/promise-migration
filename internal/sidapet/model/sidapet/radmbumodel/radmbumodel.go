@@ -2,10 +2,10 @@ package radmbumodel
 
 import (
 	"context"
-	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 func InsertRefAdmBu(profilePenyedia structs.TblProfilePenyedia) {
@@ -34,7 +34,7 @@ func InsertRefAdmBu(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_adm_bu, " + errIns.Error())
+		log.Fatal("unable to insert ref_adm_bu, " + errIns.Error())
 	}
 	//defer rwIns.Close()
 }

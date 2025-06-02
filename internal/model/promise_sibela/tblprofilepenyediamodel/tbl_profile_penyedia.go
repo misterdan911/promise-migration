@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/usman/structs"
+	"promise-migration/internal/structs"
 )
 
 func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
@@ -19,7 +19,7 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
       id_profil_penyedia,
       id_user,
       id_jenis_penyedia,
-      id_paket,
+      NULL as id_paket,
       nama,
       path_ktp,
       id_domisili,
@@ -40,20 +40,20 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
       path_lap_perus,
       path_ikut_serta,
       path_kuasa,
-      path_skb,
-      path_skpp23,
-      path_pph_dibebaskan,
+    	NULL as path_skb,
+    	NULL as path_skpp23,
+    	NULL as path_pph_dibebaskan,
       contact_person,
       p_status,
       klarifikasi,
-      penyedia_terpilih,
+    	NULL as penyedia_terpilih,
       create_time,
-      update_time
+    	NULL as update_time
     FROM tbl_profile_penyedia
 		WHERE id_user = $1
     ORDER BY id_profil_penyedia ASC`
 
-	rwPenyedia, err := db.VmsDb.Query(ctx, qTblProfilePenyedia, userId)
+	rwPenyedia, err := db.PromiseSibela.Query(ctx, qTblProfilePenyedia, userId)
 	if err != nil {
 		log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
 	}

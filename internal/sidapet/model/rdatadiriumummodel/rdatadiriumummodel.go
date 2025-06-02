@@ -5,9 +5,11 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/jackc/pgx/v5"
+	"log"
 	"promise-migration/db"
+	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/hdomisilimodel"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/structs"
 )
 
 func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia) {
@@ -77,6 +79,7 @@ func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_datadiri_umum, " + errIns.Error())
+		fmt.Println("email: " + profilePenyedia.Email.String + helper.GetLen(profilePenyedia.Email.String))
+		log.Fatal("unable to insert ref_datadiri_umum, " + errIns.Error())
 	}
 }

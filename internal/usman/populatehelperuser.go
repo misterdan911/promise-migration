@@ -2,12 +2,12 @@ package usman
 
 import (
 	"fmt"
-	"promise-migration/internal/usman/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/usman/model/dbsidapet/helperusernipmodel"
-	promisesibela "promise-migration/internal/usman/model/promise_sibela/tblprofilepenyediamodel"
-	vmspenyedia "promise-migration/internal/usman/model/vmsdb/tblprofilepenyediamodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
+	promisesibela "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
-	"promise-migration/internal/usman/structs"
 	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"

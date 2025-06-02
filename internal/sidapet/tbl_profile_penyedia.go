@@ -4,15 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/refvendormodel"
+	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
-	"promise-migration/internal/sidapet/model/rvreghismodel"
-	"promise-migration/internal/sidapet/model/rvregmodel"
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
@@ -28,8 +29,12 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
-	"promise-migration/internal/sidapet/model/vmsdb/usermodel"
-	"promise-migration/internal/sidapet/structs"
+
+	"promise-migration/internal/sidapet/model/rvreghismodel"
+	"promise-migration/internal/sidapet/model/rvregmodel"
+	"promise-migration/internal/structs"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type JawabItem struct {
@@ -37,143 +42,96 @@ type JawabItem struct {
 	Isian    string
 }
 
-func MigrateTblProfilePenyedia() {
+func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	ctx := context.Background()
 
-	qTblProfilePenyedia := `
-    SELECT
-      id_profil_penyedia,
-      id_user,
-      id_jenis_penyedia,
-      id_paket,
-      nama,
-      path_ktp,
-      id_domisili,
-      path_domisili,
-      id_cabang_ut,
-      alamat,
-      no_telp,
-      no_fax,
-      email,
-      nm_bank,
-      pemilik_rek,
-      kode_bank,
-      no_rek,
-      path_rek,
-      npwp,
-      path_npwp,
-      lap_uang_perus,
-      path_lap_perus,
-      path_ikut_serta,
-      path_kuasa,
-      path_skb,
-      path_skpp23,
-      path_pph_dibebaskan,
-      contact_person,
-      p_status,
-      klarifikasi,
-      penyedia_terpilih,
-      create_time,
-      update_time
-    FROM tbl_profile_penyedia
-    ORDER BY id_profil_penyedia ASC`
+	var profilePenyedia structs.TblProfilePenyedia
 
-	rwTblProfilePenyedia, err := db.VmsDb.Query(ctx, qTblProfilePenyedia)
-	if err != nil {
-		log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
+	if helperUser.DbPenyedia.String == "vms_db" {
+		profilePenyedia = vmsprofile.GetPenyediaByUserId(helperUser.VmsUserId)
+	} else if helperUser.DbPenyedia.String == "promise_sibela" {
+		profilePenyedia = promisesibelaprofile.GetPenyediaByUserId(helperUser.VmsUserId)
+	} else {
+		log.Fatal("Invalid DbPenyedia")
 	}
 
-	allProfilePenyedia, err := pgx.CollectRows(rwTblProfilePenyedia, pgx.RowToStructByName[structs.TblProfilePenyedia])
-	if err != nil {
-		log.Fatal("failed collecting rwTblProfilePenyedia, " + err.Error())
-	}
-	defer rwTblProfilePenyedia.Close()
-
-	for _, profilePenyedia := range allProfilePenyedia {
-
-		// Cek dulu apakah profilePenyedia.IdUser nya kosong
-		// if profilePenyedia.IdUser.Valid == false {
-		// 	log.Fatal("profilePenyedia.IdUser is NULL")
-		// }
-		//
-
-		// TODO: Catat profile penyedia yg tidak bisa dimigrasi karena tidak ada data user nya di tabel users
-		user := usermodel.GetUserById(profilePenyedia.IdUser)
-		if user == (usermodel.User{}) {
-			continue
-		}
-
-		qInsRefVendor := `
+	qInsRefVendor := `
 		INSERT INTO ref_vendor (
-		  kode_vendor, 
 		  kode_jenis_vendor, 
 		  nama_perusahaan,
 		  is_tetap,
 		  udcr,
 		  udch
 		) VALUES (
-		  @kode_vendor,
 		  @kode_jenis_vendor,
 		  @nama_perusahaan,
 		  @is_tetap,
 		  @udcr,
 		  @udch
-		)`
+		) RETURNING *`
 
-		isTetap := sql.NullBool{Valid: true}
-		if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
-			isTetap.Bool = false
-		} else {
-			isTetap.Bool = true
-		}
-
-		args := pgx.NamedArgs{
-			"kode_vendor":       profilePenyedia.IdProfilPenyedia,
-			"kode_jenis_vendor": profilePenyedia.IdJenisPenyedia,
-			"nama_perusahaan":   profilePenyedia.Nama,
-			"is_tetap":          isTetap,
-			"udcr":              profilePenyedia.CreateTime,
-			"udch":              profilePenyedia.UpdateTime,
-		}
-		_, errInsRefVendor := db.DbSidapet.Exec(ctx, qInsRefVendor, args)
-		if errInsRefVendor != nil {
-			fmt.Println("unable to insert ref_vendor, " + errInsRefVendor.Error())
-		}
-
-		// Insert to ref_vendor_register
-		kodeRegister := rvregmodel.InsertRefVendorRegister(profilePenyedia, user)
-
-		// Insert to ref_vendor_reg_history
-		rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, user, kodeRegister)
-
-		// Insert to ref_datadiri_umum
-		rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia)
-
-		radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
-		rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
-		rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
-		rsertifperomodel.InsertRefSertifPero(profilePenyedia)
-		rkeuanganpero.InsertRefKeuanganPero(profilePenyedia)
-
-		radmbumodel.InsertRefAdmBu(profilePenyedia)
-		rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia)
-		rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
-		rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
-		rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
-		rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia)
-		//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)	// gak ada sertifikat di db lama
-		rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
-		rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
-		rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
-
-		// data kantor tidak ada
-
-		rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia)
-		rpengalamanbumodel.InsertPengalaman(profilePenyedia)
-		rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
-
+	isTetap := sql.NullBool{Valid: true}
+	if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
+		isTetap.Bool = false
+	} else {
+		isTetap.Bool = true
 	}
+
+	args := pgx.NamedArgs{
+		"kode_jenis_vendor": profilePenyedia.IdJenisPenyedia,
+		"nama_perusahaan":   profilePenyedia.Nama,
+		"is_tetap":          isTetap,
+		"udcr":              profilePenyedia.CreateTime,
+		"udch":              profilePenyedia.UpdateTime,
+	}
+	_, errInsRefVendor := db.DbSidapet.Exec(ctx, qInsRefVendor, args)
+	rwVendor, errInsRefVendor := db.DbSidapet.Query(ctx, qInsRefVendor, args)
+
+	if errInsRefVendor != nil {
+		fmt.Println("unable to insert ref_vendor, " + errInsRefVendor.Error())
+	}
+
+	allVendor, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[refvendormodel.RefVendor])
+	if err2 != nil {
+		log.Fatal("failed collecting rwVendor (tbl_profile_penyedia.go), " + err2.Error())
+	}
+	defer rwVendor.Close()
+
+	helperUser.KodeVendor = allVendor[0].KodeVendor
+	helperusermodel.UpdateKodeVendor(helperUser)
+
+	// Insert to ref_vendor_register
+	kodeRegister := rvregmodel.InsertRefVendorRegister(profilePenyedia, helperUser)
+
+	// Insert to ref_vendor_reg_history
+	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)
+
+	// Insert to ref_datadiri_umum
+	rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia)
+
+	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
+	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
+	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
+	rsertifperomodel.InsertRefSertifPero(profilePenyedia)
+	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia)
+
+	radmbumodel.InsertRefAdmBu(profilePenyedia)
+	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia)
+	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
+	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
+	rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
+	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia)
+	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)	// gak ada sertifikat di db lama
+	rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
+	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
+	rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
+
+	// data kantor tidak ada
+
+	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia)
+	rpengalamanbumodel.InsertPengalaman(profilePenyedia)
+	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
 
 	// Update sequence
 	helper.UpdatePkSequence("ref_vendor", "kode_vendor")

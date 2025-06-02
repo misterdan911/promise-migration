@@ -2,7 +2,7 @@ package usman
 
 import (
 	"fmt"
-	"promise-migration/internal/usman/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refuserinternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refusermodel"

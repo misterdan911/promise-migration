@@ -4,8 +4,9 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -43,7 +44,7 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	//rootCmd.SetArgs([]string{"migrate", "sidapet"})
-	rootCmd.SetArgs([]string{"migrate", "usman"})
+	rootCmd.SetArgs([]string{"migrate", "sidapet"})
+	//rootCmd.SetArgs([]string{"migrate", "usman"})
 	rootCmd.AddCommand(MigrateCmd)
 }
