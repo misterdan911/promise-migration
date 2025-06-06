@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -87,11 +87,11 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("nm_saham: " + vTS.NmSaham.String + helper.GetLen(vTS.NmSaham.String))
-			fmt.Println("no_ktp_saham: " + vTS.NoKtpSaham.String + helper.GetLen(vTS.NoKtpSaham.String))
-			fmt.Println("alamat_saham: " + vTS.AlamatSaham.String + helper.GetLen(vTS.AlamatSaham.String))
-			fmt.Println("persentase_saham: " + vTS.PersentaseSaham.String + helper.GetLen(vTS.PersentaseSaham.String))
-			fmt.Println("path_saham: " + vTS.PathSaham.String + helper.GetLen(vTS.PathSaham.String))
+			fmt.Println("nm_saham: " + vTS.NmSaham.String + sidapethelper.GetLen(vTS.NmSaham.String))
+			fmt.Println("no_ktp_saham: " + vTS.NoKtpSaham.String + sidapethelper.GetLen(vTS.NoKtpSaham.String))
+			fmt.Println("alamat_saham: " + vTS.AlamatSaham.String + sidapethelper.GetLen(vTS.AlamatSaham.String))
+			fmt.Println("persentase_saham: " + vTS.PersentaseSaham.String + sidapethelper.GetLen(vTS.PersentaseSaham.String))
+			fmt.Println("path_saham: " + vTS.PathSaham.String + sidapethelper.GetLen(vTS.PathSaham.String))
 
 			log.Fatal("unable to insert ref_saham_bu, " + errIns.Error())
 		}

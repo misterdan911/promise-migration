@@ -8,7 +8,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	helper2 "promise-migration/internal/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -63,7 +64,7 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 	for _, vTA := range allVTA {
 
 		tglAktaAwal := sql.NullString{}
-		tglAkta, errConvert := helper.ConvertToPostgresDate(vTA.TglAkta.String)
+		tglAkta, errConvert := sidapethelper.ConvertToPostgresDate(vTA.TglAkta.String)
 		if errConvert != nil {
 			fmt.Println("errConvert:", errConvert)
 		} else {
@@ -72,10 +73,10 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 		}
 
 		tglAktaRubah := sql.NullString{}
-		tglAktaAkhir, errConvert2 := helper.ConvertToPostgresDate(vTA.TglAktaAkhir.String)
+		tglAktaAkhir, errConvert2 := sidapethelper.ConvertToPostgresDate(vTA.TglAktaAkhir.String)
 		if errConvert2 != nil {
 			fmt.Println("errConvert2:", errConvert2)
-			helper.Log("ref_lan_hukum_bu.txt", "Error converting tgl_akta_akhir"+errConvert2.Error())
+			helper2.Log("ref_lan_hukum_bu.txt", "Error converting tgl_akta_akhir"+errConvert2.Error())
 		} else {
 			tglAktaRubah.Valid = true
 			tglAktaRubah.String = tglAktaAkhir

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -95,10 +95,10 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 
 	allRefVenReg, errRwIns := pgx.CollectRows(rwInsRefVenReg, pgx.RowToStructByName[RefVenReg])
 	if errRwIns != nil {
-		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + helper.GetLen(profilePenyedia.Nama.String))
-		fmt.Println("email: " + profilePenyedia.Email.String + helper.GetLen(profilePenyedia.Email.String))
-		fmt.Println("password: " + helperUser.VmsUserPass.String + helper.GetLen(helperUser.VmsUserPass.String))
-		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + helper.GetLen(profilePenyedia.NoTelp.String))
+		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + sidapethelper.GetLen(profilePenyedia.Nama.String))
+		fmt.Println("email: " + profilePenyedia.Email.String + sidapethelper.GetLen(profilePenyedia.Email.String))
+		fmt.Println("password: " + helperUser.VmsUserPass.String + sidapethelper.GetLen(helperUser.VmsUserPass.String))
+		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + sidapethelper.GetLen(profilePenyedia.NoTelp.String))
 		log.Fatal("failed collecting RefVenReg, " + errRwIns.Error())
 	}
 

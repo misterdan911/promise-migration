@@ -10,7 +10,6 @@ import (
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
-	"promise-migration/internal/sidapet/helper"
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
@@ -29,6 +28,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
+	"promise-migration/internal/sidapet/sidapethelper"
 
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	"promise-migration/internal/sidapet/model/rvregmodel"
@@ -134,8 +134,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
 
 	// Update sequence
-	helper.UpdatePkSequence("ref_vendor", "kode_vendor")
-	helper.UpdatePkSequence("ref_vendor_register", "kode_register")
-	helper.UpdatePkSequence("ref_vendor_reg_history", "kode_register")
+	sidapethelper.UpdatePkSequence("ref_vendor", "kode_vendor")
+	sidapethelper.UpdatePkSequence("ref_vendor_register", "kode_register")
+	sidapethelper.UpdatePkSequence("ref_vendor_reg_history", "kode_register")
 
 }

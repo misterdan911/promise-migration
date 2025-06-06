@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -64,7 +64,7 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 	for _, vTFP := range allVTFP {
 
 		var kodeKondisi sql.NullInt32
-		ptrKodeKondisi := helper.ParseKondisiFasilitas(vTFP.KondisiFasilitas.String)
+		ptrKodeKondisi := sidapethelper.ParseKondisiFasilitas(vTFP.KondisiFasilitas.String)
 
 		if ptrKodeKondisi != nil {
 			kodeKondisi.Valid = true
@@ -102,10 +102,10 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("nama: " + vTFP.NmFasilitas.String + helper.GetLen(vTFP.NmFasilitas.String))
-			fmt.Println("jumlah: " + vTFP.JumlahFasilitas.String + helper.GetLen(vTFP.JumlahFasilitas.String))
-			fmt.Println("kode_kondisi: " + strconv.Itoa(int(kodeKondisi.Int32)) + helper.GetLen(strconv.Itoa(int(kodeKondisi.Int32))))
-			fmt.Println("file_foto: " + vTFP.PathFasilitas.String + helper.GetLen(vTFP.PathFasilitas.String))
+			fmt.Println("nama: " + vTFP.NmFasilitas.String + sidapethelper.GetLen(vTFP.NmFasilitas.String))
+			fmt.Println("jumlah: " + vTFP.JumlahFasilitas.String + sidapethelper.GetLen(vTFP.JumlahFasilitas.String))
+			fmt.Println("kode_kondisi: " + strconv.Itoa(int(kodeKondisi.Int32)) + sidapethelper.GetLen(strconv.Itoa(int(kodeKondisi.Int32))))
+			fmt.Println("file_foto: " + vTFP.PathFasilitas.String + sidapethelper.GetLen(vTFP.PathFasilitas.String))
 			log.Fatal("unable to insert ref_fasilitas_bu, " + errIns.Error())
 		}
 

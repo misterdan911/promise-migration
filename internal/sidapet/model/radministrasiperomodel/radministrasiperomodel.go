@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 )
 
@@ -39,7 +39,7 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia) {
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		fmt.Println("npwp" + profilePenyedia.Npwp.String + helper.GetLen(profilePenyedia.Npwp.String))
+		fmt.Println("npwp" + profilePenyedia.Npwp.String + sidapethelper.GetLen(profilePenyedia.Npwp.String))
 		log.Fatal("unable to insert ref_administrasi_pero, " + errIns.Error())
 	}
 

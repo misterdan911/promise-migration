@@ -6,7 +6,7 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 )
 
 var SidapetCmd = &cobra.Command{
@@ -24,8 +24,8 @@ var SidapetCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-		helper.DropAllForeignKey()
-		helper.TruncateTableAndLog()
+		sidapethelper.DropAllForeignKey()
+		sidapethelper.TruncateTableAndLog()
 
 		allHelperUser := helperusermodel.GetAllUser()
 
@@ -53,7 +53,7 @@ var SidapetCmd = &cobra.Command{
 
 		sidapet.MigrateTblVerif()
 
-		helper.CreateAllForeignKey()
+		sidapethelper.CreateAllForeignKey()
 
 	},
 }

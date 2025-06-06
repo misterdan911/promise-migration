@@ -8,7 +8,8 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	helper2 "promise-migration/internal/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 	"strings"
@@ -321,26 +322,26 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
-			fmt.Println("nama_pekerjaan: " + pengalaman.NamaPekerjaan.String + helper.GetLen(pengalaman.NamaPekerjaan.String))
-			fmt.Println("pemberi_kerja: " + pengalaman.PemberiKerja.String + helper.GetLen(pengalaman.PemberiKerja.String))
-			fmt.Println("file_kontrak: " + pengalaman.FileKontrak.String + helper.GetLen(pengalaman.FileKontrak.String))
-			fmt.Println("file_bast: " + pengalaman.FileBast.String + helper.GetLen(pengalaman.FileBast.String))
+			fmt.Println("nama_pekerjaan: " + pengalaman.NamaPekerjaan.String + sidapethelper.GetLen(pengalaman.NamaPekerjaan.String))
+			fmt.Println("pemberi_kerja: " + pengalaman.PemberiKerja.String + sidapethelper.GetLen(pengalaman.PemberiKerja.String))
+			fmt.Println("file_kontrak: " + pengalaman.FileKontrak.String + sidapethelper.GetLen(pengalaman.FileKontrak.String))
+			fmt.Println("file_bast: " + pengalaman.FileBast.String + sidapethelper.GetLen(pengalaman.FileBast.String))
 			log.Fatal("unable to insert ref_pengalaman_bu, " + errIns.Error())
 		}
 	}
 }
 
 func GetNilaiPekerjaan(idPengalaman int32, strNilaiPengalaman string, fieldName string) pgtype.Int8 {
-	nP, errNP := helper.ParseNilaiPengalaman(strNilaiPengalaman)
+	nP, errNP := sidapethelper.ParseNilaiPengalaman(strNilaiPengalaman)
 	var nilaiPekerjaan pgtype.Int8
 	if errNP != nil {
 		fmt.Println("errNP", errNP)
-		helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
+		helper2.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
 	}
 	nilaiPekerjaan = pgtype.Int8{Valid: true, Int64: nP}
-	helper.Log("pengalaman_bu.txt", fieldName+": "+strconv.Itoa(int(idPengalaman)))
-	helper.Log("pengalaman_bu.txt", "nilai_pengalaman: "+strNilaiPengalaman+" --> "+strconv.FormatInt(nP, 10))
-	helper.Log("pengalaman_bu.txt", "")
+	helper2.Log("pengalaman_bu.txt", fieldName+": "+strconv.Itoa(int(idPengalaman)))
+	helper2.Log("pengalaman_bu.txt", "nilai_pengalaman: "+strNilaiPengalaman+" --> "+strconv.FormatInt(nP, 10))
+	helper2.Log("pengalaman_bu.txt", "")
 
 	return nilaiPekerjaan
 }
@@ -361,7 +362,7 @@ func GetTahunpekerjaan(tglPengalaman string) pgtype.Int4 {
 func GetTglAkhirPekerjaan(tglSelesaiPekerjaan string) pgtype.Text {
 	var tgl pgtype.Text
 
-	strTgl, err := helper.ConvertToPostgresDate(tglSelesaiPekerjaan)
+	strTgl, err := sidapethelper.ConvertToPostgresDate(tglSelesaiPekerjaan)
 
 	if err == nil {
 		tgl.Valid = true

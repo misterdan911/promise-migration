@@ -7,7 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/helper"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -62,8 +62,8 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 
 	for _, vTI := range allVTI {
 
-		jenisIzinusaha := helper.GetJenisIzinUsaha(vTI.NamaIzin.String)
-		isIzinSelamanya, tglBerlakuAkhir := helper.ParseMasaIzin(vTI.MasaIzin.String)
+		jenisIzinusaha := sidapethelper.GetJenisIzinUsaha(vTI.NamaIzin.String)
+		isIzinSelamanya, tglBerlakuAkhir := sidapethelper.ParseMasaIzin(vTI.MasaIzin.String)
 
 		var izinBerlakuAkhir sql.NullString
 		if tglBerlakuAkhir != "" {
