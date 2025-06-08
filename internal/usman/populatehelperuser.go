@@ -2,13 +2,14 @@ package usman
 
 import (
 	"fmt"
+	"promise-migration/internal/g"
+	"promise-migration/internal/helper"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
 	promisesibela "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
-	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -20,6 +21,11 @@ func PopulateHelperUser() {
 	allHUserNip = helperusernipmodel.GetAllHelperUserNip()
 
 	for _, vmsUser := range allVmsUser {
+
+		g.User = g.GUser{
+			Id:   vmsUser.Id,
+			Name: vmsUser.Name,
+		}
 
 		nip := pgtype.Text{}
 
@@ -53,7 +59,10 @@ func PopulateHelperUser() {
 			}
 		} else {
 			if vmsUser.IdLevel.Int32 == 5 || vmsUser.IdLevel.Int32 == 9 {
-				fmt.Println("UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan")
+				//msg := "UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan"
+				msg := "profile penyedia tidak ditemukan"
+				fmt.Println(msg)
+				helper.LogUser(msg)
 			}
 		}
 

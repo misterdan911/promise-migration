@@ -1,12 +1,14 @@
 package subcmd
 
 import (
-	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/spf13/cobra"
 	"promise-migration/db"
+	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/sidapethelper"
+
+	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/spf13/cobra"
 )
 
 var SidapetCmd = &cobra.Command{
@@ -36,6 +38,11 @@ var SidapetCmd = &cobra.Command{
 		//sidapet.MigrateTblDomisili()
 
 		for _, helperUser := range allHelperUser {
+
+			g.User = g.GUser{
+				Id:   helperUser.VmsUserId,
+				Name: helperUser.VmsUserName,
+			}
 
 			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
 				sidapet.MigrateTblProfilePenyedia(helperUser)

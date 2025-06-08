@@ -34,6 +34,7 @@ var UsmanCmd = &cobra.Command{
 		usman.MigrateUserToUsman()
 
 		helper.CreateAllForeignKey()
+
 	},
 }
 

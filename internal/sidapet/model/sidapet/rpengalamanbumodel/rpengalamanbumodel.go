@@ -4,15 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	helper2 "promise-migration/internal/helper"
+	"promise-migration/internal/helper"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VmsTblPengalaman10 struct {
@@ -335,13 +336,22 @@ func GetNilaiPekerjaan(idPengalaman int32, strNilaiPengalaman string, fieldName 
 	nP, errNP := sidapethelper.ParseNilaiPengalaman(strNilaiPengalaman)
 	var nilaiPekerjaan pgtype.Int8
 	if errNP != nil {
+
 		fmt.Println("errNP", errNP)
-		helper2.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
+		helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
+		//helper.LogUser(g.User.Id, g.User.Name, errNP.Error())
+		//helper.LogUser("tbl_pengalaman10")
+
+		helper.LogUser(errNP.Error())
+		tbl := "tbl_pengalaman10"
+		helper.LogUser(tbl + "." + fieldName + ": " + strconv.Itoa(int(idPengalaman)))
+		helper.LogUser(tbl + ".nilai_pengalaman: " + strNilaiPengalaman + " --> " + strconv.FormatInt(nP, 10) + "\n")
+
 	}
 	nilaiPekerjaan = pgtype.Int8{Valid: true, Int64: nP}
-	helper2.Log("pengalaman_bu.txt", fieldName+": "+strconv.Itoa(int(idPengalaman)))
-	helper2.Log("pengalaman_bu.txt", "nilai_pengalaman: "+strNilaiPengalaman+" --> "+strconv.FormatInt(nP, 10))
-	helper2.Log("pengalaman_bu.txt", "")
+	// helper.Log("pengalaman_bu.txt", fieldName+": "+strconv.Itoa(int(idPengalaman)))
+	// helper.Log("pengalaman_bu.txt", "nilai_pengalaman: "+strNilaiPengalaman+" --> "+strconv.FormatInt(nP, 10))
+	// helper.Log("pengalaman_bu.txt", "")
 
 	return nilaiPekerjaan
 }

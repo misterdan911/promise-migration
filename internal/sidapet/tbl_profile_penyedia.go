@@ -85,7 +85,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		"udcr":              profilePenyedia.CreateTime,
 		"udch":              profilePenyedia.UpdateTime,
 	}
-	_, errInsRefVendor := db.DbSidapet.Exec(ctx, qInsRefVendor, args)
+
+	// _, errInsRefVendor := db.DbSidapet.Exec(ctx, qInsRefVendor, args)
 	rwVendor, errInsRefVendor := db.DbSidapet.Query(ctx, qInsRefVendor, args)
 
 	if errInsRefVendor != nil {

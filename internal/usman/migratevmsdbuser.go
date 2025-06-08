@@ -1,7 +1,6 @@
 package usman
 
 import (
-	"fmt"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refuserinternalmodel"
@@ -68,5 +67,5 @@ func MigrateUserToUsman() {
 		}
 	}
 
-	fmt.Println("TODO: NIP belum dimasukkan ke ref_user_internal")
+	//fmt.Println("TODO: NIP belum dimasukkan ke ref_user_internal")
 }
