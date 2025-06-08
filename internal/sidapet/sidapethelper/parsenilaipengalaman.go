@@ -80,28 +80,6 @@ func ParseNilaiPengalaman(nilaiPengalaman string) (int64, error) {
 	if rpPrefix.MatchString(cleaned) {
 		// Remove Rp prefix
 		cleaned = rpPrefix.ReplaceAllString(cleaned, "")
-
-		// Handle empty after prefix removal
-		if cleaned == "-" || cleaned == "" {
-			return 0, nil
-		}
-
-		// Remove currency suffix patterns (including ,00)
-		//suffixPattern := regexp.MustCompile(`(,[*]{1,2}|\.[*]{1,2}|,-|\.-|,\d{1,2})$`)
-		suffixPattern := regexp.MustCompile(`(,-|\.-|,\d{1,2})$`)
-		cleaned = suffixPattern.ReplaceAllString(cleaned, "")
-
-		// Remove thousand separators (both commas and dots)
-		cleaned = strings.ReplaceAll(cleaned, ",", "")
-		cleaned = strings.ReplaceAll(cleaned, ".", "")
-
-		// Handle empty after cleaning
-		if cleaned == "" {
-			return 0, nil
-		}
-
-		// Convert to int64
-		return strconv.ParseInt(cleaned, 10, 64)
 	}
 
 	// Case-insensitive IDR prefix check (including optional . and space)
@@ -123,6 +101,8 @@ func ParseNilaiPengalaman(nilaiPengalaman string) (int64, error) {
 	// Remove thousand separators
 	cleaned = strings.ReplaceAll(cleaned, ",", "")
 	cleaned = strings.ReplaceAll(cleaned, ".", "")
+
+	cleaned = extractPreceedingNumber(cleaned)
 
 	// Handle empty after cleaning
 	if cleaned == "" {
@@ -156,4 +136,31 @@ func HandleMiliar(money string) string {
 	}
 
 	return money
+}
+
+/*
+Untuk handle kasus sbb:
+1000000000perannum
+1000000000-perannum
+67320000/TAHUN
+5000000/peserta
+68299000000(enamratusdelapanpuluhduajutasembilanratussembilanpuluhribu)
+1700000/BULAN/MESIN
+110000000-
+69833500-(EnamPuluhSembilanJutaDelapanRatusTigaPuluhTigaRibuLimaRatusRupiah)
+1500000000-2000000000
+8008000000-(ExclPPN)
+*/
+
+func extractPreceedingNumber(input string) string {
+	// Regular expression to find one or more digits at the start of the string
+	// followed by one or more letters (case insensitive)
+	re := regexp.MustCompile(`^(\d+).+`)
+
+	matches := re.FindStringSubmatch(input)
+	if len(matches) < 2 {
+		return input
+	}
+
+	return matches[1]
 }
