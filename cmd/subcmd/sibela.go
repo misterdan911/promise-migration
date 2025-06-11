@@ -1,8 +1,11 @@
 package subcmd
 
 import (
-	"github.com/spf13/cobra"
 	"promise-migration/db"
+	"promise-migration/internal/sibela"
+	"promise-migration/internal/sibela/sibelahelper"
+
+	"github.com/spf13/cobra"
 )
 
 var SibelaCmd = &cobra.Command{
@@ -17,14 +20,18 @@ var SibelaCmd = &cobra.Command{
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
+		db.ConnectDbSibela()
+		defer db.DbSibela.Close()
+
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-		//helper.DropAllForeignKey()
-		//helper.TruncateTableAndLog()
+		sibelahelper.DropAllForeignKey()
+		sibelahelper.TruncateTableAndLog()
 
-		//helper.CreateAllForeignKey()
+		sibela.InsertRefPermintaan()
 
+		// sibelahelper.CreateAllForeignKey()
 	},
 }
 

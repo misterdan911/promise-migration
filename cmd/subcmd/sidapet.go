@@ -31,14 +31,7 @@ var SidapetCmd = &cobra.Command{
 
 		allHelperUser := helperusermodel.GetAllUser()
 
-		//for user, _ := range allUser {
-		//	sidapet.InsertToDbUsman(user)
-		//}
-
-		//sidapet.MigrateTblDomisili()
-
 		for _, helperUser := range allHelperUser {
-
 			g.User = g.GUser{
 				Id:   helperUser.VmsUserId,
 				Name: helperUser.VmsUserName,
@@ -49,7 +42,6 @@ var SidapetCmd = &cobra.Command{
 			} else {
 				continue
 			}
-
 		}
 
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail

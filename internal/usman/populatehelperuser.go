@@ -7,6 +7,8 @@ import (
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
 	promisesibela "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	"promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
+	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
@@ -22,6 +24,7 @@ func PopulateHelperUser() {
 
 	for _, vmsUser := range allVmsUser {
 
+		// save to global variable
 		g.User = g.GUser{
 			Id:   vmsUser.Id,
 			Name: vmsUser.Name,
@@ -71,6 +74,16 @@ func PopulateHelperUser() {
 			nip = GetNipByUserId(vmsUser.Id)
 		}
 
+		// dapatkan kode unit
+		var kodeUnit pgtype.Text
+		if vmsUser.IdLevel.Int32 == 6 {
+			kodeUnit = tblpejabatpembeliansubmodel.GetKodeUnitByUserId(vmsUser.Id)
+		} else if vmsUser.IdLevel.Int32 == 7 {
+			kodeUnit = tblppksubmodel.GetKodeUnitByUserId(vmsUser.Id)
+		}
+
+		// fmt.Println("kodeUnit: " + kodeUnit.String)
+
 		helperUser := helperusermodel.HelperUser{
 			VmsUserId:        vmsUser.Id,
 			VmsUserName:      vmsUser.Name,
@@ -80,6 +93,7 @@ func PopulateHelperUser() {
 			VmsUserCreatedAt: vmsUser.CreatedAt,
 			VmsUserUpdatedAt: vmsUser.UpdatedAt,
 			Nip:              nip,
+			KodeUnit:         kodeUnit,
 			DbPenyedia:       dbPenyedia,
 			NamaPenyedia:     namaPenyedia,
 			JenisPenyedia:    jenisPenyedia,
