@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -23,7 +24,7 @@ type VmsTblSaham struct {
 	PathSaham        pgtype.Text
 }
 
-func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -76,7 +77,7 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":        profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":        helperUser.KodeVendor,
 			"nm_saham":           vTS.NmSaham,
 			"no_ktp_saham":       vTS.NoKtpSaham,
 			"alamat_saham":       vTS.AlamatSaham,

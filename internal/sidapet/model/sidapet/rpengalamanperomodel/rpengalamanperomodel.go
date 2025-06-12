@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -15,7 +16,7 @@ type VmsPP struct {
 	PathPnglmn  pgtype.Text
 }
 
-func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		return
 	}
@@ -49,7 +50,7 @@ func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia) {
 		    )`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":    profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":    helperUser.KodeVendor,
 			"nama_pekerjaan": vPP.NmPnglmnOrg,
 			"file_bukti":     vPP.PathPnglmn,
 		}

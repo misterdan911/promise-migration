@@ -3,14 +3,16 @@ package radministrasiperomodel
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
+
+	"github.com/jackc/pgx/v5"
 )
 
-func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		return
 	}
@@ -31,7 +33,7 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia) {
     )`
 
 	args := pgx.NamedArgs{
-		"kode_vendor":    profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":    helperUser.KodeVendor,
 		"npwp":           profilePenyedia.Npwp,
 		"file_skb_pph23": profilePenyedia.PathSkb,
 		"file_sk_pp23":   profilePenyedia.PathSkpp23,

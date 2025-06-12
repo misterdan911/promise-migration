@@ -5,11 +5,12 @@ import (
 	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/structs"
 	"strings"
 )
 
-func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
 	}
@@ -43,7 +44,7 @@ func InsertRefPengurusBu(profilePenyedia structs.TblProfilePenyedia) {
     )`
 
 	args := pgx.NamedArgs{
-		"kode_vendor": profilePenyedia.IdProfilPenyedia,
+		"kode_vendor": helperUser.KodeVendor,
 		"bentuk_bu":   bentukBu,
 	}
 

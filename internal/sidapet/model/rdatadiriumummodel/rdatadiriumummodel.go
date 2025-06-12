@@ -4,15 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/model/hdomisilimodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
+
+	"github.com/jackc/pgx/v5"
 )
 
-func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia, helperuser helperusermodel.HelperUser) {
 	ctx := context.Background()
 
 	var nama sql.NullString
@@ -67,7 +69,7 @@ func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia) {
     )`
 
 	args := pgx.NamedArgs{
-		"kode_vendor":            profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":            helperuser.KodeVendor,
 		"nama":                   nama,
 		"nama_badan_usaha":       namaBadanUsaha,
 		"nomor_telp":             profilePenyedia.NoTelp,

@@ -6,11 +6,12 @@ import (
 	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/model/sidapet/hbankkwmodel"
 	"promise-migration/internal/structs"
 )
 
-func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		return
 	}
@@ -43,7 +44,7 @@ func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia) {
     )`
 
 	args := pgx.NamedArgs{
-		"kode_vendor":    profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":    helperUser.KodeVendor,
 		"nm_pemilik_rek": profilePenyedia.PemilikRek,
 		"no_rek":         profilePenyedia.NoRek,
 		"sandi_bank":     sandiBank,

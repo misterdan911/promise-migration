@@ -109,30 +109,30 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)
 
 	// Insert to ref_datadiri_umum
-	rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia)
+	rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia, helperUser)
 
-	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia)
-	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia)
-	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia)
-	rsertifperomodel.InsertRefSertifPero(profilePenyedia)
-	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia)
+	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
+	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
+	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
+	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
+	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
 
-	radmbumodel.InsertRefAdmBu(profilePenyedia)
-	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia)
-	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia)
-	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia)
-	rdireksibumodel.InsertRefDireksiBu(profilePenyedia)
-	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia)
-	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia)	// gak ada sertifikat di db lama
-	rsahambumodel.InsertrefSahamBu(profilePenyedia) // belum tau cara dapetin is_saham_selamanya
-	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia)
-	rtenagaahlibumodel.InsertPersonalia(profilePenyedia)
+	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
+	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
+	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
+	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
+	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
+	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
+	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
+	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser) // belum tau cara dapetin is_saham_selamanya
+	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
+	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
 
 	// data kantor tidak ada
 
-	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia)
-	rpengalamanbumodel.InsertPengalaman(profilePenyedia)
-	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia)
+	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia, helperUser)
+	rpengalamanbumodel.InsertPengalaman(profilePenyedia, helperUser)
+	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia, helperUser)
 
 	// Update sequence
 	sidapethelper.UpdatePkSequence("ref_vendor", "kode_vendor")

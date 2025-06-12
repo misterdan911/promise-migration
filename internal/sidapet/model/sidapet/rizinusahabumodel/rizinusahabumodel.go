@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -25,7 +26,7 @@ type VTblIzin struct {
 	PathIzin         pgtype.Text
 }
 
-func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -92,7 +93,7 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":        profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":        helperUser.KodeVendor,
 			"jenis_izin_usaha":   jenisIzinusaha,
 			"nama":               vTI.NamaIzin,
 			"nomor_izin":         vTI.NoIzin,

@@ -6,10 +6,11 @@ import (
 	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/structs"
 )
 
-func InsertrefDataPajakBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertrefDataPajakBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -37,7 +38,7 @@ func InsertrefDataPajakBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 	args := pgx.NamedArgs{
-		"kode_vendor":     profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":     helperUser.KodeVendor,
 		"npwp":            profilePenyedia.Npwp,
 		"file_npwp":       profilePenyedia.PathNpwp,
 		"file_bukti_kswp": sql.NullString{},

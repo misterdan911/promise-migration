@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/structs"
 	"strconv"
 )
@@ -19,7 +20,7 @@ type VTblKomisaris struct {
 	PathKtpKomisaris pgtype.Text
 }
 
-func InsertRefKomisarisBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefKomisarisBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
 	}
@@ -68,7 +69,7 @@ func InsertRefKomisarisBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":        profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":        helperUser.KodeVendor,
 			"nm_komisaris":       vTK.NmKomisaris,
 			"jbtn_komisaris":     vTK.JbtnKomisaris,
 			"hp_komisaris":       vTK.HpKomisaris,

@@ -5,6 +5,8 @@ import (
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplmodel"
 	"promise-migration/internal/sibela/sibelahelper"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func InsertRefPermintaan() {
@@ -13,11 +15,21 @@ func InsertRefPermintaan() {
 
 	for _, tblPaketPl := range allTblPaketPl {
 		idUserPP := tblPaketPl.IdUserpp
-		helperUser := helperusermodel.GetByVmsUserId(idUserPP)
+		userPP := helperusermodel.GetByVmsUserId(idUserPP)
+
+		var jenisPenyedia pgtype.Text
+		if userPP.VmsUserLevel.Int32 == 5 {
+			jenisPenyedia.Valid = true
+			jenisPenyedia.String = "dpt"
+		} else if userPP.VmsUserLevel.Int32 == 9 {
+			jenisPenyedia.Valid = true
+			jenisPenyedia.String = "luar_dpt"
+		}
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodePermintaan: tblPaketPl.IdPaketPl,
-			KodeUnit:       helperUser.KodeUnit,
+			KodeUnit:       userPP.KodeUnit,
+			JenisPenyedia:  jenisPenyedia,
 		}
 
 		refpermintaanmodel.InsertNew(refPermintaan)

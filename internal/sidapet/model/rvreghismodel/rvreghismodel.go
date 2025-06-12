@@ -20,7 +20,7 @@ type RefVenReg struct {
 	KodeRegister pgtype.Int4
 }
 
-func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user helperusermodel.HelperUser, kodeRegister pgtype.Int4) {
+func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, helperuser helperusermodel.HelperUser, kodeRegister pgtype.Int4) {
 	ctx := context.Background()
 
 	qIns := `
@@ -69,7 +69,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
 		"email":               profilePenyedia.Email,
-		"password":            user.VmsUserPass,
+		"password":            helperuser.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},
@@ -82,7 +82,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, user 
 		"distance_percentage": sql.NullInt32{Valid: false},
 		"distance_point":      sql.NullInt32{Valid: false},
 		"keypass":             sql.NullString{Valid: false},
-		"kode_vendor":         profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":         helperuser.KodeVendor,
 	}
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {

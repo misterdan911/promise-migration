@@ -9,6 +9,7 @@ import (
 	"log"
 	"promise-migration/db"
 	helper2 "promise-migration/internal/helper"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -27,7 +28,7 @@ type VTAkta struct {
 	PathAktaAkhir  pgtype.Text
 }
 
-func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -108,7 +109,7 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":     profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":     helperUser.KodeVendor,
 			"no_akta_awal":    vTA.NoAkta,
 			"tgl_akta_awal":   tglAktaAwal,
 			"notaris_awal":    vTA.NotaAkta,

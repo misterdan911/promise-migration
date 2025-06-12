@@ -84,7 +84,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 		"distance_percentage": sql.NullInt32{Valid: false},
 		"distance_point":      sql.NullInt32{Valid: false},
 		"keypass":             sql.NullString{Valid: false},
-		"kode_vendor":         profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":         helperUser.KodeVendor,
 	}
 	// connec, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 	rwInsRefVenReg, errIns := db.DbSidapet.Query(ctx, qIns, args)

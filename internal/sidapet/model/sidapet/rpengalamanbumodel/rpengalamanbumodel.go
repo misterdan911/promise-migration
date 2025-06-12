@@ -7,6 +7,7 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/helper"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -89,7 +90,11 @@ type RefPengalamanBu struct {
 	EncryptKeyBast      pgtype.Text
 }
 
-func InsertPengalaman(profilePenyedia structs.TblProfilePenyedia) {
+var helperUser helperusermodel.HelperUser
+
+func InsertPengalaman(profilePenyedia structs.TblProfilePenyedia, userHelper helperusermodel.HelperUser) {
+
+	helperUser = userHelper
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -149,7 +154,7 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
 		tglAkhirPekerjaan := GetTglAkhirPekerjaan(pengalaman.TglSelesaiPnglmn10.String)
 
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
-			KodeVendor:        profilePenyedia.IdProfilPenyedia,
+			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn10,
 			TahunPekerjaan:    tahunPekerjaan, // harus ada proses lebih lanjut
 			PemberiKerja:      pengalaman.PemberiPnglmn10,
@@ -207,7 +212,7 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 		tglAkhirPekerjaan := GetTglAkhirPekerjaan(pengalaman.TglSelesaiPnglmn3.String)
 
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
-			KodeVendor:        profilePenyedia.IdProfilPenyedia,
+			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn3,
 			TahunPekerjaan:    tahunPekerjaan, // harus ada proses lebih lanjut
 			PemberiKerja:      pengalaman.PemberiPnglmn3,
@@ -264,7 +269,7 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
 		tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmnSekarang.String)
 
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
-			KodeVendor:     profilePenyedia.IdProfilPenyedia,
+			KodeVendor:     helperUser.KodeVendor,
 			NamaPekerjaan:  pengalaman.NmPnglmnSekarang,
 			TahunPekerjaan: tahunPekerjaan, // harus ada proses lebih lanjut
 			PemberiKerja:   pengalaman.PemberiPnglmnSekarang,

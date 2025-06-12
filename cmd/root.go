@@ -46,6 +46,6 @@ func init() {
 
 	// rootCmd.SetArgs([]string{"migrate", "sidapet"})
 	//rootCmd.SetArgs([]string{"migrate", "usman"})
-	//rootCmd.SetArgs([]string{"migrate", "sibela"})
+	// rootCmd.SetArgs([]string{"migrate", "sibela"})
 	rootCmd.AddCommand(MigrateCmd)
 }

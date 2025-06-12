@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -22,7 +23,7 @@ type VTblDireksi struct {
 	StatusDireksiPerusahaan pgtype.Int4
 }
 
-func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia) {
+func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -73,7 +74,7 @@ func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia) {
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":      profilePenyedia.IdProfilPenyedia,
+			"kode_vendor":      helperUser.KodeVendor,
 			"nm_direksi":       vTD.NmDireksi,
 			"jbtn_direksi":     vTD.JbtnDireksi,
 			"hp_direksi":       vTD.HpDireksi,
