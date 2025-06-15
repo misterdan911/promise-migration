@@ -5,7 +5,7 @@ import "promise-migration/internal/helper"
 func TruncateTableAndLog() {
 
   TruncatedbSidapetHelperUser()
-  TruncatedbSidapetHelperUserNip()
+  // TruncatedbSidapetHelperUserNip()
   TruncateTable("ref_user")
 
   TruncateTable("ref_user_external")

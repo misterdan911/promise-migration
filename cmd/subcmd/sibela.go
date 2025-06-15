@@ -31,7 +31,8 @@ var SibelaCmd = &cobra.Command{
 
 		/*
 		 ISSUE:
-		 - ref_permintaan.kode_unit masih ada yg null karena id_ppk dan id_userpp dua2 nya null
+		 - Tabel ref_permintaan
+		   kode_unit masih ada yg null karena id_ppk dan id_userpp dua2 nya null
 		*/
 		sibela.InsertRefPermintaan()
 

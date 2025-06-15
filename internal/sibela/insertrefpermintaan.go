@@ -50,11 +50,12 @@ func InsertRefPermintaan() {
 		}
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
-			KodePermintaan: tblPaketPl.IdPaketPl,
-			KodeUnit:       kodeUnit,
-			JenisPenyedia:  jenisPenyedia,
-			KodeVendor:     helperUser.KodeVendor,
-			NamaPaket:      tblPaketPl.NamaPesananPl,
+			KodePermintaan:      tblPaketPl.IdPaketPl,
+			KodeUnit:            kodeUnit,
+			JenisPenyedia:       jenisPenyedia,
+			KodeVendor:          helperUser.KodeVendor,
+			NamaPaket:           tblPaketPl.NamaPesananPl,
+			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 		}
 
 		refpermintaanmodel.InsertNew(refPermintaan)

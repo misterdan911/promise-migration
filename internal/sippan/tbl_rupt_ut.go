@@ -4,12 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sippan/helper"
 	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type OldRupUt struct {
@@ -52,7 +53,11 @@ func MigrateTblRupUt() {
 	var err error
 	ctx := context.Background()
 
-	qRuptUt := `SELECT id_rup_ut, kode_unit, kode_unit_lama, id_user, nomor_rup_ut, nama_paket, lokasi, detail_lokasi, tahun_anggaran, uraian_pekerjaan, spesifikasi_pekerjaan, volume_pekerjaan, satuan, produk_dalam_negeri, usaha, jumlah_pagu, pra_dipa, izin_tahun_jamak, metode_pengadaan, jenis_pengadaan, rencana_pemilihan, rencana_pemilihan_akhir, rencana_pelaksanaan, rencana_pelaksanaan_akhir, rencana_pemanfaatan, rencana_pemanfaatan_akhir, created_at, updated_at, status_rup FROM tbl_rup_ut ORDER BY id_rup_ut ASC`
+	qRuptUt := `
+	SELECT
+		id_rup_ut, kode_unit, kode_unit_lama, id_user, nomor_rup_ut, nama_paket, lokasi, detail_lokasi, tahun_anggaran, uraian_pekerjaan, spesifikasi_pekerjaan, volume_pekerjaan, satuan, produk_dalam_negeri, usaha, jumlah_pagu, pra_dipa, izin_tahun_jamak, metode_pengadaan, jenis_pengadaan, rencana_pemilihan, rencana_pemilihan_akhir, rencana_pelaksanaan, rencana_pelaksanaan_akhir, rencana_pemanfaatan, rencana_pemanfaatan_akhir, created_at, updated_at, status_rup
+	FROM tbl_rup_ut ORDER BY id_rup_ut ASC`
+
 	rwRuptUt, err := db.ProSippan.Query(ctx, qRuptUt)
 	if err != nil {
 		log.Fatal("qRuptUt Failed, " + err.Error() + " " + qRuptUt)
@@ -114,12 +119,12 @@ func MigrateTblRupUt() {
 		tglRencPemanfaatanAwal := helper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
 		tglRencPemanfaatanAkhir := helper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
 
-		qInsert := `INSERT INTO ref_rup (kode_rup, no_rup, no_drauk, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
-		VALUES (@kode_rup, @no_rup, @no_drauk, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
+		qInsert := `INSERT INTO ref_rup (no_rup, no_drauk, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
+		VALUES (@no_rup, @no_drauk, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
 		args := pgx.NamedArgs{
-			"kode_rup":                   oldRup.IdRupUt,
 			"no_rup":                     oldRup.NomorRupUt.String,
-			"no_drauk":                   sql.NullInt16{Valid: false},
+			"no_drauk":                   sql.NullInt16{Valid: false}, // Tidak ada datanya dari DB lama
+			"kode_unit":                  oldRup.KodeUnit,
 			"nama_paket":                 oldRup.NamaPaket,
 			"uraian_spek_kerja":          uraian_spek_kerja,
 			"volume_pekerjaan":           oldRup.VolumePekerjaan,
