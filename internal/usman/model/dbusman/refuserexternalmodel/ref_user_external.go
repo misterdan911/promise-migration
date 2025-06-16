@@ -9,6 +9,7 @@ import (
 )
 
 type RefUserExternal struct {
+	Id             pgtype.Int4
 	IdUser         pgtype.Int4
 	Username       pgtype.Text
 	Nama           pgtype.Text
@@ -17,7 +18,6 @@ type RefUserExternal struct {
 	StatusPengguna pgtype.Text
 	Udcr           pgtype.Timestamptz
 	Udch           pgtype.Timestamptz
-	Id             pgtype.Int4
 }
 
 func InsertNew(user RefUserExternal) {
@@ -25,6 +25,7 @@ func InsertNew(user RefUserExternal) {
 
 	qInsert := `
   INSERT INTO ref_user_external (
+  	id,
     username,
     nama,
     nik,
@@ -34,6 +35,7 @@ func InsertNew(user RefUserExternal) {
     udch,
     id_user
   ) VALUES (
+  	@id,
 		@username,
 		@nama,
 		@nik,
@@ -42,9 +44,21 @@ func InsertNew(user RefUserExternal) {
 		@udcr,
 		@udch,
 		@id_user
-	)`
+	) ON CONFLICT (id)
+		DO UPDATE SET
+  	id = EXCLUDED.id,
+    username = EXCLUDED.username,
+    nama = EXCLUDED.nama,
+    nik = EXCLUDED.nik,
+    siup = EXCLUDED.siup,
+    status_pengguna = EXCLUDED.status_pengguna,
+    udcr = EXCLUDED.udcr,
+    udch = EXCLUDED.udch,
+    id_user = EXCLUDED.id_user
+  `
 
 	args := pgx.NamedArgs{
+		"id":        			 user.Id,
 		"username":        user.Username,
 		"nama":            user.Nama,
 		"nik":             user.Nik,

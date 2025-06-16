@@ -21,7 +21,7 @@ type TrxGroupUser struct {
 	Udch        pgtype.Text
 }
 
-func InsertNew(refUser refusermodel.RefUser, kodeGroup string) {
+func InsertNew(trxgroupuser TrxGroupUser) {
 
 	ctx := context.Background()
 
@@ -44,16 +44,14 @@ func InsertNew(refUser refusermodel.RefUser, kodeGroup string) {
 		@udch
 	)`
 
-	currentTime := time.Now().UTC()
-
 	args := pgx.NamedArgs{
-		"kode_group": pgtype.Text{Valid: true, String: kodeGroup},
-		"id_user":    refUser.Id,
-		"status":     pgtype.Int4{Valid: true, Int32: 1},
-		"ucr":        pgtype.Text{},
-		"uch":        pgtype.Text{},
-		"udcr":       pgtype.Text{Valid: true, String: currentTime.String()},
-		"udch":       pgtype.Text{},
+		"kode_group": trxgroupuser.KodeGroup,
+		"id_user":    trxgroupuser.IdUser,
+		"status":     trxgroupuser.Status,
+		"ucr":        trxgroupuser.Ucr,
+		"uch":        trxgroupuser.Uch,
+		"udcr":       trxgroupuser.Udcr,
+		"udch":       trxgroupuser.Udch,
 	}
 
 	_, errIns := db.DbUsman.Exec(ctx, qInsert, args)

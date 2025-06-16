@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
+
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
@@ -13,6 +15,8 @@ import (
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
+	"promise-migration/internal/sidapet/model/rvreghismodel"
+	"promise-migration/internal/sidapet/model/rvregmodel"
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
@@ -29,12 +33,13 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
 	"promise-migration/internal/sidapet/sidapethelper"
-
-	"promise-migration/internal/sidapet/model/rvreghismodel"
-	"promise-migration/internal/sidapet/model/rvregmodel"
+	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
+	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/structs"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
+
 )
 
 type JawabItem struct {
@@ -102,22 +107,29 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	helperUser.KodeVendor = allVendor[0].KodeVendor
 	helperusermodel.UpdateKodeVendor(helperUser)
 
-	/*
 	// masukan data ke tabel ref_user_external kalau helperUser external
 	refUserExternal := refuserexternalmodel.RefUserExternal{
+		Id:				helperUser.KodeVendor,
+		IdUser:         helperUser.UsmanRefUserId,
 		Username:       helperUser.NamaPenyedia,
 		Nama:           helperUser.VmsUserName,
 		StatusPengguna: helperUser.JenisPenyedia,
 		Udcr:           helperUser.VmsUserCreatedAt,
 		Udch:           helperUser.VmsUserUpdatedAt,
-		IdUser:         refUser.Id,
 	}
 	refuserexternalmodel.InsertNew(refUserExternal)
 
 	// kasih akses masuk ke Si-Dapet
 	// karena semua helperUser external pasti bisa masuk Si-Dapet
 	// trxgroupusermodel.InsertNew(refUser, "G01.8")
-	*/
+	currentTime := time.Now().UTC()
+	trxGroupUser := trxgroupusermodel.TrxGroupUser{
+		KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},
+		IdUser: helperUser.UsmanRefUserId,
+		Status: pgtype.Text{Valid: true, String: "1"},
+		Udcr: pgtype.Text{Valid: true, String: currentTime.String()},
+	}
+	trxgroupusermodel.InsertNew(trxGroupUser)
 
 	// Insert to ref_vendor_register
 	kodeRegister := rvregmodel.InsertRefVendorRegister(profilePenyedia, helperUser)

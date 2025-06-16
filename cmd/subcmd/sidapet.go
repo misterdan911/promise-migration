@@ -20,6 +20,9 @@ var SidapetCmd = &cobra.Command{
 		db.ConnectVmsDb()
 		defer db.VmsDb.Close()
 
+		db.ConnectDbUsman()
+		defer db.DbUsman.Close()
+
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
