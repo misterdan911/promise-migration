@@ -11,7 +11,9 @@ import (
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
-	"promise-migration/internal/usman/model/vmsdb/usermodel"
+  "promise-migration/internal/usman/model/vmsdb/usermodel"
+	"promise-migration/internal/usman/model/dbusman/refusermodel"
+  "promise-migration/internal/usman/usmanhelper"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -21,6 +23,15 @@ var allHUserNip []helperusernipmodel.HelperUserNip
 func PopulateHelperUser() {
 	allVmsUser := usermodel.GetAllUser()
 	allHUserNip = helperusernipmodel.GetAllHelperUserNip()
+
+	for _, vmsUser := range allVmsUser {
+		refusermodel.DeleteByEmail(vmsUser.Email);
+	}
+
+  usmanhelper.UpdatePkSequence2("ref_user", "id", "ref_user_id_seq")
+  usmanhelper.UpdatePkSequence2("ref_user_external", "id", "ref_user_external_id_seq")
+  usmanhelper.UpdatePkSequence2("ref_user_internal", "id", "ref_user_internal_id_seq")
+  usmanhelper.UpdatePkSequence2("trx_group_user", "id_group_user", "trx_group_user_id_seq")
 
 	for _, vmsUser := range allVmsUser {
 

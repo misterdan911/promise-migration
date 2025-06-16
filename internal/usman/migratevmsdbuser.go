@@ -2,10 +2,10 @@ package usman
 
 import (
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
+	// "promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refuserinternalmodel"
 	"promise-migration/internal/usman/model/dbusman/refusermodel"
-	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
+	// "promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -38,6 +38,7 @@ func MigrateUserToUsman() {
 		refUser = refusermodel.InsertNew(refUser)
 
 		if statusUser == "eksternal" {
+			/*
 			// masukan data ke tabel ref_user_external kalau helperUser external
 			refUserExternal := refuserexternalmodel.RefUserExternal{
 				Username:       helperUser.NamaPenyedia,
@@ -52,6 +53,7 @@ func MigrateUserToUsman() {
 			// kasih akses masuk ke Si-Dapet
 			// karena semua helperUser external pasti bisa masuk Si-Dapet
 			trxgroupusermodel.InsertNew(refUser, "G01.8")
+			*/
 
 		} else if statusUser == "internal" {
 

@@ -89,3 +89,14 @@ func InsertNew(refUser RefUser) RefUser {
 
 	return allUser[0]
 }
+
+func DeleteByEmail(email pgtype.Text) {
+  ctx := context.Background()
+
+	qDelete := `DELETE FROM ref_user WHERE email = $1`
+  _, err := db.DbUsman.Exec(ctx, qDelete, email)
+  if err != nil {
+    log.Fatal("failed deleting RefUser (ref_user.go), " + err.Error())
+  }
+
+}

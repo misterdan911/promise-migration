@@ -3,7 +3,7 @@ package subcmd
 import (
 	"promise-migration/db"
 	"promise-migration/internal/usman"
-	"promise-migration/internal/usman/helper"
+	"promise-migration/internal/usman/usmanhelper"
 
 	"github.com/spf13/cobra"
 )
@@ -26,14 +26,14 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-		helper.DropAllForeignKey()
-		helper.TruncateTableAndLog()
+		// usmanhelper.DropAllForeignKey()
+		usmanhelper.TruncateTableAndLog()
 
 		// usman.PopulateHelperUserNip()
 		usman.PopulateHelperUser()
 		usman.MigrateUserToUsman()
 
-		helper.CreateAllForeignKey()
+		// usmanhelper.CreateAllForeignKey()
 
 	},
 }

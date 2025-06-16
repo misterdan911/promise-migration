@@ -1,4 +1,4 @@
-package helper
+package usmanhelper
 
 import (
 	"context"
@@ -83,6 +83,18 @@ func UpdatePkSequence(tableName string, pkFieldname string) {
 		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
 	}
 }
+
+func UpdatePkSequence2(tableName string, pkFieldname string, seqName string) {
+	ctx := context.Background()
+
+	qUpdateSeq := `SELECT setval('` + seqName + `', COALESCE((SELECT MAX(` + pkFieldname + `) FROM ref_user), 1))`;	
+	fmt.Println(qUpdateSeq)
+	_, errUpdateSeq := db.DbUsman.Exec(ctx, qUpdateSeq)
+	if errUpdateSeq != nil {
+		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
+	}
+}
+
 
 func ResetSequence(seqName string) {
 	ctx := context.Background()
