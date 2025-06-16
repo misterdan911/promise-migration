@@ -24,6 +24,7 @@ type HelperUser struct {
 	DbPenyedia       pgtype.Text
 	NamaPenyedia     pgtype.Text
 	JenisPenyedia    pgtype.Text
+	UsmanRefUserId   pgtype.Int4
 	KodeVendor       pgtype.Int4
 }
 
@@ -45,6 +46,7 @@ func InsertNew(helperUser HelperUser) {
     db_penyedia,
     nama_penyedia,
     jenis_penyedia,
+    usman_ref_user_id,
     kode_vendor
   ) VALUES (
     @vms_user_id,
@@ -59,6 +61,7 @@ func InsertNew(helperUser HelperUser) {
     @db_penyedia,
     @nama_penyedia,
     @jenis_penyedia,
+    @usman_ref_user_id,
     @kode_vendor
   )`
 
@@ -75,6 +78,7 @@ func InsertNew(helperUser HelperUser) {
 		"db_penyedia":         helperUser.DbPenyedia,
 		"nama_penyedia":       helperUser.NamaPenyedia,
 		"jenis_penyedia":      helperUser.JenisPenyedia,
+    "usman_ref_user_id":   helperUser.UsmanRefUserId,
 		"kode_vendor":         helperUser.KodeVendor,
 	}
 
@@ -104,6 +108,7 @@ func GetAllUser() []HelperUser {
     db_penyedia,
     nama_penyedia,
     jenis_penyedia,
+    usman_ref_user_id,
     kode_vendor
   FROM helper_user hu`
 
@@ -131,8 +136,22 @@ func UpdateKodeVendor(helperUser HelperUser) {
 
 	_, err := db.DbSidapet.Exec(ctx, qUpdate, args)
 	if err != nil {
-		fmt.Println("unable to insert helper_user, " + err.Error())
+		fmt.Println("unable to update kode_vendor (helperuser.go), " + err.Error())
 	}
+}
+
+func UpdateUsmanRefUserId(helperUser HelperUser) {
+  ctx := context.Background()
+  qUpdate := `UPDATE helper_user SET usman_ref_user_id = @usman_ref_user_id WHERE id = @id`
+  args := pgx.NamedArgs{
+    "id":                 helperUser.Id,
+    "usman_ref_user_id":  helperUser.UsmanRefUserId,
+  }
+
+  _, err := db.DbSidapet.Exec(ctx, qUpdate, args)
+  if err != nil {
+    fmt.Println("unable to update usman_ref_user_id (helperuser.go), " + err.Error())
+  }
 }
 
 func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {

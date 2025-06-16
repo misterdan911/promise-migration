@@ -11,3 +11,5 @@ type RefVendor struct {
 	Udcr              pgtype.Timestamptz
 	Udch              pgtype.Timestamptz
 }
+
+// func InsertNew(refVendor)

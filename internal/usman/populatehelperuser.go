@@ -51,7 +51,7 @@ func PopulateHelperUser() {
 		var jenisPenyedia pgtype.Text
 
 		if (penyedia == structs.TblProfilePenyedia{}) {
-			// kalau di vms_db gak ada, coba cari di db promise_sibela
+			// kalau data penyedia di vms_db gak ada, coba cari di db promise_sibela
 			penyedia = promisesibela.GetPenyediaByUserId(vmsUser.Id)
 
 			if (penyedia != structs.TblProfilePenyedia{}) {
@@ -61,7 +61,7 @@ func PopulateHelperUser() {
 			strDbPenyedia = "vms_db"
 		}
 
-		// kalau penyedia ditemukan, set nilai dbPenyedia, namaPenyedia, dan jenisPenyedia
+		// kalau data penyedia ditemukan, set nilai dbPenyedia, namaPenyedia, dan jenisPenyedia
 		if (penyedia != structs.TblProfilePenyedia{}) {
 			dbPenyedia = pgtype.Text{Valid: true, String: strDbPenyedia}
 			namaPenyedia = pgtype.Text{Valid: true, String: penyedia.Nama.String}
@@ -72,20 +72,22 @@ func PopulateHelperUser() {
 				jenisPenyedia = pgtype.Text{Valid: true, String: "perorangan"}
 			}
 		} else {
+			// kalau data penyedia tidak ditemukan, kasih catatan
 			if vmsUser.IdLevel.Int32 == 5 || vmsUser.IdLevel.Int32 == 9 {
-				//msg := "UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan"
-				msg := "profile penyedia tidak ditemukan"
+				//msg := "UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan di vms_db ataupun di promise_sibela"
+				msg := "profile penyedia tidak ditemukan di vms_db ataupun di promise_sibela"
 				fmt.Println(msg)
 				helper.LogUser(msg)
 			}
 		}
 
+		// kalau usernya bukan user penyedia, coba dapatkan NIP nya
 		if (vmsUser.IdLevel.Int32 != 5) || (vmsUser.IdLevel.Int32 != 9) {
 			// GetNip
 			nip = GetNipByUserId(vmsUser.Id)
 		}
 
-		// dapatkan kode unit
+		// kalau id_levelnya 6 (PP) atau 7 (PPK) coba dapatkan kode unit
 		var kodeUnit pgtype.Text
 		if vmsUser.IdLevel.Int32 == 6 {
 			kodeUnit = tblpejabatpembeliansubmodel.GetKodeUnitByUserId(vmsUser.Id)

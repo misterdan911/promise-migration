@@ -102,6 +102,23 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	helperUser.KodeVendor = allVendor[0].KodeVendor
 	helperusermodel.UpdateKodeVendor(helperUser)
 
+	/*
+	// masukan data ke tabel ref_user_external kalau helperUser external
+	refUserExternal := refuserexternalmodel.RefUserExternal{
+		Username:       helperUser.NamaPenyedia,
+		Nama:           helperUser.VmsUserName,
+		StatusPengguna: helperUser.JenisPenyedia,
+		Udcr:           helperUser.VmsUserCreatedAt,
+		Udch:           helperUser.VmsUserUpdatedAt,
+		IdUser:         refUser.Id,
+	}
+	refuserexternalmodel.InsertNew(refUserExternal)
+
+	// kasih akses masuk ke Si-Dapet
+	// karena semua helperUser external pasti bisa masuk Si-Dapet
+	// trxgroupusermodel.InsertNew(refUser, "G01.8")
+	*/
+
 	// Insert to ref_vendor_register
 	kodeRegister := rvregmodel.InsertRefVendorRegister(profilePenyedia, helperUser)
 
