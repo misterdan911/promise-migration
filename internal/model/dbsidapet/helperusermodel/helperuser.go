@@ -119,7 +119,7 @@ func GetAllUser() []HelperUser {
 
 	allUser, err = pgx.CollectRows(rwHUser, pgx.RowToStructByName[HelperUser])
 	if err != nil {
-		log.Fatal("failed collecting rwHUser (helperuser.go), " + err.Error())
+		log.Fatal("failed collecting rwHUser (helperuser.go:GetAllUser), " + err.Error())
 	}
 	defer rwHUser.Close()
 
@@ -173,6 +173,7 @@ func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
     db_penyedia,
     nama_penyedia,
     jenis_penyedia,
+    usman_ref_user_id,
     kode_vendor
   FROM helper_user hu
   WHERE vms_user_id = $1`
@@ -184,7 +185,7 @@ func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
 
 	allUser, err := pgx.CollectRows(rwHUser, pgx.RowToStructByName[HelperUser])
 	if err != nil {
-		log.Fatal("failed collecting rwHUser (helperuser.go), " + err.Error())
+		log.Fatal("failed collecting rwHUser (helperuser.go:GetByVmsUserId), " + err.Error())
 	}
 	defer rwHUser.Close()
 

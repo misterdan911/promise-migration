@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/helper"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -343,14 +343,14 @@ func GetNilaiPekerjaan(idPengalaman int32, strNilaiPengalaman string, fieldName 
 	if errNP != nil {
 
 		fmt.Println("errNP", errNP)
-		helper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
+		ghelper.Log("pengalaman_bu.txt", "errNP: "+errNP.Error())
 		//helper.LogUser(g.User.Id, g.User.Name, errNP.Error())
 		//helper.LogUser("tbl_pengalaman10")
 
-		helper.LogUser(errNP.Error())
+		ghelper.LogUser(errNP.Error())
 		tbl := "tbl_pengalaman10"
-		helper.LogUser(tbl + "." + fieldName + ": " + strconv.Itoa(int(idPengalaman)))
-		helper.LogUser(tbl + ".nilai_pengalaman: " + strNilaiPengalaman + " --> " + strconv.FormatInt(nP, 10) + "\n")
+		ghelper.LogUser(tbl + "." + fieldName + ": " + strconv.Itoa(int(idPengalaman)))
+		ghelper.LogUser(tbl + ".nilai_pengalaman: " + strNilaiPengalaman + " --> " + strconv.FormatInt(nP, 10) + "\n")
 
 	}
 	nilaiPekerjaan = pgtype.Int8{Valid: true, Int64: nP}

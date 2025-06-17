@@ -1,4 +1,4 @@
-package helper
+package sippanhelper
 
 import (
 	"database/sql"

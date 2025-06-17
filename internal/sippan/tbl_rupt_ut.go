@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sippan/helper"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/sippan/sippanhelper"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -17,7 +18,7 @@ type OldRupUt struct {
 	IdRupUt                 int
 	KodeUnit                string
 	KodeUnitLama            pgtype.Text
-	IdUser                  pgtype.Int8
+	IdUser                  pgtype.Int4
 	NomorRupUt              pgtype.Text
 	NamaPaket               pgtype.Text
 	Lokasi                  pgtype.Text
@@ -46,7 +47,7 @@ type OldRupUt struct {
 }
 
 func MigrateTblRupUt() {
-	truncateRefRup()
+	// truncateRefRup()
 
 	fmt.Println("Migrating tbl_rup_ut...")
 
@@ -86,7 +87,7 @@ func MigrateTblRupUt() {
 
 	for _, oldRup := range allOldRuptUt {
 
-		uraian_spek_kerja := helper.GetUraianSpekKerja(oldRup.UraianPekerjaan.String, oldRup.SpesifikasiPekerjaan.String)
+		uraian_spek_kerja := sippanhelper.GetUraianSpekKerja(oldRup.UraianPekerjaan.String, oldRup.SpesifikasiPekerjaan.String)
 
 		isKualifikasiKecil := sql.NullBool{Valid: true}
 		isKualifikasiMenengah := sql.NullBool{Valid: true}
@@ -112,12 +113,14 @@ func MigrateTblRupUt() {
 
 		kodeMetodePengadaan := arrMetodePengadaan[oldRup.MetodePengadaan.String]
 		kodeJenisPengadaan := arrJenisPengadaan[oldRup.JenisPengadaan.String]
-		tglRencPemilihanAwal := helper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
-		tglRencPemilihanAkhir := helper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
-		tglRencPelaksanaanAwal := helper.ConvertToFirstDayOfMonth(oldRup.RencanaPelaksanaan.String)
-		tglRencPelaksanaanAkhir := helper.ConvertToLastDayOfMonth(oldRup.RencanaPelaksanaanAkhir.String)
-		tglRencPemanfaatanAwal := helper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
-		tglRencPemanfaatanAkhir := helper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
+		tglRencPemilihanAwal := sippanhelper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
+		tglRencPemilihanAkhir := sippanhelper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
+		tglRencPelaksanaanAwal := sippanhelper.ConvertToFirstDayOfMonth(oldRup.RencanaPelaksanaan.String)
+		tglRencPelaksanaanAkhir := sippanhelper.ConvertToLastDayOfMonth(oldRup.RencanaPelaksanaanAkhir.String)
+		tglRencPemanfaatanAwal := sippanhelper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
+		tglRencPemanfaatanAkhir := sippanhelper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
+
+		helperUser := helperusermodel.GetByVmsUserId(oldRup.IdUser)
 
 		qInsert := `INSERT INTO ref_rup (no_rup, no_drauk, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
 		VALUES (@no_rup, @no_drauk, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
@@ -148,7 +151,7 @@ func MigrateTblRupUt() {
 			"tgl_renc_pemanfaatan_awal":  tglRencPemanfaatanAwal,
 			"tgl_renc_pemanfaatan_akhir": tglRencPemanfaatanAkhir,
 			"status_rup":                 sql.NullString{Valid: true, String: "diajukan"},
-			"ucr":                        sql.NullTime{Valid: false},
+			"ucr":                        helperUser.VmsUserEmail,
 			"uch":                        sql.NullTime{Valid: false},
 			"udcr":                       oldRup.CreatedAt,
 			"udch":                       oldRup.UpdatedAt,

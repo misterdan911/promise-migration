@@ -1,6 +1,6 @@
 package sidapethelper
 
-import "promise-migration/internal/helper"
+import "promise-migration/internal/ghelper"
 
 func TruncateTableAndLog() {
 
@@ -42,5 +42,5 @@ func TruncateTableAndLog() {
 	TruncateTable("trx_nilai_akhir")
 
 	// Truncate Log File
-	helper.TruncateLog("pengalaman_bu.txt")
+	ghelper.TruncateLog("pengalaman_bu.txt")
 }

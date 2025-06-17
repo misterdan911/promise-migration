@@ -29,7 +29,7 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 	ORDER BY id`
 	rKeyword, errKw := db.DbSidapet.Query(ctx, qKeyword)
 	if errKw != nil {
-		log.Fatal("qRuptUt Failed, " + errKw.Error() + " " + qKeyword)
+		log.Fatal("qKeyword Failed, " + errKw.Error() + " " + qKeyword)
 	}
 
 	allKeyword, errCollect := pgx.CollectRows(rKeyword, pgx.RowToStructByName[RefKeyword])

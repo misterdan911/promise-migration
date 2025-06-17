@@ -32,7 +32,7 @@ func UpdateProvKabKota() {
 		LEFT JOIN ref_kab_kota r_kk ON r_kk.kode_kab_kota = r_kw.kode_kab_kota`
 	rKeyword, errKw := db.DbSippan.Query(ctx, qKeyword)
 	if errKw != nil {
-		log.Fatal("qRuptUt Failed, " + errKw.Error() + " " + qKeyword)
+		log.Fatal("qKeyword Failed, " + errKw.Error() + " " + qKeyword)
 	}
 
 	allKeyword, errCollect := pgx.CollectRows(rKeyword, pgx.RowToStructByName[RefKeyword])
@@ -53,7 +53,7 @@ func UpdateProvKabKota() {
 			qRup := "SELECT kode_rup FROM ref_rup WHERE detail_lokasi ILIKE '%' || $1 || '%'"
 			rRup, errRup := db.DbSippan.Query(ctx, qRup, kwDetailLok)
 			if errRup != nil {
-				log.Fatal("qRuptUt Failed, " + errRup.Error() + " " + qRup)
+				log.Fatal("qRup Failed, " + errRup.Error() + " " + qRup)
 			}
 
 			allRup, errCollect := pgx.CollectRows(rRup, pgx.RowToStructByName[RefRup])
@@ -81,7 +81,7 @@ func UpdateProvKabKota() {
 			qRup := "SELECT kode_rup FROM ref_rup WHERE lokasi ILIKE '%' || $1 || '%'"
 			rRup, errRup := db.DbSippan.Query(ctx, qRup, kwLokasi)
 			if errRup != nil {
-				log.Fatal("qRuptUt Failed, " + errRup.Error() + " " + qRup)
+				log.Fatal("qRup Failed, " + errRup.Error() + " " + qRup)
 			}
 
 			allRup, errCollect := pgx.CollectRows(rRup, pgx.RowToStructByName[RefRup])

@@ -1,15 +1,11 @@
 package subcmd
 
 import (
-	"bufio"
-	"log"
-	"os"
-	"path/filepath"
 	"promise-migration/db"
 	"promise-migration/internal/g"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/usman"
 	"promise-migration/internal/usman/usmanhelper"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -32,7 +28,7 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-	  g.ExcludedEmails = getExcludedEmail()
+	  g.ExcludedEmails = ghelper.GetExcludedEmail()
 
 		// usmanhelper.DropAllForeignKey()
 		usmanhelper.TruncateTableAndLog()
@@ -46,9 +42,10 @@ var UsmanCmd = &cobra.Command{
 	},
 }
 
+/*
 func getExcludedEmail() []string {
   var emails []string
-  path := filepath.Join("files", "usman", "excluded_email.txt")
+  path := filepath.Join("files", "excluded_email.txt")
 
   // Open the file
   file, err := os.Open(path)
@@ -74,6 +71,7 @@ func getExcludedEmail() []string {
 
   return emails
 }
+*/
 
 
 func init() {

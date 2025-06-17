@@ -3,7 +3,7 @@ package usman
 import (
 	"fmt"
 	"promise-migration/internal/g"
-	"promise-migration/internal/helper"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
 	promisesibela "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
@@ -22,8 +22,6 @@ var allHUserNip []helperusernipmodel.HelperUserNip
 func PopulateHelperUser() {
 	allVmsUser := usermodel.GetAllUser()
 	allHUserNip = helperusernipmodel.GetAllHelperUserNip()
-
-
 
 	for _, vmsUser := range allVmsUser {
 
@@ -67,10 +65,10 @@ func PopulateHelperUser() {
 			// kalau data penyedia tidak ditemukan, kasih catatan
 			if vmsUser.IdLevel.Int32 == 5 || vmsUser.IdLevel.Int32 == 9 {
 				//msg := "UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan di vms_db ataupun di promise_sibela"
-				penyedia := strconv.Itoa(int(vmsUser.Id.Int32)) +"_"+ vmsUser.Name.String
+				penyedia := strconv.Itoa(int(vmsUser.Id.Int32)) + "_" + vmsUser.Name.String
 				msg := "profile penyedia " + penyedia + " tidak ditemukan di vms_db ataupun di promise_sibela"
 				fmt.Println(msg)
-				helper.LogUser(msg)
+				ghelper.LogUser(msg)
 			}
 		}
 
