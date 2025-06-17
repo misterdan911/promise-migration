@@ -261,7 +261,7 @@ Table trx_kat_j_vendor {
 
 Table trx_kategori {
   kode_trx_kategori serial [pk]
-  kode_kategori int4 [ref: - ref_kategori.kode_kategori]
+  kode_kategori int4
   status_persetujuan status_persetujuan [note: "Flag pengajuan paket diterima atau tidak (belum_diproses, proses, terima, tolak)"]
   keterangan_diterima text
   alasan_ditolak text
@@ -1520,224 +1520,227 @@ Table trx_undangan_pemeriksaan_keluar_dpt {
 }
 
 
+Ref: "ref_kategori"."kode_kategori" - "trx_kategori"."kode_kategori" [delete: cascade]
 
-Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "ref_datadiri_umum"."kode_kualifikasi_usaha"
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor"."kode_jenis_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_datadiri_umum"."kode_vendor"
+Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "ref_datadiri_umum"."kode_kualifikasi_usaha" [delete: cascade]
 
-Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_ktp"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_domisili"
+Ref: "ref_vendor"."kode_vendor" < "ref_datadiri_umum"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_komisaris_bu"."kode_vendor"
+Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_ktp" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "trx_vendor_penjr"."kode_vendor"
+Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_domisili" [delete: cascade]
 
+Ref: "ref_vendor"."kode_vendor" < "ref_komisaris_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_vendor_penjr"."kode_penjaringan"
+Ref: "ref_vendor"."kode_vendor" < "trx_vendor_penjr"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_direksi_bu"."kode_vendor"
 
-Ref: "ref_komisaris_bu"."kode_komisaris" < "ref_verif_komisaris"."kode_komisaris"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_vendor_penjr"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_direksi_bu"."kode_direksi" < "ref_verif_direksi"."kode_direksi"
+Ref: "ref_vendor"."kode_vendor" < "ref_direksi_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_pengurus_bu"."kode_pengurus_bu" < "trx_pengurus_bu_verif"."kode_pengurus_bu"
+Ref: "ref_komisaris_bu"."kode_komisaris" < "ref_verif_komisaris"."kode_komisaris" [delete: cascade]
 
+Ref: "ref_direksi_bu"."kode_direksi" < "ref_verif_direksi"."kode_direksi" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pakta_integritas"."kode_vendor"
+Ref: "ref_pengurus_bu"."kode_pengurus_bu" < "trx_pengurus_bu_verif"."kode_pengurus_bu" [delete: cascade]
 
-Ref: "ref_jenis_pengadaan"."kode_jenis_pengadaan" < "trx_penjaringan"."kode_jenis_pengadaan"
 
+Ref: "ref_vendor"."kode_vendor" < "ref_pakta_integritas"."kode_vendor" [delete: cascade]
 
-Ref: "trx_kategori"."kode_trx_kategori" < "trx_penjaringan"."kode_trx_kategori"
+Ref: "ref_jenis_pengadaan"."kode_jenis_pengadaan" < "trx_penjaringan"."kode_jenis_pengadaan" [delete: cascade]
 
 
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_penjaringan"."kode_trx_kategori" [delete: cascade]
 
 
 
 
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengurus_bu"."kode_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_izin_usaha_bu"."kode_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_saham_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengurus_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_data_pajak_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_izin_usaha_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_ahli_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_saham_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_pengalaman_ta"."kode_tenaga_ahli"
+Ref: "ref_vendor"."kode_vendor" < "ref_data_pajak_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_ahli_bu"."kode_jenjang_pendidikan"
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_ahli_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_sertif_ta"."kode_tenaga_ahli"
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_pengalaman_ta"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_pengalaman_tp"."kode_tenaga_pendukung"
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_ahli_bu"."kode_jenjang_pendidikan" [delete: cascade]
 
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_sertif_tp"."kode_tenaga_pendukung"
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_sertif_ta"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_pendukung_bu"."kode_vendor"
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_pengalaman_tp"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_kantor_bu"."kode_vendor"
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_sertif_tp"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_fasilitas_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_pendukung_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_kantor_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_verifikator_penjr"."kode_penjaringan"
+Ref: "ref_vendor"."kode_vendor" < "ref_fasilitas_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_undangan_verif"."kode_vendor_penjr"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_undangan_penjr"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_verifikator_penjr"."kode_penjaringan" [delete: cascade]
 
-Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_tim_teknis_pendukung"."kode_undangan_verif"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_undangan_verif"."kode_vendor_penjr" [delete: cascade]
 
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_undangan_penjr"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_administrasi_pero"."kode_vendor"
+Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_tim_teknis_pendukung"."kode_undangan_verif" [delete: cascade]
 
 
+Ref: "ref_vendor"."kode_vendor" < "ref_administrasi_pero"."kode_vendor" [delete: cascade]
 
 
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_administrasi_pero"."kode_vendor_penjr"
 
-Ref: "ref_datadiri_umum"."kode_datadiri_umum" < "ref_verif_datadiri_umum"."kode_datadiri_umum"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_pero"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_administrasi_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_pengalaman_pero"."kode_pengalaman" < "ref_verif_pengalaman_pero"."kode_pengalaman"
+Ref: "ref_datadiri_umum"."kode_datadiri_umum" < "ref_verif_datadiri_umum"."kode_datadiri_umum" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertif_pero"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_sertif_pero"."kode_sertif" < "ref_verif_sertif_pero"."kode_sertif"
+Ref: "ref_pengalaman_pero"."kode_pengalaman" < "ref_verif_pengalaman_pero"."kode_pengalaman" [delete: cascade]
 
-Ref: "ref_sanksi_vendor"."kode_sanksi_vendor" < "ref_v_keluar_dpt"."kode_sanksi_vendor"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertif_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_status_keluar_dpt"."kode_status_keluar_dpt" < "ref_v_keluar_dpt"."kode_status_keluar_dpt"
+Ref: "ref_sertif_pero"."kode_sertif" < "ref_verif_sertif_pero"."kode_sertif" [delete: cascade]
 
+Ref: "ref_sanksi_vendor"."kode_sanksi_vendor" < "ref_v_keluar_dpt"."kode_sanksi_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_v_keluar_dpt"."kode_vendor"
+Ref: "ref_status_keluar_dpt"."kode_status_keluar_dpt" < "ref_v_keluar_dpt"."kode_status_keluar_dpt" [delete: cascade]
 
-Ref: "ref_kat_persyaratan"."kode_kat_persyaratan" < "ref_subkat_persyaratan"."kode_kat_persyaratan"
 
-Ref: "ref_subkat_persyaratan"."kode_subkat" < "ref_kat_item_tanya"."kode_subkat"
+Ref: "ref_vendor"."kode_vendor" < "ref_v_keluar_dpt"."kode_vendor" [delete: cascade]
 
-Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya"."kode_kat_item_tanya"
+Ref: "ref_kat_persyaratan"."kode_kat_persyaratan" < "ref_subkat_persyaratan"."kode_kat_persyaratan" [delete: cascade]
 
-Ref: "ref_subkat_persyaratan"."kode_subkat" < "trx_ketentuan_umum_khusus"."kode_subkat"
+Ref: "ref_subkat_persyaratan"."kode_subkat" < "ref_kat_item_tanya"."kode_subkat" [delete: cascade]
 
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya"."kode_kat_item_tanya" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_pero"."kode_vendor"
+Ref: "ref_subkat_persyaratan"."kode_subkat" < "trx_ketentuan_umum_khusus"."kode_subkat" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_pero"."kode_vendor_penjr"
 
-Ref: "ref_keuangan_pero"."kode_keuangan" < "ref_verif_keuangan_pero"."kode_keuangan"
+Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_adm_bu"."kode_adm_bu" < "ref_verif_adm_bu"."kode_adm_bu"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_pero"."kode_vendor_penjr" [delete: cascade]
 
+Ref: "ref_keuangan_pero"."kode_keuangan" < "ref_verif_keuangan_pero"."kode_keuangan" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_adm_bu"."kode_vendor_penjr"
+Ref: "ref_adm_bu"."kode_adm_bu" < "ref_verif_adm_bu"."kode_adm_bu" [delete: cascade]
 
-Ref: "ref_lan_hukum_bu"."kode_lan_hukum" < "ref_verif_lan_hukum_bu"."kode_lan_hukum"
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_adm_bu"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_lan_hukum_bu"."kode_vendor_penjr"
+Ref: "ref_lan_hukum_bu"."kode_lan_hukum" < "ref_verif_lan_hukum_bu"."kode_lan_hukum" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_pengurus_bu_verif"."kode_vendor_penjr"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_komisaris"."kode_vendor_penjr"
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_direksi"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_lan_hukum_bu"."kode_vendor_penjr" [delete: cascade]
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_pengurus_bu_verif"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "ref_verif_izin_usaha_bu"."kode_izin_usaha"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_komisaris"."kode_vendor_penjr" [delete: cascade]
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_direksi"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_sertifikat_usaha_bu"."kode_sertifikat_usaha" < "ref_verif_sertifikat_usaha_bu"."kode_sertifikat_usaha"
 
+Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "ref_verif_izin_usaha_bu"."kode_izin_usaha" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_izin_usaha_bu"."kode_vendor_penjr"
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertifikat_usaha_bu"."kode_vendor_penjr"
+Ref: "ref_sertifikat_usaha_bu"."kode_sertifikat_usaha" < "ref_verif_sertifikat_usaha_bu"."kode_sertifikat_usaha" [delete: cascade]
 
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_izin_usaha_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertifikat_usaha_bu"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_saham_bu"."kode_vendor_penjr"
-Ref: "ref_saham_bu"."kode_saham" < "ref_verif_saham_bu"."kode_saham"
 
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_data_pajak_bu"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_saham_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_saham_bu"."kode_saham" < "ref_verif_saham_bu"."kode_saham" [delete: cascade]
 
 
-Ref: "ref_data_pajak_bu"."kode_data_pajak" < "ref_verif_data_pajak_bu"."kode_data_pajak"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_data_pajak_bu"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_ahli_bu"."kode_vendor_penjr"
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_verif_tenaga_ahli_bu"."kode_tenaga_ahli"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_pendukung_bu"."kode_vendor_penjr"
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_verif_tenaga_pendukung_bu"."kode_tenaga_pendukung"
+Ref: "ref_data_pajak_bu"."kode_data_pajak" < "ref_verif_data_pajak_bu"."kode_data_pajak" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_kantor_bu"."kode_vendor_penjr"
-Ref: "ref_kantor_bu"."kode_kantor" < "ref_verif_kantor_bu"."kode_kantor"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_ahli_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_verif_tenaga_ahli_bu"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_fasilitas_bu"."kode_vendor_penjr"
-Ref: "ref_fasilitas_bu"."kode_fasilitas" < "ref_verif_fasilitas_bu"."kode_fasilitas"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_pendukung_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_verif_tenaga_pendukung_bu"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_bu"."kode_vendor_penjr"
-Ref: "ref_pengalaman_bu"."kode_pengalaman_bu" < "ref_verif_pengalaman_bu"."kode_pengalaman_bu"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_kantor_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_kantor_bu"."kode_kantor" < "ref_verif_kantor_bu"."kode_kantor" [delete: cascade]
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_fasilitas_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_fasilitas_bu"."kode_fasilitas" < "ref_verif_fasilitas_bu"."kode_fasilitas" [delete: cascade]
 
-Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya"."tipe_input"
-Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya_tpl"."tipe_input"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_pengalaman_bu"."kode_pengalaman_bu" < "ref_verif_pengalaman_bu"."kode_pengalaman_bu" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_bu"."kode_vendor_penjr"
-Ref: "ref_keuangan_bu"."kode_keuangan" < "ref_verif_keuangan_bu"."kode_keuangan"
 
+Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya"."tipe_input" [delete: cascade]
+Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya_tpl"."tipe_input" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_nilai_akhir"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_keuangan_bu"."kode_keuangan" < "ref_verif_keuangan_bu"."kode_keuangan" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_adm_bu"."kode_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_lan_hukum_bu"."kode_vendor"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_nilai_akhir"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_adm_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_pero"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_lan_hukum_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_sertif_pero"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_kantor_bu"."kode_kepemilikan"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_fasilitas_bu"."kode_kepemilikan"
+Ref: "ref_vendor"."kode_vendor" < "ref_sertif_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "trx_penjaringan"."kode_jenis_vendor"
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_kantor_bu"."kode_kepemilikan" [delete: cascade]
 
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_fasilitas_bu"."kode_kepemilikan" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_ketentuan_umum_khusus"."kode_penjaringan"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "trx_penjaringan"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "ref_kondisi"."kode_kondisi" < "ref_kantor_bu"."kode_kondisi"
 
-Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "trx_penjaringan"."kode_kualifikasi_usaha"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_ketentuan_umum_khusus"."kode_penjaringan" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_item_tanya"."kode_penjaringan"
+Ref: "ref_kondisi"."kode_kondisi" < "ref_kantor_bu"."kode_kondisi" [delete: cascade]
 
+Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "trx_penjaringan"."kode_kualifikasi_usaha" [delete: cascade]
 
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_item_tanya"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya_tpl"."kode_kat_item_tanya"
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_persentase_penilaian"."kode_penjaringan"
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_ambang_batas_penilaian"."kode_penjaringan"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya_tpl"."kode_kat_item_tanya" [delete: cascade]
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_persentase_penilaian_tpl"."kode_jenis_vendor"
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_persentase_penilaian"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_penanggung_jwb"."kode_vendor"
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_ambang_batas_penilaian"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia_pero"."kode_jenjang_pendidikan"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_persentase_penilaian_tpl"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."kode_status_pengajuan"
+Ref: "ref_vendor"."kode_vendor" < "ref_penanggung_jwb"."kode_vendor" [delete: cascade]
 
-Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif"
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia_pero"."kode_jenjang_pendidikan" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor"
+Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."kode_status_pengajuan" [delete: cascade]
+
+Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif" [delete: cascade]
+
+Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor" [delete: cascade]

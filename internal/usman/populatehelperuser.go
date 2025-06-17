@@ -11,9 +11,8 @@ import (
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
-  "promise-migration/internal/usman/model/vmsdb/usermodel"
-	"promise-migration/internal/usman/model/dbusman/refusermodel"
-  "promise-migration/internal/usman/usmanhelper"
+	"promise-migration/internal/usman/model/vmsdb/usermodel"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -24,14 +23,7 @@ func PopulateHelperUser() {
 	allVmsUser := usermodel.GetAllUser()
 	allHUserNip = helperusernipmodel.GetAllHelperUserNip()
 
-	for _, vmsUser := range allVmsUser {
-		refusermodel.DeleteByEmail(vmsUser.Email);
-	}
 
-  usmanhelper.UpdatePkSequence2("ref_user", "id", "ref_user_id_seq")
-  usmanhelper.UpdatePkSequence2("ref_user_external", "id", "ref_user_external_id_seq")
-  usmanhelper.UpdatePkSequence2("ref_user_internal", "id", "ref_user_internal_id_seq")
-  usmanhelper.UpdatePkSequence2("trx_group_user", "id_group_user", "trx_group_user_id_seq")
 
 	for _, vmsUser := range allVmsUser {
 
@@ -75,7 +67,8 @@ func PopulateHelperUser() {
 			// kalau data penyedia tidak ditemukan, kasih catatan
 			if vmsUser.IdLevel.Int32 == 5 || vmsUser.IdLevel.Int32 == 9 {
 				//msg := "UserId: " + strconv.Itoa(int(vmsUser.Id.Int32)) + ", profile penyedia tidak ditemukan di vms_db ataupun di promise_sibela"
-				msg := "profile penyedia tidak ditemukan di vms_db ataupun di promise_sibela"
+				penyedia := strconv.Itoa(int(vmsUser.Id.Int32)) +"_"+ vmsUser.Name.String
+				msg := "profile penyedia " + penyedia + " tidak ditemukan di vms_db ataupun di promise_sibela"
 				fmt.Println(msg)
 				helper.LogUser(msg)
 			}

@@ -10,3 +10,4 @@ type GUser struct {
 }
 
 var User GUser
+var ExcludedEmails []string

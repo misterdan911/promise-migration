@@ -120,8 +120,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	refuserexternalmodel.InsertNew(refUserExternal)
 
 	// kasih akses masuk ke Si-Dapet
-	// karena semua helperUser external pasti bisa masuk Si-Dapet
-	// trxgroupusermodel.InsertNew(refUser, "G01.8")
+	// karena semua vendor pasti bisa masuk Si-Dapet
 	currentTime := time.Now().UTC()
 	trxGroupUser := trxgroupusermodel.TrxGroupUser{
 		KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},

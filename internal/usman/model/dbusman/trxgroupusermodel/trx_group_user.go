@@ -6,8 +6,6 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"promise-migration/db"
-	"promise-migration/internal/usman/model/dbusman/refusermodel"
-	"time"
 )
 
 type TrxGroupUser struct {
