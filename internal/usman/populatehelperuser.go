@@ -12,7 +12,9 @@ import (
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
+	// "regexp"
 	"strconv"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -31,7 +33,16 @@ func PopulateHelperUser() {
 			Name: vmsUser.Name,
 		}
 
-		nip := pgtype.Text{}
+		// Mitigasi password supaya cocok sistem yg baru
+		hashedPassword := vmsUser.Password.String
+		// fmt.Println("hashedPassword: " + hashedPassword)
+		// re := regexp.MustCompile(`^\$2[ayb]\$`)
+		// newHashedPass := re.ReplaceAllString(hashedPassword, "$2b$")
+
+		hashedPassword = strings.Replace(hashedPassword, "$2y$", "$2b$", 1)
+		newHashedPass := strings.Replace(hashedPassword, "$2a$", "$2b$", 1)		
+		// fmt.Println("newHashedPass: " + newHashedPass)
+
 
 		// coba cari data penyedia di db vms_db
 		penyedia := vmspenyedia.GetPenyediaByUserId(vmsUser.Id)
@@ -73,6 +84,7 @@ func PopulateHelperUser() {
 		}
 
 		// kalau usernya bukan user penyedia, coba dapatkan NIP nya
+		nip := pgtype.Text{}
 		if (vmsUser.IdLevel.Int32 != 5) || (vmsUser.IdLevel.Int32 != 9) {
 			// GetNip
 			nip = GetNipByUserId(vmsUser.Id)
@@ -93,7 +105,7 @@ func PopulateHelperUser() {
 			VmsUserName:      vmsUser.Name,
 			VmsUserLevel:     vmsUser.IdLevel,
 			VmsUserEmail:     vmsUser.Email,
-			VmsUserPass:      vmsUser.Password,
+			VmsUserPass:      pgtype.Text{Valid: true, String: newHashedPass},
 			VmsUserCreatedAt: vmsUser.CreatedAt,
 			VmsUserUpdatedAt: vmsUser.UpdatedAt,
 			Nip:              nip,

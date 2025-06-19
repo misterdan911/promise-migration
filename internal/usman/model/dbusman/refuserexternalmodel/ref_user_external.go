@@ -74,3 +74,4 @@ func InsertNew(user RefUserExternal) {
 		fmt.Println("unable to insert ref_user_external, " + errIns.Error())
 	}
 }
+

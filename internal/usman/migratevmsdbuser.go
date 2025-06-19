@@ -1,11 +1,13 @@
 package usman
 
 import (
-  "promise-migration/internal/model/dbsidapet/helperusermodel"
-  "promise-migration/internal/usman/model/dbusman/refuserinternalmodel"
-  "promise-migration/internal/usman/model/dbusman/refusermodel"
+	"promise-migration/internal/g"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/usman/model/dbusman/refuserinternalmodel"
+	"promise-migration/internal/usman/model/dbusman/refusermodel"
+	"slices"
 
-  "github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 
@@ -14,6 +16,11 @@ func MigrateUserToUsman() {
   allUser := helperusermodel.GetAllUser()
 
   for _, helperUser := range allUser {
+
+    skipUser := slices.Contains(g.ExcludedEmails, helperUser.VmsUserEmail.String)
+    if skipUser {
+      continue
+    }
 
     var statusUser string
     idLevel := helperUser.VmsUserLevel.Int32
@@ -49,11 +56,6 @@ func MigrateUserToUsman() {
         
       refuserinternalmodel.InsertNew(refUserInternal)
     }
-
-      helperUser.UsmanRefUserId = refUser.Id
-
-      // update field usman_ref_user_id di tabel helper_user
-      helperusermodel.UpdateUsmanRefUserId(helperUser)
   }
 }
 

@@ -140,11 +140,11 @@ func UpdateKodeVendor(helperUser HelperUser) {
 	}
 }
 
-func UpdateUsmanRefUserId(helperUser HelperUser) {
+func UpdateUsmanRefUserIdByEmail(helperUser HelperUser) {
   ctx := context.Background()
-  qUpdate := `UPDATE helper_user SET usman_ref_user_id = @usman_ref_user_id WHERE id = @id`
+  qUpdate := `UPDATE helper_user SET usman_ref_user_id = @usman_ref_user_id WHERE vms_user_email = @email`
   args := pgx.NamedArgs{
-    "id":                 helperUser.Id,
+    "email":                 helperUser.VmsUserEmail,
     "usman_ref_user_id":  helperUser.UsmanRefUserId,
   }
 

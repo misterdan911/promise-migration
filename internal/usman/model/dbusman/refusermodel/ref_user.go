@@ -26,6 +26,42 @@ type RefUser struct {
 	OtpTime         pgtype.Timestamptz
 }
 
+func GetAllData() []RefUser {
+  var allUsers []RefUser
+  ctx := context.Background()
+
+  qRefUser := `
+  SELECT
+      id,
+      email,
+      password,
+      api_token,
+      is_login,
+      ucr,
+      uch,
+      udcr,
+      udch,
+      user_photo,
+      status_user,
+      forget_token_pass,
+      otp,
+      otp_time
+  FROM ref_user`
+
+  rows, err := db.DbUsman.Query(ctx, qRefUser)
+  if err != nil {
+    log.Fatal("qRefUser Failed, " + err.Error() + " " + qRefUser)
+  }
+
+  allUsers, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefUser])
+  if err != nil {
+    log.Fatal("failed collecting rows (ref_user.go:GetAllData), " + err.Error())
+  }
+  defer rows.Close()
+
+  return allUsers
+}
+
 func InsertNew(refUser RefUser) RefUser {
 	ctx := context.Background()
 
