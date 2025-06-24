@@ -6,8 +6,12 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sippan/sippanhelper"
+	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
+	"slices"
+	"strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -47,7 +51,6 @@ type OldRupUt struct {
 }
 
 func MigrateTblRupUt() {
-	// truncateRefRup()
 
 	fmt.Println("Migrating tbl_rup_ut...")
 
@@ -87,6 +90,9 @@ func MigrateTblRupUt() {
 
 	for _, oldRup := range allOldRuptUt {
 
+    	skipUser := slices.Contains(g.ExcludedVmsUserId, oldRup.IdUser.Int32)
+	    if skipUser { continue }
+
 		uraian_spek_kerja := sippanhelper.GetUraianSpekKerja(oldRup.UraianPekerjaan.String, oldRup.SpesifikasiPekerjaan.String)
 
 		isKualifikasiKecil := sql.NullBool{Valid: true}
@@ -121,6 +127,11 @@ func MigrateTblRupUt() {
 		tglRencPemanfaatanAkhir := sippanhelper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
 
 		helperUser := helperusermodel.GetByVmsUserId(oldRup.IdUser)
+
+		if (helperUser == helperusermodel.HelperUser{}) {
+			fmt.Println("vms_user_id: " + strconv.Itoa(int(oldRup.IdUser.Int32)) + " tidak ada di helper_user (data not migrated)")
+			continue
+		}
 
 		qInsert := `INSERT INTO ref_rup (no_rup, no_drauk, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
 		VALUES (@no_rup, @no_drauk, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
@@ -158,17 +169,18 @@ func MigrateTblRupUt() {
 		}
 		_, errInsert := db.DbSippan.Exec(ctx, qInsert, args)
 		if errInsert != nil {
-			fmt.Println("unable to insert ref_rup, " + errInsert.Error())
+			log.Fatal("unable to insert ref_rup, " + errInsert.Error())
+		}
+
+		// kalau levelnya adalah PPK, proses data di db_usman.tabel trx_group_user
+		// supaya user tersebut punya role sebagai PPK di aplikasi Si-Ppan
+		if helperUser.VmsUserLevel.Int32 == 7 {
+			kodeGroup := pgtype.Text{Valid: true, String: "G03.2"}
+			idUser := helperUser.UsmanRefUserId
+			trxgroupusermodel.InsertIfNotExists(kodeGroup, idUser)
 		}
 	}
 
 	fmt.Println("Migrating tbl_rup_ut... SELESAI")
 }
 
-func truncateRefRup() {
-	qTruncate := "TRUNCATE TABLE ref_rup"
-	_, err := db.DbSippan.Exec(context.Background(), qTruncate)
-	if err != nil {
-		log.Fatal("qTruncate Failed, " + err.Error() + " " + qTruncate)
-	}
-}
