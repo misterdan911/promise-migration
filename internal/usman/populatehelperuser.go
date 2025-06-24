@@ -33,7 +33,7 @@ func PopulateHelperUser() {
 			Name: vmsUser.Name,
 		}
 
-		// Mitigasi password supaya cocok sistem yg baru
+		// Mitigasi password supaya cocok dg sistem yg baru
 		hashedPassword := vmsUser.Password.String
 		// fmt.Println("hashedPassword: " + hashedPassword)
 		// re := regexp.MustCompile(`^\$2[ayb]\$`)

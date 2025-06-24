@@ -161,6 +161,20 @@ Table helper_user_nip {
   nip varchar(30)
 }
 
+Enum jabatan_penandatangan {
+  komisaris
+  direksi
+}
+
+Table ref_vendor_penandatangan {
+  kode_vp serial [pk]
+  kode_penandatangan int4 [note: 'bisa kode_direksi / kode_komisaris']
+  jabatan jabatan_penandatangan
+  file_s_tugas varchar(255)
+  kode_vendor int4
+  is_aktif bool
+}
+
 Table ref_bank {
   kode_bank serial [pk]
   sandi_bank varchar(4)
@@ -572,6 +586,18 @@ Table ref_administrasi_pero {
   encrypt_key_sk_pp23 varchar(255)
 
   custom_npwp jsonb
+}
+
+Table trx_custom_item {
+  kode_ci serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  kode_kat_item_tanya int4
+  kode_item int4
+  isi varchar(255)
+  encrypt_key varchar(255)
+  is_sesuai bool
+  komentar text
 }
 
 Table ref_verif_administrasi_pero {
@@ -1741,3 +1767,5 @@ Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."k
 Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif"
 
 Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor"
+
+Ref: "trx_custom_item"."kode_vendor" < "ref_vendor"."kode_vendor"
