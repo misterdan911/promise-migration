@@ -1,6 +1,6 @@
 // ref_vendor_register model
 
-package rvregmodel
+package refvendorregistermodel
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/sidapet/sidapethelper"
+  "promise-migration/internal/ghelper"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -19,6 +19,29 @@ import (
 
 type RefVenReg struct {
 	KodeRegister pgtype.Int4
+}
+
+type RefVendorRegister struct {
+    KodeRegister       pgtype.Int4
+    KodeJenisVendor    pgtype.Int2
+    NamaPerusahaan     pgtype.Text
+    Email              pgtype.Text
+    Password           pgtype.Text
+    NoTelp             pgtype.Text
+    NamaNarahubung     pgtype.Text
+    NoWaNarahubung     pgtype.Text
+    Swafoto            pgtype.Text
+    StatusRegister     pgtype.Text // Assuming status_persetujuan is text-based
+    AlasanDitolak      pgtype.Text
+    UserVerif          pgtype.Text
+    Udcr               pgtype.Timestamptz
+    Udch               pgtype.Timestamptz
+    Message            pgtype.Text
+    Similarity         pgtype.Text
+    DistancePercentage pgtype.Numeric
+    DistancePoint      pgtype.Numeric
+    Keypass            pgtype.Text
+    KodeVendor         pgtype.Int4
 }
 
 func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) pgtype.Int4 {
@@ -95,12 +118,54 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 
 	allRefVenReg, errRwIns := pgx.CollectRows(rwInsRefVenReg, pgx.RowToStructByName[RefVenReg])
 	if errRwIns != nil {
-		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + sidapethelper.GetLen(profilePenyedia.Nama.String))
-		fmt.Println("email: " + profilePenyedia.Email.String + sidapethelper.GetLen(profilePenyedia.Email.String))
-		fmt.Println("password: " + helperUser.VmsUserPass.String + sidapethelper.GetLen(helperUser.VmsUserPass.String))
-		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + sidapethelper.GetLen(profilePenyedia.NoTelp.String))
+		fmt.Println("nama_perusahaan: " + profilePenyedia.Nama.String + ghelper.GetLen(profilePenyedia.Nama.String))
+		fmt.Println("email: " + profilePenyedia.Email.String + ghelper.GetLen(profilePenyedia.Email.String))
+		fmt.Println("password: " + helperUser.VmsUserPass.String + ghelper.GetLen(helperUser.VmsUserPass.String))
+		fmt.Println("no_telp: " + profilePenyedia.NoTelp.String + ghelper.GetLen(profilePenyedia.NoTelp.String))
 		log.Fatal("failed collecting RefVenReg, " + errRwIns.Error())
 	}
 
 	return allRefVenReg[0].KodeRegister
+}
+
+func GetAllData() []RefVendorRegister {
+  var allVendors []RefVendorRegister
+  ctx := context.Background()
+
+  qRefVendorRegister := `
+  SELECT
+    kode_register,
+    kode_jenis_vendor,
+    nama_perusahaan,
+    email,
+    password,
+    no_telp,
+    nama_narahubung,
+    no_wa_narahubung,
+    swafoto,
+    status_register,
+    alasan_ditolak,
+    user_verif,
+    udcr,
+    udch,
+    message,
+    similarity,
+    distance_percentage,
+    distance_point,
+    keypass,
+    kode_vendor
+  FROM ref_vendor_register`
+
+  rows, err := db.DbSidapet.Query(ctx, qRefVendorRegister)
+  if err != nil {
+      log.Fatal("qRefVendorRegister Failed, " + err.Error() + " " + qRefVendorRegister)
+  }
+
+  allVendors, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefVendorRegister])
+  if err != nil {
+      log.Fatal("failed collecting rows (ref_vendor_register.go:GetAllData), " + err.Error())
+  }
+  defer rows.Close()
+
+  return allVendors
 }

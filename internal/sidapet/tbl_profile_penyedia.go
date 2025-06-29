@@ -16,7 +16,7 @@ import (
 	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	"promise-migration/internal/sidapet/model/rvreghismodel"
-	"promise-migration/internal/sidapet/model/rvregmodel"
+	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
@@ -104,10 +104,11 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 	defer rwVendor.Close()
 
+	// update kode_vendor di db_sidapet.helper_user
 	helperUser.KodeVendor = allVendor[0].KodeVendor
 	helperusermodel.UpdateKodeVendor(helperUser)
 
-	// masukan data ke tabel ref_user_external kalau helperUser external
+	// masukan data ke  db_usman.ref_user_external
 	refUserExternal := refuserexternalmodel.RefUserExternal{
 		Id:				helperUser.KodeVendor,
 		IdUser:         helperUser.UsmanRefUserId,
@@ -131,7 +132,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	trxgroupusermodel.InsertNew(trxGroupUser)
 
 	// Insert to ref_vendor_register
-	kodeRegister := rvregmodel.InsertRefVendorRegister(profilePenyedia, helperUser)
+	kodeRegister := refvendorregistermodel.InsertRefVendorRegister(profilePenyedia, helperUser)
 
 	// Insert to ref_vendor_reg_history
 	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)

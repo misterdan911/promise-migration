@@ -54,6 +54,26 @@ func AlterAllForeignKey(action string) {
 	}
 }
 
+func UpdatePkSequenceFromFile() {
+
+	var path string
+
+	path = filepath.Join("files", "sidapet", "sql", "update_serial_sequence.sql")
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatal("Error ReadFile: " + err.Error())
+	}
+
+	qFk := string(data)
+	ctx := context.Background()
+	_, errQFk := db.DbSidapet.Exec(ctx, qFk)
+	if errQFk != nil {
+		log.Fatal("UpdatePkSequenceFromFile Failed, " + errQFk.Error())
+	}
+}
+
+
 func UpdatePkSequence(tableName string, pkFieldname string) {
 	ctx := context.Background()
 

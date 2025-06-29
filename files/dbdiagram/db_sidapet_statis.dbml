@@ -275,7 +275,7 @@ Table trx_kat_j_vendor {
 
 Table trx_kategori {
   kode_trx_kategori serial [pk]
-  kode_kategori int4 [ref: - ref_kategori.kode_kategori]
+  kode_kategori int4
   status_persetujuan status_persetujuan [note: "Flag pengajuan paket diterima atau tidak (belum_diproses, proses, terima, tolak)"]
   keterangan_diterima text
   alasan_ditolak text
@@ -454,7 +454,7 @@ Table ref_vendor_register {
   distance_percentage decimal
   distance_point decimal
   keypass varchar(255)
-  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+  kode_vendor int4
 
   note: "Vendor yang baru register ditampung disini dulu untuk diverifikasi"
 }
@@ -479,7 +479,7 @@ Table ref_vendor_reg_history {
   distance_percentage decimal
   distance_point decimal
   keypass varchar(255)
-  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+  kode_vendor int4
 
   note: "Vendor yang sudah diverifikasi (diterima/ditolak) dicatat kesini"
 }
@@ -1544,6 +1544,14 @@ Table trx_undangan_pemeriksaan_keluar_dpt {
   file_surat_ke_ppk varchar(100)
   is_terlaksana bool
 }
+
+
+
+Ref: "ref_kategori"."kode_kategori" - "trx_kategori"."kode_kategori"
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_register"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_reg_history"."kode_vendor"
+
+
 
 
 

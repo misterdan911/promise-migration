@@ -7,13 +7,14 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-  
+
 	"promise-migration/db"
-  "promise-migration/internal/g"
+	"promise-migration/internal/g"
 )
 
 type VmsUserId struct {
@@ -81,3 +82,12 @@ func GetExcludedVmsUserId() []int32 {
 
 	return sliceUserId
 } 
+
+type Lengthable interface {
+	//~string | ~[]int | ~[]string
+	~string | ~[]int
+}
+
+func GetLen[T Lengthable](myValue T) string {
+	return " (" + strconv.Itoa(len(myValue)) + ")"
+}

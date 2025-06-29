@@ -67,15 +67,15 @@ func InsertPersonalia(profilePenyedia structs2.TblProfilePenyedia, userHelper he
 
 	for _, vTPP := range allVTPP {
 		if strings.Contains(strings.ToLower(vTPP.JbtnPersonal.String), "pendukung") {
-			InsertRefTenagaPendukungBu(profilePenyedia, vTPP)
+			InsertRefTenagaPendukungBu(vTPP)
 		} else {
-			InsertRefTenagaAhliBu(profilePenyedia, vTPP)
+			InsertRefTenagaAhliBu(vTPP)
 		}
 	}
 
 }
 
-func InsertRefTenagaAhliBu(profilePenyedia structs2.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 
 	ctx := context.Background()
 
@@ -141,7 +141,7 @@ func InsertRefTenagaAhliBu(profilePenyedia structs2.TblProfilePenyedia, vTPP str
 
 }
 
-func InsertRefTenagaPendukungBu(profilePenyedia structs2.TblProfilePenyedia, vTPP structs.VmsTblPersonaliaPerush) {
+func InsertRefTenagaPendukungBu(vTPP structs.VmsTblPersonaliaPerush) {
 	ctx := context.Background()
 
 	qIns := `
@@ -172,29 +172,29 @@ func InsertRefTenagaPendukungBu(profilePenyedia structs2.TblProfilePenyedia, vTP
 		) RETURNING kode_tenaga_pendukung`
 
 	args := pgx.NamedArgs{
-		"kode_vendor":             profilePenyedia.IdProfilPenyedia,
+		"kode_vendor":             helperUser.KodeVendor,
 		"nama":                    vTPP.NmPersonal,
 		"no_ktp":                  sql.NullString{},
 		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
 		"tgl_lahir":               sql.NullString{},
 		"posisi":                  vTPP.JbtnPersonal,
-		"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
+		"kode_jenjang_pendidikan": pgtype.Int4{}, // TODO: membuat konversi dari data lama
 		"program_studi":           sql.NullString{},
 		"file_ijazah":             vTPP.PathPersonal,
 		"file_cv":                 sql.NullString{},
 	}
 
-	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
-	if errIns != nil {
-		fmt.Println("unable to insert ref_tenaga_pendukung_bu, " + errIns.Error())
+	rwIns, err1 := db.DbSidapet.Query(ctx, qIns, args)
+	if err1 != nil {
+		fmt.Println("unable to insert ref_tenaga_pendukung_bu, " + err1.Error())
 	}
 
 	defer rwIns.Close()
 
-	allTenagaPendukung, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaPendukung])
-	if errRwIns != nil {
-		log.Fatal("failed collecting RefTenagaPendukung, " + errRwIns.Error())
+	allTenagaPendukung, err2 := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaPendukung])
+	if err2 != nil {
+		log.Fatal("failed collecting RefTenagaPendukung, " + err2.Error())
 	}
 
 	kodeTenagaPendukung := allTenagaPendukung[0].KodeTenagaPendukung.Int32

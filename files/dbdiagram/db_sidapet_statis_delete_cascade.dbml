@@ -161,6 +161,20 @@ Table helper_user_nip {
   nip varchar(30)
 }
 
+Enum jabatan_penandatangan {
+  komisaris
+  direksi
+}
+
+Table ref_vendor_penandatangan {
+  kode_vp serial [pk]
+  kode_penandatangan int4 [note: 'bisa kode_direksi / kode_komisaris']
+  jabatan jabatan_penandatangan
+  file_s_tugas varchar(255)
+  kode_vendor int4
+  is_aktif bool
+}
+
 Table ref_bank {
   kode_bank serial [pk]
   sandi_bank varchar(4)
@@ -440,7 +454,7 @@ Table ref_vendor_register {
   distance_percentage decimal
   distance_point decimal
   keypass varchar(255)
-  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+  kode_vendor int4
 
   note: "Vendor yang baru register ditampung disini dulu untuk diverifikasi"
 }
@@ -465,7 +479,7 @@ Table ref_vendor_reg_history {
   distance_percentage decimal
   distance_point decimal
   keypass varchar(255)
-  kode_vendor int4 [ref: - ref_vendor.kode_vendor]
+  kode_vendor int4
 
   note: "Vendor yang sudah diverifikasi (diterima/ditolak) dicatat kesini"
 }
@@ -572,6 +586,18 @@ Table ref_administrasi_pero {
   encrypt_key_sk_pp23 varchar(255)
 
   custom_npwp jsonb
+}
+
+Table trx_custom_item {
+  kode_ci serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  kode_kat_item_tanya int4
+  kode_item int4
+  isi varchar(255)
+  encrypt_key varchar(255)
+  is_sesuai bool
+  komentar text
 }
 
 Table ref_verif_administrasi_pero {
@@ -1520,7 +1546,12 @@ Table trx_undangan_pemeriksaan_keluar_dpt {
 }
 
 
+
 Ref: "ref_kategori"."kode_kategori" - "trx_kategori"."kode_kategori" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_register"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_reg_history"."kode_vendor" [delete: cascade]
+
+
 
 
 
@@ -1744,3 +1775,5 @@ Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."k
 Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif" [delete: cascade]
 
 Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor" [delete: cascade]
+
+Ref: "trx_custom_item"."kode_vendor" < "ref_vendor"."kode_vendor" [delete: cascade]

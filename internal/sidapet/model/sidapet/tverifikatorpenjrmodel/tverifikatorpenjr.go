@@ -15,7 +15,7 @@ type TblVerifPaket struct {
 	Email        pgtype.Text
 }
 
-func InsertTrxVerifikatorPenjr(vmsPaket structs.VmsTblPaket) {
+func InsertTrxVerifikatorPenjr(kodePenjaringan pgtype.Int4, vmsPaket structs.VmsTblPaket) {
 	ctx := context.Background()
 
 	qTblVerifpaket := `
@@ -40,13 +40,12 @@ func InsertTrxVerifikatorPenjr(vmsPaket structs.VmsTblPaket) {
 
 	for _, tblVerifPaket := range allTblVerifPaket {
 		qInsertTrxVerPjr := `
-		INSERT INTO trx_verifikator_penjr (kode_verifikator_penjr, kode_penjaringan, user_verif)
-		VALUES ( @kode_verifikator_penjr, @kode_penjaringan, @user_verif )`
+		INSERT INTO trx_verifikator_penjr (kode_penjaringan, email_verif)
+		VALUES ( @kode_penjaringan, @email_verif )`
 
 		args := pgx.NamedArgs{
-			"kode_verifikator_penjr": tblVerifPaket.IdVerifPaket,
-			"kode_penjaringan":       vmsPaket.IdPaket,
-			"user_verif":             tblVerifPaket.Email,
+			"kode_penjaringan": kodePenjaringan,
+			"email_verif":      tblVerifPaket.Email,
 		}
 		_, errInsertTrxVerPjr := db.DbSidapet.Exec(ctx, qInsertTrxVerPjr, args)
 		if errInsertTrxVerPjr != nil {
