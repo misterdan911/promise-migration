@@ -3,11 +3,12 @@ package tverifikatorpenjrmodel
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/structs"
+	"promise-migration/internal/model/vmsdb/tblpaketmodel"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TblVerifPaket struct {
@@ -15,7 +16,7 @@ type TblVerifPaket struct {
 	Email        pgtype.Text
 }
 
-func InsertTrxVerifikatorPenjr(kodePenjaringan pgtype.Int4, vmsPaket structs.VmsTblPaket) {
+func InsertTrxVerifikatorPenjr(kodePenjaringan pgtype.Int4, vmsPaket tblpaketmodel.TblPaket) {
 	ctx := context.Background()
 
 	qTblVerifpaket := `

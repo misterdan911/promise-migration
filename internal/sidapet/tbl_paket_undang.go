@@ -1,24 +1,43 @@
 package sidapet
 
 import (
-	"context"
-	"fmt"
-	"github.com/jackc/pgx/v5"
+	// "context"
+	// "fmt"
+	// "log"
+	"promise-migration/internal/model/dbsidapet/trxundanganpenjrmodel"
+	"promise-migration/internal/model/vmsdb/tblpaketmodel"
+	"promise-migration/internal/model/vmsdb/tblpaketundangmodel"
+
 	"github.com/jackc/pgx/v5/pgtype"
-	"log"
-	"promise-migration/db"
 )
 
+/*
 type PaketUndang struct {
 	IdUndang pgtype.Int4
 	IdPaket  pgtype.Int4
 	Email    pgtype.Text
 }
+*/
 
-func MigrateTblPaketUndang() {
+func MigrateTblPaketUndang(vmsPaket tblpaketmodel.TblPaket, kodePenjaringan pgtype.Int4) {
 
+	allTblPaketUndang := tblpaketundangmodel.GetByIdPaket(vmsPaket.IdPaket)
+
+	for _, tblPaketUndang := range allTblPaketUndang {
+		trxUndanganPenjr := trxundanganpenjrmodel.TrxUndanganPenjr{
+			KodePenjaringan: kodePenjaringan,
+			Email:           tblPaketUndang.Email,
+		}
+		trxundanganpenjrmodel.InsertNew(trxUndanganPenjr)
+	}
+
+/*
 	//helper.TruncateTable("trx_undangan_penjr")
 	ctx := context.Background()
+
+	qTblPaketUndang := `
+	SELECT email FROM tbl
+	`
 
 	qTblPaket := `
   SELECT
@@ -60,4 +79,5 @@ func MigrateTblPaketUndang() {
 	}
 
 	fmt.Println("Migrating tbl_paket_undang... SELESAI")
+	*/
 }

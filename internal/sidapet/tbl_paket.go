@@ -1,18 +1,19 @@
 package sidapet
 
 import (
- "fmt"
- "strings"
- "github.com/jackc/pgx/v5/pgtype"
- "promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
- "promise-migration/internal/sidapet/model/sidapet/tverifikatorpenjrmodel"
- "promise-migration/internal/sidapet/model/vmsdb/tpaketmodel"
- "promise-migration/internal/sidapet/sidapethelper"
+	"fmt"
+	"promise-migration/internal/model/vmsdb/tblpaketmodel"
+	"promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
+	"promise-migration/internal/sidapet/model/sidapet/tverifikatorpenjrmodel"
+	"promise-migration/internal/sidapet/sidapethelper"
+	"strings"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func MigrateTblPaket() {
 
-  allVmsPaket := tpaketmodel.GetAllPaket()
+  allVmsPaket := tblpaketmodel.GetAllData()
 
   // loop semua data vms_db.tbl_paket
   for _, vmsPaket := range allVmsPaket {
@@ -44,7 +45,7 @@ func MigrateTblPaket() {
 
     kodePenjaringan := trxpenjaringanmodel.InsertTrxPenjaringan(trxPenjaringan)
     tverifikatorpenjrmodel.InsertTrxVerifikatorPenjr(kodePenjaringan, vmsPaket)
-    // MigrateTblPaketUndang()
+    MigrateTblPaketUndang(vmsPaket, kodePenjaringan)
  }
 
  sidapethelper.UpdatePkSequence("trx_penjaringan", "kode_penjaringan")
