@@ -118,64 +118,6 @@ func GetAllData() []TrxPenjaringan {
   return allTrxPenjaringan
 }
 
-/*
-func InsertTrxPenjaringan(vmsPaket structs.VmsTblPaket) {
-
-	ctx := context.Background()
-
-	var statusPersetujuan string
-	if vmsPaket.Status.Int32 == 1 {
-		statusPersetujuan = "tolak"
-	}
-	if vmsPaket.Status.Int32 == 2 {
-		statusPersetujuan = "terima"
-	}
-
-	qInsertPenjaringan := `
-	  INSERT INTO trx_penjaringan (
-	    "nama_penjaringan",
-	    "metode",
-	    "status_persetujuan",
-	    "tgl_daftar_awal",
-	    "tgl_daftar_akhir",
-	    "tgl_evaluasi_awal",
-	    "tgl_evaluasi_akhir",
-	    "tgl_pengumuman",
-	    "udcr",
-	    "udch"
-	  ) VALUES (
-	    @nama_penjaringan,
-	    @metode,
-	    @status_persetujuan,
-	    @tgl_daftar_awal,
-	    @tgl_daftar_akhir,
-	    @tgl_evaluasi_awal,
-	    @tgl_evaluasi_akhir,
-	    @tgl_pengumuman,
-	    @udcr,
-	    @udch)`
-
-	args := pgx.NamedArgs{
-		"nama_penjaringan":   vmsPaket.NamaPaket,
-		"metode":             strings.ToLower(vmsPaket.Metode.String),
-		"status_persetujuan": statusPersetujuan,
-		"tgl_daftar_awal":    vmsPaket.TglDaftarAwal,
-		"tgl_daftar_akhir":   vmsPaket.TglDaftarAkhir,
-		"tgl_evaluasi_awal":  vmsPaket.TglEvalAwal,
-		"tgl_evaluasi_akhir": vmsPaket.TglEvalAkhir,
-		"tgl_pengumuman":     vmsPaket.TglUmumPaket,
-		"udcr":               vmsPaket.CreatedAt,
-		"udch":               vmsPaket.CreatedAt,
-	}
-	_, errInsert := db.DbSidapet.Exec(ctx, qInsertPenjaringan, args)
-	if errInsert != nil {
-		fmt.Println("unable to insert trx_penjaringan, " + errInsert.Error())
-	}
-
-	tverifikatorpenjrmodel.InsertTrxVerifikatorPenjr(vmsPaket)
-}
-*/
-
 func InsertTrxPenjaringan(trx TrxPenjaringan) pgtype.Int4 {
   ctx := context.Background()
 
@@ -332,36 +274,46 @@ func GetPenjaringanByKodePenjaringan(kodePenjaringan int) TrxPenjaringan {
 
 	qPenjaringan := `
     SELECT
-			kode_penjaringan,
-			kode_trx_kategori,
-			nama_penjaringan,
-			keperluan,
-			kode_jenis_pengadaan,
-			kode_jenis_vendor,
-			metode,
-			kode_kualifikasi_usaha,
-			file_persyaratan,
-			status_persetujuan,
-			user_persetujuan,
-			alasan_ditolak,
-			status_pengajuan_pjr,
-			status_proses_pjr,
-			status_pengumuman_dpt,
-			tgl_daftar_awal,
-			tgl_daftar_akhir,
-			tgl_verifikasi_awal,
-			tgl_verifikasi_akhir,
-			tgl_evaluasi_awal,
-			tgl_evaluasi_akhir,
-			tgl_pengumuman,
-			status_s_tugas,
-			file_s_tugas,
-			file_pengumuman,
-			ucr,
-			udcr,
-			udch
-    FROM trx_penjaringan
-    WHERE kode_penjaringan = $1`
+    kode_penjaringan,
+    kode_trx_kategori,
+    nama_penjaringan,
+    keperluan,
+    kode_jenis_pengadaan,
+    kode_jenis_vendor,
+    metode,
+    kode_kualifikasi_usaha,
+    file_persyaratan,
+    kode_status_pengajuan,
+    status_persetujuan,
+    user_persetujuan,
+    alasan_ditolak,
+    status_pengajuan_pjr,
+    status_proses_pjr,
+    status_pengumuman_dpt,
+    tgl_daftar_awal,
+    tgl_daftar_akhir,
+    tgl_verifikasi_awal,
+    tgl_verifikasi_akhir,
+    tgl_evaluasi_awal,
+    tgl_evaluasi_akhir,
+    tgl_pengumuman,
+    status_s_tugas,
+    file_s_tugas,
+    keypass_s_tugas,
+    file_s_tugas_after_tte,
+    kode_trx_penandatangan,
+    nomor_surat,
+    file_pengumuman,
+    nama_pembuat_penjaringan,
+    kode_unit_pbj,
+    ucr,
+    udcr,
+    udch,
+    keypass_file_persyaratan,
+    file_persyaratan_draft,
+    tanggal_tte_surat_tugas
+  FROM trx_penjaringan
+  WHERE kode_penjaringan = $1`
 
 	rPenjaringan, errPjr := db.DbSidapet.Query(ctx, qPenjaringan, strconv.Itoa(kodePenjaringan))
 	if errPjr != nil {

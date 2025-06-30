@@ -28,7 +28,7 @@ func InsertTrxVendorPenjr(tverif tverifmodel.TblVerif, kodeJenisVendor int) {
 			alasan_ditolak,
 			batas_waktu_perbaikan,
 			file_daftar_kehadiran,
-			file_lainya,
+			file_lainnya,
 			file_ba_verif,
 			status_dpt,
 			alasan_tidak_terpilih
@@ -39,7 +39,7 @@ func InsertTrxVendorPenjr(tverif tverifmodel.TblVerif, kodeJenisVendor int) {
 			@alasan_ditolak,
 			@batas_waktu_perbaikan,
 			@file_daftar_kehadiran,
-			@file_lainya,
+			@file_lainnya,
 			@file_ba_verif,
 			@status_dpt,
 			@alasan_tidak_terpilih
@@ -66,7 +66,7 @@ func InsertTrxVendorPenjr(tverif tverifmodel.TblVerif, kodeJenisVendor int) {
 		"alasan_ditolak":        sql.NullString{},
 		"batas_waktu_perbaikan": sql.NullTime{},
 		"file_daftar_kehadiran": sql.NullString{},
-		"file_lainya":           sql.NullString{},
+		"file_lainnya":           sql.NullString{},
 		"file_ba_verif":         sql.NullString{},
 		"status_dpt":            sql.NullString{Valid: true, String: statusDpt},
 		"alasan_tidak_terpilih": sql.NullString{},

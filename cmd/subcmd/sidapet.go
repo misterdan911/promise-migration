@@ -4,12 +4,12 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/g"
 	"promise-migration/internal/ghelper"
-	// "promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/sidapethelper"
-	// "slices"
+	"slices"
 
-	// "github.com/jackc/pgx/v5/pgtype"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/spf13/cobra"
 )
 
@@ -37,7 +37,6 @@ var SidapetCmd = &cobra.Command{
 
 		sidapethelper.TruncateTableAndLog()
 
-/*
 		allHelperUser := helperusermodel.GetAllUser()
 
 		for _, helperUser := range allHelperUser {
@@ -59,18 +58,14 @@ var SidapetCmd = &cobra.Command{
 				continue
 			}
 		}
-*/
 
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
 
-		// sidapet.MigrateTblPaketUndang()
-		/*
 
 		// Cari tahu trx_kategori.kode_unit_pbj
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-
+		
 		sidapet.MigrateTblVerif()
-		*/
 
 		// sidapethelper.CreateAllForeignKey()
 
