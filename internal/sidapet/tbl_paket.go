@@ -43,8 +43,8 @@ func MigrateTblPaket() {
     }
 
     kodePenjaringan := trxpenjaringanmodel.InsertTrxPenjaringan(trxPenjaringan)
-
     tverifikatorpenjrmodel.InsertTrxVerifikatorPenjr(kodePenjaringan, vmsPaket)
+    // MigrateTblPaketUndang()
  }
 
  sidapethelper.UpdatePkSequence("trx_penjaringan", "kode_penjaringan")

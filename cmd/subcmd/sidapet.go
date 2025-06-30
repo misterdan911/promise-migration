@@ -63,8 +63,8 @@ var SidapetCmd = &cobra.Command{
 
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
 
+		// sidapet.MigrateTblPaketUndang()
 		/*
-		sidapet.MigrateTblPaketUndang()
 
 		// Cari tahu trx_kategori.kode_unit_pbj
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
