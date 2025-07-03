@@ -2,16 +2,16 @@ package rsahambumodel
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VmsTblSaham struct {
@@ -61,29 +61,26 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 		INSERT INTO ref_saham_bu (
 		  kode_vendor,
 		  nm_saham,
-		  no_ktp_saham  ,
+		  no_ktp_saham,
 		  alamat_saham,
 		  persentase_saham,
-		  path_saham,
-		  is_saham_selamanya
+		  path_saham
 		) VALUES (
 		  @kode_vendor,
 		  @nm_saham,
-		  @no_ktp_saham  ,
+		  @no_ktp_saham,
 		  @alamat_saham,
 		  @persentase_saham,
-		  @path_saham,
-		  @is_saham_selamanya
+		  @path_saham
 		)`
 
 		args := pgx.NamedArgs{
-			"kode_vendor":        helperUser.KodeVendor,
-			"nm_saham":           vTS.NmSaham,
-			"no_ktp_saham":       vTS.NoKtpSaham,
-			"alamat_saham":       vTS.AlamatSaham,
-			"persentase_saham":   vTS.PersentaseSaham,
-			"path_saham":         vTS.PathSaham,
-			"is_saham_selamanya": sql.NullBool{}, // Belum tau cara ngedapetinnya
+			"kode_vendor":      helperUser.KodeVendor,
+			"nm_saham":         vTS.NmSaham,
+			"no_ktp_saham":     vTS.NoKtpSaham,
+			"alamat_saham":     vTS.AlamatSaham,
+			"persentase_saham": vTS.PersentaseSaham,
+			"path_saham":       vTS.PathSaham,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

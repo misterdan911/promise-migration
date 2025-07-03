@@ -7,8 +7,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-  "promise-migration/internal/ghelper"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -22,26 +22,26 @@ type RefVenReg struct {
 }
 
 type RefVendorRegister struct {
-    KodeRegister       pgtype.Int4
-    KodeJenisVendor    pgtype.Int2
-    NamaPerusahaan     pgtype.Text
-    Email              pgtype.Text
-    Password           pgtype.Text
-    NoTelp             pgtype.Text
-    NamaNarahubung     pgtype.Text
-    NoWaNarahubung     pgtype.Text
-    Swafoto            pgtype.Text
-    StatusRegister     pgtype.Text // Assuming status_persetujuan is text-based
-    AlasanDitolak      pgtype.Text
-    UserVerif          pgtype.Text
-    Udcr               pgtype.Timestamptz
-    Udch               pgtype.Timestamptz
-    Message            pgtype.Text
-    Similarity         pgtype.Text
-    DistancePercentage pgtype.Numeric
-    DistancePoint      pgtype.Numeric
-    Keypass            pgtype.Text
-    KodeVendor         pgtype.Int4
+	KodeRegister       pgtype.Int4
+	KodeJenisVendor    pgtype.Int2
+	NamaPerusahaan     pgtype.Text
+	Email              pgtype.Text
+	Password           pgtype.Text
+	NoTelp             pgtype.Text
+	NamaNarahubung     pgtype.Text
+	NoWaNarahubung     pgtype.Text
+	Swafoto            pgtype.Text
+	StatusRegister     pgtype.Text // Assuming status_persetujuan is text-based
+	AlasanDitolak      pgtype.Text
+	UserVerif          pgtype.Text
+	Udcr               pgtype.Timestamptz
+	Udch               pgtype.Timestamptz
+	Message            pgtype.Text
+	Similarity         pgtype.Text
+	DistancePercentage pgtype.Numeric
+	DistancePoint      pgtype.Numeric
+	Keypass            pgtype.Text
+	KodeVendor         pgtype.Int4
 }
 
 func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) pgtype.Int4 {
@@ -58,6 +58,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
       email,
       "password",
       no_telp,
+      nama_narahubung,
       swafoto,
       status_register,
       alasan_ditolak,
@@ -76,6 +77,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
       @email,
       @password,
       @no_telp,
+      @nama_narahubung,
       @swafoto,
       @status_register,
       @alasan_ditolak,
@@ -96,6 +98,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 		"email":               profilePenyedia.Email,
 		"password":            helperUser.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
+		"nama_narahubung":     profilePenyedia.ContactPerson,
 		"swafoto":             sql.NullString{Valid: false},
 		"status_register":     sql.NullString{Valid: true, String: "terima"},
 		"alasan_ditolak":      sql.NullString{Valid: false},
@@ -129,10 +132,10 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 }
 
 func GetAllData() []RefVendorRegister {
-  var allVendors []RefVendorRegister
-  ctx := context.Background()
+	var allVendors []RefVendorRegister
+	ctx := context.Background()
 
-  qRefVendorRegister := `
+	qRefVendorRegister := `
   SELECT
     kode_register,
     kode_jenis_vendor,
@@ -156,16 +159,16 @@ func GetAllData() []RefVendorRegister {
     kode_vendor
   FROM ref_vendor_register`
 
-  rows, err := db.DbSidapet.Query(ctx, qRefVendorRegister)
-  if err != nil {
-      log.Fatal("qRefVendorRegister Failed, " + err.Error() + " " + qRefVendorRegister)
-  }
+	rows, err := db.DbSidapet.Query(ctx, qRefVendorRegister)
+	if err != nil {
+		log.Fatal("qRefVendorRegister Failed, " + err.Error() + " " + qRefVendorRegister)
+	}
 
-  allVendors, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefVendorRegister])
-  if err != nil {
-      log.Fatal("failed collecting rows (ref_vendor_register.go:GetAllData), " + err.Error())
-  }
-  defer rows.Close()
+	allVendors, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefVendorRegister])
+	if err != nil {
+		log.Fatal("failed collecting rows (ref_vendor_register.go:GetAllData), " + err.Error())
+	}
+	defer rows.Close()
 
-  return allVendors
+	return allVendors
 }

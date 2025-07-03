@@ -3,14 +3,15 @@ package rizinusahabumodel
 import (
 	"context"
 	"database/sql"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VTblIzin struct {
@@ -80,7 +81,7 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  kode,
 		  file_izin,
 		  is_izin_selamanya,
-			izin_berlaku_akhir
+		  izin_berlaku_akhir
 		) VALUES (
 		  @kode_vendor,
 		  @jenis_izin_usaha,
@@ -89,7 +90,7 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  @kode,
 		  @file_izin,
 		  @is_izin_selamanya,
-			@izin_berlaku_akhir
+		  @izin_berlaku_akhir
 		)`
 
 		args := pgx.NamedArgs{
@@ -97,9 +98,9 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 			"jenis_izin_usaha":   jenisIzinusaha,
 			"nama":               vTI.NamaIzin,
 			"nomor_izin":         vTI.NoIzin,
-			"kode":               sql.NullString{},
+			"kode":               sql.NullString{}, // TODO: nanti periksa lagi, mungkin masih bisa di proses
 			"file_izin":          vTI.PathIzin,
-			"is_izin_selamanya":  sql.NullBool{Valid: true, Bool: isIzinSelamanya},
+			"is_izin_selamanya":  pgtype.Bool{Valid: true, Bool: isIzinSelamanya},
 			"izin_berlaku_akhir": izinBerlakuAkhir,
 		}
 

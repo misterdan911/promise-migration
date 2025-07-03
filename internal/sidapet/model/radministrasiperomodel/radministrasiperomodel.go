@@ -23,11 +23,13 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia, helpe
     INSERT INTO ref_administrasi_pero (
       kode_vendor,
       npwp,
+	  file_npwp,
       file_skb_pph23,
       file_sk_pp23
     ) VALUES (
       @kode_vendor,
       @npwp,
+	  @file_npwp,
       @file_skb_pph23,
       @file_sk_pp23
     )`
@@ -35,6 +37,7 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia, helpe
 	args := pgx.NamedArgs{
 		"kode_vendor":    helperUser.KodeVendor,
 		"npwp":           profilePenyedia.Npwp,
+		"file_npwp":      profilePenyedia.PathNpwp,
 		"file_skb_pph23": profilePenyedia.PathSkb,
 		"file_sk_pp23":   profilePenyedia.PathSkpp23,
 	}

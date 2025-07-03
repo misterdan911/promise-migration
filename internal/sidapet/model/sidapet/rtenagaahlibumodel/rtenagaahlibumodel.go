@@ -4,8 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
@@ -18,6 +16,9 @@ import (
 	structs2 "promise-migration/internal/structs"
 	"strconv"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type RefTenagaAhli struct {
@@ -112,7 +113,7 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 		"no_ktp":                  sql.NullString{},
 		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
-		"tgl_lahir":               sql.NullString{},
+		"tgl_lahir":               vTPP.TglPersonal,
 		"posisi":                  vTPP.JbtnPersonal,
 		"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
 		"program_studi":           sql.NullString{},
@@ -177,7 +178,7 @@ func InsertRefTenagaPendukungBu(vTPP structs.VmsTblPersonaliaPerush) {
 		"no_ktp":                  sql.NullString{},
 		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
-		"tgl_lahir":               sql.NullString{},
+		"tgl_lahir":               vTPP.TglPersonal,
 		"posisi":                  vTPP.JbtnPersonal,
 		"kode_jenjang_pendidikan": pgtype.Int4{}, // TODO: membuat konversi dari data lama
 		"program_studi":           sql.NullString{},

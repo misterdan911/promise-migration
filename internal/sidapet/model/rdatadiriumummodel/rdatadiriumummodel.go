@@ -52,19 +52,23 @@ func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia, helperuse
       kode_vendor,
       nama,
       nama_badan_usaha,
+      nama_narahubung,
       nomor_telp,
       email,
       kode_kab_kota_domisili,
       alamat_domisili,
+	  file_skt,
       alamat_badan_usaha
     ) VALUES (
       @kode_vendor,
       @nama,
       @nama_badan_usaha,
+      @nama_narahubung,
       @nomor_telp,
       @email,
       @kode_kab_kota_domisili,
       @alamat_domisili,
+	  @file_skt,
       @alamat_badan_usaha
     )`
 
@@ -72,10 +76,12 @@ func InsertRefDataDiriUmum(profilePenyedia structs.TblProfilePenyedia, helperuse
 		"kode_vendor":            helperuser.KodeVendor,
 		"nama":                   nama,
 		"nama_badan_usaha":       namaBadanUsaha,
+		"nama_narahubung":        profilePenyedia.ContactPerson,
 		"nomor_telp":             profilePenyedia.NoTelp,
 		"email":                  profilePenyedia.Email,
 		"kode_kab_kota_domisili": kodeKabKota,
 		"alamat_domisili":        alamatDomisili,
+		"file_skt":               profilePenyedia.PathDomisili,
 		"alamat_badan_usaha":     alamatBU,
 	}
 

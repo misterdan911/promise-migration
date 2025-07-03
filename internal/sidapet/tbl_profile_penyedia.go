@@ -66,12 +66,14 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		  kode_jenis_vendor, 
 		  nama_perusahaan,
 		  is_tetap,
+		  status_form_luar_dpt,
 		  udcr,
 		  udch
 		) VALUES (
 		  @kode_jenis_vendor,
 		  @nama_perusahaan,
 		  @is_tetap,
+		  @status_form_luar_dpt,
 		  @udcr,
 		  @udch
 		) RETURNING *`
@@ -84,11 +86,12 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 
 	args := pgx.NamedArgs{
-		"kode_jenis_vendor": profilePenyedia.IdJenisPenyedia,
-		"nama_perusahaan":   profilePenyedia.Nama,
-		"is_tetap":          isTetap,
-		"udcr":              profilePenyedia.CreateTime,
-		"udch":              profilePenyedia.UpdateTime,
+		"kode_jenis_vendor":    profilePenyedia.IdJenisPenyedia,
+		"nama_perusahaan":      profilePenyedia.Nama,
+		"is_tetap":             isTetap,
+		"status_form_luar_dpt": pgtype.Text{Valid: true, String: "selesai"},
+		"udcr":                 profilePenyedia.CreateTime,
+		"udch":                 profilePenyedia.UpdateTime,
 	}
 
 	// _, errInsRefVendor := db.DbSidapet.Exec(ctx, qInsRefVendor, args)
