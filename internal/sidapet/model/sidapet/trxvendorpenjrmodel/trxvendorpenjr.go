@@ -4,12 +4,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/sidapet/model/sidapet/trxnilaiakhirmodel"
 	"promise-migration/internal/sidapet/model/vmsdb/tverifmodel"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TrxVPNewRow struct {
@@ -66,7 +67,7 @@ func InsertTrxVendorPenjr(tverif tverifmodel.TblVerif, kodeJenisVendor int) {
 		"alasan_ditolak":        sql.NullString{},
 		"batas_waktu_perbaikan": sql.NullTime{},
 		"file_daftar_kehadiran": sql.NullString{},
-		"file_lainnya":           sql.NullString{},
+		"file_lainnya":          sql.NullString{},
 		"file_ba_verif":         sql.NullString{},
 		"status_dpt":            sql.NullString{Valid: true, String: statusDpt},
 		"alasan_tidak_terpilih": sql.NullString{},

@@ -53,7 +53,7 @@ var SidapetCmd = &cobra.Command{
 
 			// yg diproses hanya user vendor
 			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
-				// sidapet.MigrateTblProfilePenyedia(helperUser)
+				sidapet.MigrateTblProfilePenyedia(helperUser)
 			} else {
 				continue
 			}

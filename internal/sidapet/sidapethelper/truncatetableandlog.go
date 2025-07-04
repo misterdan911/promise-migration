@@ -3,6 +3,7 @@ package sidapethelper
 import (
 	"promise-migration/internal/g"
 	"promise-migration/internal/ghelper"
+	"promise-migration/internal/model/dbsidapet/refvendormodel"
 	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
 	"slices"
@@ -20,7 +21,7 @@ func TruncateTableAndLog() {
 		if skipUser {
 			continue
 		} else {
-			// refvendormodel.DeleteByKodeVendor(refVendorRegister.KodeVendor)
+			refvendormodel.DeleteByKodeVendor(refVendorRegister.KodeVendor)
 		}
 	}
 
