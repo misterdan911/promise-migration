@@ -10,25 +10,25 @@ import (
 )
 
 type TrxUndanganPenjr struct {
- KodeUndPenjr    pgtype.Int4
- KodePenjaringan pgtype.Int4
- Nama            pgtype.Text
- Email           pgtype.Text
- Alamat          pgtype.Text
- NamaPic         pgtype.Text
- NoHpWa          pgtype.Text
- TglAwal         pgtype.Timestamptz
- TglAkhir        pgtype.Timestamptz
- Token           pgtype.Text
- KodeVendor      pgtype.Int4
- StatusUndang    pgtype.Text // Assuming status_undang is text-based
+	KodeUndPenjr    pgtype.Int4
+	KodePenjaringan pgtype.Int4
+	Nama            pgtype.Text
+	Email           pgtype.Text
+	Alamat          pgtype.Text
+	NamaPic         pgtype.Text
+	NoHpWa          pgtype.Text
+	TglAwal         pgtype.Timestamptz
+	TglAkhir        pgtype.Timestamptz
+	Token           pgtype.Text
+	KodeVendor      pgtype.Int4
+	StatusUndang    pgtype.Text // Assuming status_undang is text-based
 }
 
 func InsertNew(trxUndanganPenjr TrxUndanganPenjr) {
-  ctx := context.Background()
+	ctx := context.Background()
 
-  qInsert := `
-  INSERT INTO public.trx_undangan_penjr (
+	qInsert := `
+  INSERT INTO trx_undangan_penjr (
       kode_penjaringan,
       nama,
       email,
@@ -54,23 +54,23 @@ func InsertNew(trxUndanganPenjr TrxUndanganPenjr) {
       @status_undang
   )`
 
-  args := pgx.NamedArgs{
-      "kode_penjaringan": trxUndanganPenjr.KodePenjaringan,
-      "nama":             trxUndanganPenjr.Nama,
-      "email":            trxUndanganPenjr.Email,
-      "alamat":           trxUndanganPenjr.Alamat,
-      "nama_pic":         trxUndanganPenjr.NamaPic,
-      "no_hp_wa":         trxUndanganPenjr.NoHpWa,
-      "tgl_awal":         trxUndanganPenjr.TglAwal,
-      "tgl_akhir":        trxUndanganPenjr.TglAkhir,
-      "token":            trxUndanganPenjr.Token,
-      "kode_vendor":      trxUndanganPenjr.KodeVendor,
-      "status_undang":    trxUndanganPenjr.StatusUndang,
-  }
+	args := pgx.NamedArgs{
+		"kode_penjaringan": trxUndanganPenjr.KodePenjaringan,
+		"nama":             trxUndanganPenjr.Nama,
+		"email":            trxUndanganPenjr.Email,
+		"alamat":           trxUndanganPenjr.Alamat,
+		"nama_pic":         trxUndanganPenjr.NamaPic,
+		"no_hp_wa":         trxUndanganPenjr.NoHpWa,
+		"tgl_awal":         trxUndanganPenjr.TglAwal,
+		"tgl_akhir":        trxUndanganPenjr.TglAkhir,
+		"token":            trxUndanganPenjr.Token,
+		"kode_vendor":      trxUndanganPenjr.KodeVendor,
+		"status_undang":    trxUndanganPenjr.StatusUndang,
+	}
 
-  _, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
-  if errIns != nil {
-    fmt.Println("unable to insert trx_undangan_penjr, " + errIns.Error())
-  }
+	_, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
+	if errIns != nil {
+		fmt.Println("unable to insert trx_undangan_penjr, " + errIns.Error())
+	}
 
 }

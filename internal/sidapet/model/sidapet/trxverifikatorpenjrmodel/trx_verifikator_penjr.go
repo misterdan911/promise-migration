@@ -1,10 +1,11 @@
-package tverifikatorpenjrmodel
+package trxverifikatorpenjrmodel
 
 import (
 	"context"
 	"fmt"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/vmsdb/tblpaketmodel"
 
 	"github.com/jackc/pgx/v5"
@@ -40,13 +41,31 @@ func InsertTrxVerifikatorPenjr(kodePenjaringan pgtype.Int4, vmsPaket tblpaketmod
 	defer rwTblVerifPaket.Close()
 
 	for _, tblVerifPaket := range allTblVerifPaket {
+
+		helperUser := helperusermodel.GetByVmsUserEmail(tblVerifPaket.Email)
+
 		qInsertTrxVerPjr := `
-		INSERT INTO trx_verifikator_penjr (kode_penjaringan, email_verif)
-		VALUES ( @kode_penjaringan, @email_verif )`
+		INSERT INTO trx_verifikator_penjr (
+			kode_penjaringan,
+			email_verif,
+			nama_verif,
+			nip,
+			status_aktif
+		)
+		VALUES (
+			@kode_penjaringan,
+			@email_verif,
+			@nama_verif,
+			@nip,
+			@status_aktif
+		)`
 
 		args := pgx.NamedArgs{
 			"kode_penjaringan": kodePenjaringan,
 			"email_verif":      tblVerifPaket.Email,
+			"nama_verif":       helperUser.VmsUserName,
+			"nip":              helperUser.Nip,
+			"status_aktif":     pgtype.Text{Valid: true, String: "aktif"},
 		}
 		_, errInsertTrxVerPjr := db.DbSidapet.Exec(ctx, qInsertTrxVerPjr, args)
 		if errInsertTrxVerPjr != nil {

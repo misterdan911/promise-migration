@@ -33,7 +33,7 @@ var SidapetCmd = &cobra.Command{
 
 		// sidapethelper.DropAllForeignKey()
 
-    	g.ExcludedEmails = ghelper.GetExcludedEmail()
+		g.ExcludedEmails = ghelper.GetExcludedEmail()
 
 		sidapethelper.TruncateTableAndLog()
 
@@ -41,7 +41,7 @@ var SidapetCmd = &cobra.Command{
 
 		for _, helperUser := range allHelperUser {
 
-		    skipUser := slices.Contains(g.ExcludedEmails, helperUser.VmsUserEmail.String)
+			skipUser := slices.Contains(g.ExcludedEmails, helperUser.VmsUserEmail.String)
 			if skipUser {
 				continue
 			}
@@ -53,7 +53,7 @@ var SidapetCmd = &cobra.Command{
 
 			// yg diproses hanya user vendor
 			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
-				sidapet.MigrateTblProfilePenyedia(helperUser)
+				// sidapet.MigrateTblProfilePenyedia(helperUser)
 			} else {
 				continue
 			}
@@ -61,14 +61,12 @@ var SidapetCmd = &cobra.Command{
 
 		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
 
-
 		// Cari tahu trx_kategori.kode_unit_pbj
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-		
+
 		sidapet.MigrateTblVerif()
 
 		// sidapethelper.CreateAllForeignKey()
-
 
 	},
 }

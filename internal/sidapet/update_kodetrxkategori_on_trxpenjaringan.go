@@ -3,16 +3,18 @@ package sidapet
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type RefKeyword struct {
-	Keyword      pgtype.Text
-	KodeKategori pgtype.Int4
+	Keyword            pgtype.Text
+	KodeKategori       pgtype.Int4
+	KodeJenisPengadaan pgtype.Int4
 }
 
 type TrxKategori struct {
@@ -24,7 +26,8 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 	qKeyword := `
 	SELECT
 	  keyword,
-	  kode_kategori
+	  kode_kategori,
+	  kode_jenis_pengadaan
 	FROM helper_kategori_kw
 	ORDER BY id`
 	rKeyword, errKw := db.DbSidapet.Query(ctx, qKeyword)
@@ -87,10 +90,18 @@ func UpdateKodeTrxKategoriOnTrxPenjaringan() {
 			kode_trx_kategori = allTrxKategori[0].KodeTrxKategori.Int32
 		}
 
-		qUpdate := "UPDATE trx_penjaringan SET kode_trx_kategori = @kodeTrxKategori WHERE nama_penjaringan ILIKE '%' || @keyword || '%'"
+		qUpdate := `
+		UPDATE trx_penjaringan
+		SET
+			kode_trx_kategori = @kodeTrxKategori,
+			kode_jenis_pengadaan = @kode_jenis_pengadaan
+		WHERE
+			nama_penjaringan ILIKE '%' || @keyword || '%'`
+
 		args := pgx.NamedArgs{
-			"kodeTrxKategori": kode_trx_kategori,
-			"keyword":         kw.Keyword,
+			"kodeTrxKategori":      kode_trx_kategori,
+			"kode_jenis_pengadaan": kw.KodeJenisPengadaan,
+			"keyword":              kw.Keyword,
 		}
 		_, errUpdate := db.DbSidapet.Exec(ctx, qUpdate, args)
 		if errUpdate != nil {

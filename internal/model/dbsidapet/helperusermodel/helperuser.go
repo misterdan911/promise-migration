@@ -78,7 +78,7 @@ func InsertNew(helperUser HelperUser) {
 		"db_penyedia":         helperUser.DbPenyedia,
 		"nama_penyedia":       helperUser.NamaPenyedia,
 		"jenis_penyedia":      helperUser.JenisPenyedia,
-    "usman_ref_user_id":   helperUser.UsmanRefUserId,
+		"usman_ref_user_id":   helperUser.UsmanRefUserId,
 		"kode_vendor":         helperUser.KodeVendor,
 	}
 
@@ -141,17 +141,17 @@ func UpdateKodeVendor(helperUser HelperUser) {
 }
 
 func UpdateUsmanRefUserIdByEmail(helperUser HelperUser) {
-  ctx := context.Background()
-  qUpdate := `UPDATE helper_user SET usman_ref_user_id = @usman_ref_user_id WHERE vms_user_email = @email`
-  args := pgx.NamedArgs{
-    "email":                 helperUser.VmsUserEmail,
-    "usman_ref_user_id":  helperUser.UsmanRefUserId,
-  }
+	ctx := context.Background()
+	qUpdate := `UPDATE helper_user SET usman_ref_user_id = @usman_ref_user_id WHERE vms_user_email = @email`
+	args := pgx.NamedArgs{
+		"email":             helperUser.VmsUserEmail,
+		"usman_ref_user_id": helperUser.UsmanRefUserId,
+	}
 
-  _, err := db.DbSidapet.Exec(ctx, qUpdate, args)
-  if err != nil {
-    fmt.Println("unable to update usman_ref_user_id (helperuser.go), " + err.Error())
-  }
+	_, err := db.DbSidapet.Exec(ctx, qUpdate, args)
+	if err != nil {
+		fmt.Println("unable to update usman_ref_user_id (helperuser.go), " + err.Error())
+	}
 }
 
 func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
@@ -186,6 +186,49 @@ func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
 	allUser, err := pgx.CollectRows(rwHUser, pgx.RowToStructByName[HelperUser])
 	if err != nil {
 		log.Fatal("failed collecting rwHUser (helperuser.go:GetByVmsUserId), " + err.Error())
+	}
+	defer rwHUser.Close()
+
+	if len(allUser) > 0 {
+		helperUser = allUser[0]
+	}
+
+	return helperUser
+
+}
+
+func GetByVmsUserEmail(vmsUserEmail pgtype.Text) HelperUser {
+	var helperUser HelperUser
+	ctx := context.Background()
+
+	qHUser := `
+  SELECT
+    id,
+    vms_user_id,
+    vms_user_name,
+    vms_user_level,
+    vms_user_email,
+    vms_user_pass,
+    vms_user_created_at,
+    vms_user_updated_at,
+    nip,
+    kode_unit,
+    db_penyedia,
+    nama_penyedia,
+    jenis_penyedia,
+    usman_ref_user_id,
+    kode_vendor
+  FROM helper_user hu
+  WHERE vms_user_email = $1`
+
+	rwHUser, err := db.DbSidapet.Query(ctx, qHUser, vmsUserEmail)
+	if err != nil {
+		log.Fatal("qHUser Failed, " + err.Error() + " " + qHUser)
+	}
+
+	allUser, err := pgx.CollectRows(rwHUser, pgx.RowToStructByName[HelperUser])
+	if err != nil {
+		log.Fatal("failed collecting rwHUser (helperuser.go:GetByVmsUserEmail), " + err.Error())
 	}
 	defer rwHUser.Close()
 

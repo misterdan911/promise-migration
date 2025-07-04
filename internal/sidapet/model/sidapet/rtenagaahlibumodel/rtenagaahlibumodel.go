@@ -80,6 +80,12 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 
 	ctx := context.Background()
 
+	var tglLahir pgtype.Text
+	strTglLahir, _ := sidapethelper.ConvertToPostgresDate(vTPP.TglPersonal.String)
+	if strTglLahir != "" {
+		tglLahir = pgtype.Text{Valid: true, String: strTglLahir}
+	}
+
 	qIns := `
 		INSERT INTO ref_tenaga_ahli_bu (
 		  kode_vendor,
@@ -113,7 +119,7 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 		"no_ktp":                  sql.NullString{},
 		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
-		"tgl_lahir":               vTPP.TglPersonal,
+		"tgl_lahir":               tglLahir,
 		"posisi":                  vTPP.JbtnPersonal,
 		"kode_jenjang_pendidikan": sql.NullInt16{}, // TODO: membuat konversi dari data lama
 		"program_studi":           sql.NullString{},
@@ -131,6 +137,7 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 	allRefTenagaAhli, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefTenagaAhli])
 	if errRwIns != nil {
 		fmt.Println("nama: " + vTPP.NmPersonal.String + sidapethelper.GetLen(vTPP.NmPersonal.String))
+		fmt.Println("tgl_lahir: " + tglLahir.String + sidapethelper.GetLen(tglLahir.String))
 		fmt.Println("posisi: " + vTPP.JbtnPersonal.String + sidapethelper.GetLen(vTPP.JbtnPersonal.String))
 		fmt.Println("file_ijazah: " + vTPP.PathPersonal.String + sidapethelper.GetLen(vTPP.PathPersonal.String))
 		log.Fatal("failed collecting RefTenagaAhli, " + errRwIns.Error())
@@ -144,6 +151,12 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
 
 func InsertRefTenagaPendukungBu(vTPP structs.VmsTblPersonaliaPerush) {
 	ctx := context.Background()
+
+	var tglLahir pgtype.Text
+	strTglLahir, _ := sidapethelper.ConvertToPostgresDate(vTPP.TglPersonal.String)
+	if strTglLahir != "" {
+		tglLahir = pgtype.Text{Valid: true, String: strTglLahir}
+	}
 
 	qIns := `
 		INSERT INTO ref_tenaga_pendukung_bu (
@@ -178,7 +191,7 @@ func InsertRefTenagaPendukungBu(vTPP structs.VmsTblPersonaliaPerush) {
 		"no_ktp":                  sql.NullString{},
 		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
-		"tgl_lahir":               vTPP.TglPersonal,
+		"tgl_lahir":               tglLahir,
 		"posisi":                  vTPP.JbtnPersonal,
 		"kode_jenjang_pendidikan": pgtype.Int4{}, // TODO: membuat konversi dari data lama
 		"program_studi":           sql.NullString{},
