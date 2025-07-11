@@ -71,7 +71,7 @@ SELECT setval('trx_kategori_kode_trx_kategori_seq', (SELECT MAX(kode_trx_kategor
 SELECT setval('trx_kehadiran_verif_kode_kehadiran_seq', (SELECT MAX(kode_kehadiran) FROM trx_kehadiran_verif));
 SELECT setval('trx_ketentuan_umum_khusus_kode_kuk_seq', (SELECT MAX(kode_kuk) FROM trx_ketentuan_umum_khusus));
 SELECT setval('trx_nilai_akhir_kode_penilaian_seq', (SELECT MAX(kode_penilaian) FROM trx_nilai_akhir));
-SELECT setval('trx_pengurus_bu_verif_kode_verif_seq', (SELECT MAX(kode_verif) FROM trx_pengurus_bu_verif));
+SELECT setval('ref_pengurus_bu_verif_kode_verif_seq', (SELECT MAX(kode_verif) FROM ref_pengurus_bu_verif));
 SELECT setval('trx_penjaringan_kode_penjaringan_seq', (SELECT MAX(kode_penjaringan) FROM trx_penjaringan));
 SELECT setval('trx_tim_teknis_pendukung_kode_tim_teknis_pendukung_seq', (SELECT MAX(kode_tim_teknis_pendukung) FROM trx_tim_teknis_pendukung));
 SELECT setval('trx_undangan_pemeriksaan_keluar_dpt_kode_undangan_seq', (SELECT MAX(kode_undangan) FROM trx_undangan_pemeriksaan_keluar_dpt));
