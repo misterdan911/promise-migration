@@ -12,7 +12,7 @@ import (
 
 var SippanCmd = &cobra.Command{
   Use:   "sippan",
-  Short: "A brief description of your command",
+  Short: "Migrasi database Si-PPan",
   Long: `A longer description that spans multiple lines and likely contains examples
   and usage of using your command. For example:
 
