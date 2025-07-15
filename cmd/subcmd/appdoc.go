@@ -13,8 +13,14 @@ var AppDocCmd = &cobra.Command{
   Long:  `Perintah ini untuk melakukan migrasi semua file dan dokumen fisik`,
   Run: func(cmd *cobra.Command, args []string) {
 
-    db.ConnectVmsDb()
-    defer db.VmsDb.Close()
+    // db.ConnectVmsDb()
+    // defer db.VmsDb.Close()
+
+    db.ConnectMyVmsDb()
+    defer db.MyVmsDb.Close()
+    
+    db.ConnectDbSidapet()
+    defer db.DbSidapet.Close()
 
    appdoc.MigrateFileFromVmsDbTblProfile()
 
