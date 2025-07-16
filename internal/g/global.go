@@ -12,3 +12,4 @@ type GUser struct {
 var User GUser
 var ExcludedEmails []string
 var ExcludedVmsUserId []int32
+var BasePath string

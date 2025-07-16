@@ -2,6 +2,7 @@ package appdoc
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -10,6 +11,7 @@ import (
 	"net/textproto" // This is the missing import
 	"os"
 	"path/filepath"
+	"strconv"
 )
 
 type ResponseServiceUpload struct {
@@ -50,6 +52,7 @@ func DownloadFile(url string) (string, error) {
   defer resp.Body.Close()
 
   // Check server response
+  fmt.Println("resp.StatusCode: " + strconv.Itoa(resp.StatusCode))
   if resp.StatusCode != http.StatusOK {
     return "", fmt.Errorf("bad status: %s", resp.Status)
   }
@@ -106,7 +109,7 @@ func UploadFile(appName string, filePath string) (ResponseServiceUpload, error) 
   }
 
   // Create the request
-  urlServiceUpload := "http://localhost:4444/service-upload/api-auth/v1/uploads/pdf"
+  urlServiceUpload := "https://localhost:4444/service-upload/api-auth/v1/uploads/pdf"
   req, err := http.NewRequest("POST", urlServiceUpload, body)
   if err != nil {
     return successResp, fmt.Errorf("failed to create request: %v", err)
@@ -115,8 +118,13 @@ func UploadFile(appName string, filePath string) (ResponseServiceUpload, error) 
   // Set the content type header with the boundary
   req.Header.Set("Content-Type", writer.FormDataContentType())
 
+  // Create a custom transport that skips TLS verification
+  tr := &http.Transport{
+      TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+  }
+
   // Send the request
-  client := &http.Client{}
+  client := &http.Client{Transport: tr}
   resp, err := client.Do(req)
   if err != nil {
     return successResp, fmt.Errorf("failed to send request: %v", err)

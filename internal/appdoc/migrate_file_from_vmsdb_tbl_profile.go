@@ -1,52 +1,117 @@
 package appdoc
 
 import (
-	"fmt"
 	"log"
+	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/myvmsdb/tblprofilepenyediamodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func MigrateFileFromVmsDbTblProfile() {
+// var BasePath string = "https://sidapet-promiseterbuka.ut.ac.id"
 
-  basePath := "https://sidapet-promiseterbuka.ut.ac.id"
+func MigrateFileFromVmsDbTblProfilePenyedia() {
 
+  // g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
 
   allTblProfilePenyedia, _ := tblprofilepenyediamodel.GetAllDocument()
+  originalPath := pgtype.Text{Valid: true, String: ""}
 
   for _, tblProfilePenyedia := range allTblProfilePenyedia {
 
-    // kalau field di kolomnya kosong, skip
-    if tblProfilePenyedia.PathKtp.String == "" {
-      continue
+    // vms_db.path_ktp
+    if tblProfilePenyedia.PathKtp.String != "" {
+      originalPath.String = tblProfilePenyedia.PathKtp.String
+      ProcessOriginalPath(originalPath)
     }
 
-    fmt.Println(tblProfilePenyedia.PathKtp.String)
+    // vms_db.path_domisili
+    if tblProfilePenyedia.PathDomisili.String != "" {
+      originalPath.String = tblProfilePenyedia.PathDomisili.String
+      ProcessOriginalPath(originalPath)
+    }
 
-    originalPath := pgtype.Text{Valid: true, String: tblProfilePenyedia.PathKtp.String}
+    // path_rek,
+    if tblProfilePenyedia.PathRek.String != "" {
+      originalPath.String = tblProfilePenyedia.PathRek.String
+      ProcessOriginalPath(originalPath)
+    }
 
-    helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
-    if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+    // path_npwp,
+    if tblProfilePenyedia.PathNpwp.String != "" {
+      originalPath.String = tblProfilePenyedia.PathNpwp.String
+      ProcessOriginalPath(originalPath)
+    }
 
-      urlPath := basePath + "/" + tblProfilePenyedia.PathKtp.String
-      filePath, _ := DownloadFile(urlPath)
+    // path_lap_perus,
+    if tblProfilePenyedia.PathLapPerus.String != "" {
+      originalPath.String = tblProfilePenyedia.PathLapPerus.String
+      ProcessOriginalPath(originalPath)
+    }
 
-      SuccessResponse, errUpload := UploadFile("SI-DaPeT", filePath)
-      if errUpload != nil {
-        log.Fatal("Error processing file: " + errUpload.Error())
-      }
+    // path_ikut_serta,
+    if tblProfilePenyedia.PathIkutSerta.String != "" {
+      originalPath.String = tblProfilePenyedia.PathIkutSerta.String
+      ProcessOriginalPath(originalPath)
+    }
 
-      fmt.Println("FileName: " + SuccessResponse.Data[0].FileName)
+    // path_kuasa,
+    if tblProfilePenyedia.PathKuasa.String != "" {
+      originalPath.String = tblProfilePenyedia.PathKuasa.String
+      ProcessOriginalPath(originalPath)
+    }
 
-      helperDokumen.OriginalPath = originalPath
-      helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
-      helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
-      helperdokumenmodel.InsertNew(helperDokumen)
-    } 
+    // path_skb,
+    if tblProfilePenyedia.PathSkb.String != "" {
+      originalPath.String = tblProfilePenyedia.PathSkb.String
+      ProcessOriginalPath(originalPath)
+    }
 
-    // break
+    // path_skpp23,
+    if tblProfilePenyedia.PathSkpp23.String != "" {
+      originalPath.String = tblProfilePenyedia.PathSkpp23.String
+      ProcessOriginalPath(originalPath)
+    }
+
+    // path_pph_dibebaskan
+    if tblProfilePenyedia.PathPphDibebaskan.String != "" {
+      originalPath.String = tblProfilePenyedia.PathPphDibebaskan.String
+      ProcessOriginalPath(originalPath)
+    }
+
   }
+}
+
+func ProcessOriginalPath(originalPath pgtype.Text) error {
+  helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
+
+  if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+
+    urlPath := g.BasePath + "/" + originalPath.String
+    filePath, errDownload := DownloadFile(urlPath)
+    if errDownload != nil {
+      if errDownload.Error() == "bad status: 404 Not Found" {
+        return nil
+      }
+      log.Fatal("Error downloading file: " + errDownload.Error())
+    }
+
+    SuccessResponse, errUpload := UploadFile("SI-DaPeT", filePath)
+    if errUpload != nil {
+      log.Fatal("Error processing file: " + errUpload.Error())
+    }
+
+    // fmt.Println("FileName: " + SuccessResponse.Data[0].FileName)
+
+    helperDokumen.OriginalPath = originalPath
+    helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
+    helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
+    helperdokumenmodel.InsertNew(helperDokumen)
+
+  } 
+
+    return nil
+
 }
 
