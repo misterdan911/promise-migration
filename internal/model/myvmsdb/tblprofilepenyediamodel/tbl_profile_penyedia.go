@@ -6,16 +6,17 @@ import (
 )
 
 type TblProfilePenyediaDocument struct {
-    PathKtp           sql.NullString
-    PathDomisili      sql.NullString
-    PathRek           sql.NullString
-    PathNpwp          sql.NullString
-    PathLapPerus      sql.NullString
-    PathIkutSerta     sql.NullString
-    PathKuasa         sql.NullString
-    PathSkb           sql.NullString
-    PathSkpp23        sql.NullString
-    PathPphDibebaskan sql.NullString
+    IdProfilPenyedia   sql.NullInt32
+    PathKtp            sql.NullString
+    PathDomisili       sql.NullString
+    PathRek            sql.NullString
+    PathNpwp           sql.NullString
+    PathLapPerus       sql.NullString
+    PathIkutSerta      sql.NullString
+    PathKuasa          sql.NullString
+    PathSkb            sql.NullString
+    PathSkpp23         sql.NullString
+    PathPphDibebaskan  sql.NullString
 }
 
 // Helper method to convert NullString to regular string
@@ -31,6 +32,7 @@ func (d *TblProfilePenyediaDocument) GetPathKtp() string {
 func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
     qData := `
     SELECT
+        id_profil_penyedia,
         path_ktp,
         path_domisili,
         path_rek,
@@ -54,6 +56,7 @@ func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
     for results.Next() {
         var doc TblProfilePenyediaDocument
         err := results.Scan(
+            &doc.IdProfilPenyedia,
             &doc.PathKtp,
             &doc.PathDomisili,
             &doc.PathRek,
