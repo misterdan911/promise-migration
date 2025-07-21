@@ -13,7 +13,7 @@ func ConnectVmsDb() {
 	host := os.Getenv("DB_HOST")
 	user := os.Getenv("DB_USERNAME")
 	password := os.Getenv("DB_PASSWORD")
-	dbname := os.Getenv("DB_DATABASE_VMSDB")
+	dbname := os.Getenv("DB_VMSDB")
 	port := os.Getenv("DB_PORT")
 
 	dbUrl := "postgres://" + user + ":" + password + "@" + host + ":" + port + "/" + dbname

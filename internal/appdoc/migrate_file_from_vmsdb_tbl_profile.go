@@ -1,15 +1,59 @@
 package appdoc
 
 import (
-	"log"
+	// "fmt"
+	"fmt"
 	"promise-migration/internal/g"
-	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/myvmsdb/tblprofilepenyediamodel"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 // var BasePath string = "https://sidapet-promiseterbuka.ut.ac.id"
+
+func MigrateFileFromVmsDbTblProfilePenyediaNew() {
+  allTblProfilePenyedia, _ := tblprofilepenyediamodel.GetAllDocument()
+  originalPath := pgtype.Text{Valid: true, String: ""}
+
+  for _, tblProfilePenyedia := range allTblProfilePenyedia {
+
+    // if tblProfilePenyedia.IdProfilPenyedia.Int32 != 437 {
+    //   continue
+    // }
+
+    // vms_db.tbl_profile_penyedia.path_ktp
+    if tblProfilePenyedia.PathKtp.String != "" {
+      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_ktp"
+      g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
+
+      originalPath.String = tblProfilePenyedia.PathKtp.String
+      ProcessOriginalPathNew(originalPath)
+    }
+
+    // vms_db.path_domisili
+    if tblProfilePenyedia.PathDomisili.String != "" {
+      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_domisili"
+      g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
+
+      originalPath.String = tblProfilePenyedia.PathDomisili.String
+      ProcessOriginalPathNew(originalPath)
+    }
+
+    // path_rek,
+    if tblProfilePenyedia.PathRek.String != "" {
+      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_rek"
+      g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
+
+      originalPath.String = tblProfilePenyedia.PathRek.String
+      ProcessOriginalPathNew(originalPath)
+    }
+
+
+
+
+  }
+}
 
 func MigrateFileFromVmsDbTblProfilePenyedia() {
 
@@ -27,6 +71,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathKtp.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// vms_db.path_domisili
@@ -36,6 +81,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathDomisili.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_rek,
@@ -45,8 +91,10 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathRek.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
+/*
 		// path_npwp,
 		if tblProfilePenyedia.PathNpwp.String != "" {
 			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_npwp"
@@ -54,6 +102,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathNpwp.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_lap_perus,
@@ -63,6 +112,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathLapPerus.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_ikut_serta,
@@ -72,6 +122,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathIkutSerta.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_kuasa,
@@ -81,6 +132,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathKuasa.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_skb,
@@ -90,6 +142,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathSkb.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_skpp23,
@@ -99,6 +152,7 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathSkpp23.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
 
 		// path_pph_dibebaskan
@@ -108,38 +162,32 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 
 			originalPath.String = tblProfilePenyedia.PathPphDibebaskan.String
 			ProcessOriginalPath(originalPath)
+      PrintLog()
 		}
+*/
 
 	}
 }
 
-func ProcessOriginalPath(originalPath pgtype.Text) error {
-	helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
 
-	if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
 
-		urlPath := g.BasePath + "/" + originalPath.String
-		filePath, errDownload := DownloadFile(urlPath)
-		if errDownload != nil {
-			if errDownload.Error() == "bad status: 404 Not Found" {
-				return nil
-			}
-			log.Fatal("Error downloading file: " + errDownload.Error())
-		}
+func PrintLog() {
+  if g.LogDoc.OriPath != "" {
+    fmt.Println("FieldName: " + g.LogDoc.FieldName)
+    fmt.Println("PK ID: " + strconv.Itoa(int(g.LogDoc.PkId)))
+    fmt.Println("Url: " + g.LogDoc.OriPath)
+    fmt.Println("Download: " + g.LogDoc.DownStat)
+    fmt.Println("Upload: " + g.LogDoc.UpStat)
+    fmt.Println("")
+  }
 
-		SuccessResponse, errUpload := UploadFile("SI-DaPeT", filePath)
-		if errUpload != nil {
-			log.Fatal("Error processing file: " + errUpload.Error())
-		}
+  defer ClearGLogDoc()
+}
 
-		// fmt.Println("FileName: " + SuccessResponse.Data[0].FileName)
-
-		helperDokumen.OriginalPath = originalPath
-		helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
-		helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
-		helperdokumenmodel.InsertNew(helperDokumen)
-
-	}
-
-	return nil
+func ClearGLogDoc() {
+  g.LogDoc.FieldName = ""
+  g.LogDoc.PkId = 0
+  g.LogDoc.OriPath = ""
+  g.LogDoc.DownStat = ""
+  g.LogDoc.UpStat = ""
 }

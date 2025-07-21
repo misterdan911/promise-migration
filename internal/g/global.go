@@ -1,12 +1,12 @@
 package g
 
 import (
-	"github.com/jackc/pgx/v5/pgtype"
+"github.com/jackc/pgx/v5/pgtype"
 )
 
 type GUser struct {
-	Id   pgtype.Int4
-	Name pgtype.Text
+  Id   pgtype.Int4
+  Name pgtype.Text
 }
 
 var User GUser
@@ -15,8 +15,11 @@ var ExcludedVmsUserId []int32
 var BasePath string
 
 type LogDocument struct {
-	FieldName string
-	PkId      int32
+  FieldName string
+  PkId      int32
+  OriPath   string
+  DownStat  string
+UpStat    string
 }
 
 var LogDoc LogDocument

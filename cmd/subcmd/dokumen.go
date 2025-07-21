@@ -8,8 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var AppDocCmd = &cobra.Command{
-  Use:   "appdoc",
+var DokumenCmd = &cobra.Command{
+  Use:   "dokumen",
   Short: "Migrasi semua file dan dokumen fisik",
   Long:  `Perintah ini untuk melakukan migrasi semua file dan dokumen fisik`,
   Run: func(cmd *cobra.Command, args []string) {
@@ -34,7 +34,10 @@ var AppDocCmd = &cobra.Command{
     // tbl_pengalaman3
     // tbl_pengalaman10
     // tbl_personalia_perusahaan
-    appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
+
+    // appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
+    appdoc.MigrateFileFromVmsDbTblProfilePenyediaNew()
+
     // tbl_saham_perusahaan
     // tbl_sertif_perorangan
     // tbl_surat_keputusan
