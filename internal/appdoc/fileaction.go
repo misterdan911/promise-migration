@@ -25,7 +25,7 @@ type ResponseServiceUpload struct {
 
 var FilePath string = "D:/Danu/repo/golang/promise-migration/files/tmp/dokumen.pdf"
 
-func DownloadFileNew(url string) error {
+func DownloadFile(url string) error {
 	// Create the directory if it doesn't exist
 	dir := filepath.Dir(FilePath)
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
@@ -148,9 +148,9 @@ func UploadFileNew(appName string, filePath string) error {
 }
 */
 
-
+/*
 // downloadFile downloads a file from the specified URL and saves it to the given filepath
-func DownloadFile(url string) (string, error) {
+func DownloadFileOld(url string) (string, error) {
 
 	// Create the directory if it doesn't exist
 	dir := filepath.Dir(FilePath)
@@ -193,6 +193,7 @@ func DownloadFile(url string) (string, error) {
 
 	return FilePath, nil
 }
+*/
 
 func UploadFile(appName string, filePath string) (ResponseServiceUpload, error) {
 

@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func ProcessOriginalPathNew(originalPath pgtype.Text) error {
+func ProcessOriginalPath(originalPath pgtype.Text) error {
   // Cek apakah dokumen sudah pernah berhasil di proses
   helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
 
@@ -22,7 +22,7 @@ func ProcessOriginalPathNew(originalPath pgtype.Text) error {
 
     // download dokumen start
     // --------------------------------------------------------------------------------------------
-    errDl := DownloadFileNew(urlPath)
+    errDl := DownloadFile(urlPath)
     if errDl != nil {
 
       // kalau file yg mau didownload tidak ditemukan
@@ -55,6 +55,10 @@ func ProcessOriginalPathNew(originalPath pgtype.Text) error {
         // print log ke konsol
         PrintLog()
         return nil // Supaya func ProcessOriginalPath berhenti sampai disini
+      } else if strings.Contains(errUp.Error(), "EOF marker not found") {
+        g.LogDoc.UpStat = "Failed - EOF marker not found"
+        PrintLog()
+        return nil
       }
 
       g.LogDoc.UpStat = "Failed"
@@ -75,10 +79,12 @@ func ProcessOriginalPathNew(originalPath pgtype.Text) error {
     helperdokumenmodel.InsertNew(helperDokumen)
   }
 
+  /*
   if g.LogDoc.DownStat == "Success" {
-    // PrintLog()
-    // log.Fatal("Stop Dulu")
+    PrintLog()
+    log.Fatal("Stop Dulu")
   }
+  */
 
   PrintLog()
 

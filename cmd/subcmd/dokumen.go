@@ -26,6 +26,8 @@ var DokumenCmd = &cobra.Command{
     g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
 
     // tbl_akta_perusahaan
+    // appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
+
     // tbl_direksi_perusahaan
     // tbl_fasilitas_perusahaan
     // tbl_ijin_usaha_perusahaan
