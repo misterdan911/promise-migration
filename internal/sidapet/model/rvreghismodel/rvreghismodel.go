@@ -70,7 +70,7 @@ func InsertRefVendorRegHistory(profilePenyedia structs.TblProfilePenyedia, helpe
 		"kode_register":       kodeRegister,
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
-		"email":               profilePenyedia.Email,
+		"email":               helperuser.VmsUserEmail,
 		"password":            helperuser.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
 		"nama_narahubung":     profilePenyedia.ContactPerson,

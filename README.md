@@ -1,6 +1,7 @@
 # Promise v.2.0 Database Migration Tools
 
-Tools untuk migrasi database Promise v.1.0 ke v.2.0
+Program ini adalah program CLI sebagai tools untuk migrasi database Promise v.1.0 ke v.2.0.
+
 
 ## How to Use
 ```bash

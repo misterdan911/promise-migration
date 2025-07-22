@@ -95,7 +95,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
 	args := pgx.NamedArgs{
 		"kode_jenis_vendor":   profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":     profilePenyedia.Nama,
-		"email":               profilePenyedia.Email,
+		"email":               helperUser.VmsUserEmail,
 		"password":            helperUser.VmsUserPass,
 		"no_telp":             profilePenyedia.NoTelp,
 		"nama_narahubung":     profilePenyedia.ContactPerson,
