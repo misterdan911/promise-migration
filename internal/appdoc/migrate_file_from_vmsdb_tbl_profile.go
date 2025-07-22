@@ -3,7 +3,9 @@ package appdoc
 import (
 	// "fmt"
 	"fmt"
+	"path/filepath"
 	"promise-migration/internal/g"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/myvmsdb/tblprofilepenyediamodel"
 	"strconv"
 
@@ -12,7 +14,7 @@ import (
 
 // var BasePath string = "https://sidapet-promiseterbuka.ut.ac.id"
 
-func MigrateFileFromVmsDbTblProfilePenyediaNew() {
+func MigrateFileFromVmsDbTblProfilePenyedia() {
   allTblProfilePenyedia, _ := tblprofilepenyediamodel.GetAllDocument()
   originalPath := pgtype.Text{Valid: true, String: ""}
 
@@ -49,13 +51,11 @@ func MigrateFileFromVmsDbTblProfilePenyediaNew() {
       ProcessOriginalPathNew(originalPath)
     }
 
-
-
-
   }
 }
 
-func MigrateFileFromVmsDbTblProfilePenyedia() {
+/*
+func MigrateFileFromVmsDbTblProfilePenyediaOld() {
 
 	// g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
 
@@ -94,7 +94,6 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
       PrintLog()
 		}
 
-/*
 		// path_npwp,
 		if tblProfilePenyedia.PathNpwp.String != "" {
 			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_npwp"
@@ -164,10 +163,10 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
 			ProcessOriginalPath(originalPath)
       PrintLog()
 		}
-*/
 
 	}
 }
+*/
 
 
 
@@ -179,6 +178,14 @@ func PrintLog() {
     fmt.Println("Download: " + g.LogDoc.DownStat)
     fmt.Println("Upload: " + g.LogDoc.UpStat)
     fmt.Println("")
+
+    logPath := filepath.Join("dokumen.log")
+    ghelper.Log(logPath, "FieldName: " + g.LogDoc.FieldName)
+    ghelper.Log(logPath, "PK ID: " + strconv.Itoa(int(g.LogDoc.PkId)))
+    ghelper.Log(logPath, "Url: " + g.LogDoc.OriPath)
+    ghelper.Log(logPath, "Download: " + g.LogDoc.DownStat)
+    ghelper.Log(logPath, "Upload: " + g.LogDoc.UpStat)
+    ghelper.Log(logPath, "")
   }
 
   defer ClearGLogDoc()

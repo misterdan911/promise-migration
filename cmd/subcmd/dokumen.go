@@ -4,6 +4,7 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/appdoc"
 	"promise-migration/internal/g"
+	"promise-migration/internal/ghelper"
 
 	"github.com/spf13/cobra"
 )
@@ -20,6 +21,8 @@ var DokumenCmd = &cobra.Command{
     db.ConnectDbSidapet()
     defer db.DbSidapet.Close()
 
+    ghelper.TruncateLog("dokumen.log")
+
     g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
 
     // tbl_akta_perusahaan
@@ -35,8 +38,7 @@ var DokumenCmd = &cobra.Command{
     // tbl_pengalaman10
     // tbl_personalia_perusahaan
 
-    // appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
-    appdoc.MigrateFileFromVmsDbTblProfilePenyediaNew()
+    appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
     // tbl_saham_perusahaan
     // tbl_sertif_perorangan

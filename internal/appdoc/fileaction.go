@@ -59,6 +59,7 @@ func DownloadFileNew(url string) error {
 	return nil
 }
 
+/*
 func UploadFileNew(appName string, filePath string) error {
 
 	var successResp ResponseServiceUpload
@@ -145,13 +146,7 @@ func UploadFileNew(appName string, filePath string) error {
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return nil
 }
-
-
-
-
-
-
-
+*/
 
 
 // downloadFile downloads a file from the specified URL and saves it to the given filepath
@@ -242,7 +237,7 @@ func UploadFile(appName string, filePath string) (ResponseServiceUpload, error) 
 	}
 
 	// Create the request
-	urlServiceUpload := "https://localhost:4444/service-upload/api-auth/v1/uploads/pdf"
+	urlServiceUpload := os.Getenv("URL_SERVICE_UPLOAD")
 	req, err := http.NewRequest("POST", urlServiceUpload, body)
 	if err != nil {
 		return successResp, fmt.Errorf("failed to create request: %v", err)

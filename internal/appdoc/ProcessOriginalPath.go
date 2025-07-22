@@ -68,14 +68,12 @@ func ProcessOriginalPathNew(originalPath pgtype.Text) error {
 
     defer DeleteFile(FilePath)
 
-    // Insert ke table db_siapet.helper_dokumen
+    // Insert ke table db_sidapet.helper_dokumen
     helperDokumen.OriginalPath = originalPath
     helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
     helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
     helperdokumenmodel.InsertNew(helperDokumen)
   }
-
-
 
   if g.LogDoc.DownStat == "Success" {
     // PrintLog()
@@ -87,6 +85,7 @@ func ProcessOriginalPathNew(originalPath pgtype.Text) error {
   return nil
 }
 
+/*
 func ProcessOriginalPath(originalPath pgtype.Text) error {
 
   // Cek apakah dokumen sudah pernah berhasil di proses
@@ -135,3 +134,4 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
 	return nil
 }
+*/
