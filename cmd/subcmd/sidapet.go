@@ -64,7 +64,7 @@ var SidapetCmd = &cobra.Command{
 		// Cari tahu trx_kategori.kode_unit_pbj
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
 
-		sidapet.MigrateTblVerif()
+		// sidapet.MigrateTblVerif()
 
 		// sidapethelper.CreateAllForeignKey()
 

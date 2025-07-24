@@ -1,5 +1,6 @@
 package sidapet
 
+/*
 import (
 	"context"
 	"fmt"
@@ -69,3 +70,4 @@ func MigrateTblVerif() {
 	}
 
 }
+*/

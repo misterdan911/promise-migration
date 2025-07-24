@@ -4,13 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/sidapet/model/vmsdb/tverifmodel"
+	"promise-migration/internal/model/vmsdb/tblverifmodel"
+	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func InsertTrxNilaiakhir(kodeJenisVendor int, kodeVendorPenjr int, vTV tverifmodel.TblVerif) {
+func InsertTrxNilaiakhir(kodeJenisVendor pgtype.Int4, kodeVendorPenjr pgtype.Int4, vTV tblverifmodel.TblVerif) {
 
 	ctx := context.Background()
 
@@ -22,7 +25,7 @@ func InsertTrxNilaiakhir(kodeJenisVendor int, kodeVendorPenjr int, vTV tverifmod
 	isKeuanganLolos := sql.NullBool{Valid: true, Bool: false}
 	nilaiLapKeuangan := sql.NullFloat64{}
 
-	if kodeJenisVendor == 1 {
+	if kodeJenisVendor.Int32 == 1 {
 		if vTV.Terpilih.Int32 == 1 {
 			isAdministrasiLolos.Bool = true
 		} else if vTV.PerusLandasanHukum.Int32 == 1 && vTV.PerusPengurus.Int32 == 1 && vTV.PerusIzinUsaha.Int32 == 1 && vTV.PerusDataKeuangan.Int32 == 1 {
@@ -46,7 +49,7 @@ func InsertTrxNilaiakhir(kodeJenisVendor int, kodeVendorPenjr int, vTV tverifmod
 		if vTV.PerusLapKeuangan.Float64 >= 0 {
 			nilaiLapKeuangan.Float64 = vTV.PerusLapKeuangan.Float64
 		}
-	} else if kodeJenisVendor == 2 {
+	} else if kodeJenisVendor.Int32 == 2 {
 		if vTV.Terpilih.Int32 == 1 {
 			isAdministrasiLolos.Bool = true
 			isKeuanganLolos.Bool = true
@@ -62,7 +65,7 @@ func InsertTrxNilaiakhir(kodeJenisVendor int, kodeVendorPenjr int, vTV tverifmod
 			nilaiSertifikat.Float64 = vTV.OrgSertifikat.Float64
 		}
 	} else {
-		log.Fatal("Invalid Kode Jenis Vendor")
+		log.Fatal("Invalid Kode Jenis Vendor: " + strconv.Itoa(int(kodeJenisVendor.Int32)))
 	}
 
 	qIns := `

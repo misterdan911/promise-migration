@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
 	"promise-migration/db"
@@ -28,4 +29,39 @@ func DeleteByKodeVendor(kodeVendor pgtype.Int4) {
 	if err != nil {
 		log.Fatal("failed deleting RefVendor (refvendor.go), " + err.Error())
 	}
+}
+
+func GetDataByKodeVendor(kodeVendor pgtype.Int4) RefVendor {
+    ctx := context.Background()
+    var vendor RefVendor
+
+    qRefVendor := `
+    SELECT
+      kode_vendor,
+      kode_jenis_vendor,
+      nama_perusahaan,
+      is_tetap,
+      status_form_luar_dpt,
+      udcr,
+      udch
+    FROM ref_vendor
+    WHERE kode_vendor = $1
+    ORDER BY kode_vendor ASC`
+
+    rwVendor, err := db.DbSidapet.Query(ctx, qRefVendor, kodeVendor)
+    if err != nil {
+        log.Fatal("qRefVendor Failed, " + err.Error() + " " + qRefVendor)
+    }
+
+    allVendors, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[RefVendor])
+    if err2 != nil {
+        log.Fatal("failed collecting rwVendor (ref_vendor.go), " + err2.Error())
+    }
+    defer rwVendor.Close()
+
+    if len(allVendors) > 0 {
+        vendor = allVendors[0]
+    }
+
+    return vendor
 }

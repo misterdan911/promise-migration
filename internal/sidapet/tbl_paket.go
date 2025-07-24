@@ -2,9 +2,16 @@ package sidapet
 
 import (
 	"fmt"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/refvendormodel"
 	"promise-migration/internal/model/vmsdb/tblpaketmodel"
+	"promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	"promise-migration/internal/model/vmsdb/tblverifmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxpenjaringanmodel"
+	"promise-migration/internal/sidapet/model/sidapet/trxnilaiakhirmodel"
+	"promise-migration/internal/sidapet/model/sidapet/trxvendorpenjrmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxverifikatorpenjrmodel"
+
 	"promise-migration/internal/sidapet/sidapethelper"
 	"strings"
 	"time"
@@ -64,6 +71,56 @@ func MigrateTblPaket() {
 		kodePenjaringan := trxpenjaringanmodel.InsertTrxPenjaringan(trxPenjaringan)
 		trxverifikatorpenjrmodel.InsertTrxVerifikatorPenjr(kodePenjaringan, vmsPaket)
 		MigrateTblPaketUndang(vmsPaket, kodePenjaringan)
+
+
+
+		// dari tabel tbl_verif dapatkan semua id_profile untuk id_paket == vmsPaket.IdPaket
+		allTblVerif := tblverifmodel.GetDataByIdPaket(vmsPaket.IdPaket)
+
+    for _, tblVerif := range allTblVerif {
+      // dapatkan id_user
+      tblProfilePenyedia := tblprofilepenyediamodel.GetDataByIdProfile(tblVerif.IdProfil)
+      // dapatkan kode_vendor
+      helperUser := helperusermodel.GetByVmsUserId(tblProfilePenyedia.IdUser)
+
+      // kalau user tidak punya kode_vendor, skip, berarti datanya sudah dihapus di vms_db
+      if (helperUser.KodeVendor == pgtype.Int4{}) {
+      	continue
+      }
+
+      // dapatkan kodeJenisVendor
+      refVendor := refvendormodel.GetDataByKodeVendor(helperUser.KodeVendor)
+
+
+      // insert ke trx_vendor_penjr
+			statusVerifikasi := pgtype.Text{Valid:true, String: ""}
+			if (tblVerif.StatusVerif.Int32 == 4) && (tblVerif.Terpilih.Int32 == 1) {
+				statusVerifikasi.String = "diterima"
+			} else {
+				statusVerifikasi.String = "ditolak"
+			}
+
+			statusDpt := pgtype.Text{Valid:true, String: ""}
+			if tblVerif.Terpilih.Int32 == 1 {
+				statusDpt.String = "terpilih"
+			} else {
+				statusDpt.String = "tidak_terpilih"
+			}
+
+		  trxVendorPenjr := trxvendorpenjrmodel.TrxVendorPenjr {
+		    KodePenjaringan: kodePenjaringan,
+		    KodeVendor: refVendor.KodeVendor,
+		  }
+
+		  kodeVendorPenjr := trxvendorpenjrmodel.InsertNew(trxVendorPenjr)
+
+		  // Insert trx_nilai_akhir
+			trxnilaiakhirmodel.InsertTrxNilaiakhir(refVendor.KodeJenisVendor, kodeVendorPenjr, tblVerif)
+
+
+      // trxvendorpenjrmodel.InsertTrxVendorPenjr(tblVerif, refVendor.KodeJenisVendor)
+    }
+
 	}
 
 	sidapethelper.UpdatePkSequence("trx_penjaringan", "kode_penjaringan")
