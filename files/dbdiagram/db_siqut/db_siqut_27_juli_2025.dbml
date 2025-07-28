@@ -1,0 +1,262 @@
+/*
+Table users {
+  id serial [pk]
+  name varchar
+  username varchar [unique]
+  email varchar [unique]
+  password varchar
+  created_at timestamptz
+  updated_at timestamptz
+}
+*/
+
+Enum metode_evaluasi {
+  harga_terendah
+  sistem_nilai
+}
+
+
+Table ref_pengadaan {
+  kode_pengadaan serial [pk]
+
+  no_rup varchar(20) [note: "Ambil dari SI-PPan"]
+  // apakah Data DRAUK dan RUP nya perlu di de-normalisasi ?
+
+  nilai_hps int4 [note: 'Harga Perkiraan sendiri']
+  kode_jenis_kontrak int4
+  kode_status_pengadaan int4
+  kode_pokja int4 
+
+  metode_evaluasi metode_evaluasi [note: 'harga_terendah, sistem_nilai']
+
+  tgl_pengumuman_pengadaan_awal datetime
+  tgl_pengumuman_pengadaan_akhir datetime
+  tgl_pemberian_penjelasan_awal datetime
+  tgl_pemberian_penjelasan_akhir datetime
+  tgl_pemasukan_penawaran_awal datetime
+  tgl_pemasukan_penawaran_akhir datetime
+  tgl_pembukaan_penawaran_awal datetime
+  tgl_pembukaan_penawaran_akhir datetime
+  tgl_eval_klasifikasi_nego_awal datetime
+  tgl_eval_klasifikasi_nego_akhir datetime
+  tgl_penetapan_pengumuman_pemenang_awal datetime
+  tgl_penetapan_pengumuman_pemenang_akhir datetime
+  ucr varchar(80)
+  uch varchar(80)
+  udcr timestamptz
+  udch timestamptz
+
+  note: "Dokumen Persiapan Pengadaan"
+}
+
+Table trx_kategori_penyedia {
+  kode_kat serial [pk]
+  kode_pengadaan int4
+  kode_kategori int4 [note: "Ambil dari SI-DaPeT"]
+  kode_kualifikasi_usaha int4 [note: "Ambil dari SI-DaPeT"]
+}
+
+Table ref_kelompok_dok {
+  kode_kelompok int2 [pk]
+  nama_kelompok varchar(50)
+
+  note: "DPP, Surat Tugas Pokja, Kaji Ulang, dll..."
+}
+
+Table ref_nama_dok {
+  kode_nama_dok varchar(10) [pk]
+  kode_kelompok int2
+  nama_dok varchar(50)
+
+  note: "Kerangka Acuan Kerja, Bill of Quantity, Rancangan Kontrak, dll..."
+}
+
+Table trx_dok_pengadaan {
+  kode_dok serial [pk]
+  kode_pengadaan int4
+  kode_nama_dok varchar(10)
+  file_dok varchar(255)
+  encrypt_key varchar(255)
+  udcr timestamptz
+}
+
+Table trx_dok_pengadaan_hist {
+  kode_hist serial [pk]
+  kode_dok int4
+  file_dok varchar(255)
+  encrypt_key varchar(255)
+  udcr timestamptz
+}
+
+
+Enum status_tugas {
+  proses
+  selesai
+}
+
+Table trx_pokja {
+  kode_pokja serial [pk]
+  status_tugas status_tugas
+}
+
+Table trx_anggota_pokja {
+  kode_anggota_pokja serial [pk]
+  kode_pokja int4
+  email varchar(80)
+}
+
+
+
+
+Enum ya_tidak {
+  ya
+  tidak
+}
+
+Table ref_rup_detail {
+  kode_pengadaan int4 [pk]
+  no_drauk int4
+  sumber_dana varchar
+  nama_paket varchar
+  uraian_spek_kerja text
+  volume_pekerjaan varchar
+  satuan_volume varchar
+  kode_kab_kota varchar
+  detail_lokasi varchar
+  tahun_anggaran int
+  prod_dalam_negri ya_tidak
+  is_kualifikasi_k bool
+  is_kualifikasi_m bool
+  is_kualifikasi_b bool
+  jml_pagu decimal
+  is_pra_drauk bool
+  kode_jenis_pengadaan int2
+  kode_kat_metode int4
+  kode_metode_pengadaan int4
+  tgl_renc_pemilihan_awal date
+  tgl_renc_pemilihan_akhir date
+  tgl_renc_pelaksanaan_awal date
+  tgl_renc_pelaksanaan_akhir date
+  tgl_renc_pemanfaatan_awal date
+  tgl_renc_pemanfaatan_akhir date
+}
+
+Table ref_jenis_kontrak {
+  kode_jenis_kontrak int4 [pk]
+  jenis_kontrak varchar(255)
+
+  note: '"lumpsum","harga satuan"."gabungan lumpsum dan harga satuan","Berbasis Kinerja (Performance Based Contract)","waktu penugasan","payung","biaya plus imbalan (cost plus fee)","tukar kunci (turnkey)"'
+}
+
+Table ref_status_pengadaan {
+  kode_status_pengadaan int4
+  status varchar(255)
+
+  note: "Draft, Proses pada Direktur, Revisi DPP, Proses Kaji Pokja, Proses Pemilihan, Proses Kontrak, Selesai Kontrak"
+}
+
+Table trx_surat_panutan {
+  id serial [pk]
+  id_trx int4
+  id_panutan int4
+}
+
+
+Table trx_undangan_kaji_ulang {
+  kode_undangan serial [pk]
+  kode_pengadaan int4
+  tgl_kaji_ulang timestamptz
+  waktu_mulai time
+  waktu_selesai time
+  is_online bool
+  tempat_tautan varchar(255)
+  catatan text
+  is_diproses bool
+
+  note: "Untuk mencatat jadwal verifikasi penyedia dengan DMAU"
+}
+
+Table trx_penerima_undangan_kaji_ulang {
+  kode_penerima_undangan serial [pk]
+  kode_undangan int4
+  email varchar(80)
+  nama varchar(100)
+}
+
+Table trx_berita_acara_ku {
+  kode_berita_acara serial [pk]
+  kode_undangan int4
+  kesimpulan text
+  is_revisi bool
+
+  note: "Berita Acara Kaji Ulang"
+}
+
+Table ref_pertanyaan_ku {
+  kode_pertanyaan serial [pk]
+  pertanyaan text
+
+  note: 'Daftar pertanyaan kaji ulang'
+}
+
+Table ref_jawaban_ku {
+  kode_jawaban serial [pk]
+  jawaban varchar
+  is_aktif bool
+
+  note: 'Daftar jawaban kaji ulang'
+}
+
+Table trx_pertanyaan_ku {
+  kode_trx serial [pk]
+  kode_berita_acara int4
+  kode_pertanyaan int4
+  kode_jawaban int4
+  catatan text
+}
+
+Table trx_vendor_pengadaan {
+  kode_trx serial [pk]
+  kode_pengadaan int4
+  kode_vendor int4
+  nama_vendor varchar(100)
+  nama_narahubung varchar(255)
+  email varchar(80)
+}
+
+
+
+
+
+
+Ref: "ref_jenis_kontrak"."kode_jenis_kontrak" < "ref_pengadaan"."kode_jenis_kontrak"
+
+Ref: "ref_status_pengadaan"."kode_status_pengadaan" < "ref_pengadaan"."kode_status_pengadaan"
+
+
+Ref: "trx_undangan_kaji_ulang"."kode_undangan" < "trx_penerima_undangan_kaji_ulang"."kode_undangan"
+
+Ref: "trx_berita_acara_ku"."kode_berita_acara" < "trx_pertanyaan_ku"."kode_berita_acara"
+
+Ref: "ref_pertanyaan_ku"."kode_pertanyaan" < "trx_pertanyaan_ku"."kode_pertanyaan"
+
+Ref: "ref_jawaban_ku"."kode_jawaban" < "trx_pertanyaan_ku"."kode_jawaban"
+
+Ref: "ref_pengadaan"."kode_pengadaan" < "trx_undangan_kaji_ulang"."kode_pengadaan"
+
+Ref: "trx_undangan_kaji_ulang"."kode_undangan" < "trx_berita_acara_ku"."kode_undangan"
+
+Ref: "ref_pengadaan"."kode_pengadaan" < "trx_kategori_penyedia"."kode_pengadaan"
+
+Ref: "trx_dok_pengadaan"."kode_dok" < "trx_dok_pengadaan_hist"."kode_dok"
+
+
+Ref: "ref_nama_dok"."kode_nama_dok" < "trx_dok_pengadaan"."kode_nama_dok"
+
+Ref: "ref_pengadaan"."kode_pengadaan" < "trx_dok_pengadaan"."kode_pengadaan"
+
+Ref: "ref_kelompok_dok"."kode_kelompok" < "ref_nama_dok"."kode_kelompok"
+
+Ref: "trx_pokja"."kode_pokja" < "trx_anggota_pokja"."kode_pokja"
+
+Ref: "ref_pengadaan"."kode_pokja" - "trx_pokja"."kode_pokja" [delete: cascade]
