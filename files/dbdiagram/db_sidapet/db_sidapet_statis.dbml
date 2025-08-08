@@ -161,6 +161,12 @@ Table helper_user_nip {
   nip varchar(30)
 }
 
+Table helper_dokumen {
+  original_path varchar(255) [pk]
+  newfilename varchar(255)
+  encrypt_key varchar(255)
+}
+
 Enum jabatan_penandatangan {
   komisaris
   direksi
@@ -181,15 +187,7 @@ Table ref_bank {
   nama_bank varchar(50)
 }
 
-Table ref_kbli {
-  kode_kbli seria// l [pk]
-  kategori varchar(2)
-  gol_pokok int2
-  gol int4
-  sub_gol int4
-  kelompok int4
-  judul varchar
-}
+
 
 
 Table ref_kat_persyaratan {
@@ -303,7 +301,6 @@ Table trx_penjaringan {
   kode_jenis_pengadaan int2
   kode_jenis_vendor int2
   metode metode_penjaringan [note: "pengumuman, undangan"]
-  kode_kualifikasi_usaha int2
   file_persyaratan text [note: "File PDF Persyaratan"]
   kode_status_pengajuan int4
   status_persetujuan status_persetujuan [note: "Flag pengajuan paket diterima atau tidak (belum_diproses, proses, terima, tolak)"]
@@ -331,6 +328,12 @@ Table trx_penjaringan {
   ucr varchar(80) [note: "Email User yang mengusulkan penjaringan"]
   udcr timestamptz
   udch timestamptz
+}
+
+Table trx_kualifikasi_usaha_penjr {
+  kode_trx serial [pk]
+  kode_penjaringan int4
+  kode_kualifikasi_usaha int2
 }
 
 
@@ -376,9 +379,9 @@ Table trx_vendor_penjr {
   status_verifikasi status_verifikasi [note: "belum_diproses, proses_verifikasi, perbaikan_data, proses_evaluasi, diterima, ditolak"]
   alasan_ditolak text [note: "Alasan hasil evaluasi ditolak"]
   batas_waktu_perbaikan timestamptz
-  file_daftar_kehadiran varchar(100)
-  file_lainya varchar(100)
-  file_ba_verif varchar(100)
+  file_daftar_kehadiran varchar(255)
+  file_lainya varchar(255)
+  file_ba_verif varchar(255)
 
   status_dpt status_dpt [note: "belum_ditetapkan, belum_penetapan, terpilih, tidak_terpilih"]
   alasan_tidak_terpilih text [note: "Alasan tidak terpilih sebagai DPT"]
@@ -443,7 +446,11 @@ Table ref_vendor_register {
   no_telp varchar(80) [note: 'No Handphone whatsapp aktif kalau perorangan/ No. Telp kantor kalau badan usaha']
   nama_narahubung varchar(255)
   no_wa_narahubung varchar(20)
+  nik varchar(20)
   swafoto varchar(100)
+  npwp varchar(25) [note: "Nomor NPWP"]
+  file_npwp text
+  encrypt_key_npwp varchar(255)
   status_register status_persetujuan [note: "status akun yang baru daftar (belum_diproses, proses, terima, tolak)"]
   alasan_ditolak text
   user_verif varchar(80) [note: "Email user yang memverifikasi"]
@@ -468,7 +475,11 @@ Table ref_vendor_reg_history {
   no_telp varchar(80) [note: 'No Handphone whatsapp aktif kalau perorangan/ No. Telp kantor kalau badan usaha']
   nama_narahubung varchar(255)
   no_wa_narahubung varchar(20)
+  nik varchar(20)
   swafoto varchar(100)
+  npwp varchar(25) [note: "Nomor NPWP"]
+  file_npwp text
+  encrypt_key_npwp varchar(255)
   status_register status_persetujuan [note: "status akun yang baru daftar (belum_diproses, proses, terima, tolak)"]
   alasan_ditolak text
   user_verif varchar(80) [note: "Email user yang memverifikasi"]
@@ -480,6 +491,7 @@ Table ref_vendor_reg_history {
   distance_point decimal
   keypass varchar(255)
   kode_vendor int4
+
 
   note: "Vendor yang sudah diverifikasi (diterima/ditolak) dicatat kesini"
 }
@@ -522,7 +534,8 @@ Table ref_pakta_integritas {
   is_setuju bool
 }
 
-Table ref_datadiri_umum {
+/*
+Table ref_datadiri_umum_old {
   kode_datadiri_umum serial [pk]
   kode_vendor int4
   nama varchar(150) [note: "Nama penyedia perorangan"]
@@ -545,10 +558,44 @@ Table ref_datadiri_umum {
 
   custom jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
   note: "Untuk menyimpan 'Data Diri / Umum' Perorangan dan Badan Usaha"
 }
+*/
 
-Table ref_administrasi_pero {
+Table ref_datadiri {
+  kode_datadiri serial [pk]
+  kode_vendor int4
+  tempat_lahir varchar(100)
+  tgl_lahir date
+  file_ktp varchar(255)
+  encrypt_key_ktp varchar(255)
+
+  kode_kab_kota_ktp varchar(5)
+  alamat_ktp text
+
+  is_alamat_sama bool [note: "Apakah alamat KTP dg Domisili sama ?"]
+
+  kode_kab_kota_domisili varchar(5)
+  alamat_domisili text
+
+  file_skd varchar(255) [note: "Surat Keterangan Domisili"]
+  is_skd_selamanya bool [note:'Apakah Surat Keterangan Domisili berlaku selamanya?']
+  skd_berlaku_awal date [default: null]
+  skd_berlaku_akhir date [default: null]
+  encrypt_key_skd varchar(255)
+  
+  revisi_ke int2  [default: 0, not null]
+}
+
+Ref: ref_datadiri.kode_vendor > ref_vendor.kode_vendor
+Ref: ref_datadiri.kode_kab_kota_ktp > ref_kab_kota.kode_kab_kota
+Ref: ref_datadiri.kode_kab_kota_domisili > ref_kab_kota.kode_kab_kota
+
+
+/*
+Table ref_administrasi_pero_old {
   kode_adm serial [pk]
   kode_vendor int4
 
@@ -560,7 +607,7 @@ Table ref_administrasi_pero {
 
   custom_adm jsonb
 
-  npwp varchar(20) [note: "Nomor NPWP"]
+  npwp varchar(25) [note: "Nomor NPWP"]
   file_npwp text
   is_npwp_selamanya bool [note:'Apakah berlaku selamanya?']
   npwp_berlaku_awal date [default: null]
@@ -586,6 +633,49 @@ Table ref_administrasi_pero {
   encrypt_key_sk_pp23 varchar(255)
 
   custom_npwp jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+
+Table ref_administrasi_pero {
+  kode_adm serial [pk]
+  kode_vendor int4
+
+  file_skd varchar(255) [note: "Surat Kebenaran Data"]
+
+  // custom_adm jsonb
+
+  // npwp varchar(25) [note: "Nomor NPWP"]
+  // file_npwp text
+  // is_npwp_selamanya bool [note:'Apakah berlaku selamanya?']
+  // npwp_berlaku_awal date [default: null]
+  // npwp_berlaku_akhir date [default: null]
+  // encrypt_key_npwp varchar(255)
+
+  file_bukti_spt varchar(255)
+  is_bukti_spt_selamanya bool [note:'Apakah Bukti SPT berlaku selamanya?']
+  bukti_spt_berlaku_awal date [default: null]
+  bukti_spt_berlaku_akhir date [default: null]
+  encrypt_key_bukti_spt varchar(255)
+
+  file_skb_pph23 varchar(255) [note: "Surat Keterangan Bebas PPh 23"]
+  is_skb_pph23_selamanya bool [note:'Apakah selamanya?']
+  skb_pph23_berlaku_awal date [default: null]
+  skb_pph23_berlaku_akhir date [default: null]
+  encrypt_key_skb_pph23 varchar(255)
+
+  file_sk_pp23 varchar(255) [note: "Surat Keterangan PP 23"]
+  is_sk_pp23_selamanya bool [note:'Apakah berlaku selamanya?']
+  sk_pp23_berlaku_awal date [default: null]
+  sk_pp23_berlaku_akhir date [default: null]
+  encrypt_key_sk_pp23 varchar(255)
+
+  file_non_pkp varchar(255)
+
+  // custom_npwp jsonb
+
+  revisi_ke int2 [default: 0, not null]
 }
 
 Table trx_custom_item {
@@ -600,7 +690,40 @@ Table trx_custom_item {
   komentar text
 }
 
-Table ref_verif_administrasi_pero {
+Table ref_verif_datadiri {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_datadiri int4
+
+  is_tempat_lahir_sesuai bool
+  komentar_tempat_lahir varchar(255)
+
+  is_tgl_lahir_sesuai bool
+  komentar_tgl_lahir varchar(255)
+
+  is_file_ktp_sesuai bool
+  komentar_file_ktp varchar(255)
+
+  is_kode_kab_kota_ktp_sesuai bool
+  komentar_kode_kab_kota_ktp varchar(255)
+
+  is_alamat_ktp_sesuai bool
+  komentar_alamat_ktp varchar(255)
+
+  is_kode_kab_kota_domisili_sesuai bool
+  komentar_kode_kab_kota_domisili varchar(255)
+
+  is_alamat_domisili_sesuai bool
+  komentar_alamat_domisili varchar(255)
+
+  is_file_skd_sesuai bool
+  komentar_file_skd varchar(255)
+}
+Ref: ref_verif_datadiri.kode_datadiri > ref_datadiri.kode_datadiri
+Ref: ref_verif_datadiri.kode_vendor_penjr > trx_vendor_penjr.kode_vendor_penjr
+
+/*
+Table ref_verif_administrasi_pero_old {
   kode_verif serial [pk]
   kode_vendor_penjr int4
   kode_adm int4
@@ -621,6 +744,31 @@ Table ref_verif_administrasi_pero {
   komentar_file_sk_pp23 varchar(255)
   custom_npwp jsonb
 }
+*/
+
+Table ref_verif_administrasi_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_adm int4
+
+  is_file_skd_sesuai bool
+  komentar_file_skd varchar(255)
+
+  is_file_bukti_spt_sesuai text
+  komentar_bukti_spt varchar(255)
+
+  is_file_skb_pph23_sesuai text
+  komentar_file_skb_pph23 varchar(255)
+
+  is_file_sk_pp23_sesuai text
+  komentar_file_sk_pp23 varchar(255)
+
+  is_file_non_pkp_sesuai text
+  komentar_file_non_pkp varchar(255)
+}
+Ref: "ref_verif_administrasi_pero"."kode_vendor_penjr" > "trx_vendor_penjr"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_verif_administrasi_pero"."kode_adm" > "ref_administrasi_pero"."kode_adm" [delete: cascade]
+
 
 Table trx_nilai_akhir {
   kode_penilaian serial [pk]
@@ -687,7 +835,7 @@ Table ref_ambang_batas_penilaian {
   ambang_batas int4
 }
 
-
+/*
 Table ref_verif_datadiri_umum {
   kode_verif serial [pk]
   kode_datadiri_umum int4
@@ -721,8 +869,10 @@ Table ref_verif_datadiri_umum {
   komentar_alamat_badan_usaha varchar(255)
   custom jsonb
 }
+*/
 
-Table ref_personalia_pero {
+/*
+Table ref_personalia_pero_old {
   kode_personalia serial [pk]
   kode_vendor int4
   nama varchar(100)
@@ -753,32 +903,96 @@ Table ref_personalia_pero {
 
   custom_teknis jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Teknis (Perorangan)"
+}
+*/
+
+Table ref_personalia_pero {
+  kode_personalia serial [pk]
+  kode_vendor int4
+
+  bidang_keahlian varchar(100)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(100)
+
+  file_ijazah text
+  encrypt_key_ijazah varchar(255)
+
+  file_cv text
+  encrypt_key_cv varchar(255)
+  tgl_cv date [note: "Tgl Pembuatan CV"]
+
+  // custom_teknis jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
   note: "Teknis (Perorangan)"
 }
 
-table ref_pengalaman_pero {
+
+/*
+Table ref_pengalaman_pero_old {
   kode_pengalaman serial [pk]
   kode_vendor int4
   nama_pekerjaan varchar(100)
   posisi varchar(50)
   tgl_awal_pekerjaan date [default: null]
   tgl_akhir_pekerjaan date [default: null]
+  
   nilai_pekerjaan int8
-  file_bukti varchar(100)
+  file_bukti varchar(255)
   encrypt_key varchar
   custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_pengalaman_pero {
+  kode_pengalaman serial [pk]
+  kode_vendor int4
+  nama_pekerjaan varchar(100)
+  posisi varchar(50)
+
+  jangka_waktu varchar(255)
+
+  nilai_pekerjaan int8
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+/*
+Table ref_sertif_pero_old {
+  kode_sertif serial [pk]
+  kode_vendor int4
+  nm_sertifikat varchar(100)
+  file_bukti varchar(255)
+  encrypt_key varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+*/
 
 Table ref_sertif_pero {
   kode_sertif serial [pk]
   kode_vendor int4
   nm_sertifikat varchar(100)
-  file_bukti varchar(100)
+
+  file_bukti varchar(255)
+  is_bukti_selamanya bool [note:"Apakah sertifikat berlaku selamanya?"]
+  bukti_berlaku_awal date [default: null]
+  bukti_berlaku_akhir date [default: null]
   encrypt_key varchar
-  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
 }
 
-Table ref_verif_personalia_pero {
+/*
+Table ref_verif_personalia_pero_old {
   kode_verif serial [pk]
   kode_vendor_penjr int4
   kode_personalia int4
@@ -804,6 +1018,34 @@ Table ref_verif_personalia_pero {
 
   custom_teknis jsonb
 }
+*/
+
+Table ref_verif_personalia_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_personalia int4
+
+  is_bidang_keahlian_sesuai bool
+  komentar_bidang_keahlian varchar(255)
+
+  is_kode_jenjang_pendidikan_sesuai bool
+  komentar_kode_jenjang_pendidikan varchar(255)
+
+  is_program_studi_sesuai bool
+  komentar_program_studi varchar(255)
+
+  is_file_ijazah_sesuai bool
+  komentar_file_ijazah varchar(255)
+  
+  is_file_cv_sesuai bool
+  komentar_file_cv varchar(255)
+
+  is_tgl_cv_sesuai bool
+  komentar_tgl_cv varchar(255)
+}
+Ref: ref_verif_personalia_pero.kode_vendor_penjr - trx_vendor_penjr.kode_vendor_penjr
+Ref: ref_verif_personalia_pero.kode_personalia > ref_personalia_pero.kode_personalia
+
 
 Table ref_verif_pengalaman_pero {
   kode_verif serial [pk]
@@ -841,7 +1083,8 @@ Table ref_verif_sertif_pero {
   nilai int4
 }
 
-Table ref_keuangan_pero {
+/*
+Table ref_keuangan_pero_old {
   kode_keuangan serial [pk]
   kode_vendor int4
   nm_pemilik_rek varchar(100)
@@ -856,11 +1099,29 @@ Table ref_keuangan_pero {
 
   custom jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Keuangan Perorangan"
+}
+*/
+
+Table ref_keuangan_pero {
+  kode_keuangan serial [pk]
+  kode_vendor int4
+  nm_pemilik_rek varchar(100)
+  no_rek varchar(50)
+  sandi_bank varchar(4)
+
+  file_buku_rek text
+  encrypt_key_buku_rek varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+
   note: "Data Keuangan Perorangan"
 }
 
-
-Table ref_keuangan_bu {
+/*
+Table ref_keuangan_bu_old {
   kode_keuangan serial [pk]
   kode_vendor int4
   nm_pemilik_rek varchar(100)
@@ -889,8 +1150,37 @@ Table ref_keuangan_bu {
 
   custom_lap_keu jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
   note: "Data Keuangan Badan Usaha"
 }
+*/
+
+Table ref_keuangan_bu {
+  kode_keuangan serial [pk]
+  kode_vendor int4
+  nm_pemilik_rek varchar(100)
+  no_rek varchar(50)
+  sandi_bank varchar(4)
+
+  file_buku_rek text
+  encrypt_key_buku_rek varchar(255)
+
+  file_lap_keu text
+  lap_keu_berlaku_awal date [default: null]
+  lap_keu_berlaku_akhir date [default: null]
+  encrypt_key_lap_keu varchar(255)
+
+  file_lap_keu_audited text
+  lap_keu_audited_berlaku_awal date [default: null]
+  lap_keu_audited_berlaku_akhir date [default: null]
+  encrypt_key_lap_keu_audited varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Keuangan Badan Usaha"
+}
+
 
 Table ref_verif_keuangan_bu {
   kode_verif serial [pk]
@@ -935,9 +1225,8 @@ Table ref_verif_keuangan_pero {
   custom jsonb
 }
 
-
-
-Table ref_adm_bu {
+/*
+Table ref_adm_bu_old {
   kode_adm_bu serial [pk]
   kode_vendor int4
   file_fis text [note: "Form Ikut Serta"]
@@ -960,8 +1249,48 @@ Table ref_adm_bu {
 
   custom jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
   note: "Administrasi (Badan Usaha)"
 }
+*/
+
+Table ref_adm_bu {
+  kode_adm_bu serial [pk]
+  kode_vendor int4
+
+  file_fis text [note: "Form Ikut Serta"]
+  encrypt_key_fis varchar(255)
+
+  file_s_kuasa text [note: "Surat Kuasa"]
+  encrypt_key_s_kuasa varchar(255)
+
+  file_spkd text [note: "Surat Pernyataan Kebenaran Data"]
+  encrypt_key_spkd varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Administrasi (Badan Usaha)"
+}
+
+
+
+Table ref_umum {
+  kode_umum serial [pk]
+  kode_vendor int4
+  nomor_telp varchar(255) [note: 'Nomor Telepon Badan Usaha']
+  kode_kualifikasi_usaha int2
+  alamat_badan_usaha text
+  file_dok_domisili varchar(255) [note:'Dokumen Domisili Badan Usaha']
+  is_dok_domisili_selamanya bool [note:'Apakah Dokumen Domisili berlaku selamanya?']
+  dok_domisili_berlaku_awal date [default: null]
+  dok_domisili_berlaku_akhir date [default: null]
+  encrypt_key_dok_domisili varchar(255)
+  revisi_ke int2  [default: 0, not null]
+}
+Ref: ref_umum.kode_vendor > ref_vendor.kode_vendor
+Ref: ref_umum.kode_kualifikasi_usaha > ref_kualifikasi_usaha.kode_kualifikasi_usaha
+
 
 Table ref_verif_adm_bu {
   kode_verif serial [pk]
@@ -979,7 +1308,8 @@ Table ref_verif_adm_bu {
   custom jsonb
 }
 
-Table ref_lan_hukum_bu {
+/*
+Table ref_lan_hukum_bu_old {
   kode_lan_hukum serial [pk]
   kode_vendor int4
   no_akta_awal varchar(255)
@@ -1004,8 +1334,38 @@ Table ref_lan_hukum_bu {
 
   custom jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
   note: "Landasan Hukum Pendirian Badan Usaha"
 }
+*/
+
+Table ref_lan_hukum_bu {
+  kode_lan_hukum serial [pk]
+  kode_vendor int4
+  no_akta_awal varchar(255)
+  tgl_akta_awal date
+  notaris_awal varchar(100)
+  no_sah_awal varchar(255) [note: "Nomor Pengesahan / Pendaftaran"]
+  tgl_sah_awal date
+
+  file_akta_awal text [note: "Scan Akta Pendirian Awal"]
+  encrypt_key_akta_awal varchar(255)
+
+  no_akta_rubah varchar(255) [note: "No. Akta setelah Perubahan Terakhir Akta Pendirian Badan Usaha /Anggaran Dasar Koperasi"]
+  tgl_akta_rubah date
+  notaris_rubah varchar(100)
+  no_sah_rubah varchar(255) [note: "Nomor Pengesahan / Pendaftaran"]
+  tgl_sah_rubah date
+
+  file_akta_rubah text [note: "Scan Akta Pendirian Terakhir"]
+  encrypt_key_akta_rubah varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Landasan Hukum Pendirian Badan Usaha"
+}
+
 
 Table ref_verif_lan_hukum_bu {
   kode_verif serial [pk]
@@ -1036,8 +1396,8 @@ Table ref_verif_lan_hukum_bu {
   custom jsonb
 }
 
-
-Table ref_komisaris_bu {
+/*
+Table ref_komisaris_bu_old {
   kode_komisaris serial [pk]
   kode_vendor int4
   nm_komisaris varchar(100)
@@ -1050,7 +1410,24 @@ Table ref_komisaris_bu {
   ktp_berlaku_akhir date [default: null]
   encrypt_key varchar(255)
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_komisaris_bu {
+  kode_komisaris serial [pk]
+  kode_vendor int4
+  nm_komisaris varchar(100)
+  jbtn_komisaris varchar(100)
+  hp_komisaris varchar(35)
+  no_ktp_komisaris varchar(30)
+
+  path_ktp_komisaris varchar(200)
+  encrypt_key varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+}
+
 
 Table ref_verif_komisaris {
   kode_verif serial [pk]
@@ -1070,6 +1447,7 @@ Table ref_pengurus_bu {
   kode_vendor int4
   bentuk_bu bentuk_bu [note: "Bentuk Badan Usaha"]
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
 
   note: "Pengurus badan usaha"
 }
@@ -1082,7 +1460,8 @@ Table ref_verif_direksi {
   komentar varchar(255)
 }
 
-Table ref_direksi_bu {
+/*
+Table ref_direksi_bu_old {
   kode_direksi serial [pk]
   kode_vendor int4
   nm_direksi varchar(100)
@@ -1095,10 +1474,26 @@ Table ref_direksi_bu {
   ktp_berlaku_akhir date [default: null]
   encrypt_key varchar(255)
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+
+Table ref_direksi_bu {
+  kode_direksi serial [pk]
+  kode_vendor int4
+  nm_direksi varchar(100)
+  jbtn_direksi varchar(100)
+  hp_direksi varchar(35)
+  no_ktp_direksi varchar(30)
+
+  path_ktp_direksi varchar(200)
+  encrypt_key varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
 }
 
 
-Table trx_pengurus_bu_verif {
+Table ref_pengurus_bu_verif {
   kode_verif serial [pk]
   kode_vendor_penjr int4
   kode_pengurus_bu int4
@@ -1108,7 +1503,8 @@ Table trx_pengurus_bu_verif {
   custom jsonb
 }
 
-Table ref_izin_usaha_bu {
+/*
+Table ref_izin_usaha_bu_old {
   kode_izin_usaha serial [pk]
   kode_vendor int
   jenis_izin_usaha jenis_izin_usaha [note: "nib, sbu, lainya"]
@@ -1116,13 +1512,82 @@ Table ref_izin_usaha_bu {
   nomor_izin varchar(150)
   kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
   judul varchar(150)
-  file_izin varchar(170)
+  file_izin varchar(255)
   is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
   izin_berlaku_awal date [default: null]
   izin_berlaku_akhir date [default: null]
   encrypt_key varchar(255)
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_izin_usaha_bu {
+  kode_izin_usaha serial [pk]
+  kode_vendor int
+  jenis_izin_usaha jenis_izin_usaha [note: "nib, sbu, lainya"]
+  nama varchar(150)
+  nomor_izin varchar(150)
+
+  file_izin varchar(255)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal date [default: null]
+  izin_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+
+/*
+Table ref_kbli_old {
+  kode_kbli serial [pk]
+  kategori varchar(2)
+  gol_pokok int2
+  gol int4
+  sub_gol int4
+  kelompok int4
+  judul varchar
+}
+*/
+
+Table ref_kbli {
+  kode_kbli serial [pk]
+  kode varchar(10)
+  judul text
+  tahun_kbli int4
+}
+
+Table trx_kbli {
+  kode_trx_kbli serial [pk]
+  kode_izin_usaha int4
+  kode_kbli int4
+}
+Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "trx_kbli"."kode_izin_usaha"
+Ref: "ref_kbli"."kode_kbli" < "trx_kbli"."kode_kbli"
+
+
+Table trx_kbli_custom {
+  kode_trx_kbli_custom serial [pk]
+  kode_izin_usaha_custom int4
+  kode_kbli int4
+}
+
+Table ref_sbu {
+  kode_sbu serial [pk]
+  kode varchar(10)
+  judul text
+  tahun_sbu int4
+}
+
+Table trx_sbu {
+  kode_trx_sbu serial [pk]
+  kode_izin_usaha int4
+  kode_sbu int4
+}
+Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "trx_sbu"."kode_sbu"
+Ref: "ref_sbu"."kode_sbu" < "trx_sbu"."kode_sbu"
+
 
 Table ref_verif_izin_usaha_bu {
   kode_verif serial [pk]
@@ -1132,20 +1597,38 @@ Table ref_verif_izin_usaha_bu {
   komentar varchar(255)
 }
 
-
-Table ref_sertifikat_usaha_bu {
+/*
+Table ref_sertifikat_usaha_bu_old {
   kode_sertifikat_usaha serial [pk]
   kode_vendor int4
   nama_judul varchar(150)
   penerbit varchar(50)
   tanggal date
-  file_sertif varchar(100)
+  file_sertif varchar(255)
   is_sertif_selamanya bool [note:'Apakah sertifikat berlaku selamanya?']
   sertif_berlaku_awal date [default: null]
   sertif_berlaku_akhir date [default: null]
   encrypt_key varchar(255)
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_sertifikat_usaha_bu {
+  kode_sertifikat_usaha serial [pk]
+  kode_vendor int4
+  nama_judul varchar(150)
+  nomor varchar(50)
+  penerbit varchar(50)
+  tanggal date
+  file_sertif varchar(255)
+  is_sertif_selamanya bool [note:'Apakah sertifikat berlaku selamanya?']
+  sertif_berlaku_awal date [default: null]
+  sertif_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  revisi_ke int2 [default: 0, not null]
+}
+
 
 Table ref_verif_sertifikat_usaha_bu {
   kode_verif serial [pk]
@@ -1155,8 +1638,8 @@ Table ref_verif_sertifikat_usaha_bu {
   komentar varchar(255)
 }
 
-
-Table ref_saham_bu {
+/*
+Table ref_saham_bu_old {
   kode_saham serial [pk]
   kode_vendor int
   nm_saham varchar(100) [note: 'Nama pemegang saham']
@@ -1168,8 +1651,21 @@ Table ref_saham_bu {
   saham_berlaku_awal date [default: null]
   saham_berlaku_akhir date [default: null]
   encrypt_key varchar(255)
-  custom jsonb
+  custom jsonb [note: "field ini tidak digunakan"]
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_saham_bu {
+  kode_saham serial [pk]
+  kode_vendor int
+  nm_saham varchar(100) [note: 'Nama pemegang saham']
+  no_ktp_saham varchar(20)
+  alamat_saham text
+  persentase_saham varchar(50)
+  revisi_ke int2 [default: 0, not null]
+}
+
 
 Table ref_verif_saham_bu {
   kode_verif serial [pk]
@@ -1180,8 +1676,8 @@ Table ref_verif_saham_bu {
 }
 
 
-
-Table ref_data_pajak_bu {
+/*
+Table ref_data_pajak_bu_old {
   kode_data_pajak serial [pk]
   kode_vendor int4
 
@@ -1219,8 +1715,56 @@ Table ref_data_pajak_bu {
 
   custom jsonb
 
+  revisi_ke int2 [default: 0, not null]
+
   note: "Data Pajak (Badan Usaha)"
 }
+*/
+
+Table ref_data_pajak_bu {
+  kode_data_pajak serial [pk]
+  kode_vendor int4
+
+
+
+
+
+
+
+
+
+  file_bukti_kswp text [note: "Bukti KSWP"]
+  is_bukti_kswp_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_kswp_berlaku_awal date [default: null]
+  bukti_kswp_berlaku_akhir date [default: null]
+  encrypt_key_bukti_kswp varchar(255)
+
+  file_bukti_spt text [note: "Bukti Penyampaian SPT"]
+  is_bukti_spt_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_spt_berlaku_awal date [default: null]
+  bukti_spt_berlaku_akhir date [default: null]
+  encrypt_key_bukti_spt varchar(255)
+
+  file_skb_pph23 text [note: "Surat Keterangan Bebas PPh 23"]
+  is_skb_pph23_selamanya bool [note:'Apakah berlaku selamanya?']
+  skb_pph23_berlaku_awal date [default: null]
+  skb_pph23_berlaku_akhir date [default: null]
+  encrypt_key_skb_pph23 varchar(255)
+
+  file_sk_pp23 text [note: "Surat Keterangan PP 23"]
+  is_sk_pp23_selamanya bool [note:'Apakah berlaku selamanya?']
+  sk_pp23_berlaku_awal date [default: null]
+  sk_pp23_berlaku_akhir date [default: null]
+  encrypt_key_sk_pp23 varchar(255)
+
+  file_bukti_non_pkp text [note: "Bukti Non PKP"]
+  encrypt_key_bukti_non_pkp varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Pajak (Badan Usaha)"
+}
+
 
 Table ref_verif_data_pajak_bu {
   kode_verif serial [pk]
@@ -1259,12 +1803,13 @@ Table ref_jenjang_pendidikan {
   jenjang_pendidikan varchar(20)
 }
 
-Table ref_tenaga_ahli_bu {
+/*
+Table ref_tenaga_ahli_bu_old {
   kode_tenaga_ahli serial [pk]
   kode_vendor int4
   nama varchar(100)
   no_ktp varchar(20)
-  file_ktp varchar(100)
+  file_ktp varchar(255)
   is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
   ktp_berlaku_awal date [default: null]
   ktp_berlaku_akhir date [default: null]
@@ -1274,53 +1819,112 @@ Table ref_tenaga_ahli_bu {
   posisi varchar(50)
   kode_jenjang_pendidikan int4
   program_studi varchar(50)
-  file_ijazah varchar(100)
+  file_ijazah varchar(255)
   is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
   ijazah_berlaku_awal date [default: null]
   ijazah_berlaku_akhir date [default: null]
   encrypt_key_ijazah varchar
-  file_cv varchar(100)
+  file_cv varchar(255)
   is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
   cv_berlaku_awal date [default: null]
   cv_berlaku_akhir date [default: null]
   encrypt_key_cv varchar
   custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_tenaga_ahli_bu {
+  kode_tenaga_ahli serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+
+  file_ktp varchar(255)
+  encrypt_key_ktp varchar
+
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+
+  file_ijazah varchar(255)
+  encrypt_key_ijazah varchar
+
+  file_cv varchar(255)
+  encrypt_key_cv varchar
+  tgl_cv date [note: "Tgl Pembuatan CV"]
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+
+/*
+Table ref_tenaga_pendukung_bu_old {
+  kode_tenaga_pendukung serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(255)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(255)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(255)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+*/
 
 Table ref_tenaga_pendukung_bu {
   kode_tenaga_pendukung serial [pk]
   kode_vendor int4
   nama varchar(100)
   no_ktp varchar(20)
-  file_ktp varchar(100)
-  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
-  ktp_berlaku_awal date [default: null]
-  ktp_berlaku_akhir date [default: null]
+
+  file_ktp varchar(255)
   encrypt_key_ktp varchar
+
   tempat_lahir varchar(50)
   tgl_lahir date
   posisi varchar(50)
   kode_jenjang_pendidikan int4
   program_studi varchar(50)
-  file_ijazah varchar(100)
-  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
-  ijazah_berlaku_awal date [default: null]
-  ijazah_berlaku_akhir date [default: null]
+
+  file_ijazah varchar(255)
   encrypt_key_ijazah varchar
-  file_cv varchar(100)
-  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
-  cv_berlaku_awal date [default: null]
-  cv_berlaku_akhir date [default: null]
+
+  file_cv varchar(255)
   encrypt_key_cv varchar
-  custom jsonb
+  tgl_cv date
+
+  revisi_ke int2 [default: 0, not null]
 }
+
 
 Table ref_pengalaman_ta {
   kode_pengalaman_ta serial [pk]
   kode_tenaga_ahli int4
   pengalaman varchar(255)
-  file_bukti varchar(100)
+  file_bukti varchar(255)
   encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
 
   note: 'Daftar pengalaman tenaga ahli badan usaha'
 }
@@ -1329,8 +1933,10 @@ Table ref_sertif_ta {
   kode_sertif_ta serial [pk]
   kode_tenaga_ahli int4
   sertifikat varchar(255)
-  file_bukti varchar(100)
+  file_bukti varchar(255)
   encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
 
   note: 'Daftar sertifikat tenaga ahli badan usaha'
 }
@@ -1339,8 +1945,10 @@ Table ref_pengalaman_tp {
   kode_pengalaman_tp serial [pk]
   kode_tenaga_pendukung int4
   pengalaman varchar(255)
-  file_bukti varchar(100)
+  file_bukti varchar(255)
   encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
 
   note: 'Daftar pengalaman tenaga pendukung badan usaha'
 }
@@ -1349,8 +1957,10 @@ Table ref_sertif_tp {
   kode_sertif_tp serial [pk]
   kode_tenaga_pendukung int4
   sertifikat varchar(255)
-  file_bukti varchar(100)
+  file_bukti varchar(255)
   encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
 
   note: 'Daftar sertifikat tenaga pendukung badan usaha'
 }
@@ -1378,12 +1988,42 @@ Table ref_verif_tenaga_pendukung_bu {
 Table ref_kepemilikan {
   kode_kepemilikan int4 [pk]
   kepemilikan varchar(20)
+
+  note: "Milik Sendiri, Sewa, Sewa Beli"
 }
 
 Table ref_kondisi {
   kode_kondisi int2 [pk]
   kondisi varchar(20)
 }
+
+/*
+Table ref_kantor_bu_old {
+  kode_kantor serial [pk]
+  kode_vendor int
+  nama varchar(30)
+  alamat text
+
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_bukti varchar(255) [note: "Bukti kepemilikan"]
+  is_bukti_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_berlaku_awal date [default: null]
+  bukti_berlaku_akhir date [default: null]
+  encrypt_key_bukti varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+*/
 
 Table ref_kantor_bu {
   kode_kantor serial [pk]
@@ -1394,20 +2034,18 @@ Table ref_kantor_bu {
   kode_kondisi int4
   kode_kepemilikan int4
 
-  file_bukti varchar(100) [note: "Bukti kepemilikan"]
+  file_bukti varchar(255) [note: "Bukti kepemilikan"]
   is_bukti_selamanya bool [note:'Apakah berlaku selamanya?']
   bukti_berlaku_awal date [default: null]
   bukti_berlaku_akhir date [default: null]
   encrypt_key_bukti varchar(255)
 
-  file_foto varchar(100)
-  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
-  foto_berlaku_awal date [default: null]
-  foto_berlaku_akhir date [default: null]
+  file_foto varchar(255)
   encrypt_key_foto varchar(255)
 
-  custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
+
 
 Table ref_verif_kantor_bu {
   kode_verif serial [pk]
@@ -1419,6 +2057,31 @@ Table ref_verif_kantor_bu {
   nilai int4
 }
 
+/*
+Table ref_fasilitas_bu_old {
+  kode_fasilitas serial [pk]
+  kode_vendor int
+  nama varchar(100)
+  jumlah varchar(130)
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_kepemilikan varchar(255)
+  is_kepemilikan_selamanya bool [note:'Apakah kepemilikan berlaku selamanya?']
+  kepemilikan_berlaku_awal date [default: null]
+  kepemilikan_berlaku_akhir date [default: null]
+  encrypt_key_kepemilikan varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+
 Table ref_fasilitas_bu {
   kode_fasilitas serial [pk]
   kode_vendor int
@@ -1427,19 +2090,18 @@ Table ref_fasilitas_bu {
   kode_kondisi int4
   kode_kepemilikan int4
 
-  file_kepemilikan varchar(100)
+  file_kepemilikan varchar(255)
   is_kepemilikan_selamanya bool [note:'Apakah kepemilikan berlaku selamanya?']
   kepemilikan_berlaku_awal date [default: null]
   kepemilikan_berlaku_akhir date [default: null]
   encrypt_key_kepemilikan varchar(255)
 
-  file_foto varchar(100)
-  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
-  foto_berlaku_awal date [default: null]
-  foto_berlaku_akhir date [default: null]
+  file_foto varchar(255)
   encrypt_key_foto varchar(255)
-  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
 }
+
 
 Table ref_verif_fasilitas_bu {
   kode_verif serial [pk]
@@ -1451,8 +2113,8 @@ Table ref_verif_fasilitas_bu {
   nilai int4
 }
 
-
-Table ref_pengalaman_bu {
+/*
+Table ref_pengalaman_bu_old {
   kode_pengalaman_bu serial [pk]
   kode_vendor int
   nama_pekerjaan text
@@ -1463,20 +2125,43 @@ Table ref_pengalaman_bu {
   tgl_akhir_pekerjaan date [default: null]
   no_kontrak varchar(50)
 
-  file_kontrak varchar(100)
+  file_kontrak varchar(255)
   is_kontrak_selamanya bool [note:'Apakah kontrak berlaku selamanya?']
   kontrak_berlaku_awal date [default: null]
   kontrak_berlaku_akhir date [default: null]
   encrypt_key_kontrak varchar(255)
 
-  file_bast varchar(100)
+  file_bast varchar(255)
   is_bast_selamanya bool [note:'Apakah bast berlaku selamanya?']
   bast_berlaku_awal date [default: null]
   bast_berlaku_akhir date [default: null]
   encrypt_key_bast varchar(255)
 
   custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
 }
+*/
+
+Table ref_pengalaman_bu {
+  kode_pengalaman_bu serial [pk]
+  kode_vendor int
+  nama_pekerjaan text
+
+  tgl_awal_pekerjaan date [default: null, note: "Pecahan dari Tahun Pekerjaan"]
+  tgl_akhir_pekerjaan date [default: null, note: "Pecahan dari Tahun Pekerjaan"]
+
+  pemberi_kerja varchar(160)
+  nilai_pekerjaan int8
+
+  no_kontrak varchar(50)
+
+  file_kontrak varchar(255)
+  encrypt_key_kontrak varchar(255)
+
+  revisi_ke int2 [default: 0, not null]
+}
+
 
 Table ref_verif_pengalaman_bu {
   kode_verif serial [pk]
@@ -1488,6 +2173,955 @@ Table ref_verif_pengalaman_bu {
   nilai int4
 
   // Gak Perlu ada field custom karena diverifikasinya per row
+}
+
+
+/*
+Table ref_history_datadiri_umum {
+  kode_datadiri_umum serial [pk]
+  kode_vendor int4
+  nama varchar(150) [note: "Nama penyedia perorangan"]
+  nama_badan_usaha varchar(150)
+  nama_narahubung varchar(255) [note: 'Contact Person']
+  kode_kualifikasi_usaha int2
+  nomor_telp varchar(255) [note: 'Nomor telepon kantor atau rumah']
+  no_handphone varchar(20) [note: 'Nomor HP Whatsapp']
+  email varchar(80)
+  kode_kab_kota_ktp varchar(5)
+  alamat_ktp text
+  kode_kab_kota_domisili varchar(5)
+  alamat_domisili text
+  is_alamat_sama bool [note: "Apakah alamat KTP dg Domisili sama ?"]
+  file_skt text [note: "Surat Keterangan Domisili"]
+  is_skt_selamanya bool [note:'Apakah Surat Keterangan Domisili berlaku selamanya?']
+  skt_berlaku_awal date [default: null]
+  skt_berlaku_akhir date [default: null]
+  alamat_badan_usaha text
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Untuk menyimpan 'Data Diri / Umum' Perorangan dan Badan Usaha"
+}
+*/
+
+Table ref_history_datadiri {
+  kode_datadiri serial [pk]
+  kode_vendor int4
+  tempat_lahir varchar(100)
+  tgl_lahir date
+  file_ktp varchar(255)
+  encrypt_key_ktp varchar(255)
+
+  kode_kab_kota_ktp varchar(5)
+  alamat_ktp text
+
+  is_alamat_sama bool [note: "Apakah alamat KTP dg Domisili sama ?"]
+  
+  kode_kab_kota_domisili varchar(5)
+  alamat_domisili text
+
+  file_skd varchar(255) [note: "Surat Keterangan Domisili"]
+  is_skd_selamanya bool [note:'Apakah Surat Keterangan Domisili berlaku selamanya?']
+  skd_berlaku_awal date [default: null]
+  skd_berlaku_akhir date [default: null]
+  encrypt_key_skd varchar(255)
+
+  revisi_ke int2  [default: 0, not null]
+}
+Ref: ref_history_datadiri.kode_vendor > ref_vendor.kode_vendor
+
+/*
+Table ref_history_administrasi_pero_old {
+  kode_adm serial [pk]
+  kode_vendor int4
+
+  file_skd text [note: "Surat Kebenaran Data"]
+  is_skd_selamanya bool [note:'Apakah Surat Kebenaran Data berlaku selamanya?']
+  skd_berlaku_awal date [default: null]
+  skd_berlaku_akhir date [default: null]
+  encrypt_key_skd varchar(255)
+
+  custom_adm jsonb
+
+  npwp varchar(25) [note: "Nomor NPWP"]
+  file_npwp text
+  is_npwp_selamanya bool [note:'Apakah berlaku selamanya?']
+  npwp_berlaku_awal date [default: null]
+  npwp_berlaku_akhir date [default: null]
+  encrypt_key_npwp varchar(255)
+
+  file_bukti_spt text
+  is_bukti_spt_selamanya bool [note:'Apakah Bukti SPT berlaku selamanya?']
+  bukti_spt_berlaku_awal date [default: null]
+  bukti_spt_berlaku_akhir date [default: null]
+  encrypt_key_bukti_spt varchar(255)
+
+  file_skb_pph23 text [note: "Surat Keterangan Bebas PPh 23"]
+  is_skb_pph23_selamanya bool [note:'Apakah selamanya?']
+  skb_pph23_berlaku_awal date [default: null]
+  skb_pph23_berlaku_akhir date [default: null]
+  encrypt_key_skb_pph23 varchar(255)
+
+  file_sk_pp23 text [note: "Surat Keterangan PP 23"]
+  is_sk_pp23_selamanya bool [note:'Apakah berlaku selamanya?']
+  sk_pp23_berlaku_awal date [default: null]
+  sk_pp23_berlaku_akhir date [default: null]
+  encrypt_key_sk_pp23 varchar(255)
+
+  custom_npwp jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+
+Table ref_history_administrasi_pero {
+  kode_adm serial [pk]
+  kode_vendor int4
+
+  file_skd varchar(255) [note: "Surat Kebenaran Data"]
+  is_skd_selamanya bool [note:'Apakah Surat Kebenaran Data berlaku selamanya?']
+  skd_berlaku_awal date [default: null]
+  skd_berlaku_akhir date [default: null]
+  encrypt_key_skd varchar(255)
+
+  // custom_adm jsonb
+
+  // npwp varchar(25) [note: "Nomor NPWP"]
+  // file_npwp text
+  // is_npwp_selamanya bool [note:'Apakah berlaku selamanya?']
+  // npwp_berlaku_awal date [default: null]
+  // npwp_berlaku_akhir date [default: null]
+  // encrypt_key_npwp varchar(255)
+
+  file_bukti_spt varchar(255)
+  is_bukti_spt_selamanya bool [note:'Apakah Bukti SPT berlaku selamanya?']
+  bukti_spt_berlaku_awal date [default: null]
+  bukti_spt_berlaku_akhir date [default: null]
+  encrypt_key_bukti_spt varchar(255)
+
+  file_skb_pph23 varchar(255) [note: "Surat Keterangan Bebas PPh 23"]
+  is_skb_pph23_selamanya bool [note:'Apakah selamanya?']
+  skb_pph23_berlaku_awal date [default: null]
+  skb_pph23_berlaku_akhir date [default: null]
+  encrypt_key_skb_pph23 varchar(255)
+
+  file_sk_pp23 varchar(255) [note: "Surat Keterangan PP 23"]
+  is_sk_pp23_selamanya bool [note:'Apakah berlaku selamanya?']
+  sk_pp23_berlaku_awal date [default: null]
+  sk_pp23_berlaku_akhir date [default: null]
+  encrypt_key_sk_pp23 varchar(255)
+
+  file_non_pkp varchar(255)
+
+  // custom_npwp jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+/*
+Table ref_history_personalia_pero_old {
+  kode_personalia serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  nik varchar(20)
+  tempat_lahir varchar(100)
+  tgl_lahir date
+  bidang_keahlian varchar(100)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(100)
+
+  file_ktp text
+  is_ktp_selamanya bool [note:"Apakah KTP berlaku selamanya?"]
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar(255)
+
+  file_ijazah text
+  is_ijazah_selamanya bool [note:"Apakah Ijazah berlaku selamanya?"]
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar(255)
+
+  file_cv text
+  is_cv_selamanya bool [note:"Apakah CV berlaku selamanya?"]
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar(255)
+
+  custom_teknis jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Teknis (Perorangan)"
+}
+*/
+Table ref_history_personalia_pero {
+  kode_personalia serial [pk]
+  kode_vendor int4
+  
+  bidang_keahlian varchar(100)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(100)
+
+  file_ijazah text
+  encrypt_key_ijazah varchar(255)
+
+  file_cv text
+  encrypt_key_cv varchar(255)
+  tgl_cv date [note: "Tgl Pembuatan CV"]
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Teknis (Perorangan)"
+}
+Ref: ref_history_personalia_pero.kode_vendor > ref_vendor.kode_vendor
+
+/*
+Table ref_history_pengalaman_pero_old {
+  kode_pengalaman serial [pk]
+  kode_vendor int4
+  nama_pekerjaan varchar(100)
+  posisi varchar(50)
+  tgl_awal_pekerjaan date [default: null]
+  tgl_akhir_pekerjaan date [default: null]
+  nilai_pekerjaan int8
+  file_bukti varchar(255)
+  encrypt_key varchar
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+Table ref_history_pengalaman_pero {
+  kode_pengalaman serial [pk]
+  kode_vendor int4
+  nama_pekerjaan varchar(100)
+  posisi varchar(50)
+
+  jangka_waktu varchar(255)
+
+  nilai_pekerjaan int8
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+}
+Ref: ref_history_pengalaman_pero.kode_vendor > ref_vendor.kode_vendor
+
+/*
+Table ref_history_sertif_pero_old {
+  kode_sertif serial [pk]
+  kode_vendor int4
+  nm_sertifikat varchar(100)
+  file_bukti varchar(255)
+  encrypt_key varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+*/
+Table ref_history_sertif_pero {
+  kode_sertif serial [pk]
+  kode_vendor int4
+  nm_sertifikat varchar(100)
+
+  file_bukti varchar(255)
+  is_bukti_selamanya bool [note:"Apakah sertifikat berlaku selamanya?"]
+  bukti_berlaku_awal date [default: null]
+  bukti_berlaku_akhir date [default: null]
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+}
+Ref: ref_history_sertif_pero.kode_vendor > ref_vendor.kode_vendor
+
+Table ref_history_keuangan_pero {
+  kode_keuangan serial [pk]
+  kode_vendor int4
+  nm_pemilik_rek varchar(100)
+  no_rek varchar(50)
+  sandi_bank varchar(4)
+
+  file_buku_rek text
+  is_buku_rek_selamanya bool [note:"Apakah Buku Rekening berlaku selamanya?"]
+  buku_rek_berlaku_awal date [default: null]
+  buku_rek_berlaku_akhir date [default: null]
+  encrypt_key_buku_rek varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Keuangan Perorangan"
+}
+Table ref_history_keuangan_bu {
+  kode_keuangan serial [pk]
+  kode_vendor int4
+  nm_pemilik_rek varchar(100)
+  no_rek varchar(50)
+  sandi_bank varchar(4)
+
+  file_buku_rek text
+  is_buku_rek_selamanya bool [note:"Apakah Buku Rekening berlaku selamanya?"]
+  buku_rek_berlaku_awal date [default: null]
+  buku_rek_berlaku_akhir date [default: null]
+  encrypt_key_buku_rek varchar(255)
+
+  custom_bank jsonb
+
+  file_lap_keu text
+  is_lap_keu_selamanya bool
+  lap_keu_berlaku_awal date [default: null]
+  lap_keu_berlaku_akhir date [default: null]
+  encrypt_key_lap_keu varchar(255)
+
+  file_lap_keu_audited text
+  is_lap_keu_audited_selamanya bool
+  lap_keu_audited_berlaku_awal date [default: null]
+  lap_keu_audited_berlaku_akhir date [default: null]
+  encrypt_key_lap_keu_audited varchar(255)
+
+  custom_lap_keu jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Keuangan Badan Usaha"
+}
+Table ref_history_adm_bu {
+  kode_adm_bu serial [pk]
+  kode_vendor int4
+  file_fis text [note: "Form Ikut Serta"]
+  is_fis_selamanya bool [note:"Apakah Form Ikut Serta berlaku selamanya?"]
+  fis_berlaku_awal date [default: null]
+  fis_berlaku_akhir date [default: null]
+  encrypt_key_fis varchar(255)
+
+  file_s_kuasa text [note: "Surat Kuasa"]
+  is_s_kuasa_selamanya bool [note:"Apakah Surat Kuasa berlaku selamanya?"]
+  s_kuasa_berlaku_awal date [default: null]
+  s_kuasa_berlaku_akhir date [default: null]
+  encrypt_key_s_kuasa varchar(255)
+
+  file_spkd text [note: "Surat Pernyataan Kebenaran Data"]
+  is_spkd_selamanya bool [note:"Apakah Surat Pernyataan Kebenaran Data berlaku selamanya?"]
+  spkd_berlaku_awal date [default: null]
+  spkd_berlaku_akhir date [default: null]
+  encrypt_key_spkd varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Administrasi (Badan Usaha)"
+}
+Table ref_history_lan_hukum_bu {
+  kode_lan_hukum serial [pk]
+  kode_vendor int4
+  no_akta_awal varchar(255)
+  tgl_akta_awal date
+  notaris_awal varchar(100)
+  no_sah_awal varchar(255) [note: "Nomor Pengesahan / Pendaftaran"]
+  file_akta_awal text [note: "Scan Akta Pendirian Awal"]
+  is_akta_awal_selamanya bool [note:"Apakah Akta Awal berlaku selamanya?"]
+  akta_awal_berlaku_awal date [default: null]
+  akta_awal_berlaku_akhir date [default: null]
+  encrypt_key_akta_awal varchar(255)
+
+  no_akta_rubah varchar(255) [note: "No. Akta setelah Perubahan Terakhir Akta Pendirian Badan Usaha /Anggaran Dasar Koperasi"]
+  tgl_akta_rubah date
+  notaris_rubah varchar(100)
+  no_sah_rubah varchar(255) [note: "Nomor Pengesahan / Pendaftaran"]
+  file_akta_rubah text [note: "Scan Akta Pendirian Terakhir"]
+  is_akta_rubah_selamanya bool [note:"Apakah Akta Terakhir berlaku selamanya?"]
+  akta_rubah_berlaku_awal date [default: null]
+  akta_rubah_berlaku_akhir date [default: null]
+  encrypt_key_akta_rubah varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Landasan Hukum Pendirian Badan Usaha"
+}
+Table ref_history_komisaris_bu {
+  kode_komisaris serial [pk]
+  kode_vendor int4
+  nm_komisaris varchar(100)
+  jbtn_komisaris varchar(100)
+  hp_komisaris varchar(35)
+  no_ktp_komisaris varchar(30)
+  path_ktp_komisaris varchar(200)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_pengurus_bu {
+  kode_pengurus_bu serial [pk]
+  kode_vendor int4
+  bentuk_bu bentuk_bu [note: "Bentuk Badan Usaha"]
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Pengurus badan usaha"
+}
+Table ref_history_direksi_bu {
+  kode_direksi serial [pk]
+  kode_vendor int4
+  nm_direksi varchar(100)
+  jbtn_direksi varchar(100)
+  hp_direksi varchar(35)
+  no_ktp_direksi varchar(30)
+  path_ktp_direksi varchar(200)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_izin_usaha_bu {
+  kode_izin_usaha serial [pk]
+  kode_vendor int
+  jenis_izin_usaha jenis_izin_usaha [note: "nib, sbu, lainya"]
+  nama varchar(150)
+  nomor_izin varchar(150)
+  kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
+  judul varchar(150)
+  file_izin varchar(255)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal date [default: null]
+  izin_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_sertifikat_usaha_bu {
+  kode_sertifikat_usaha serial [pk]
+  kode_vendor int4
+  nama_judul varchar(150)
+  penerbit varchar(50)
+  tanggal date
+  file_sertif varchar(255)
+  is_sertif_selamanya bool [note:'Apakah sertifikat berlaku selamanya?']
+  sertif_berlaku_awal date [default: null]
+  sertif_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_saham_bu {
+  kode_saham serial [pk]
+  kode_vendor int
+  nm_saham varchar(100) [note: 'Nama pemegang saham']
+  no_ktp_saham varchar(20)
+  alamat_saham text
+  persentase_saham varchar(50)
+  path_saham varchar(100)
+  is_saham_selamanya bool [note:'Apakah file berlaku selamanya?']
+  saham_berlaku_awal date [default: null]
+  saham_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_data_pajak_bu {
+  kode_data_pajak serial [pk]
+  kode_vendor int4
+
+  npwp varchar(30) [note: "Nomor NPWP"]
+
+  file_npwp text
+  is_npwp_selamanya bool [note:'Apakah NPWP berlaku selamanya?']
+  npwp_berlaku_awal date [default: null]
+  npwp_berlaku_akhir date [default: null]
+  encrypt_key_npwp varchar(255)
+
+  file_bukti_kswp text [note: "Bukti KSWP"]
+  is_bukti_kswp_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_kswp_berlaku_awal date [default: null]
+  bukti_kswp_berlaku_akhir date [default: null]
+  encrypt_key_bukti_kswp varchar(255)
+
+  file_bukti_spt text [note: "Bukti Penyampaian SPT"]
+  is_bukti_spt_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_spt_berlaku_awal date [default: null]
+  bukti_spt_berlaku_akhir date [default: null]
+  encrypt_key_bukti_spt varchar(255)
+
+  file_skb_pph23 text [note: "Surat Keterangan Bebas PPh 23"]
+  is_skb_pph23_selamanya bool [note:'Apakah berlaku selamanya?']
+  skb_pph23_berlaku_awal date [default: null]
+  skb_pph23_berlaku_akhir date [default: null]
+  encrypt_key_skb_pph23 varchar(255)
+
+  file_sk_pp23 text [note: "Surat Keterangan PP 23"]
+  is_sk_pp23_selamanya bool [note:'Apakah berlaku selamanya?']
+  sk_pp23_berlaku_awal date [default: null]
+  sk_pp23_berlaku_akhir date [default: null]
+  encrypt_key_sk_pp23 varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: "Data Pajak (Badan Usaha)"
+}
+Table ref_history_tenaga_ahli_bu {
+  kode_tenaga_ahli serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(255)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(255)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(255)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_tenaga_pendukung_bu {
+  kode_tenaga_pendukung serial [pk]
+  kode_vendor int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(255)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(255)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(255)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_pengalaman_ta {
+  kode_pengalaman_ta serial [pk]
+  kode_tenaga_ahli int4
+  pengalaman varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar pengalaman tenaga ahli badan usaha'
+}
+Table ref_history_sertif_ta {
+  kode_sertif_ta serial [pk]
+  kode_tenaga_ahli int4
+  sertifikat varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar sertifikat tenaga ahli badan usaha'
+}
+Table ref_history_pengalaman_tp {
+  kode_pengalaman_tp serial [pk]
+  kode_tenaga_pendukung int4
+  pengalaman varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar pengalaman tenaga pendukung badan usaha'
+}
+Table ref_history_sertif_tp {
+  kode_sertif_tp serial [pk]
+  kode_tenaga_pendukung int4
+  sertifikat varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar sertifikat tenaga pendukung badan usaha'
+}
+Table ref_history_kantor_bu {
+  kode_kantor serial [pk]
+  kode_vendor int
+  nama varchar(30)
+  alamat text
+
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_bukti varchar(255) [note: "Bukti kepemilikan"]
+  is_bukti_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_berlaku_awal date [default: null]
+  bukti_berlaku_akhir date [default: null]
+  encrypt_key_bukti varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_fasilitas_bu {
+  kode_fasilitas serial [pk]
+  kode_vendor int
+  nama varchar(100)
+  jumlah varchar(130)
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_kepemilikan varchar(255)
+  is_kepemilikan_selamanya bool [note:'Apakah kepemilikan berlaku selamanya?']
+  kepemilikan_berlaku_awal date [default: null]
+  kepemilikan_berlaku_akhir date [default: null]
+  encrypt_key_kepemilikan varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+Table ref_history_pengalaman_bu {
+  kode_pengalaman_bu serial [pk]
+  kode_vendor int
+  nama_pekerjaan text
+  tahun_pekerjaan int4
+  pemberi_kerja varchar(160)
+  nilai_pekerjaan int8
+  tgl_awal_pekerjaan date [default: null]
+  tgl_akhir_pekerjaan date [default: null]
+  no_kontrak varchar(50)
+
+  file_kontrak varchar(255)
+  is_kontrak_selamanya bool [note:'Apakah kontrak berlaku selamanya?']
+  kontrak_berlaku_awal date [default: null]
+  kontrak_berlaku_akhir date [default: null]
+  encrypt_key_kontrak varchar(255)
+
+  file_bast varchar(255)
+  is_bast_selamanya bool [note:'Apakah bast berlaku selamanya?']
+  bast_berlaku_awal date [default: null]
+  bast_berlaku_akhir date [default: null]
+  encrypt_key_bast varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+
+
+Table ref_direksi_bu_custom {
+  kode_direksi_custom serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  nm_direksi varchar(100)
+  jbtn_direksi varchar(100)
+  hp_direksi varchar(35)
+  no_ktp_direksi varchar(30)
+  path_ktp_direksi varchar(200)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_fasilitas_bu_custom {
+  kode_fasilitas_custom serial [pk]
+  kode_vendor int
+  kode_penjaringan int4
+  nama varchar(100)
+  jumlah varchar(130)
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_kepemilikan varchar(255)
+  is_kepemilikan_selamanya bool [note:'Apakah kepemilikan berlaku selamanya?']
+  kepemilikan_berlaku_awal date [default: null]
+  kepemilikan_berlaku_akhir date [default: null]
+  encrypt_key_kepemilikan varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_kantor_bu_custom {
+  kode_kantor_custom serial [pk]
+  kode_vendor int
+  kode_penjaringan int4
+  nama varchar(30)
+  alamat text
+
+  kode_kondisi int4
+  kode_kepemilikan int4
+
+  file_bukti varchar(255) [note: "Bukti kepemilikan"]
+  is_bukti_selamanya bool [note:'Apakah berlaku selamanya?']
+  bukti_berlaku_awal date [default: null]
+  bukti_berlaku_akhir date [default: null]
+  encrypt_key_bukti varchar(255)
+
+  file_foto varchar(255)
+  is_foto_selamanya bool [note:'Apakah foto berlaku selamanya?']
+  foto_berlaku_awal date [default: null]
+  foto_berlaku_akhir date [default: null]
+  encrypt_key_foto varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_komisaris_bu_custom {
+  kode_komisaris_custom serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  nm_komisaris varchar(100)
+  jbtn_komisaris varchar(100)
+  hp_komisaris varchar(35)
+  no_ktp_komisaris varchar(30)
+  path_ktp_komisaris varchar(200)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_pengalaman_bu_custom {
+  kode_pengalaman_bu_custom serial [pk]
+  kode_vendor int
+  kode_penjaringan int4
+  nama_pekerjaan text
+  tahun_pekerjaan int4
+  pemberi_kerja varchar(160)
+  nilai_pekerjaan int8
+  tgl_awal_pekerjaan date [default: null]
+  tgl_akhir_pekerjaan date [default: null]
+  no_kontrak varchar(50)
+
+  file_kontrak varchar(255)
+  is_kontrak_selamanya bool [note:'Apakah kontrak berlaku selamanya?']
+  kontrak_berlaku_awal date [default: null]
+  kontrak_berlaku_akhir date [default: null]
+  encrypt_key_kontrak varchar(255)
+
+  file_bast varchar(255)
+  is_bast_selamanya bool [note:'Apakah bast berlaku selamanya?']
+  bast_berlaku_awal date [default: null]
+  bast_berlaku_akhir date [default: null]
+  encrypt_key_bast varchar(255)
+
+  custom jsonb
+
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_pengalaman_ta_custom {
+  kode_pengalaman_ta_custom serial [pk]
+  kode_penjaringan int4
+  kode_tenaga_ahli int4
+  pengalaman varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar pengalaman tenaga ahli badan usaha'
+}
+
+Table ref_pengalaman_tp_custom {
+  kode_pengalaman_tp_custom serial [pk]
+  kode_penjaringan int4
+  kode_tenaga_pendukung int4
+  pengalaman varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar pengalaman tenaga pendukung badan usaha'
+}
+
+Table ref_saham_bu_custom {
+  kode_saham_custom serial [pk]
+  kode_vendor int
+  kode_penjaringan int4
+  nm_saham varchar(100) [note: 'Nama pemegang saham']
+  no_ktp_saham varchar(20)
+  alamat_saham text
+  persentase_saham varchar(50)
+  path_saham varchar(100)
+  is_saham_selamanya bool [note:'Apakah file berlaku selamanya?']
+  saham_berlaku_awal date [default: null]
+  saham_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_sertifikat_usaha_bu_custom {
+  kode_sertifikat_usaha_custom serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  nama_judul varchar(150)
+  penerbit varchar(50)
+  tanggal date
+  file_sertif varchar(255)
+  is_sertif_selamanya bool [note:'Apakah sertifikat berlaku selamanya?']
+  sertif_berlaku_awal date [default: null]
+  sertif_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_sertif_ta_custom {
+  kode_sertif_ta_custom serial [pk]
+  kode_penjaringan int4
+  kode_tenaga_ahli int4
+  sertifikat varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar sertifikat tenaga ahli badan usaha'
+}
+
+Table ref_sertif_tp_custom {
+  kode_sertif_tp_custom serial [pk]
+  kode_penjaringan int4
+  kode_tenaga_pendukung int4
+  sertifikat varchar(255)
+  file_bukti varchar(255)
+  encrypt_key varchar
+
+  revisi_ke int2 [default: 0, not null]
+
+  note: 'Daftar sertifikat tenaga pendukung badan usaha'
+}
+
+Table ref_tenaga_ahli_bu_custom {
+  kode_tenaga_ahli_custom serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(255)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(255)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(255)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_tenaga_pendukung_bu_custom {
+  kode_tenaga_pendukung_custom serial [pk]
+  kode_vendor int4
+  kode_penjaringan int4
+  nama varchar(100)
+  no_ktp varchar(20)
+  file_ktp varchar(255)
+  is_ktp_selamanya bool [note:'Apakah KTP berlaku selamanya?']
+  ktp_berlaku_awal date [default: null]
+  ktp_berlaku_akhir date [default: null]
+  encrypt_key_ktp varchar
+  tempat_lahir varchar(50)
+  tgl_lahir date
+  posisi varchar(50)
+  kode_jenjang_pendidikan int4
+  program_studi varchar(50)
+  file_ijazah varchar(255)
+  is_ijazah_selamanya bool [note:'Apakah ijazah berlaku selamanya?']
+  ijazah_berlaku_awal date [default: null]
+  ijazah_berlaku_akhir date [default: null]
+  encrypt_key_ijazah varchar
+  file_cv varchar(255)
+  is_cv_selamanya bool [note:'Apakah cv berlaku selamanya?']
+  cv_berlaku_awal date [default: null]
+  cv_berlaku_akhir date [default: null]
+  encrypt_key_cv varchar
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
+}
+
+Table ref_izin_usaha_bu_custom {
+  kode_izin_usaha_custom serial [pk]
+  kode_vendor int
+  kode_penjaringan int4
+  jenis_izin_usaha jenis_izin_usaha [note: "nib, sbu, lainya"]
+  nama varchar(150)
+  nomor_izin varchar(150)
+  kode varchar [note: 'Kalau jenis izinnya NIB, masukan Kode KBLI / Kalau jenis izinnya SBU, masukan Kode SBU']
+  judul varchar(150)
+  file_izin varchar(255)
+  is_izin_selamanya bool [note:'Apakah Izin berlaku selamanya?']
+  izin_berlaku_awal date [default: null]
+  izin_berlaku_akhir date [default: null]
+  encrypt_key varchar(255)
+  custom jsonb
+  revisi_ke int2 [default: 0, not null]
 }
 
 
@@ -1541,239 +3175,268 @@ Table trx_undangan_pemeriksaan_keluar_dpt {
   platform_konferensi_video varchar(100)
   link_konferensi_video varchar(255)
   lokasi varchar(100)
-  file_surat_ke_ppk varchar(100)
+  file_surat_ke_ppk varchar(255)
   is_terlaksana bool
 }
 
 
 
-Ref: "ref_kategori"."kode_kategori" - "trx_kategori"."kode_kategori"
-Ref: "ref_vendor"."kode_vendor" - "ref_vendor_register"."kode_vendor"
-Ref: "ref_vendor"."kode_vendor" - "ref_vendor_reg_history"."kode_vendor"
 
+Ref: "ref_kategori"."kode_kategori" - "trx_kategori"."kode_kategori" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_register"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" - "ref_vendor_reg_history"."kode_vendor" [delete: cascade]
 
 
 
 
-Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "ref_datadiri_umum"."kode_kualifikasi_usaha"
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor"."kode_jenis_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_datadiri_umum"."kode_vendor"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_vendor"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_ktp"
 
-Ref: "ref_kab_kota"."kode_kab_kota" < "ref_datadiri_umum"."kode_kab_kota_domisili"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_komisaris_bu"."kode_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "trx_vendor_penjr"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_komisaris_bu"."kode_vendor" [delete: cascade]
 
+Ref: "ref_vendor"."kode_vendor" < "trx_vendor_penjr"."kode_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_vendor_penjr"."kode_penjaringan"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_direksi_bu"."kode_vendor"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_vendor_penjr"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_komisaris_bu"."kode_komisaris" < "ref_verif_komisaris"."kode_komisaris"
+Ref: "ref_vendor"."kode_vendor" < "ref_direksi_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_direksi_bu"."kode_direksi" < "ref_verif_direksi"."kode_direksi"
+Ref: "ref_komisaris_bu"."kode_komisaris" < "ref_verif_komisaris"."kode_komisaris" [delete: cascade]
 
-Ref: "ref_pengurus_bu"."kode_pengurus_bu" < "trx_pengurus_bu_verif"."kode_pengurus_bu"
+Ref: "ref_direksi_bu"."kode_direksi" < "ref_verif_direksi"."kode_direksi" [delete: cascade]
 
+Ref: "ref_pengurus_bu"."kode_pengurus_bu" < "ref_pengurus_bu_verif"."kode_pengurus_bu" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pakta_integritas"."kode_vendor"
 
-Ref: "ref_jenis_pengadaan"."kode_jenis_pengadaan" < "trx_penjaringan"."kode_jenis_pengadaan"
+Ref: "ref_vendor"."kode_vendor" < "ref_pakta_integritas"."kode_vendor" [delete: cascade]
 
+Ref: "ref_jenis_pengadaan"."kode_jenis_pengadaan" < "trx_penjaringan"."kode_jenis_pengadaan" [delete: cascade]
 
-Ref: "trx_kategori"."kode_trx_kategori" < "trx_penjaringan"."kode_trx_kategori"
 
+Ref: "trx_kategori"."kode_trx_kategori" < "trx_penjaringan"."kode_trx_kategori" [delete: cascade]
 
 
 
 
 
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengurus_bu"."kode_vendor"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_izin_usaha_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengurus_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_saham_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_izin_usaha_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_data_pajak_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_saham_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_ahli_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_data_pajak_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_pengalaman_ta"."kode_tenaga_ahli"
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_ahli_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_ahli_bu"."kode_jenjang_pendidikan"
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_pengalaman_ta"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_sertif_ta"."kode_tenaga_ahli"
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_tenaga_ahli_bu"."kode_jenjang_pendidikan" [delete: cascade]
 
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_pengalaman_tp"."kode_tenaga_pendukung"
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_sertif_ta"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_sertif_tp"."kode_tenaga_pendukung"
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_pengalaman_tp"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_pendukung_bu"."kode_vendor"
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_sertif_tp"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_kantor_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_tenaga_pendukung_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_fasilitas_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_kantor_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_fasilitas_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_verifikator_penjr"."kode_penjaringan"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_bu"."kode_vendor" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_undangan_verif"."kode_vendor_penjr"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_verifikator_penjr"."kode_penjaringan" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_undangan_penjr"."kode_penjaringan"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_undangan_verif"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_tim_teknis_pendukung"."kode_undangan_verif"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_undangan_penjr"."kode_penjaringan" [delete: cascade]
 
+Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_tim_teknis_pendukung"."kode_undangan_verif" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_administrasi_pero"."kode_vendor"
 
+Ref: "ref_vendor"."kode_vendor" < "ref_administrasi_pero"."kode_vendor" [delete: cascade]
 
 
 
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_administrasi_pero"."kode_vendor_penjr"
 
-Ref: "ref_datadiri_umum"."kode_datadiri_umum" < "ref_verif_datadiri_umum"."kode_datadiri_umum"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_pero"."kode_vendor_penjr"
 
-Ref: "ref_pengalaman_pero"."kode_pengalaman" < "ref_verif_pengalaman_pero"."kode_pengalaman"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertif_pero"."kode_vendor_penjr"
+Ref: "ref_pengalaman_pero"."kode_pengalaman" < "ref_verif_pengalaman_pero"."kode_pengalaman" [delete: cascade]
 
-Ref: "ref_sertif_pero"."kode_sertif" < "ref_verif_sertif_pero"."kode_sertif"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertif_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_sanksi_vendor"."kode_sanksi_vendor" < "ref_v_keluar_dpt"."kode_sanksi_vendor"
+Ref: "ref_sertif_pero"."kode_sertif" < "ref_verif_sertif_pero"."kode_sertif" [delete: cascade]
 
-Ref: "ref_status_keluar_dpt"."kode_status_keluar_dpt" < "ref_v_keluar_dpt"."kode_status_keluar_dpt"
+Ref: "ref_sanksi_vendor"."kode_sanksi_vendor" < "ref_v_keluar_dpt"."kode_sanksi_vendor" [delete: cascade]
 
+Ref: "ref_status_keluar_dpt"."kode_status_keluar_dpt" < "ref_v_keluar_dpt"."kode_status_keluar_dpt" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_v_keluar_dpt"."kode_vendor"
 
-Ref: "ref_kat_persyaratan"."kode_kat_persyaratan" < "ref_subkat_persyaratan"."kode_kat_persyaratan"
+Ref: "ref_vendor"."kode_vendor" < "ref_v_keluar_dpt"."kode_vendor" [delete: cascade]
 
-Ref: "ref_subkat_persyaratan"."kode_subkat" < "ref_kat_item_tanya"."kode_subkat"
+Ref: "ref_kat_persyaratan"."kode_kat_persyaratan" < "ref_subkat_persyaratan"."kode_kat_persyaratan" [delete: cascade]
 
-Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya"."kode_kat_item_tanya"
+Ref: "ref_subkat_persyaratan"."kode_subkat" < "ref_kat_item_tanya"."kode_subkat" [delete: cascade]
 
-Ref: "ref_subkat_persyaratan"."kode_subkat" < "trx_ketentuan_umum_khusus"."kode_subkat"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya"."kode_kat_item_tanya" [delete: cascade]
 
+Ref: "ref_subkat_persyaratan"."kode_subkat" < "trx_ketentuan_umum_khusus"."kode_subkat" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_pero"."kode_vendor"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_pero"."kode_vendor_penjr"
+Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_keuangan_pero"."kode_keuangan" < "ref_verif_keuangan_pero"."kode_keuangan"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_pero"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_adm_bu"."kode_adm_bu" < "ref_verif_adm_bu"."kode_adm_bu"
+Ref: "ref_keuangan_pero"."kode_keuangan" < "ref_verif_keuangan_pero"."kode_keuangan" [delete: cascade]
 
+Ref: "ref_adm_bu"."kode_adm_bu" < "ref_verif_adm_bu"."kode_adm_bu" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_adm_bu"."kode_vendor_penjr"
 
-Ref: "ref_lan_hukum_bu"."kode_lan_hukum" < "ref_verif_lan_hukum_bu"."kode_lan_hukum"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_adm_bu"."kode_vendor_penjr" [delete: cascade]
 
+Ref: "ref_lan_hukum_bu"."kode_lan_hukum" < "ref_verif_lan_hukum_bu"."kode_lan_hukum" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_lan_hukum_bu"."kode_vendor_penjr"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_pengurus_bu_verif"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_lan_hukum_bu"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_komisaris"."kode_vendor_penjr"
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_direksi"."kode_vendor_penjr"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_pengurus_bu_verif"."kode_vendor_penjr" [delete: cascade]
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_komisaris"."kode_vendor_penjr" [delete: cascade]
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_direksi"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "ref_verif_izin_usaha_bu"."kode_izin_usaha"
 
-Ref: "ref_sertifikat_usaha_bu"."kode_sertifikat_usaha" < "ref_verif_sertifikat_usaha_bu"."kode_sertifikat_usaha"
+Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "ref_verif_izin_usaha_bu"."kode_izin_usaha" [delete: cascade]
 
+Ref: "ref_sertifikat_usaha_bu"."kode_sertifikat_usaha" < "ref_verif_sertifikat_usaha_bu"."kode_sertifikat_usaha" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_izin_usaha_bu"."kode_vendor_penjr"
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertifikat_usaha_bu"."kode_vendor_penjr"
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_izin_usaha_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertifikat_usaha_bu"."kode_vendor_penjr" [delete: cascade]
 
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_saham_bu"."kode_vendor_penjr"
-Ref: "ref_saham_bu"."kode_saham" < "ref_verif_saham_bu"."kode_saham"
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_saham_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_saham_bu"."kode_saham" < "ref_verif_saham_bu"."kode_saham" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_data_pajak_bu"."kode_vendor_penjr"
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_data_pajak_bu"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_data_pajak_bu"."kode_data_pajak" < "ref_verif_data_pajak_bu"."kode_data_pajak"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_ahli_bu"."kode_vendor_penjr"
-Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_verif_tenaga_ahli_bu"."kode_tenaga_ahli"
+Ref: "ref_data_pajak_bu"."kode_data_pajak" < "ref_verif_data_pajak_bu"."kode_data_pajak" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_pendukung_bu"."kode_vendor_penjr"
-Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_verif_tenaga_pendukung_bu"."kode_tenaga_pendukung"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_ahli_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_verif_tenaga_ahli_bu"."kode_tenaga_ahli" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_kantor_bu"."kode_vendor_penjr"
-Ref: "ref_kantor_bu"."kode_kantor" < "ref_verif_kantor_bu"."kode_kantor"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_pendukung_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_verif_tenaga_pendukung_bu"."kode_tenaga_pendukung" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_fasilitas_bu"."kode_vendor_penjr"
-Ref: "ref_fasilitas_bu"."kode_fasilitas" < "ref_verif_fasilitas_bu"."kode_fasilitas"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_kantor_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_kantor_bu"."kode_kantor" < "ref_verif_kantor_bu"."kode_kantor" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_bu"."kode_vendor_penjr"
-Ref: "ref_pengalaman_bu"."kode_pengalaman_bu" < "ref_verif_pengalaman_bu"."kode_pengalaman_bu"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_fasilitas_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_fasilitas_bu"."kode_fasilitas" < "ref_verif_fasilitas_bu"."kode_fasilitas" [delete: cascade]
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_pengalaman_bu"."kode_pengalaman_bu" < "ref_verif_pengalaman_bu"."kode_pengalaman_bu" [delete: cascade]
 
-Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya"."tipe_input"
-Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya_tpl"."tipe_input"
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_bu"."kode_vendor_penjr"
-Ref: "ref_keuangan_bu"."kode_keuangan" < "ref_verif_keuangan_bu"."kode_keuangan"
+Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya"."tipe_input" [delete: cascade]
+Ref: "ref_tipe_input"."tipe_input" < "ref_item_tanya_tpl"."tipe_input" [delete: cascade]
 
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_bu"."kode_vendor_penjr" [delete: cascade]
+Ref: "ref_keuangan_bu"."kode_keuangan" < "ref_verif_keuangan_bu"."kode_keuangan" [delete: cascade]
 
-Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_nilai_akhir"."kode_vendor_penjr"
 
-Ref: "ref_vendor"."kode_vendor" < "ref_adm_bu"."kode_vendor"
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "trx_nilai_akhir"."kode_vendor_penjr" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_lan_hukum_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_adm_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_bu"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_lan_hukum_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_pero"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_keuangan_bu"."kode_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_sertif_pero"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_pengalaman_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_kantor_bu"."kode_kepemilikan"
+Ref: "ref_vendor"."kode_vendor" < "ref_sertif_pero"."kode_vendor" [delete: cascade]
 
-Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_fasilitas_bu"."kode_kepemilikan"
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_kantor_bu"."kode_kepemilikan" [delete: cascade]
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "trx_penjaringan"."kode_jenis_vendor"
+Ref: "ref_kepemilikan"."kode_kepemilikan" < "ref_fasilitas_bu"."kode_kepemilikan" [delete: cascade]
 
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "trx_penjaringan"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "trx_ketentuan_umum_khusus"."kode_penjaringan"
 
-Ref: "ref_kondisi"."kode_kondisi" < "ref_kantor_bu"."kode_kondisi"
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_ketentuan_umum_khusus"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "trx_penjaringan"."kode_kualifikasi_usaha"
+Ref: "ref_kondisi"."kode_kondisi" < "ref_kantor_bu"."kode_kondisi" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_item_tanya"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_item_tanya"."kode_penjaringan" [delete: cascade]
 
 
 
-Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya_tpl"."kode_kat_item_tanya"
+Ref: "ref_kat_item_tanya"."kode_kat_item_tanya" < "ref_item_tanya_tpl"."kode_kat_item_tanya" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_persentase_penilaian"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_persentase_penilaian"."kode_penjaringan" [delete: cascade]
 
-Ref: "trx_penjaringan"."kode_penjaringan" < "ref_ambang_batas_penilaian"."kode_penjaringan"
+Ref: "trx_penjaringan"."kode_penjaringan" < "ref_ambang_batas_penilaian"."kode_penjaringan" [delete: cascade]
 
-Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_persentase_penilaian_tpl"."kode_jenis_vendor"
+Ref: "ref_jenis_vendor"."kode_jenis_vendor" < "ref_persentase_penilaian_tpl"."kode_jenis_vendor" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "ref_penanggung_jwb"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "ref_penanggung_jwb"."kode_vendor" [delete: cascade]
 
-Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia_pero"."kode_jenjang_pendidikan"
+Ref: "ref_jenjang_pendidikan"."kode_jenjang_pendidikan" < "ref_personalia_pero"."kode_jenjang_pendidikan" [delete: cascade]
 
-Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."kode_status_pengajuan"
+Ref: "ref_status_pengajuan_penjr"."kode_status_pengajuan" < "trx_penjaringan"."kode_status_pengajuan" [delete: cascade]
 
-Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif"
+Ref: "trx_undangan_verif"."kode_undangan_verif" < "trx_kehadiran_verif"."kode_undangan_verif" [delete: cascade]
 
-Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor"
+Ref: "ref_vendor"."kode_vendor" < "trx_undangan_penjr"."kode_vendor" [delete: cascade]
 
-Ref: "trx_custom_item"."kode_vendor" < "ref_vendor"."kode_vendor"
+
+Ref: "ref_vendor"."kode_vendor" < "trx_custom_item"."kode_vendor"
+
+
+// Ref: "ref_vendor"."kode_vendor" < "ref_history_datadiri_umum"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_administrasi_pero"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_keuangan_pero"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_keuangan_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_adm_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_lan_hukum_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_komisaris_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_pengurus_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_direksi_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_izin_usaha_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_sertifikat_usaha_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_saham_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_data_pajak_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_tenaga_ahli_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_tenaga_pendukung_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_history_pengalaman_ta"."kode_tenaga_ahli" [delete: cascade]
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_history_sertif_ta"."kode_tenaga_ahli" [delete: cascade]
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_history_pengalaman_tp"."kode_tenaga_pendukung" [delete: cascade]
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_history_sertif_tp"."kode_tenaga_pendukung" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_kantor_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_fasilitas_bu"."kode_vendor" [delete: cascade]
+Ref: "ref_vendor"."kode_vendor" < "ref_history_pengalaman_bu"."kode_vendor" [delete: cascade]
+
+
+Ref: "trx_penjaringan"."kode_penjaringan" < "trx_kualifikasi_usaha_penjr"."kode_penjaringan"
+
+Ref: "ref_kualifikasi_usaha"."kode_kualifikasi_usaha" < "trx_kualifikasi_usaha_penjr"."kode_kualifikasi_usaha"
+
+Ref: "ref_izin_usaha_bu_custom"."kode_izin_usaha_custom" < "trx_kbli_custom"."kode_izin_usaha_custom"
+  
+
+
+Ref: "ref_izin_usaha_bu"."izin_berlaku_akhir" < "ref_izin_usaha_bu"."nomor_izin"
