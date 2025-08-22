@@ -27,7 +27,10 @@ type VTblIzin struct {
 	PathIzin         pgtype.Text
 }
 
-func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
+func 
+
+
+InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -78,7 +81,6 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  jenis_izin_usaha,
 		  nama,
 		  nomor_izin,
-		  kode,
 		  file_izin,
 		  is_izin_selamanya,
 		  izin_berlaku_akhir
@@ -87,7 +89,6 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  @jenis_izin_usaha,
 		  @nama,
 		  @nomor_izin,
-		  @kode,
 		  @file_izin,
 		  @is_izin_selamanya,
 		  @izin_berlaku_akhir
@@ -98,7 +99,6 @@ func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 			"jenis_izin_usaha":   jenisIzinusaha,
 			"nama":               vTI.NamaIzin,
 			"nomor_izin":         vTI.NoIzin,
-			"kode":               sql.NullString{}, // TODO: nanti periksa lagi, mungkin masih bisa di proses
 			"file_izin":          vTI.PathIzin,
 			"is_izin_selamanya":  pgtype.Bool{Valid: true, Bool: isIzinSelamanya},
 			"izin_berlaku_akhir": izinBerlakuAkhir,

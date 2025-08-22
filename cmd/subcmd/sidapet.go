@@ -59,13 +59,13 @@ var SidapetCmd = &cobra.Command{
 			}
 		}
 
-		sidapet.MigrateTblPaket() // Belum di cek outputnya secara detail
+		/*
+		sidapet.MigrateTblPaket()
+		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
+		*/
 
 		// Cari tahu trx_kategori.kode_unit_pbj
-		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-
 		// sidapet.MigrateTblVerif()
-
 		// sidapethelper.CreateAllForeignKey()
 
 	},

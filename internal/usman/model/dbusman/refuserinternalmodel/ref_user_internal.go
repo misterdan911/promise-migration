@@ -2,7 +2,7 @@ package refuserinternalmodel
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"promise-migration/db"
 
 	"github.com/jackc/pgx/v5"
@@ -46,6 +46,6 @@ func InsertNew(user RefUserInternal) {
 
 	_, errIns := db.DbUsman.Exec(ctx, qInsert, args)
 	if errIns != nil {
-		fmt.Println("unable to insert ref_user_internal, " + errIns.Error())
+		log.Fatal("unable to insert ref_user_internal, " + errIns.Error())
 	}
 }

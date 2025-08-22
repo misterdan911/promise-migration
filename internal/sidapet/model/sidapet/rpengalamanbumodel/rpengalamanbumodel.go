@@ -292,38 +292,32 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 		INSERT INTO ref_pengalaman_bu (
 		  kode_vendor,
 		  nama_pekerjaan,
-		  tahun_pekerjaan,
 		  pemberi_kerja,
 		  nilai_pekerjaan,
 		  tgl_awal_pekerjaan,
 		  tgl_akhir_pekerjaan,
 		  no_kontrak,
-		  file_kontrak,
-		  file_bast
+		  file_kontrak
 		) VALUES (
 		  @kode_vendor,
 		  @nama_pekerjaan,
-		  @tahun_pekerjaan,
 		  @pemberi_kerja,
 		  @nilai_pekerjaan,
 		  @tgl_awal_pekerjaan,
 		  @tgl_akhir_pekerjaan,
 		  @no_kontrak,
-		  @file_kontrak,
-		  @file_bast
+		  @file_kontrak
 		)`
 
 		args := pgx.NamedArgs{
 			"kode_vendor":         pengalaman.KodeVendor,
 			"nama_pekerjaan":      pengalaman.NamaPekerjaan,
-			"tahun_pekerjaan":     pengalaman.TahunPekerjaan,
 			"pemberi_kerja":       pengalaman.PemberiKerja,
 			"nilai_pekerjaan":     pengalaman.NilaiPekerjaan,
 			"tgl_awal_pekerjaan":  sql.NullTime{},
 			"tgl_akhir_pekerjaan": pengalaman.TglAkhirPekerjaan,
 			"no_kontrak":          pengalaman.NoKontrak,
 			"file_kontrak":        pengalaman.FileKontrak,
-			"file_bast":           pengalaman.FileBast,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

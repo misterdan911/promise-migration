@@ -16,6 +16,8 @@ type RefVendor struct {
 	NamaPerusahaan    pgtype.Text
 	IsTetap           pgtype.Bool
 	StatusFormLuarDpt pgtype.Text
+    Verifikator       pgtype.Text
+    WaktuVerifikasi   pgtype.Timestamptz
 	Udcr              pgtype.Timestamptz
 	Udch              pgtype.Timestamptz
 }

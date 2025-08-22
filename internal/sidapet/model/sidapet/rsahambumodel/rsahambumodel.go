@@ -63,15 +63,13 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 		  nm_saham,
 		  no_ktp_saham,
 		  alamat_saham,
-		  persentase_saham,
-		  path_saham
+		  persentase_saham
 		) VALUES (
 		  @kode_vendor,
 		  @nm_saham,
 		  @no_ktp_saham,
 		  @alamat_saham,
-		  @persentase_saham,
-		  @path_saham
+		  @persentase_saham
 		)`
 
 		args := pgx.NamedArgs{
@@ -80,7 +78,6 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 			"no_ktp_saham":     vTS.NoKtpSaham,
 			"alamat_saham":     vTS.AlamatSaham,
 			"persentase_saham": vTS.PersentaseSaham,
-			"path_saham":       vTS.PathSaham,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
@@ -89,7 +86,6 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 			fmt.Println("no_ktp_saham: " + vTS.NoKtpSaham.String + sidapethelper.GetLen(vTS.NoKtpSaham.String))
 			fmt.Println("alamat_saham: " + vTS.AlamatSaham.String + sidapethelper.GetLen(vTS.AlamatSaham.String))
 			fmt.Println("persentase_saham: " + vTS.PersentaseSaham.String + sidapethelper.GetLen(vTS.PersentaseSaham.String))
-			fmt.Println("path_saham: " + vTS.PathSaham.String + sidapethelper.GetLen(vTS.PathSaham.String))
 
 			log.Fatal("unable to insert ref_saham_bu, " + errIns.Error())
 		}

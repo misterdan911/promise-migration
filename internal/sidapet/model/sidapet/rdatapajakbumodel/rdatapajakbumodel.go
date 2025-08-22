@@ -21,16 +21,12 @@ func InsertrefDataPajakBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 	qIns := `
 		INSERT INTO ref_data_pajak_bu (
 		  kode_vendor,
-		  npwp,
-		  file_npwp,
 		  file_bukti_kswp,
 		  file_bukti_spt,
 		  file_skb_pph23,
 		  file_sk_pp23
 		) VALUES (
 		  @kode_vendor,
-		  @npwp,
-		  @file_npwp,
 		  @file_bukti_kswp,
 		  @file_bukti_spt,
 		  @file_skb_pph23,
@@ -39,8 +35,6 @@ func InsertrefDataPajakBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 
 	args := pgx.NamedArgs{
 		"kode_vendor":     helperUser.KodeVendor,
-		"npwp":            profilePenyedia.Npwp,
-		"file_npwp":       profilePenyedia.PathNpwp,
 		"file_bukti_kswp": sql.NullString{},
 		"file_bukti_spt":  sql.NullString{},
 		"file_skb_pph23":  profilePenyedia.PathSkb,

@@ -10,13 +10,16 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
+	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	/*
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
-	"promise-migration/internal/sidapet/model/rdatadiriumummodel"
+	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
+	*/
 	"promise-migration/internal/sidapet/model/rvreghismodel"
-	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
+	/*
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
@@ -32,14 +35,14 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
+	*/
 	"promise-migration/internal/sidapet/sidapethelper"
+	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
 	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
-	"promise-migration/internal/structs"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-
 )
 
 type JawabItem struct {
@@ -141,8 +144,14 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)
 
 	// Insert to ref_datadiri_umum
-	rdatadiriumummodel.InsertRefDataDiriUmum(profilePenyedia, helperUser)
+	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
+		InsertRefUmum(profilePenyedia, helperUser)
+	}
+	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
+		InsertRefDatadiri(profilePenyedia, helperUser)
+	}
 
+	/*
 	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
 	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
 	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
@@ -165,6 +174,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia, helperUser)
 	rpengalamanbumodel.InsertPengalaman(profilePenyedia, helperUser)
 	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia, helperUser)
+	*/
 
 	// Update sequence
 	sidapethelper.UpdatePkSequence("ref_vendor", "kode_vendor")

@@ -18,7 +18,6 @@ SELECT setval('ref_kantor_bu_kode_kantor_seq', (SELECT MAX(kode_kantor) FROM ref
 SELECT setval('ref_kat_item_tanya_kode_kat_item_tanya_seq', (SELECT MAX(kode_kat_item_tanya) FROM ref_kat_item_tanya));
 SELECT setval('ref_kat_persyaratan_kode_kat_persyaratan_seq', (SELECT MAX(kode_kat_persyaratan) FROM ref_kat_persyaratan));
 SELECT setval('ref_kategori_kode_kategori_seq', (SELECT MAX(kode_kategori) FROM ref_kategori));
-SELECT setval('ref_kbli_kode_kbli_seq', (SELECT MAX(kode_kbli) FROM ref_kbli));
 SELECT setval('ref_keuangan_bu_kode_keuangan_seq', (SELECT MAX(kode_keuangan) FROM ref_keuangan_bu));
 SELECT setval('ref_keuangan_pero_kode_keuangan_seq', (SELECT MAX(kode_keuangan) FROM ref_keuangan_pero));
 SELECT setval('ref_komisaris_bu_kode_komisaris_seq', (SELECT MAX(kode_komisaris) FROM ref_komisaris_bu));

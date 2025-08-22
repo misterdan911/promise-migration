@@ -21,7 +21,6 @@ type TrxPenjaringan struct {
   KodeJenisPengadaan        pgtype.Int2
   KodeJenisVendor           pgtype.Int2
   Metode                    pgtype.Text
-  KodeKualifikasiUsaha      pgtype.Int2
   FilePersyaratan           pgtype.Text
   KodeStatusPengajuan       pgtype.Int4
   StatusPersetujuan         pgtype.Text
@@ -71,7 +70,6 @@ func GetAllData() []TrxPenjaringan {
     kode_jenis_pengadaan,
     kode_jenis_vendor,
     metode,
-    kode_kualifikasi_usaha,
     file_persyaratan,
     kode_status_pengajuan,
     status_persetujuan,
@@ -215,7 +213,6 @@ func InsertTrxPenjaringan(trx TrxPenjaringan) pgtype.Int4 {
     "kode_jenis_pengadaan":     trx.KodeJenisPengadaan,
     "kode_jenis_vendor":        trx.KodeJenisVendor,
     "metode":                   trx.Metode,
-    "kode_kualifikasi_usaha":   trx.KodeKualifikasiUsaha,
     "file_persyaratan":          trx.FilePersyaratan,
     "kode_status_pengajuan":    trx.KodeStatusPengajuan,
     "status_persetujuan":       trx.StatusPersetujuan,

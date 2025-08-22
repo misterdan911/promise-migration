@@ -18,16 +18,13 @@ func InsertRefPersonaliaPero(profilePenyedia structs.TblProfilePenyedia, helperU
 
 	qIns := `
     INSERT INTO ref_personalia_pero (
-      kode_vendor,
-      nama
+      kode_vendor
     ) VALUES (
-      @kode_vendor,
-      @nama
+      @kode_vendor
     )`
 
 	args := pgx.NamedArgs{
 		"kode_vendor": helperUser.KodeVendor,
-		"nama":        profilePenyedia.Nama,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
