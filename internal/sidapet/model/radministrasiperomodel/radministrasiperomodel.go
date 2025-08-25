@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -18,22 +19,36 @@ func InsertRefAdministrasiPero(profilePenyedia structs.TblProfilePenyedia, helpe
 	}
 
 	ctx := context.Background()
+	
+  helperDokumen := helperdokumenmodel.GetByOriginalPath(profilePenyedia.PathSkb)
+  fileSkb := helperDokumen.Newfilename
+  encryptKeySkb := helperDokumen.EncryptKey
+
+  helperDokumen = helperdokumenmodel.GetByOriginalPath(profilePenyedia.PathSkpp23)
+  fileSkpp23 := helperDokumen.Newfilename
+  encryptKeySkpp23 := helperDokumen.EncryptKey
 
 	qIns := `
     INSERT INTO ref_administrasi_pero (
       kode_vendor,
       file_skb_pph23,
-      file_sk_pp23
+			encrypt_key_skb_pph23,
+      file_sk_pp23,
+			encrypt_key_sk_pp23
     ) VALUES (
       @kode_vendor,
       @file_skb_pph23,
-      @file_sk_pp23
+			@encrypt_key_skb_pph23,
+      @file_sk_pp23,
+			@encrypt_key_sk_pp23
     )`
 
 	args := pgx.NamedArgs{
 		"kode_vendor":    helperUser.KodeVendor,
-		"file_skb_pph23": profilePenyedia.PathSkb,
-		"file_sk_pp23":   profilePenyedia.PathSkpp23,
+		"file_skb_pph23": fileSkb,
+		"encrypt_key_skb_pph23": encryptKeySkb,
+		"file_sk_pp23":   fileSkpp23,
+		"encrypt_key_sk_pp23": encryptKeySkpp23,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

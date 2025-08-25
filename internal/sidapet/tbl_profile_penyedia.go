@@ -13,11 +13,9 @@ import (
 	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
-	/*
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
-	*/
 	"promise-migration/internal/sidapet/model/rvreghismodel"
 	/*
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
@@ -151,16 +149,16 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		InsertRefDatadiri(profilePenyedia, helperUser)
 	}
 
-	/*
 	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
 	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
+	/*
 	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
 	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
 	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
 
 	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
-	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
+	rpengurusbumodel.InsertRefPenguradministrasiperomodelrusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
 	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
