@@ -10,45 +10,50 @@ import (
 )
 
 var DokumenCmd = &cobra.Command{
-  Use:   "dokumen",
-  Short: "Migrasi semua file dan dokumen fisik",
-  Long:  `Perintah ini untuk melakukan migrasi semua file dan dokumen fisik`,
-  Run: func(cmd *cobra.Command, args []string) {
+	Use:   "dokumen",
+	Short: "Migrasi semua file dan dokumen fisik",
+	Long:  `Perintah ini untuk melakukan migrasi semua file dan dokumen fisik`,
+	Run: func(cmd *cobra.Command, args []string) {
 
-    db.ConnectMyVmsDb()
-    defer db.MyVmsDb.Close()
-    
-    db.ConnectDbSidapet()
-    defer db.DbSidapet.Close()
+		db.ConnectMyVmsDb()
+		defer db.MyVmsDb.Close()
 
-    ghelper.TruncateLog("dokumen.log")
+		db.ConnectDbSidapet()
+		defer db.DbSidapet.Close()
 
-    g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
+		ghelper.TruncateLog("dokumen.log")
 
-    // tbl_akta_perusahaan
-    // appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
+		g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
 
-    // tbl_direksi_perusahaan
-    // tbl_fasilitas_perusahaan
-    // tbl_ijin_usaha_perusahaan
-    // tbl_internasional_legal_document
-    // tbl_komisaris_perusahaan
-    // tbl_paket
-    // tbl_pengalaman_perorangan
-    // tbl_pengalaman_sekarang
-    // tbl_pengalaman3
-    // tbl_pengalaman10
-    // tbl_personalia_perusahaan
+		// tbl_akta_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
 
-    appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
+		// tbl_direksi_perusahaan
+		// tbl_fasilitas_perusahaan
+		// tbl_ijin_usaha_perusahaan
+		// tbl_internasional_legal_document
+		// tbl_komisaris_perusahaan
+		// tbl_paket
+		// tbl_pengalaman_perorangan
+		// tbl_pengalaman_sekarang
+		// tbl_pengalaman3
+		// tbl_pengalaman10
+		// tbl_personalia_perusahaan
 
-    // tbl_saham_perusahaan
-    // tbl_sertif_perorangan
-    // tbl_surat_keputusan
+		appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
-  },
+		// tbl_saham_perusahaan
+		// tbl_sertif_perorangan
+		// tbl_surat_keputusan
+
+		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id/"
+
+		// tbl_pengalaman_perorangan
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan() // untested
+
+	},
 }
 
 func init() {
-  // Emang Kosongz
+	// Emang Kosongz
 }

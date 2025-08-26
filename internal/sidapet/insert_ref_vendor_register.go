@@ -33,7 +33,6 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
   helperDokumen := helperdokumenmodel.GetByOriginalPath(profilePenyedia.PathNpwp)
   fileNpwp := helperDokumen.Newfilename
   encryptKeyNpwp := helperDokumen.EncryptKey
- 
 
  refVendorRegister := refvendorregistermodel.RefVendorRegister{
   KodeJenisVendor:    profilePenyedia.IdJenisPenyedia,
