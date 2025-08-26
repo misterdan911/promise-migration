@@ -16,7 +16,7 @@ import (
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
-	"promise-migration/internal/sidapet/model/rvreghismodel"
+	// "promise-migration/internal/sidapet/model/rvreghismodel"
 	/*
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
@@ -135,12 +135,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 	trxgroupusermodel.InsertNew(trxGroupUser)
 
-	// Insert to ref_vendor_register
-	// kodeRegister := refvendorregistermodel.InsertRefVendorRegister(profilePenyedia, helperUser)
-	kodeRegister := InsertRefVendorRegister(profilePenyedia, helperUser)
-
-	// Insert to ref_vendor_reg_history
-	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)
+	// Insert to ref_vendor_register & ref_vendor_reg_history
+	InsertRefVendorRegister(profilePenyedia, helperUser)
 
 	// Insert to ref_datadiri_umum
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {

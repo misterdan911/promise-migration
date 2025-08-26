@@ -1,5 +1,3 @@
-// ref_vendor_register model
-
 package refvendorregistermodel
 
 import (

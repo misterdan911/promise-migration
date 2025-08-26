@@ -1,11 +1,11 @@
 package sidapet
 
 import (
-	"fmt"
 	"regexp"
 	"strings"
 
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/refvendorreghistorymodel"
 	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	"promise-migration/internal/structs"
 
@@ -22,12 +22,12 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
     fmt.Printf("contact_person: %s\n", profilePenyedia.ContactPerson.String)
     fmt.Printf("nama_narahubung: %s\n", namaNarahubung)
   }
-  */
 
   if profilePenyedia.ContactPerson.String != "" {
     fmt.Printf("contact_person: %s\n", profilePenyedia.ContactPerson.String)
     fmt.Printf("no_wa_narahubung: %s\n", noWanarahubung)
   }
+  */
 
  refVendorRegister := refvendorregistermodel.RefVendorRegister{
   KodeJenisVendor:    profilePenyedia.IdJenisPenyedia,
@@ -44,6 +44,24 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
  }
 
  refVendorRegister = refvendorregistermodel.InsertNew(refVendorRegister)
+
+ refVendorRegHistory := refvendorreghistorymodel.RefVendorRegHistory{
+  KodeRegister:       refVendorRegister.KodeRegister,
+  KodeJenisVendor:    profilePenyedia.IdJenisPenyedia,
+  NamaPerusahaan:     profilePenyedia.Nama,
+  Email:              helperUser.VmsUserEmail,
+  Password:           helperUser.VmsUserPass,
+  NoTelp:             profilePenyedia.NoTelp,
+  NamaNarahubung:     pgtype.Text{Valid: true, String: namaNarahubung},
+  NoWaNarahubung:     pgtype.Text{Valid: true, String: noWanarahubung},
+  StatusRegister:     pgtype.Text{Valid: true, String: "terima"},
+  Udcr:               profilePenyedia.CreateTime,
+  Udch:               profilePenyedia.UpdateTime,
+  KodeVendor:         helperUser.KodeVendor,
+ }
+
+ refvendorreghistorymodel.InsertNew(refVendorRegHistory)
+
 
  return refVendorRegister.KodeRegister
 }
@@ -82,6 +100,24 @@ func ExtractNamaNarahubung(input string) string {
  return strings.TrimSpace(result)
 }
 
+/*
+08113608910 -> 08113608910
++62 812-8709-2012 -> +62 812-8709-2012
+dilta, 08121309602 -> 08121309602
+Ramadhoni (081285655484) -> 081285655484
+081513498571 Roby -> 081513498571
+0818259581 - Sri Rukmiyati -> 0818259581
+Erwin Bastari - 089664221833 -> 089664221833
+085741234547/NOFIANTO -> 085741234547
+Anisa Bella +62 822-4979-9282 -> +62 822-4979-9282
+AGUS WAHIDIN / 08881862899 -> 08881862899
+081287176305 (DEBI) -> 081287176305
+0858-8873-7355  - Rani -> 0858-8873-7355
+085394481993 / HARDINAN SUPERSEMAR BAYU MANGALA -> 085394481993
+081225992015 , SWASONO EKO SAPUTRO -> 081225992015
+Imam Munandar | 081259981984 -> 081259981984
+Yuminanto Dwi Putro Nugroho - +62 813-2740-1234 -> +62 813-2740-1234
+*/
 func ExtractPhoneNumber(input string) string {
 // Regular expression to match various phone number formats
   // Supports: +62, 08, with/without spaces, dashes, parentheses
