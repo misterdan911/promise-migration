@@ -2,7 +2,6 @@ package refvendorreghistorymodel
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/jackc/pgx/v5"
@@ -41,8 +40,6 @@ type RefVendorRegHistory struct {
 
 
 func InsertNew(refVendorRegisterHistory RefVendorRegHistory) {
-
-	fmt.Printf("Masuk sini\n")
 
 	ctx := context.Background()
 

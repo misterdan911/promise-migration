@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"strings"
 
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendorreghistorymodel"
 	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
@@ -29,6 +30,11 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
   }
   */
 
+  helperDokumen := helperdokumenmodel.GetByOriginalPath(profilePenyedia.PathNpwp)
+  fileNpwp := helperDokumen.Newfilename
+  encryptKeyNpwp := helperDokumen.EncryptKey
+ 
+
  refVendorRegister := refvendorregistermodel.RefVendorRegister{
   KodeJenisVendor:    profilePenyedia.IdJenisPenyedia,
   NamaPerusahaan:     profilePenyedia.Nama,
@@ -41,6 +47,9 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
   Udcr:               profilePenyedia.CreateTime,
   Udch:               profilePenyedia.UpdateTime,
   KodeVendor:         helperUser.KodeVendor,
+  Npwp:               profilePenyedia.Npwp,
+  FileNpwp:           fileNpwp,
+  EncryptKeyNpwp:     encryptKeyNpwp,
  }
 
  refVendorRegister = refvendorregistermodel.InsertNew(refVendorRegister)
@@ -58,6 +67,9 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
   Udcr:               profilePenyedia.CreateTime,
   Udch:               profilePenyedia.UpdateTime,
   KodeVendor:         helperUser.KodeVendor,
+  Npwp:               profilePenyedia.Npwp,
+  FileNpwp:           fileNpwp,
+  EncryptKeyNpwp:     encryptKeyNpwp,
  }
 
  refvendorreghistorymodel.InsertNew(refVendorRegHistory)

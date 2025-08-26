@@ -2,64 +2,74 @@ package rpengalamanperomodel
 
 import (
 	"context"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/structs"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VmsPP struct {
-	NmPnglmnOrg pgtype.Text
-	PathPnglmn  pgtype.Text
+ NmPnglmnOrg pgtype.Text
+ PathPnglmn  pgtype.Text
 }
 
 func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
-	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
-		return
-	}
 
-	ctx := context.Background()
+ if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
+  return
+ }
 
-	qVmsPengalamanPero := `SELECT nm_pnglmn_org, path_pnglmn FROM tbl_pengalaman_perorangan WHERE id_profil_penyedia = $1`
+ ctx := context.Background()
 
-	rVPP, errVPP := db.VmsDb.Query(ctx, qVmsPengalamanPero, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
-	if errVPP != nil {
-		log.Fatal("qVmsPengalamanPero Failed, " + errVPP.Error() + " " + qVmsPengalamanPero)
-	}
+ qVmsPengalamanPero := `SELECT nm_pnglmn_org, path_pnglmn FROM tbl_pengalaman_perorangan WHERE id_profil_penyedia = $1`
 
-	allVPP, errCollect := pgx.CollectRows(rVPP, pgx.RowToStructByName[VmsPP])
-	if errCollect != nil {
-		log.Fatal("failed collecting rows, " + errCollect.Error())
-	}
-	defer rVPP.Close()
+ rVPP, errVPP := db.VmsDb.Query(ctx, qVmsPengalamanPero, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+ if errVPP != nil {
+  log.Fatal("qVmsPengalamanPero Failed, " + errVPP.Error() + " " + qVmsPengalamanPero)
+ }
 
-	for _, vPP := range allVPP {
+ allVPP, errCollect := pgx.CollectRows(rVPP, pgx.RowToStructByName[VmsPP])
+ if errCollect != nil {
+  log.Fatal("failed collecting rows, " + errCollect.Error())
+ }
+ defer rVPP.Close()
 
-		qIns := `
-		    INSERT INTO ref_pengalaman_pero (
-		      kode_vendor,
-		      nama_pekerjaan,
-		      file_bukti
-		    ) VALUES (
-		      @kode_vendor,
-		      @nama_pekerjaan,
-		      @file_bukti
-		    )`
+ for _, vPP := range allVPP {
 
-		args := pgx.NamedArgs{
-			"kode_vendor":    helperUser.KodeVendor,
-			"nama_pekerjaan": vPP.NmPnglmnOrg,
-			"file_bukti":     vPP.PathPnglmn,
-		}
+  helperDokumen := helperdokumenmodel.GetByOriginalPath(vPP.PathPnglmn)
+  fileBukti := helperDokumen.Newfilename
+  encryptKey := helperDokumen.EncryptKey
 
-		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
-		if errIns != nil {
-			log.Fatal("unable to insert ref_pengalaman_pero, " + errIns.Error())
-		}
+  qIns := `
+  INSERT INTO ref_pengalaman_pero (
+    kode_vendor,
+    nama_pekerjaan,
+    file_bukti,
+    encrypt_key
+  ) VALUES (
+    @kode_vendor,
+    @nama_pekerjaan,
+    @file_bukti,
+    @encrypt_key
+  )`
 
-	}
+  args := pgx.NamedArgs{
+   "kode_vendor":    helperUser.KodeVendor,
+   "nama_pekerjaan": vPP.NmPnglmnOrg,
+   "file_bukti":     fileBukti,
+   "encrypt_key":    encryptKey,
+  }
+
+  _, errIns := db.DbSidapet.Exec(ctx, qIns, args)
+  if errIns != nil {
+   log.Fatal("unable to insert ref_pengalaman_pero, " + errIns.Error())
+  }
+
+ }
 
 }
