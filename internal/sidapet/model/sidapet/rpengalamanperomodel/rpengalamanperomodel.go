@@ -2,10 +2,12 @@ package rpengalamanperomodel
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
 
@@ -28,7 +30,16 @@ func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia, helperU
 
  qVmsPengalamanPero := `SELECT nm_pnglmn_org, path_pnglmn FROM tbl_pengalaman_perorangan WHERE id_profil_penyedia = $1`
 
- rVPP, errVPP := db.VmsDb.Query(ctx, qVmsPengalamanPero, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+ var rVPP pgx.Rows
+ var errVPP error
+
+ if helperUser.DbPenyedia.String == "vms_db" {
+   rVPP, errVPP = db.VmsDb.Query(ctx, qVmsPengalamanPero, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+ }
+ if helperUser.DbPenyedia.String == "promise_sibela" {
+   rVPP, errVPP = db.PromiseSibela.Query(ctx, qVmsPengalamanPero, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+ }
+
  if errVPP != nil {
   log.Fatal("qVmsPengalamanPero Failed, " + errVPP.Error() + " " + qVmsPengalamanPero)
  }
@@ -67,7 +78,8 @@ func InsertRefPengalamanPero(profilePenyedia structs.TblProfilePenyedia, helperU
 
   _, errIns := db.DbSidapet.Exec(ctx, qIns, args)
   if errIns != nil {
-   log.Fatal("unable to insert ref_pengalaman_pero, " + errIns.Error())
+    fmt.Println("nama_pekerjaan" + vPP.NmPnglmnOrg.String + sidapethelper.GetLen(vPP.NmPnglmnOrg.String))
+    log.Fatal("unable to insert ref_pengalaman_pero, " + errIns.Error())
   }
 
  }
