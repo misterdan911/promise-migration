@@ -10,7 +10,7 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
-	"promise-migration/internal/model/dbsidapet/refvendorregistermodel"
+	// "promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
@@ -136,7 +136,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	trxgroupusermodel.InsertNew(trxGroupUser)
 
 	// Insert to ref_vendor_register
-	kodeRegister := refvendorregistermodel.InsertRefVendorRegister(profilePenyedia, helperUser)
+	// kodeRegister := refvendorregistermodel.InsertRefVendorRegister(profilePenyedia, helperUser)
+	kodeRegister := InsertRefVendorRegister(profilePenyedia, helperUser)
 
 	// Insert to ref_vendor_reg_history
 	rvreghismodel.InsertRefVendorRegHistory(profilePenyedia, helperUser, kodeRegister)
