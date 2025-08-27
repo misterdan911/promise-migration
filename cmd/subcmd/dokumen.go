@@ -34,7 +34,10 @@ var DokumenCmd = &cobra.Command{
 		// tbl_internasional_legal_document
 		// tbl_komisaris_perusahaan
 		// tbl_paket
+
 		// tbl_pengalaman_perorangan
+		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan() // untested
+
 		// tbl_pengalaman_sekarang
 		// tbl_pengalaman3
 		// tbl_pengalaman10
@@ -43,13 +46,21 @@ var DokumenCmd = &cobra.Command{
 		appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
+
+
 		// tbl_sertif_perorangan
+		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan() // untested
+
+
 		// tbl_surat_keputusan
 
 		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id/"
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan() // untested
+
+		// tbl_sertif_perorangan
+		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan() // untested
 
 	},
 }

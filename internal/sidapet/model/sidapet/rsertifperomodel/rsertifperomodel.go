@@ -1,14 +1,16 @@
 package rsertifperomodel
 
 import (
-  "context"
-  "github.com/jackc/pgx/v5"
-  "github.com/jackc/pgx/v5/pgtype"
-  "log"
-  "promise-migration/db"
-  "promise-migration/internal/model/dbsidapet/helperusermodel"
-  "promise-migration/internal/structs"
-  "strconv"
+	"context"
+	"log"
+	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/structs"
+	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VmsSP struct {
@@ -50,21 +52,28 @@ func InsertRefSertifPero(profilePenyedia structs.TblProfilePenyedia, helperUser 
 
   for _, vSP := range allSP {
 
+    helperDokumen := helperdokumenmodel.GetByOriginalPath(vSP.PathSertif)
+    fileBukti := helperDokumen.Newfilename
+    encryptKey := helperDokumen.EncryptKey
+
     qIns := `
     INSERT INTO ref_sertif_pero (
       kode_vendor,
       nm_sertifikat,
-      file_bukti
+      file_bukti,
+      encrypt_key
     ) VALUES (
       @kode_vendor,
       @nm_sertifikat,
-      @file_bukti
+      @file_bukti,
+      @encrypt_key
     )`
 
     args := pgx.NamedArgs{
       "kode_vendor":   helperUser.KodeVendor,
       "nm_sertifikat": vSP.NmSertifOrang,
-      "file_bukti":    vSP.PathSertif,
+      "file_bukti":    fileBukti,
+      "encrypt_key":    encryptKey,
     }
 
     _, errIns := db.DbSidapet.Exec(ctx, qIns, args)

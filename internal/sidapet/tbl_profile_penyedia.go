@@ -153,7 +153,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
 	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
 	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
-	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)	// untested
+	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
 	/*
 	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
 

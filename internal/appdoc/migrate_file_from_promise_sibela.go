@@ -3,6 +3,7 @@ package appdoc
 import (
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/mypromise_sibela/tblpengalamaneroranganmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblsertifperoranganmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -23,5 +24,22 @@ func MigrateFileFromPromiseSibelaTblPengalamanPerorangan() {
       ProcessOriginalPath(originalPath)
     }
   }
+}
 
+func MigrateFileFromPromiseSibelaTblSertifPerorangan() {
+
+  allTblSertifPerorangan, _ := tblsertifperoranganmodel.GetAllDocument()
+  originalPath := pgtype.Text{Valid: true, String: ""}
+
+  for _, tblSertifPerorangan := range allTblSertifPerorangan {
+
+    // promise_sibela.tbl_sertif_perorangan.path_sertif
+    if tblSertifPerorangan.PathSertif.String != "" {
+      g.LogDoc.FieldName = "promise_sibela.tbl_sertif_perorangan.path_sertif"
+      g.LogDoc.PkId = tblSertifPerorangan.IdProfilPenyedia.Int32
+
+      originalPath.String = tblSertifPerorangan.PathSertif.String
+      ProcessOriginalPath(originalPath)
+    }
+  }
 }
