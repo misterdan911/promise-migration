@@ -4,15 +4,17 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	helper2 "promise-migration/internal/ghelper"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type VTAkta struct {
@@ -51,7 +53,18 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser 
 	FROM tbl_akta_perusahaan
 	WHERE id_profil_penyedia = $1`
 
-	rVTA, errVPP := db.VmsDb.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  var rVTA pgx.Rows
+  var errVPP error
+
+  if helperUser.DbPenyedia.String == "vms_db" {
+    rVTA, errVPP = db.VmsDb.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+  if helperUser.DbPenyedia.String == "promise_sibela" {
+    rVTA, errVPP = db.PromiseSibela.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+
+	// rVTA, errVPP := db.VmsDb.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
 	if errVPP != nil {
 		log.Fatal("qVmsTblAkta Failed, " + errVPP.Error() + " " + qVmsTblAkta)
 	}
@@ -83,6 +96,14 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser 
 			tglAktaRubah.String = tglAktaAkhir
 		}
 
+	  helperDokumen := helperdokumenmodel.GetByOriginalPath(vTA.PathAkta)
+	  fileAktaAwal := helperDokumen.Newfilename
+	  encryptKeyAktaAwal := helperDokumen.EncryptKey
+
+	  helperDokumen = helperdokumenmodel.GetByOriginalPath(vTA.PathAktaAkhir)
+	  fileAktaRubah := helperDokumen.Newfilename
+	  encryptKeyAktaRubah := helperDokumen.EncryptKey
+
 		qIns := `
 		INSERT INTO ref_lan_hukum_bu (
 		  kode_vendor,
@@ -91,21 +112,25 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser 
 		  notaris_awal,
 		  no_sah_awal,
 		  file_akta_awal,
+      encrypt_key_akta_awal,
 		  no_akta_rubah,
 		  tgl_akta_rubah,
 		  notaris_rubah,
-		  file_akta_rubah
+		  file_akta_rubah,
+      encrypt_key_akta_rubah
 		) VALUES (
 		  @kode_vendor,
 		  @no_akta_awal,
 		  @tgl_akta_awal,
 		  @notaris_awal,
 		  @no_sah_awal,
-		  @file_akta_awal,
-		  @no_akta_rubah,
-		  @tgl_akta_rubah,
-		  @notaris_rubah,
-		  @file_akta_rubah
+      @file_akta_awal,
+      @encrypt_key_akta_awal,
+      @no_akta_rubah,
+      @tgl_akta_rubah,
+      @notaris_rubah,
+      @file_akta_rubah,
+      @encrypt_key_akta_rubah
 		)`
 
 		args := pgx.NamedArgs{
@@ -114,11 +139,13 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser 
 			"tgl_akta_awal":   tglAktaAwal,
 			"notaris_awal":    vTA.NotaAkta,
 			"no_sah_awal":     vTA.NoSahAkta,
-			"file_akta_awal":  vTA.PathAkta,
+      "file_akta_awal":  fileAktaAwal,
+			"encrypt_key_akta_awal":  encryptKeyAktaAwal,
 			"no_akta_rubah":   vTA.NoAktaAkhir,
 			"tgl_akta_rubah":  tglAktaRubah,
 			"notaris_rubah":   vTA.NotaAktaAkhir,
-			"file_akta_rubah": vTA.PathAktaAkhir,
+      "file_akta_rubah": fileAktaRubah,
+			"encrypt_key_akta_rubah": encryptKeyAktaRubah,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
