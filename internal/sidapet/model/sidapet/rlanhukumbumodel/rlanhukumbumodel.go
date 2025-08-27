@@ -63,12 +63,10 @@ func InsertRefLanHukumBu(profilePenyedia structs.TblProfilePenyedia, helperUser 
     rVTA, errVPP = db.PromiseSibela.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
   }
 
-	// rVTA, errVPP := db.VmsDb.Query(ctx, qVmsTblAkta, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
-
 	if errVPP != nil {
 		log.Fatal("qVmsTblAkta Failed, " + errVPP.Error() + " " + qVmsTblAkta)
 	}
-
+  
 	allVTA, errCollect := pgx.CollectRows(rVTA, pgx.RowToStructByName[VTAkta])
 	if errCollect != nil {
 		log.Fatal("failed collecting rows, " + errCollect.Error())

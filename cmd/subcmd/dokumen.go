@@ -56,6 +56,9 @@ var DokumenCmd = &cobra.Command{
 
 		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id/"
 
+		// tbl_akta_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()	// belum ada
+
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan() // untested
 
