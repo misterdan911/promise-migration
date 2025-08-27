@@ -17,18 +17,18 @@ import (
 	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	// "promise-migration/internal/sidapet/model/rvreghismodel"
-	/*
-	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
+	
+	// "promise-migration/internal/sidapet/model/sidapet/radmbumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
-	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
-	*/
+	// "promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
+	// "promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
+	
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 
 	
@@ -154,9 +154,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
 	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
 	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
-	/*
 	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
-
+	/*
 	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
 	rpengurusbumodel.InsertRefPenguradministrasiperomodelrusBu(profilePenyedia, helperUser)

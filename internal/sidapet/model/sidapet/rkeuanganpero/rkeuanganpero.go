@@ -3,15 +3,18 @@ package rkeuanganpero
 import (
 	"context"
 	"database/sql"
-	"github.com/jackc/pgx/v5"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/model/sidapet/hbankkwmodel"
 	"promise-migration/internal/structs"
+
+	"github.com/jackc/pgx/v5"
 )
 
 func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
+
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		return
 	}
@@ -28,19 +31,25 @@ func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia, helperUse
 		sandiBank = sql.NullString{Valid: true, String: profilePenyedia.KodeBank.String}
 	}
 
+  helperDokumen := helperdokumenmodel.GetByOriginalPath(profilePenyedia.PathRek)
+  fileBukuRek := helperDokumen.Newfilename
+  encryptKeyBukuRek := helperDokumen.EncryptKey
+
 	qIns := `
     INSERT INTO ref_keuangan_pero (
       kode_vendor,
       nm_pemilik_rek,
       no_rek,
       sandi_bank,
-      file_buku_rek
+      file_buku_rek,
+      encrypt_key_buku_rek
     ) VALUES (
       @kode_vendor,
       @nm_pemilik_rek,
       @no_rek,
       @sandi_bank,
-      @file_buku_rek
+      @file_buku_rek,
+      @encrypt_key_buku_rek
     )`
 
 	args := pgx.NamedArgs{
@@ -48,7 +57,8 @@ func InsertRefKeuanganPero(profilePenyedia structs.TblProfilePenyedia, helperUse
 		"nm_pemilik_rek": profilePenyedia.PemilikRek,
 		"no_rek":         profilePenyedia.NoRek,
 		"sandi_bank":     sandiBank,
-		"file_buku_rek":  profilePenyedia.PathRek,
+		"file_buku_rek":  fileBukuRek,
+		"encrypt_key_buku_rek":  encryptKeyBukuRek,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
