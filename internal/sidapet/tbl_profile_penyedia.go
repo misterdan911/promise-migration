@@ -18,7 +18,7 @@ import (
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	// "promise-migration/internal/sidapet/model/rvreghismodel"
 	
-	// "promise-migration/internal/sidapet/model/sidapet/radmbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
@@ -155,8 +155,9 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
 	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
 	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
-	/*
+	
 	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
+	/*
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
 	rpengurusbumodel.InsertRefPenguradministrasiperomodelrusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
