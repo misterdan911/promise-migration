@@ -20,7 +20,7 @@ import (
 	
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
@@ -160,8 +160,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
 	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
-	/*
 	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
+	/*
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
 	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
 	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser) // belum tau cara dapetin is_saham_selamanya

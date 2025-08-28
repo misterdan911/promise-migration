@@ -53,8 +53,6 @@ func InsertRefKomisarisBu(profilePenyedia structs.TblProfilePenyedia, helperUser
     rVTK, errVTK = db.PromiseSibela.Query(ctx, qVmsTblKomisaris, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
   }
 
-	// rVTK, errVTK := db.VmsDb.Query(ctx, qVmsTblKomisaris, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
-
 	if errVTK != nil {
 		log.Fatal("qVmsTblKomisaris Failed, " + errVTK.Error() + " " + qVmsTblKomisaris)
 	}
