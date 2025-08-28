@@ -22,7 +22,7 @@ import (
 	// "promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
 	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
@@ -33,7 +33,7 @@ import (
 
 	
 	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
 	
@@ -161,10 +161,10 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
 	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
-	/*
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
 	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
 	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser) // belum tau cara dapetin is_saham_selamanya
+	/*
 	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
 	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
 

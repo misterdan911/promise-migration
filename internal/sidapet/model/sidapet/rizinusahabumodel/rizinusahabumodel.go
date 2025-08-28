@@ -3,8 +3,10 @@ package rizinusahabumodel
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -27,10 +29,7 @@ type VTblIzin struct {
 	PathIzin         pgtype.Text
 }
 
-func 
-
-
-InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
+func InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
 
 	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
 		return
@@ -54,7 +53,18 @@ InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser help
 	  WHERE id_profil_penyedia = $1
 	  ORDER BY id_ijin_usaha`
 
-	rVTI, errVTK := db.VmsDb.Query(ctx, qVmsTblIzinUsaha, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  var rVTI pgx.Rows
+  var errVTK error
+
+  if helperUser.DbPenyedia.String == "vms_db" {
+    rVTI, errVTK = db.VmsDb.Query(ctx, qVmsTblIzinUsaha, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+  if helperUser.DbPenyedia.String == "promise_sibela" {
+    rVTI, errVTK = db.PromiseSibela.Query(ctx, qVmsTblIzinUsaha, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+
+	// rVTI, errVTK := db.VmsDb.Query(ctx, qVmsTblIzinUsaha, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
 	if errVTK != nil {
 		log.Fatal("qVmsTblIzinUsaha Failed, " + errVTK.Error() + " " + qVmsTblIzinUsaha)
 	}
@@ -75,6 +85,10 @@ InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser help
 			izinBerlakuAkhir = sql.NullString{Valid: true, String: tglBerlakuAkhir}
 		}
 
+    helperDokumen := helperdokumenmodel.GetByOriginalPath(vTI.PathIzin)
+    fileIzin := helperDokumen.Newfilename
+    encryptKey := helperDokumen.EncryptKey
+
 		qIns := `
  		INSERT INTO ref_izin_usaha_bu (
 		  kode_vendor,
@@ -83,7 +97,8 @@ InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser help
 		  nomor_izin,
 		  file_izin,
 		  is_izin_selamanya,
-		  izin_berlaku_akhir
+		  izin_berlaku_akhir,
+      encrypt_key
 		) VALUES (
 		  @kode_vendor,
 		  @jenis_izin_usaha,
@@ -91,7 +106,8 @@ InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser help
 		  @nomor_izin,
 		  @file_izin,
 		  @is_izin_selamanya,
-		  @izin_berlaku_akhir
+		  @izin_berlaku_akhir,
+      @encrypt_key
 		)`
 
 		args := pgx.NamedArgs{
@@ -99,13 +115,16 @@ InsertRefIzinUsahaBu(profilePenyedia structs.TblProfilePenyedia, helperUser help
 			"jenis_izin_usaha":   jenisIzinusaha,
 			"nama":               vTI.NamaIzin,
 			"nomor_izin":         vTI.NoIzin,
-			"file_izin":          vTI.PathIzin,
+			"file_izin":          fileIzin,
 			"is_izin_selamanya":  pgtype.Bool{Valid: true, Bool: isIzinSelamanya},
 			"izin_berlaku_akhir": izinBerlakuAkhir,
+      "encrypt_key" :       encryptKey,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
 		if errIns != nil {
+      fmt.Println("nama: " + vTI.NamaIzin.String + sidapethelper.GetLen(vTI.NamaIzin.String))
+      fmt.Println("nomor_izin: " + vTI.NoIzin.String + sidapethelper.GetLen(vTI.NoIzin.String))
 			log.Fatal("unable to insert ref_izin_usaha_bu, " + errIns.Error())
 		}
 	}

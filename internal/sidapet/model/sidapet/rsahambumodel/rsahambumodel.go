@@ -45,7 +45,19 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 	  WHERE id_profil_penyedia = $1
 	  ORDER BY id_saham`
 
-	rVTS, errVTK := db.VmsDb.Query(ctx, qVmsTblSaham, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
+  var rVTS pgx.Rows
+  var errVTK error
+
+  if helperUser.DbPenyedia.String == "vms_db" {
+    rVTS, errVTK = db.VmsDb.Query(ctx, qVmsTblSaham, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+  if helperUser.DbPenyedia.String == "promise_sibela" {
+    rVTS, errVTK = db.PromiseSibela.Query(ctx, qVmsTblSaham, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+
+	// rVTS, errVTK := db.VmsDb.Query(ctx, qVmsTblSaham, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
 	if errVTK != nil {
 		log.Fatal("qVmsTblSaham Failed, " + errVTK.Error() + " " + qVmsTblSaham)
 	}
@@ -62,13 +74,11 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 		  kode_vendor,
 		  nm_saham,
 		  no_ktp_saham,
-		  alamat_saham,
 		  persentase_saham
 		) VALUES (
 		  @kode_vendor,
 		  @nm_saham,
 		  @no_ktp_saham,
-		  @alamat_saham,
 		  @persentase_saham
 		)`
 
@@ -76,7 +86,6 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 			"kode_vendor":      helperUser.KodeVendor,
 			"nm_saham":         vTS.NmSaham,
 			"no_ktp_saham":     vTS.NoKtpSaham,
-			"alamat_saham":     vTS.AlamatSaham,
 			"persentase_saham": vTS.PersentaseSaham,
 		}
 
