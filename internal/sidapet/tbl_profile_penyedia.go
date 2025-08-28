@@ -25,14 +25,14 @@ import (
 	// "promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
-	// "promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
 	
 	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
 
 	
-	// "promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
@@ -158,9 +158,9 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	
 	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
-	/*
-	rpengurusbumodel.InsertRefPenguradministrasiperomodelrusBu(profilePenyedia, helperUser)
+	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
+	/*
 	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
 	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
