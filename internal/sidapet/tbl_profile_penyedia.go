@@ -13,13 +13,14 @@ import (
 	// "promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	/*
 	"promise-migration/internal/sidapet/model/radministrasiperomodel"
 	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
 	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
 	// "promise-migration/internal/sidapet/model/rvreghismodel"
 	
 	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
+	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
 	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
@@ -35,7 +36,8 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
+	*/
+	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
 	
 
 	"promise-migration/internal/sidapet/sidapethelper"
@@ -142,6 +144,10 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)
 
+	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
+
+	
+	/*
 	// Insert to ref_datadiri_umum
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		InsertRefUmum(profilePenyedia, helperUser)
@@ -163,10 +169,13 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
 	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
-	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser) // belum tau cara dapetin is_saham_selamanya
-	/*
+	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser)
 	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
-	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
+	*/
+
+
+
+	/*
 
 	// data kantor tidak ada
 

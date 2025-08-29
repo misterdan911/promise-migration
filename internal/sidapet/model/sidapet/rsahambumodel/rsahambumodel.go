@@ -45,7 +45,6 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 	  WHERE id_profil_penyedia = $1
 	  ORDER BY id_saham`
 
-
   var rVTS pgx.Rows
   var errVTK error
 
