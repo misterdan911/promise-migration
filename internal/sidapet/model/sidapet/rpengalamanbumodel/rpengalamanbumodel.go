@@ -7,6 +7,7 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/ghelper"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -115,26 +116,37 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
 	ctx := context.Background()
 
 	qPengalaman := `
-	SELECT
-	  id_pengalaman10,
-	  id_profil_penyedia,
-	  nm_pnglmn_10,
-	  div_pnglmn_10,
-	  ringkas_pnglmn_10,
-	  lok_pnglmn_10,
-	  pemberi_pnglmn_10,
-	  alamat_pnglmn_10,
-	  tgl_pnglmn_10,
-	  nilai_pnglmn_10,
-	  status_pnglmn_10,
-	  tgl_selesai_pnglmn_10,
-	  ba_pnglmn_10,
-	  path_pnglmn_10
-	FROM tbl_pengalaman10
-	WHERE id_profil_penyedia = $1
-	ORDER BY id_pengalaman10`
+ SELECT
+   id_pengalaman10,
+   id_profil_penyedia,
+   nm_pnglmn_10,
+   div_pnglmn_10,
+   ringkas_pnglmn_10,
+   lok_pnglmn_10,
+   pemberi_pnglmn_10,
+   alamat_pnglmn_10,
+   tgl_pnglmn_10,
+   nilai_pnglmn_10,
+   status_pnglmn_10,
+   tgl_selesai_pnglmn_10,
+   ba_pnglmn_10,
+   path_pnglmn_10
+ FROM tbl_pengalaman10
+ WHERE id_profil_penyedia = $1
+ ORDER BY id_pengalaman10`
 
-	rPengalaman, errVTK := db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	var rPengalaman pgx.Rows
+	var errVTK error
+
+	if helperUser.DbPenyedia.String == "vms_db" {
+		rPengalaman, errVTK = db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+	if helperUser.DbPenyedia.String == "promise_sibela" {
+		rPengalaman, errVTK = db.PromiseSibela.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+
+	// rPengalaman, errVTK := db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
 	if errVTK != nil {
 		log.Fatal("qPengalaman Failed, " + errVTK.Error() + " " + qPengalaman)
 	}
@@ -153,6 +165,10 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
 		tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmn10.String)
 		tglAkhirPekerjaan := GetTglAkhirPekerjaan(pengalaman.TglSelesaiPnglmn10.String)
 
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(pengalaman.PathPnglmn10)
+		fileKontrak := helperDokumen.Newfilename
+		encryptKeyKontrak := helperDokumen.EncryptKey
+
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn10,
@@ -161,7 +177,8 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
 			NilaiPekerjaan:    nilaiPekerjaan,    // harus ada proses lebuh lanjut
 			TglAkhirPekerjaan: tglAkhirPekerjaan, // harus ada proses lebuh lanjut
 			NoKontrak:         pgtype.Text{},
-			FileKontrak:       pengalaman.PathPnglmn10,
+      FileKontrak:       fileKontrak,
+			EncryptKeyKontrak: encryptKeyKontrak,
 			FileBast:          pgtype.Text{},
 		})
 	}
@@ -173,26 +190,35 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 	ctx := context.Background()
 
 	qPengalaman := `
-	SELECT
-	  id_pengalaman3,
-	  id_profil_penyedia,
-	  nm_pnglmn_3,
-	  div_pnglmn_3,
-	  ringkas_pnglmn_3,
-	  lok_pnglmn_3,
-	  pemberi_pnglmn_3,
-	  alamat_pnglmn_3,
-	  tgl_pnglmn_3,
-	  nilai_pnglmn_3,
-	  status_pnglmn_3,
-	  tgl_selesai_pnglmn_3,
-	  ba_pnglmn_3,
-	  path_pnglmn_3
-	FROM tbl_pengalaman3
-	WHERE id_profil_penyedia = $1
-	ORDER BY id_pengalaman3`
+ SELECT
+   id_pengalaman3,
+   id_profil_penyedia,
+   nm_pnglmn_3,
+   div_pnglmn_3,
+   ringkas_pnglmn_3,
+   lok_pnglmn_3,
+   pemberi_pnglmn_3,
+   alamat_pnglmn_3,
+   tgl_pnglmn_3,
+   nilai_pnglmn_3,
+   status_pnglmn_3,
+   tgl_selesai_pnglmn_3,
+   ba_pnglmn_3,
+   path_pnglmn_3
+ FROM tbl_pengalaman3
+ WHERE id_profil_penyedia = $1
+ ORDER BY id_pengalaman3`
 
-	rPengalaman, errVTK := db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	var rPengalaman pgx.Rows
+	var errVTK error
+
+	if helperUser.DbPenyedia.String == "vms_db" {
+		rPengalaman, errVTK = db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+	if helperUser.DbPenyedia.String == "promise_sibela" {
+		rPengalaman, errVTK = db.PromiseSibela.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+
 	if errVTK != nil {
 		log.Fatal("qPengalaman Failed, " + errVTK.Error() + " " + qPengalaman)
 	}
@@ -211,6 +237,10 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 		tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmn3.String)
 		tglAkhirPekerjaan := GetTglAkhirPekerjaan(pengalaman.TglSelesaiPnglmn3.String)
 
+    helperDokumen := helperdokumenmodel.GetByOriginalPath(pengalaman.PathPnglmn3)
+    fileKontrak := helperDokumen.Newfilename
+    encryptKeyKontrak := helperDokumen.EncryptKey
+
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn3,
@@ -219,7 +249,8 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 			NilaiPekerjaan:    nilaiPekerjaan,    // harus ada proses lebuh lanjut
 			TglAkhirPekerjaan: tglAkhirPekerjaan, // harus ada proses lebuh lanjut
 			NoKontrak:         pgtype.Text{},
-			FileKontrak:       pengalaman.PathPnglmn3,
+      FileKontrak:       fileKontrak,
+			EncryptKeyKontrak: encryptKeyKontrak,
 			FileBast:          pgtype.Text{},
 		})
 	}
@@ -231,26 +262,35 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
 	ctx := context.Background()
 
 	qPengalaman := `
-	SELECT
-	  id_pengalaman_sekarang,
-	  id_profil_penyedia,
-	  nm_pnglmn_sekarang,
-	  div_pnglmn_sekarang,
-	  ringkas_pnglmn_sekarang,
-	  lok_pnglmn_sekarang,
-	  pemberi_pnglmn_sekarang,
-	  alamat_pnglmn_sekarang,
-	  tgl_pnglmn_sekarang,
-	  nilai_pnglmn_sekarang,
-	  status_pnglmn_sekarang,
-	  kontrak_pnglmn_sekarang,
-	  prestasi_pnglmn_sekarang,
-	  path_pnglmn_skrg
-	FROM tbl_pengalaman_sekarang
-	WHERE id_profil_penyedia = $1
-	ORDER BY id_pengalaman_sekarang`
+ SELECT
+   id_pengalaman_sekarang,
+   id_profil_penyedia,
+   nm_pnglmn_sekarang,
+   div_pnglmn_sekarang,
+   ringkas_pnglmn_sekarang,
+   lok_pnglmn_sekarang,
+   pemberi_pnglmn_sekarang,
+   alamat_pnglmn_sekarang,
+   tgl_pnglmn_sekarang,
+   nilai_pnglmn_sekarang,
+   status_pnglmn_sekarang,
+   kontrak_pnglmn_sekarang,
+   prestasi_pnglmn_sekarang,
+   path_pnglmn_skrg
+ FROM tbl_pengalaman_sekarang
+ WHERE id_profil_penyedia = $1
+ ORDER BY id_pengalaman_sekarang`
 
-	rPengalaman, errVTK := db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	var rPengalaman pgx.Rows
+	var errVTK error
+
+	if helperUser.DbPenyedia.String == "vms_db" {
+		rPengalaman, errVTK = db.VmsDb.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+	if helperUser.DbPenyedia.String == "promise_sibela" {
+		rPengalaman, errVTK = db.PromiseSibela.Query(ctx, qPengalaman, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+	}
+
 	if errVTK != nil {
 		log.Fatal("qPengalaman Failed, " + errVTK.Error() + " " + qPengalaman)
 	}
@@ -268,6 +308,10 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
 		nilaiPekerjaan := GetNilaiPekerjaan(pengalaman.IdPengalamanSekarang.Int32, pengalaman.NilaiPnglmnSekarang.String, "id_pengalaman_sekarang")
 		tahunPekerjaan := GetTahunpekerjaan(pengalaman.TglPnglmnSekarang.String)
 
+    helperDokumen := helperdokumenmodel.GetByOriginalPath(pengalaman.PathPnglmnSkrg)
+    fileKontrak := helperDokumen.Newfilename
+    encryptKeyKontrak := helperDokumen.EncryptKey
+
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:     helperUser.KodeVendor,
 			NamaPekerjaan:  pengalaman.NmPnglmnSekarang,
@@ -275,7 +319,8 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
 			PemberiKerja:   pengalaman.PemberiPnglmnSekarang,
 			NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
 			NoKontrak:      pgtype.Text{},
-			FileKontrak:    pengalaman.PathPnglmnSkrg,
+      FileKontrak:    fileKontrak,
+			EncryptKeyKontrak:    encryptKeyKontrak,
 			FileBast:       pgtype.Text{},
 		})
 	}
@@ -289,25 +334,27 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 
 	for _, pengalaman := range allPengalaman {
 		qIns := `
-		INSERT INTO ref_pengalaman_bu (
-		  kode_vendor,
-		  nama_pekerjaan,
-		  pemberi_kerja,
-		  nilai_pekerjaan,
-		  tgl_awal_pekerjaan,
-		  tgl_akhir_pekerjaan,
-		  no_kontrak,
-		  file_kontrak
-		) VALUES (
-		  @kode_vendor,
-		  @nama_pekerjaan,
-		  @pemberi_kerja,
-		  @nilai_pekerjaan,
-		  @tgl_awal_pekerjaan,
-		  @tgl_akhir_pekerjaan,
-		  @no_kontrak,
-		  @file_kontrak
-		)`
+  INSERT INTO ref_pengalaman_bu (
+    kode_vendor,
+    nama_pekerjaan,
+    pemberi_kerja,
+    nilai_pekerjaan,
+    tgl_awal_pekerjaan,
+    tgl_akhir_pekerjaan,
+    no_kontrak,
+    file_kontrak,
+    encrypt_key_kontrak
+  ) VALUES (
+    @kode_vendor,
+    @nama_pekerjaan,
+    @pemberi_kerja,
+    @nilai_pekerjaan,
+    @tgl_awal_pekerjaan,
+    @tgl_akhir_pekerjaan,
+    @no_kontrak,
+    @file_kontrak,
+    @encrypt_key_kontrak
+  )`
 
 		args := pgx.NamedArgs{
 			"kode_vendor":         pengalaman.KodeVendor,
@@ -317,7 +364,8 @@ func InsertRefPengalamanBu(allPengalaman []RefPengalamanBu) {
 			"tgl_awal_pekerjaan":  sql.NullTime{},
 			"tgl_akhir_pekerjaan": pengalaman.TglAkhirPekerjaan,
 			"no_kontrak":          pengalaman.NoKontrak,
-			"file_kontrak":        pengalaman.FileKontrak,
+      "file_kontrak":        pengalaman.FileKontrak,
+			"encrypt_key_kontrak": pengalaman.EncryptKeyKontrak,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

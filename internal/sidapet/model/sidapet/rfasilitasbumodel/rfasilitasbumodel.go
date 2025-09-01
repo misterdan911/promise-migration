@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -51,7 +52,18 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 	  WHERE id_profil_penyedia = $1
 	  ORDER BY id_peralatan`
 
-	rVTFP, errVTK := db.VmsDb.Query(ctx, qVmsTblFasilitas, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  var rVTFP pgx.Rows
+  var errVTK error
+
+  if helperUser.DbPenyedia.String == "vms_db" {
+    rVTFP, errVTK = db.VmsDb.Query(ctx, qVmsTblFasilitas, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+  if helperUser.DbPenyedia.String == "promise_sibela" {
+    rVTFP, errVTK = db.PromiseSibela.Query(ctx, qVmsTblFasilitas, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+  }
+
+	// rVTFP, errVTK := db.VmsDb.Query(ctx, qVmsTblFasilitas, strconv.Itoa(int(profilePenyedia.IdProfilPenyedia.Int32)))
+
 	if errVTK != nil {
 		log.Fatal("qVmsTblFasilitas Failed, " + errVTK.Error() + " " + qVmsTblFasilitas)
 	}
@@ -72,6 +84,10 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 			kodeKondisi.Int32 = int32(*ptrKodeKondisi)
 		}
 
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(vTFP.PathFasilitas)
+		fileFoto := helperDokumen.Newfilename
+		encryptKeyFoto := helperDokumen.EncryptKey
+
 		qIns := `
 		INSERT INTO ref_fasilitas_bu (
 		  kode_vendor,
@@ -80,7 +96,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  kode_kondisi,
 		  kode_kepemilikan,
 		  file_kepemilikan,
-		  file_foto
+		  file_foto,
+			encrypt_key_foto
 		) VALUES (
 		  @kode_vendor,
 		  @nama,
@@ -88,17 +105,19 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  @kode_kondisi,
 		  @kode_kepemilikan,
 		  @file_kepemilikan,
-		  @file_foto
+		  @file_foto,
+			@encrypt_key_foto
 		)`
 
 		args := pgx.NamedArgs{
 			"kode_vendor":      helperUser.KodeVendor,
 			"nama":             vTFP.NmFasilitas,
-			"jumlah":           vTFP.JumlahFasilitas, // Masih harus diproses lebih lanjut
+			"jumlah":           vTFP.JumlahFasilitas,
 			"kode_kondisi":     kodeKondisi,
 			"kode_kepemilikan": sql.NullInt32{},
 			"file_kepemilikan": sql.NullString{},
-			"file_foto":        vTFP.PathFasilitas,
+			"file_foto":        fileFoto,
+			"encrypt_key_foto": encryptKeyFoto,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
 	"time"
 
 	"promise-migration/db"
@@ -13,32 +14,6 @@ import (
 	// "promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
-	/*
-	"promise-migration/internal/sidapet/model/radministrasiperomodel"
-	// "promise-migration/internal/sidapet/model/rdatadiriumummodel"
-	"promise-migration/internal/sidapet/model/rpersonaliaperomodel"
-	// "promise-migration/internal/sidapet/model/rvreghismodel"
-	
-	"promise-migration/internal/sidapet/model/sidapet/radmbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rdatapajakbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rdireksibumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rfasilitasbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rizinusahabumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rkeuanganbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rkeuanganpero"
-	"promise-migration/internal/sidapet/model/sidapet/rkomisarisbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rlanhukumbumodel"
-	// "promise-migration/internal/sidapet/model/sidapet/rpengalamanbumodel"
-	
-	"promise-migration/internal/sidapet/model/sidapet/rpengalamanperomodel"
-
-	
-	"promise-migration/internal/sidapet/model/sidapet/rpengurusbumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
-	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
-	*/
-	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
-	
 
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -69,21 +44,21 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 
 	qInsRefVendor := `
-		INSERT INTO ref_vendor (
-		  kode_jenis_vendor, 
-		  nama_perusahaan,
-		  is_tetap,
-		  status_form_luar_dpt,
-		  udcr,
-		  udch
-		) VALUES (
-		  @kode_jenis_vendor,
-		  @nama_perusahaan,
-		  @is_tetap,
-		  @status_form_luar_dpt,
-		  @udcr,
-		  @udch
-		) RETURNING *`
+  INSERT INTO ref_vendor (
+    kode_jenis_vendor, 
+    nama_perusahaan,
+    is_tetap,
+    status_form_luar_dpt,
+    udcr,
+    udch
+  ) VALUES (
+    @kode_jenis_vendor,
+    @nama_perusahaan,
+    @is_tetap,
+    @status_form_luar_dpt,
+    @udcr,
+    @udch
+  ) RETURNING *`
 
 	isTetap := sql.NullBool{Valid: true}
 	if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
@@ -120,7 +95,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	// masukan data ke  db_usman.ref_user_external
 	refUserExternal := refuserexternalmodel.RefUserExternal{
-		Id:				helperUser.KodeVendor,
+		Id:             helperUser.KodeVendor,
 		IdUser:         helperUser.UsmanRefUserId,
 		Username:       helperUser.NamaPenyedia,
 		Nama:           helperUser.VmsUserName,
@@ -135,54 +110,49 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	currentTime := time.Now().UTC()
 	trxGroupUser := trxgroupusermodel.TrxGroupUser{
 		KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},
-		IdUser: helperUser.UsmanRefUserId,
-		Status: pgtype.Text{Valid: true, String: "1"},
-		Udcr: pgtype.Text{Valid: true, String: currentTime.String()},
+		IdUser:    helperUser.UsmanRefUserId,
+		Status:    pgtype.Text{Valid: true, String: "1"},
+		Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
 	}
 	trxgroupusermodel.InsertNew(trxGroupUser)
 
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)
 
-
-	
 	/*
-	// Insert to ref_datadiri_umum
-	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
-		InsertRefUmum(profilePenyedia, helperUser)
-	}
-	if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
-		InsertRefDatadiri(profilePenyedia, helperUser)
-	}
+	   // Insert to ref_datadiri_umum
+	   if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
+	    InsertRefUmum(profilePenyedia, helperUser)
+	   }
+	   if profilePenyedia.IdJenisPenyedia.Int32 == 2 {
+	    InsertRefDatadiri(profilePenyedia, helperUser)
+	   }
 
-	radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
-	rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
-	rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
-	rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
-	rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
-	
-	radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
-	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
-	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
-	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
-	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
-	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
-	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser)	// gak ada sertifikat di db lama
-	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser)
-	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
+	   radministrasiperomodel.InsertRefAdministrasiPero(profilePenyedia, helperUser)
+	   rpersonaliaperomodel.InsertRefPersonaliaPero(profilePenyedia, helperUser)
+	   rpengalamanperomodel.InsertRefPengalamanPero(profilePenyedia, helperUser)
+	   rsertifperomodel.InsertRefSertifPero(profilePenyedia, helperUser)
+	   rkeuanganpero.InsertRefKeuanganPero(profilePenyedia, helperUser)
+
+	   radmbumodel.InsertRefAdmBu(profilePenyedia, helperUser)
+	   rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
+	   rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
+	   rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
+	   rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
+	   rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
+	   //rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser) // gak ada sertifikat di db lama
+	   rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser)
+	   rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
+
+	   rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
+	   rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia, helperUser)
 	*/
-
-	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
-
-
-
-	/*
 
 	// data kantor tidak ada
 
-	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia, helperUser)
 	rpengalamanbumodel.InsertPengalaman(profilePenyedia, helperUser)
-	rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia, helperUser)
+	/*
+	   rkeuanganbumodel.InsertRefKeuanganBu(profilePenyedia, helperUser)
 	*/
 
 	// Update sequence
