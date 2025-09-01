@@ -144,7 +144,6 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)
 
-	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
 
 	
 	/*
@@ -172,6 +171,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser)
 	rdatapajakbumodel.InsertrefDataPajakBu(profilePenyedia, helperUser)
 	*/
+
+	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
 
 
 
