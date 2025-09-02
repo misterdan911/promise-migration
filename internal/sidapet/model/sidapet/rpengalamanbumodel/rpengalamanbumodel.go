@@ -172,10 +172,10 @@ func GetPengalaman10(profilePenyedia structs.TblProfilePenyedia) []RefPengalaman
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn10,
-			TahunPekerjaan:    tahunPekerjaan, // harus ada proses lebih lanjut
+			TahunPekerjaan:    tahunPekerjaan,
 			PemberiKerja:      pengalaman.PemberiPnglmn10,
-			NilaiPekerjaan:    nilaiPekerjaan,    // harus ada proses lebuh lanjut
-			TglAkhirPekerjaan: tglAkhirPekerjaan, // harus ada proses lebuh lanjut
+			NilaiPekerjaan:    nilaiPekerjaan,
+			TglAkhirPekerjaan: tglAkhirPekerjaan,
 			NoKontrak:         pgtype.Text{},
       FileKontrak:       fileKontrak,
 			EncryptKeyKontrak: encryptKeyKontrak,
@@ -244,10 +244,10 @@ func GetPengalaman3(profilePenyedia structs.TblProfilePenyedia) []RefPengalamanB
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:        helperUser.KodeVendor,
 			NamaPekerjaan:     pengalaman.NmPnglmn3,
-			TahunPekerjaan:    tahunPekerjaan, // harus ada proses lebih lanjut
+			TahunPekerjaan:    tahunPekerjaan,
 			PemberiKerja:      pengalaman.PemberiPnglmn3,
-			NilaiPekerjaan:    nilaiPekerjaan,    // harus ada proses lebuh lanjut
-			TglAkhirPekerjaan: tglAkhirPekerjaan, // harus ada proses lebuh lanjut
+			NilaiPekerjaan:    nilaiPekerjaan,
+			TglAkhirPekerjaan: tglAkhirPekerjaan,
 			NoKontrak:         pgtype.Text{},
       FileKontrak:       fileKontrak,
 			EncryptKeyKontrak: encryptKeyKontrak,
@@ -315,9 +315,9 @@ func GetPengalamanSekarang(profilePenyedia structs.TblProfilePenyedia) []RefPeng
 		allRefPengalaman = append(allRefPengalaman, RefPengalamanBu{
 			KodeVendor:     helperUser.KodeVendor,
 			NamaPekerjaan:  pengalaman.NmPnglmnSekarang,
-			TahunPekerjaan: tahunPekerjaan, // harus ada proses lebih lanjut
+			TahunPekerjaan: tahunPekerjaan,
 			PemberiKerja:   pengalaman.PemberiPnglmnSekarang,
-			NilaiPekerjaan: nilaiPekerjaan, // harus ada proses lebuh lanjut
+			NilaiPekerjaan: nilaiPekerjaan,
 			NoKontrak:      pgtype.Text{},
       FileKontrak:    fileKontrak,
 			EncryptKeyKontrak:    encryptKeyKontrak,
