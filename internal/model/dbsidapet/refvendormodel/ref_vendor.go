@@ -16,8 +16,8 @@ type RefVendor struct {
 	NamaPerusahaan    pgtype.Text
 	IsTetap           pgtype.Bool
 	StatusFormLuarDpt pgtype.Text
-    Verifikator       pgtype.Text
-    WaktuVerifikasi   pgtype.Timestamptz
+	Verifikator       pgtype.Text
+	WaktuVerifikasi   pgtype.Timestamptz
 	Udcr              pgtype.Timestamptz
 	Udch              pgtype.Timestamptz
 }
@@ -44,6 +44,8 @@ func GetDataByKodeVendor(kodeVendor pgtype.Int4) RefVendor {
       nama_perusahaan,
       is_tetap,
       status_form_luar_dpt,
+			verifikator,
+			waktu_verifikasi,
       udcr,
       udch
     FROM ref_vendor

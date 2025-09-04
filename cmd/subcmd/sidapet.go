@@ -51,7 +51,7 @@ var SidapetCmd = &cobra.Command{
 				Name: helperUser.VmsUserName,
 			}
 
-			// yg diproses hanya user vendor
+			// yg diproses hanya user dg level vendor
 			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
 				sidapet.MigrateTblProfilePenyedia(helperUser)
 			} else {
@@ -59,10 +59,8 @@ var SidapetCmd = &cobra.Command{
 			}
 		}
 
-		/*
 		sidapet.MigrateTblPaket()
 		sidapet.UpdateKodeTrxKategoriOnTrxPenjaringan()
-		*/
 
 		// Cari tahu trx_kategori.kode_unit_pbj
 		// sidapet.MigrateTblVerif()
