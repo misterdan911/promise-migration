@@ -17,7 +17,7 @@ func MigrateFileFromVmsDbTblPengalamanPerorangan() {
 
     // promise_sibela.tbl_pengalaman_perorangan.path_pnglmn
     if tblPengalamanPerorangan.PathPnglmn.String != "" {
-      g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_perorangan.path_pnglmn"
+      g.LogDoc.FieldName = "vms_db.tbl_pengalaman_perorangan.path_pnglmn"
       g.LogDoc.PkId = tblPengalamanPerorangan.IdProfilPenyedia.Int32
 
       originalPath.String = tblPengalamanPerorangan.PathPnglmn.String

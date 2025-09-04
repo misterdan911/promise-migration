@@ -59,8 +59,12 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
         g.LogDoc.UpStat = "Failed - EOF marker not found"
         PrintLog()
         return nil
+      } else if strings.Contains(errUp.Error(), "EmptyFileError") {
+        g.LogDoc.UpStat = "Failed - pypdf.errors.EmptyFileError: Cannot read an empty file"
+        PrintLog()
+        return nil
       }
-
+			
       g.LogDoc.UpStat = "Failed"
       PrintLog()
       log.Fatal(errUp.Error())
