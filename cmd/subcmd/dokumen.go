@@ -46,6 +46,7 @@ var DokumenCmd = &cobra.Command{
 		// tbl_pengalaman10
 		// tbl_personalia_perusahaan
 
+		// tbl_profile_penyedia
 		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
@@ -63,10 +64,10 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()	// belum ada
 
 		// tbl_pengalaman_perorangan
-		appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan() // untested
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
 		// tbl_sertif_perorangan
-		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan() // untested
+		appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan() // untested
 
 	},
 }

@@ -13,8 +13,8 @@ type TblSertifPeroranganDocument struct {
 func GetAllDocument() ([]TblSertifPeroranganDocument, error) {
 
   qData := `
-  SELECT id_profil_penyedia, path_pnglmn
-  FROM tbl_pengalaman_perorangan`
+  SELECT id_profil_penyedia, path_sertif
+  FROM tbl_sertif_perorangan`
 
   results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
