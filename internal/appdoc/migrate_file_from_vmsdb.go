@@ -6,7 +6,13 @@ import (
 	"promise-migration/internal/model/myvmsdb/tbldireksiperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblfasilitasperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblijinusahaperusahaanmodel"
+	"promise-migration/internal/model/myvmsdb/tblkomisarisperusahaanmodel"
+	"promise-migration/internal/model/myvmsdb/tblpaketmodel"
+	"promise-migration/internal/model/myvmsdb/tblpengalaman10model"
+	"promise-migration/internal/model/myvmsdb/tblpengalaman3model"
 	"promise-migration/internal/model/myvmsdb/tblpengalamaneroranganmodel"
+	"promise-migration/internal/model/myvmsdb/tblpengalamansekarangmodel"
+	"promise-migration/internal/model/myvmsdb/tblpersonaliaperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblsertifperoranganmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -155,30 +161,12 @@ func MigrateFileFromVmsDbTblPaket() {
 
     for _, tblPaket := range allTblPaket {
         
-        // Process path_file_kak field
-        if tblPaket.PathFileKak.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_kak"
-            g.LogDoc.PkId = tblPaket.IdPaket.Int32
+        // Process path_paket field
+        if tblPaket.PathPaket.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_paket"
+            g.LogDoc.PkId = tblPaket.IdProfilPenyedia.Int32
 
-            originalPath.String = tblPaket.PathFileKak.String
-            ProcessOriginalPath(originalPath)
-        }
-        
-        // Process path_file_hps field
-        if tblPaket.PathFileHps.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_hps"
-            g.LogDoc.PkId = tblPaket.IdPaket.Int32
-
-            originalPath.String = tblPaket.PathFileHps.String
-            ProcessOriginalPath(originalPath)
-        }
-        
-        // Process path_file_syarat_kualifikasi field
-        if tblPaket.PathFileSyaratKualifikasi.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_syarat_kualifikasi"
-            g.LogDoc.PkId = tblPaket.IdPaket.Int32
-
-            originalPath.String = tblPaket.PathFileSyaratKualifikasi.String
+            originalPath.String = tblPaket.PathPaket.String
             ProcessOriginalPath(originalPath)
         }
     }
@@ -191,12 +179,12 @@ func MigrateFileFromVmsDbTblPengalamanSekarang() {
 
     for _, tblPengalamanSekarang := range allTblPengalamanSekarang {
         
-        // Process path_file_pengalaman field
-        if tblPengalamanSekarang.PathFilePengalaman.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_sekarang.path_file_pengalaman"
+        // Process path_pnglmn_skrg field
+        if tblPengalamanSekarang.PathPnglmnSkrg.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_sekarang.path_pnglmn_skrg"
             g.LogDoc.PkId = tblPengalamanSekarang.IdProfilPenyedia.Int32
 
-            originalPath.String = tblPengalamanSekarang.PathFilePengalaman.String
+            originalPath.String = tblPengalamanSekarang.PathPnglmnSkrg.String
             ProcessOriginalPath(originalPath)
         }
     }
@@ -209,12 +197,12 @@ func MigrateFileFromVmsDbTblPengalaman3() {
 
     for _, tblPengalaman3 := range allTblPengalaman3 {
         
-        // Process path_file_pengalaman field
-        if tblPengalaman3.PathFilePengalaman.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman3.path_file_pengalaman"
+        // Process path_pnglmn_3 field
+        if tblPengalaman3.PathPnglmn3.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman3.path_pnglmn_3"
             g.LogDoc.PkId = tblPengalaman3.IdProfilPenyedia.Int32
 
-            originalPath.String = tblPengalaman3.PathFilePengalaman.String
+            originalPath.String = tblPengalaman3.PathPnglmn3.String
             ProcessOriginalPath(originalPath)
         }
     }
@@ -227,12 +215,12 @@ func MigrateFileFromVmsDbTblPengalaman10() {
 
     for _, tblPengalaman10 := range allTblPengalaman10 {
         
-        // Process path_file_pengalaman field
-        if tblPengalaman10.PathFilePengalaman.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman10.path_file_pengalaman"
+        // Process path_pnglmn_10 field
+        if tblPengalaman10.PathPnglmn10.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman10.path_pnglmn_10"
             g.LogDoc.PkId = tblPengalaman10.IdProfilPenyedia.Int32
 
-            originalPath.String = tblPengalaman10.PathFilePengalaman.String
+            originalPath.String = tblPengalaman10.PathPnglmn10.String
             ProcessOriginalPath(originalPath)
         }
     }
@@ -245,30 +233,12 @@ func MigrateFileFromVmsDbTblPersonaliaPerusahaan() {
 
     for _, tblPersonaliaPerusahaan := range allTblPersonaliaPerusahaan {
         
-        // Process path_cv_personalia field
-        if tblPersonaliaPerusahaan.PathCvPersonalia.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_cv_personalia"
+        // Process path_personal field
+        if tblPersonaliaPerusahaan.PathPersonal.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_personal"
             g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
 
-            originalPath.String = tblPersonaliaPerusahaan.PathCvPersonalia.String
-            ProcessOriginalPath(originalPath)
-        }
-        
-        // Process path_ijazah_personalia field
-        if tblPersonaliaPerusahaan.PathIjazahPersonalia.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_ijazah_personalia"
-            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
-
-            originalPath.String = tblPersonaliaPerusahaan.PathIjazahPersonalia.String
-            ProcessOriginalPath(originalPath)
-        }
-        
-        // Process path_sertifikat_personalia field
-        if tblPersonaliaPerusahaan.PathSertifikatPersonalia.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_sertifikat_personalia"
-            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
-
-            originalPath.String = tblPersonaliaPerusahaan.PathSertifikatPersonalia.String
+            originalPath.String = tblPersonaliaPerusahaan.PathPersonal.String
             ProcessOriginalPath(originalPath)
         }
     }
