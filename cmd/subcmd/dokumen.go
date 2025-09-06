@@ -27,34 +27,52 @@ var DokumenCmd = &cobra.Command{
 		ghelper.TruncateLog("dokumen.log")
 
 		g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
+		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()	// untested
 
 		// tbl_direksi_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// untested
+
 		// tbl_fasilitas_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan	// incomplete
+		
 		// tbl_ijin_usaha_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// incomplete
+
 		// tbl_internasional_legal_document
+
 		// tbl_komisaris_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	// incomplete
+		
 		// tbl_paket
+		// appdoc.MigrateFileFromVmsDbTblPaket()	// incomplete
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
+		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()	// incomplete
+
 		// tbl_pengalaman3
+		// appdoc.MigrateFileFromVmsDbTblPengalaman3()	// incomplete
+
 		// tbl_pengalaman10
+		// appdoc.MigrateFileFromVmsDbTblPengalaman10()	// incomplete
+
 		// tbl_personalia_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()	// incomplete
 
 		// tbl_profile_penyedia
 		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
+		// appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()	// incomplete
 
 
 		// tbl_sertif_perorangan
-		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan() // untested
-
+		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan()
 
 		// tbl_surat_keputusan
 
@@ -67,8 +85,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
 		// tbl_sertif_perorangan
-		appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan() // untested
-
+		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
 	},
 }
 

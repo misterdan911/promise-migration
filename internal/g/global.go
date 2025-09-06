@@ -13,6 +13,7 @@ var User GUser
 var ExcludedEmails []string
 var ExcludedVmsUserId []int32
 var BasePath string
+var AppName string
 
 type LogDocument struct {
   FieldName string

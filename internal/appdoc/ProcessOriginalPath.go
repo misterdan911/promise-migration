@@ -46,7 +46,7 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // upload dokumen start
     // --------------------------------------------------------------------------------------------
-    SuccessResponse, errUp := UploadFile("SI-DaPeT", FilePath)
+    SuccessResponse, errUp := UploadFile(g.AppName, FilePath)
     if errUp != nil {
 
       // kalau gagal upload karena error 'invalid pdf header'
