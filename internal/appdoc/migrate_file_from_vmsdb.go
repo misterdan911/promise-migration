@@ -13,6 +13,7 @@ import (
 	"promise-migration/internal/model/myvmsdb/tblpengalamaneroranganmodel"
 	"promise-migration/internal/model/myvmsdb/tblpengalamansekarangmodel"
 	"promise-migration/internal/model/myvmsdb/tblpersonaliaperusahaanmodel"
+	"promise-migration/internal/model/myvmsdb/tblsahamperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblsertifperoranganmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -239,6 +240,24 @@ func MigrateFileFromVmsDbTblPersonaliaPerusahaan() {
             g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblPersonaliaPerusahaan.PathPersonal.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_saham_perusahaan
+func MigrateFileFromVmsDbTblSahamPerusahaan() {
+    allTblSahamPerusahaan, _ := tblsahamperusahaanmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblSahamPerusahaan := range allTblSahamPerusahaan {
+        
+        // Process path_saham field
+        if tblSahamPerusahaan.PathSaham.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_saham"
+            g.LogDoc.PkId = tblSahamPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblSahamPerusahaan.PathSaham.String
             ProcessOriginalPath(originalPath)
         }
     }
