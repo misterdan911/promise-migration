@@ -23,7 +23,7 @@ var DokumenCmd = &cobra.Command{
 
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
-		
+
 		ghelper.TruncateLog("dokumen.log")
 
 		g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
@@ -36,40 +36,39 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// untested
 
 		// tbl_fasilitas_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan	// incomplete
-		
+		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan() // untested
+
 		// tbl_ijin_usaha_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// untested
 
 		// tbl_internasional_legal_document
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	// incomplete
-		
+		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	// untested
+
 		// tbl_paket
-		// appdoc.MigrateFileFromVmsDbTblPaket()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblPaket()	// untested
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
-		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()	// untested
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromVmsDbTblPengalaman3()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblPengalaman3()	// untested
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromVmsDbTblPengalaman10()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblPengalaman10()	// untested
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()	// incomplete
+		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()	// untested
 
 		// tbl_profile_penyedia
 		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
-		appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()	// incomplete
-
+		// appdoc.MigrateFileFromVmsDbTblSahamPerusahaan() // untested
 
 		// tbl_sertif_perorangan
 		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan()
@@ -79,14 +78,14 @@ var DokumenCmd = &cobra.Command{
 		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()	// belum ada
+		appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan() // belum ada
 
 		// tbl_direksi_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()	// untested
 
 		// tbl_fasilitas_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan	// incomplete
-		
+
 		// tbl_ijin_usaha_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaperusahaan()	// incomplete
 
@@ -94,7 +93,7 @@ var DokumenCmd = &cobra.Command{
 
 		// tbl_komisaris_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()	// incomplete
-		
+
 		// tbl_paket
 		// appdoc.MigrateFileFromPromiseSibelaTblPaket()	// incomplete
 
@@ -118,7 +117,6 @@ var DokumenCmd = &cobra.Command{
 
 		// tbl_saham_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()	// incomplete
-
 
 		// tbl_sertif_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()

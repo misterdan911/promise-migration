@@ -26,7 +26,7 @@ func MigrateFileFromVmsDbTblPengalamanPerorangan() {
 
   for _, tblPengalamanPerorangan := range allTblPengalamanPerorangan {
 
-    // promise_sibela.tbl_pengalaman_perorangan.path_pnglmn
+    // vms_db.tbl_pengalaman_perorangan.path_pnglmn
     if tblPengalamanPerorangan.PathPnglmn.String != "" {
       g.LogDoc.FieldName = "vms_db.tbl_pengalaman_perorangan.path_pnglmn"
       g.LogDoc.PkId = tblPengalamanPerorangan.IdProfilPenyedia.Int32
@@ -44,9 +44,9 @@ func MigrateFileFromVmsDbTblSertifPerorangan() {
 
   for _, tblSertifPerorangan := range allTblSertifPerorangan {
 
-    // promise_sibela.tbl_sertif_perorangan.path_sertif
+    // vms_db.tbl_sertif_perorangan.path_sertif
     if tblSertifPerorangan.PathSertif.String != "" {
-      g.LogDoc.FieldName = "promise_sibela.tbl_sertif_perorangan.path_sertif"
+      g.LogDoc.FieldName = "vms_db.tbl_sertif_perorangan.path_sertif"
       g.LogDoc.PkId = tblSertifPerorangan.IdProfilPenyedia.Int32
 
       originalPath.String = tblSertifPerorangan.PathSertif.String
@@ -62,9 +62,9 @@ func MigrateFileFromVmsDbTblAktaPerusahaan() {
 
   for _, tblAktaPerusahaan := range allTblAktaPerusahaan {
 		
-    // promise_sibela.tbl_akta_perusahaan.path_akta
+    // vms_db.tbl_akta_perusahaan.path_akta
     if tblAktaPerusahaan.PathAkta.String != "" {
-      g.LogDoc.FieldName = "promise_sibela.tbl_akta_perusahaan.path_akta"
+      g.LogDoc.FieldName = "vms_db.tbl_akta_perusahaan.path_akta"
       g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
 
       originalPath.String = tblAktaPerusahaan.PathAkta.String
@@ -72,7 +72,7 @@ func MigrateFileFromVmsDbTblAktaPerusahaan() {
     }
 
     if tblAktaPerusahaan.PathAktaAkhir.String != "" {
-      g.LogDoc.FieldName = "promise_sibela.tbl_akta_perusahaan.path_akta_akhir"
+      g.LogDoc.FieldName = "vms_db.tbl_akta_perusahaan.path_akta_akhir"
       g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
 
       originalPath.String = tblAktaPerusahaan.PathAktaAkhir.String
@@ -89,9 +89,9 @@ func MigrateFileFromVmsDbTblDireksiPerusahaan() {
 
   for _, tblDireksiPerusahaan := range allTblDireksiPerusahaan {
 		
-    // promise_sibela.tbl_direksi_perusahaan.path_ktp_direksi
+    // vms_db.tbl_direksi_perusahaan.path_ktp_direksi
     if tblDireksiPerusahaan.PathKtpDireksi.String != "" {
-      g.LogDoc.FieldName = "promise_sibela.tbl_direksi_perusahaan.path_ktp_direksi"
+      g.LogDoc.FieldName = "vms_db.tbl_direksi_perusahaan.path_ktp_direksi"
       g.LogDoc.PkId = tblDireksiPerusahaan.IdProfilPenyedia.Int32
 
       originalPath.String = tblDireksiPerusahaan.PathKtpDireksi.String
@@ -110,7 +110,7 @@ func MigrateFileFromVmsDbTblFasilitasPerusahaan() {
         
         // Process path_fasilitas field
         if tblFasilitasPerusahaan.PathFasilitas.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_fasilitas_perusahaan.path_fasilitas"
+            g.LogDoc.FieldName = "vms_db.tbl_fasilitas_perusahaan.path_fasilitas"
             g.LogDoc.PkId = tblFasilitasPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblFasilitasPerusahaan.PathFasilitas.String
@@ -128,7 +128,7 @@ func MigrateFileFromVmsDbTblIjinUsahaPerusahaan() {
         
         // Process path_file_ijin_usaha field
         if tblIjinUsahaPerusahaan.PathIzin.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_ijin_usaha_perusahaan.path_izin"
+            g.LogDoc.FieldName = "vms_db.tbl_ijin_usaha_perusahaan.path_izin"
             g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblIjinUsahaPerusahaan.PathIzin.String
@@ -146,7 +146,7 @@ func MigrateFileFromVmsDbTblKomisarisPerusahaan() {
         
         // Process path_ktp_komisaris field
         if tblKomisarisPerusahaan.PathKtpKomisaris.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_komisaris_perusahaan.path_ktp_komisaris"
+            g.LogDoc.FieldName = "vms_db.tbl_komisaris_perusahaan.path_ktp_komisaris"
             g.LogDoc.PkId = tblKomisarisPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblKomisarisPerusahaan.PathKtpKomisaris.String
@@ -164,7 +164,7 @@ func MigrateFileFromVmsDbTblPaket() {
         
         // Process path_paket field
         if tblPaket.PathPaket.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_paket"
+            g.LogDoc.FieldName = "vms_db.tbl_paket.path_paket"
             g.LogDoc.PkId = tblPaket.IdProfilPenyedia.Int32
 
             originalPath.String = tblPaket.PathPaket.String
@@ -182,7 +182,7 @@ func MigrateFileFromVmsDbTblPengalamanSekarang() {
         
         // Process path_pnglmn_skrg field
         if tblPengalamanSekarang.PathPnglmnSkrg.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_sekarang.path_pnglmn_skrg"
+            g.LogDoc.FieldName = "vms_db.tbl_pengalaman_sekarang.path_pnglmn_skrg"
             g.LogDoc.PkId = tblPengalamanSekarang.IdProfilPenyedia.Int32
 
             originalPath.String = tblPengalamanSekarang.PathPnglmnSkrg.String
@@ -200,7 +200,7 @@ func MigrateFileFromVmsDbTblPengalaman3() {
         
         // Process path_pnglmn_3 field
         if tblPengalaman3.PathPnglmn3.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman3.path_pnglmn_3"
+            g.LogDoc.FieldName = "vms_db.tbl_pengalaman3.path_pnglmn_3"
             g.LogDoc.PkId = tblPengalaman3.IdProfilPenyedia.Int32
 
             originalPath.String = tblPengalaman3.PathPnglmn3.String
@@ -218,7 +218,7 @@ func MigrateFileFromVmsDbTblPengalaman10() {
         
         // Process path_pnglmn_10 field
         if tblPengalaman10.PathPnglmn10.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman10.path_pnglmn_10"
+            g.LogDoc.FieldName = "vms_db.tbl_pengalaman10.path_pnglmn_10"
             g.LogDoc.PkId = tblPengalaman10.IdProfilPenyedia.Int32
 
             originalPath.String = tblPengalaman10.PathPnglmn10.String
@@ -236,7 +236,7 @@ func MigrateFileFromVmsDbTblPersonaliaPerusahaan() {
         
         // Process path_personal field
         if tblPersonaliaPerusahaan.PathPersonal.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_personal"
+            g.LogDoc.FieldName = "vms_db.tbl_personalia_perusahaan.path_personal"
             g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblPersonaliaPerusahaan.PathPersonal.String
@@ -254,7 +254,7 @@ func MigrateFileFromVmsDbTblSahamPerusahaan() {
         
         // Process path_saham field
         if tblSahamPerusahaan.PathSaham.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_saham"
+            g.LogDoc.FieldName = "vms_db.tbl_personalia_perusahaan.path_saham"
             g.LogDoc.PkId = tblSahamPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblSahamPerusahaan.PathSaham.String
