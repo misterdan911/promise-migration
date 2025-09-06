@@ -33,10 +33,10 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()	// untested
 
 		// tbl_direksi_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// untested
+		appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// untested
 
 		// tbl_fasilitas_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan	// incomplete
+		appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan	// incomplete
 		
 		// tbl_ijin_usaha_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// incomplete
@@ -81,11 +81,50 @@ var DokumenCmd = &cobra.Command{
 		// tbl_akta_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()	// belum ada
 
+		// tbl_direksi_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()	// untested
+
+		// tbl_fasilitas_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan	// incomplete
+		
+		// tbl_ijin_usaha_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaperusahaan()	// incomplete
+
+		// tbl_internasional_legal_document
+
+		// tbl_komisaris_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()	// incomplete
+		
+		// tbl_paket
+		// appdoc.MigrateFileFromPromiseSibelaTblPaket()	// incomplete
+
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
+		// tbl_pengalaman_sekarang
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanSekarang()	// incomplete
+
+		// tbl_pengalaman3
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman3()	// incomplete
+
+		// tbl_pengalaman10
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()	// incomplete
+
+		// tbl_personalia_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()	// incomplete
+
+		// tbl_profile_penyedia
+		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia()
+
+		// tbl_saham_perusahaan
+		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()	// incomplete
+
+
 		// tbl_sertif_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
+
+		// tbl_surat_keputusan
+
 	},
 }
 

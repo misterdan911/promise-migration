@@ -4,6 +4,8 @@ import (
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/myvmsdb/tblaktaperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tbldireksiperusahaanmodel"
+	"promise-migration/internal/model/myvmsdb/tblfasilitasperusahaanmodel"
+	"promise-migration/internal/model/myvmsdb/tblijinusahaperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblpengalamaneroranganmodel"
 	"promise-migration/internal/model/myvmsdb/tblsertifperoranganmodel"
 
@@ -72,6 +74,7 @@ func MigrateFileFromVmsDbTblAktaPerusahaan() {
   }
 }
 
+// tbl_direksi_perusahaan
 func MigrateFileFromVmsDbTblDireksiPerusahaan() {
 
   allTblDireksiPerusahaan, _ := tbldireksiperusahaanmodel.GetAllDocument()
@@ -91,3 +94,182 @@ func MigrateFileFromVmsDbTblDireksiPerusahaan() {
   }
 }
 
+// tbl_fasilitas_perusahaan
+func MigrateFileFromVmsDbTblFasilitasPerusahaan() {
+    allTblFasilitasPerusahaan, _ := tblfasilitasperusahaanmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblFasilitasPerusahaan := range allTblFasilitasPerusahaan {
+        
+        // Process path_fasilitas field
+        if tblFasilitasPerusahaan.PathFasilitas.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_fasilitas_perusahaan.path_fasilitas"
+            g.LogDoc.PkId = tblFasilitasPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblFasilitasPerusahaan.PathFasilitas.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_ijin_usaha_perusahaan
+func MigrateFileFromVmsDbTblIjinUsahaPerusahaan() {
+    allTblIjinUsahaPerusahaan, _ := tblijinusahaperusahaanmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblIjinUsahaPerusahaan := range allTblIjinUsahaPerusahaan {
+        
+        // Process path_file_ijin_usaha field
+        if tblIjinUsahaPerusahaan.PathIzin.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_ijin_usaha_perusahaan.path_izin"
+            g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblIjinUsahaPerusahaan.PathIzin.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_komisaris_perusahaan
+func MigrateFileFromVmsDbTblKomisarisPerusahaan() {
+    allTblKomisarisPerusahaan, _ := tblkomisarisperusahaanmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblKomisarisPerusahaan := range allTblKomisarisPerusahaan {
+        
+        // Process path_ktp_komisaris field
+        if tblKomisarisPerusahaan.PathKtpKomisaris.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_komisaris_perusahaan.path_ktp_komisaris"
+            g.LogDoc.PkId = tblKomisarisPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblKomisarisPerusahaan.PathKtpKomisaris.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_paket
+func MigrateFileFromVmsDbTblPaket() {
+    allTblPaket, _ := tblpaketmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblPaket := range allTblPaket {
+        
+        // Process path_file_kak field
+        if tblPaket.PathFileKak.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_kak"
+            g.LogDoc.PkId = tblPaket.IdPaket.Int32
+
+            originalPath.String = tblPaket.PathFileKak.String
+            ProcessOriginalPath(originalPath)
+        }
+        
+        // Process path_file_hps field
+        if tblPaket.PathFileHps.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_hps"
+            g.LogDoc.PkId = tblPaket.IdPaket.Int32
+
+            originalPath.String = tblPaket.PathFileHps.String
+            ProcessOriginalPath(originalPath)
+        }
+        
+        // Process path_file_syarat_kualifikasi field
+        if tblPaket.PathFileSyaratKualifikasi.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_file_syarat_kualifikasi"
+            g.LogDoc.PkId = tblPaket.IdPaket.Int32
+
+            originalPath.String = tblPaket.PathFileSyaratKualifikasi.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_pengalaman_sekarang
+func MigrateFileFromVmsDbTblPengalamanSekarang() {
+    allTblPengalamanSekarang, _ := tblpengalamansekarangmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblPengalamanSekarang := range allTblPengalamanSekarang {
+        
+        // Process path_file_pengalaman field
+        if tblPengalamanSekarang.PathFilePengalaman.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_sekarang.path_file_pengalaman"
+            g.LogDoc.PkId = tblPengalamanSekarang.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPengalamanSekarang.PathFilePengalaman.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_pengalaman3
+func MigrateFileFromVmsDbTblPengalaman3() {
+    allTblPengalaman3, _ := tblpengalaman3model.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblPengalaman3 := range allTblPengalaman3 {
+        
+        // Process path_file_pengalaman field
+        if tblPengalaman3.PathFilePengalaman.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman3.path_file_pengalaman"
+            g.LogDoc.PkId = tblPengalaman3.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPengalaman3.PathFilePengalaman.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_pengalaman10
+func MigrateFileFromVmsDbTblPengalaman10() {
+    allTblPengalaman10, _ := tblpengalaman10model.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblPengalaman10 := range allTblPengalaman10 {
+        
+        // Process path_file_pengalaman field
+        if tblPengalaman10.PathFilePengalaman.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman10.path_file_pengalaman"
+            g.LogDoc.PkId = tblPengalaman10.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPengalaman10.PathFilePengalaman.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_personalia_perusahaan
+func MigrateFileFromVmsDbTblPersonaliaPerusahaan() {
+    allTblPersonaliaPerusahaan, _ := tblpersonaliaperusahaanmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblPersonaliaPerusahaan := range allTblPersonaliaPerusahaan {
+        
+        // Process path_cv_personalia field
+        if tblPersonaliaPerusahaan.PathCvPersonalia.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_cv_personalia"
+            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPersonaliaPerusahaan.PathCvPersonalia.String
+            ProcessOriginalPath(originalPath)
+        }
+        
+        // Process path_ijazah_personalia field
+        if tblPersonaliaPerusahaan.PathIjazahPersonalia.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_ijazah_personalia"
+            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPersonaliaPerusahaan.PathIjazahPersonalia.String
+            ProcessOriginalPath(originalPath)
+        }
+        
+        // Process path_sertifikat_personalia field
+        if tblPersonaliaPerusahaan.PathSertifikatPersonalia.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_sertifikat_personalia"
+            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
+
+            originalPath.String = tblPersonaliaPerusahaan.PathSertifikatPersonalia.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
