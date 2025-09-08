@@ -30,13 +30,13 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()	// untested
+		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
 
 		// tbl_direksi_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// untested
+		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()
 
 		// tbl_fasilitas_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan() // untested
+		appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan() // untested
 
 		// tbl_ijin_usaha_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// untested
@@ -78,7 +78,7 @@ var DokumenCmd = &cobra.Command{
 		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id"
 
 		// tbl_akta_perusahaan
-		appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan() // belum ada
+		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan() // untested
 
 		// tbl_direksi_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()	// untested
