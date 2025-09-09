@@ -36,15 +36,15 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()
 
 		// tbl_fasilitas_perusahaan
-		appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan() // untested
-
+		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan()	// banyak yang 404
+		
 		// tbl_ijin_usaha_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblIjinUsahaperusahaan()	// untested
+		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	// untested
+		appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	// untested
 
 		// tbl_paket
 		// appdoc.MigrateFileFromVmsDbTblPaket()	// untested

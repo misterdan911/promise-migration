@@ -10,6 +10,11 @@ import (
 )
 
 func ProcessOriginalPath(originalPath pgtype.Text) error {
+
+	// if g.LogDoc.PkId != 437 {
+	// 	return nil
+	// }
+
   // Cek apakah dokumen sudah pernah berhasil di proses
   helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
 
@@ -33,6 +38,13 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
         return nil // Supaya func ProcessOriginalPath berhenti sampai disini
       }
 
+      // kalau connection was forcibly closed by the remote host
+			if strings.Contains(errDl.Error(), "closed by the remote host") {
+        g.LogDoc.DownStat = "Failed - Connection was forcibly closed by the remote host"
+        PrintLog()
+        return nil
+      }
+			
       // untuk error2 download yg lain dibuat fatal error aja supaya programnya stop sampai disini
       g.LogDoc.DownStat = "Failed"
       PrintLog()
