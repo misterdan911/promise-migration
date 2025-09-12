@@ -1,6 +1,7 @@
 package tblpengalamaneroranganmodel
 
 import (
+	"fmt"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -11,6 +12,8 @@ type TblPengalamanPeroranganDocument struct {
 }
 
 func GetAllDocument() ([]TblPengalamanPeroranganDocument, error) {
+
+	// fmt.Printf("GetAllDocument: tbl_pengalaman_perorangan\n")
 
   qData := `
   SELECT id_profil_penyedia, path_pnglmn
@@ -25,7 +28,8 @@ func GetAllDocument() ([]TblPengalamanPeroranganDocument, error) {
   var documents []TblPengalamanPeroranganDocument
 
   for results.Next() {
-      var doc TblPengalamanPeroranganDocument
+	
+			var doc TblPengalamanPeroranganDocument
       err := results.Scan(
           &doc.IdProfilPenyedia,
           &doc.PathPnglmn,
@@ -33,6 +37,7 @@ func GetAllDocument() ([]TblPengalamanPeroranganDocument, error) {
       if err != nil {
           return nil, err
       }
+		  // fmt.Printf("pathPnglmn: %+v\n", doc.PathPnglmn.String)
       documents = append(documents, doc)
   }
 

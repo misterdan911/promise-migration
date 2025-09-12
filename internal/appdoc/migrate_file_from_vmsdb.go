@@ -161,11 +161,12 @@ func MigrateFileFromVmsDbTblPaket() {
     originalPath := pgtype.Text{Valid: true, String: ""}
 
     for _, tblPaket := range allTblPaket {
+
         
         // Process path_paket field
         if tblPaket.PathPaket.String != "" {
             g.LogDoc.FieldName = "vms_db.tbl_paket.path_paket"
-            g.LogDoc.PkId = tblPaket.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPaket.IdPaket.Int32
 
             originalPath.String = tblPaket.PathPaket.String
             ProcessOriginalPath(originalPath)

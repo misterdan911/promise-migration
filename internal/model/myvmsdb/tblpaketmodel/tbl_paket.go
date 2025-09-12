@@ -1,20 +1,23 @@
 package tblpaketmodel
 
 import (
+	"fmt"
 	"database/sql"
 	"promise-migration/db"
 )
 
 type TblPaketDocument struct {
-	IdProfilPenyedia sql.NullInt32
+	IdPaket sql.NullInt32
 	PathPaket   sql.NullString
 }
 
 func GetAllDocument() ([]TblPaketDocument, error) {
 
+	// fmt.Printf("GetAllDocument: tbl_paket\n")
+
   qData := `
   SELECT
-		id_profil_penyedia,
+		id_paket,
 		path_paket
   FROM tbl_paket`
 
@@ -27,14 +30,16 @@ func GetAllDocument() ([]TblPaketDocument, error) {
   var documents []TblPaketDocument
 
   for results.Next() {
-      var doc TblPaketDocument
+      
+			var doc TblPaketDocument
       err := results.Scan(
-          &doc.IdProfilPenyedia,
+          &doc.IdPaket,
           &doc.PathPaket,
       )
       if err != nil {
           return nil, err
       }
+		  // fmt.Printf("tblPaket: %+v\n", doc.PathPaket.String)
       documents = append(documents, doc)
   }
 
