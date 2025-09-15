@@ -21,7 +21,7 @@ func GetAllDocument() ([]TblAktaPerusahaanDocument, error) {
 		path_akta_akhir
   FROM tbl_akta_perusahaan`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
 		log.Fatal(err)
 	}

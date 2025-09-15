@@ -1,6 +1,7 @@
 package tblsahamperusahaanmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -20,8 +21,8 @@ func GetAllDocument() ([]TblSahamPerusahaanDocument, error) {
 
   results, err := db.MyVmsDb.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblSahamPerusahaanDocument

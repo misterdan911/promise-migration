@@ -255,7 +255,7 @@ func MigrateFileFromVmsDbTblSahamPerusahaan() {
         
         // Process path_saham field
         if tblSahamPerusahaan.PathSaham.String != "" {
-            g.LogDoc.FieldName = "vms_db.tbl_personalia_perusahaan.path_saham"
+            g.LogDoc.FieldName = "vms_db.tbl_saham_perusahaan.path_saham"
             g.LogDoc.PkId = tblSahamPerusahaan.IdProfilPenyedia.Int32
 
             originalPath.String = tblSahamPerusahaan.PathSaham.String
