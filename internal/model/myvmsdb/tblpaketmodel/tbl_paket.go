@@ -1,7 +1,6 @@
 package tblpaketmodel
 
 import (
-	"fmt"
 	"database/sql"
 	"promise-migration/db"
 )

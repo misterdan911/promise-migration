@@ -1,6 +1,7 @@
 package tblpengalaman3model
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -16,12 +17,12 @@ func GetAllDocument() ([]TblPengalaman3Document, error) {
   SELECT
 		id_profil_penyedia,
 		path_pnglmn_3
-  FROM tbl_pengalaman_3`
+  FROM tbl_pengalaman3`
 
   results, err := db.MyVmsDb.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblPengalaman3Document

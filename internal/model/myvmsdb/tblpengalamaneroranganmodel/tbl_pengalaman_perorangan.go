@@ -1,7 +1,6 @@
 package tblpengalamaneroranganmodel
 
 import (
-	"fmt"
 	"database/sql"
 	"promise-migration/db"
 )

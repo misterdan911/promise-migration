@@ -2,6 +2,8 @@ package appdoc
 
 import (
 	"log"
+	"net/url"
+	"path"
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"strings"
@@ -27,6 +29,10 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // download dokumen start
     // --------------------------------------------------------------------------------------------
+		fileName := path.Base(urlPath)
+		fileNameEncoded := url.PathEscape(fileName)
+		urlPath = strings.Replace(urlPath, fileName, fileNameEncoded, 1)
+
     errDl := DownloadFile(urlPath)
     if errDl != nil {
 

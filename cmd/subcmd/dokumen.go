@@ -53,13 +53,13 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
-		appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()	// untested
+		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromVmsDbTblPengalaman3()	// untested
+		// appdoc.MigrateFileFromVmsDbTblPengalaman3()
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromVmsDbTblPengalaman10()	// untested
+		appdoc.MigrateFileFromVmsDbTblPengalaman10()	// untested
 
 		// tbl_personalia_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()	// untested
