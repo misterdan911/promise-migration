@@ -1,8 +1,9 @@
 package tbldireksiperusahaanmodel
 
 import (
-		"database/sql"
-		"promise-migration/db"
+	"log"
+	"database/sql"
+	"promise-migration/db"
 )
 
 type TblDireksiPerusahaanDocument struct {
@@ -18,10 +19,10 @@ func GetAllDocument() ([]TblDireksiPerusahaanDocument, error) {
 		path_ktp_direksi
   FROM tbl_direksi_perusahaan`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblDireksiPerusahaanDocument

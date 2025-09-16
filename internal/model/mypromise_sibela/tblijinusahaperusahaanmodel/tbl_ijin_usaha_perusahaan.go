@@ -1,6 +1,7 @@
 package tblijinusahaperusahaanmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -18,10 +19,10 @@ func GetAllDocument() ([]TblIjinUsahaPerusahaanDocument, error) {
 		path_izin
   FROM tbl_ijin_usaha_perusahaan`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblIjinUsahaPerusahaanDocument

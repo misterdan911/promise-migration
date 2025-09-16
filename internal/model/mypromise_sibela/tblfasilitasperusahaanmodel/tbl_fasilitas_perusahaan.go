@@ -1,6 +1,7 @@
 package tblfasilitasperusahaanmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -18,10 +19,10 @@ func GetAllDocument() ([]TblFasilitasPerusahaanDocument, error) {
 		path_fasilitas
   FROM tbl_fasilitas_perusahaan`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblFasilitasPerusahaanDocument

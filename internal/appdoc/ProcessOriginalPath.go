@@ -81,6 +81,10 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
         g.LogDoc.UpStat = "Failed - pypdf.errors.EmptyFileError: Cannot read an empty file"
         PrintLog()
         return nil
+      } else if strings.Contains(errUp.Error(), "NullObject") {
+        g.LogDoc.UpStat = "Failed - TypeError: argument of type 'NullObject' is not iterable"
+        PrintLog()
+        return nil
       }
 			
       g.LogDoc.UpStat = "Failed"
