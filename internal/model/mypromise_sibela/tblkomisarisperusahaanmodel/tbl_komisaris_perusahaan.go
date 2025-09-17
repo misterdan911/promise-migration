@@ -1,6 +1,7 @@
 package tblkomisarisperusahaanmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -18,10 +19,10 @@ func GetAllDocument() ([]TblKomisarisPerusahaanDocument, error) {
 		path_ktp_komisaris
   FROM tbl_komisaris_perusahaan`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblKomisarisPerusahaanDocument

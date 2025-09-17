@@ -87,27 +87,27 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan()
 
 		// tbl_ijin_usaha_perusahaan
-		appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaPerusahaan()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()	// incomplete
+		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()	// untested
 
 		// tbl_paket
-		// appdoc.MigrateFileFromPromiseSibelaTblPaket()	// incomplete
+		// appdoc.MigrateFileFromPromiseSibelaTblPaket()	// tidak ada file
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanSekarang()	// incomplete
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanSekarang()	// untested
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman3()	// incomplete
+		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman3()	// untested
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()	// incomplete
+		appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()	// untested
 
 		// tbl_personalia_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()	// incomplete

@@ -166,7 +166,7 @@ func MigrateFileFromPromiseSibelaTblPaket() {
         // Process path_paket field
         if tblPaket.PathPaket.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_paket.path_paket"
-            g.LogDoc.PkId = tblPaket.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPaket.IdPaket.Int32
 
             originalPath.String = tblPaket.PathPaket.String
             ProcessOriginalPath(originalPath)
@@ -202,7 +202,7 @@ func MigrateFileFromPromiseSibelaTblPengalaman3() {
         // Process path_pnglmn_3 field
         if tblPengalaman3.PathPnglmn3.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman3.path_pnglmn_3"
-            g.LogDoc.PkId = tblPengalaman3.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPengalaman3.IdPengalaman3.Int32
 
             originalPath.String = tblPengalaman3.PathPnglmn3.String
             ProcessOriginalPath(originalPath)
@@ -220,7 +220,7 @@ func MigrateFileFromPromiseSibelaTblPengalaman10() {
         // Process path_pnglmn_10 field
         if tblPengalaman10.PathPnglmn10.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman10.path_pnglmn_10"
-            g.LogDoc.PkId = tblPengalaman10.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPengalaman10.IdPengalaman10.Int32
 
             originalPath.String = tblPengalaman10.PathPnglmn10.String
             ProcessOriginalPath(originalPath)

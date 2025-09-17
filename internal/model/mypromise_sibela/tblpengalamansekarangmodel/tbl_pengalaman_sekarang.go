@@ -1,6 +1,7 @@
 package tblpengalamansekarangmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
@@ -18,10 +19,10 @@ func GetAllDocument() ([]TblPengalamanSekarangDocument, error) {
 		path_pnglmn_skrg
   FROM tbl_pengalaman_sekarang`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblPengalamanSekarangDocument
