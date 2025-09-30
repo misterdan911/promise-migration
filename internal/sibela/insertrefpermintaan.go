@@ -3,7 +3,7 @@ package sibela
 import (
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/model/promise_sibela/tblpaketplmodel"
+	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/sibela/sibelahelper"
 	"promise-migration/internal/structs"
@@ -13,25 +13,19 @@ import (
 
 func InsertRefPermintaan() {
 
-	allTblPaketPl := tblpaketplmodel.GetAllData()
-	// allTblPaketPl := tblpaketplonionmodel.GetAllData()
+	// allTblPaketPl := tblpaketplmodel.GetAllData()
+	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
-		var userPP helperusermodel.HelperUser
 		var userPPK helperusermodel.HelperUser
 		var kodeUnit pgtype.Text
 
 		// dapatkan kodeUnit
-		if (tblPaketPl.IdUserpp != pgtype.Int4{}) {
-			userPP = helperusermodel.GetByVmsUserId(tblPaketPl.IdUserpp)
-			kodeUnit = userPP.KodeUnit
-		} else if (tblPaketPl.IdPpk != pgtype.Int4{}) {
-			userPPK = helperusermodel.GetByVmsUserId(tblPaketPl.IdPpk)
-			kodeUnit = userPPK.KodeUnit
-		}
+		userPPK = helperusermodel.GetByVmsUserId(tblPaketPl.IdPpk)
+		kodeUnit = userPPK.KodeUnit
 
 		// dapatkan jenis_penyedia
-		var jenisPenyedia pgtype.Text
+		// var jenisPenyedia pgtype.Text
 		var profilePenyedia structs.TblProfilePenyedia
 		var helperUser helperusermodel.HelperUser
 
@@ -41,6 +35,7 @@ func InsertRefPermintaan() {
 			helperUser = helperusermodel.GetByVmsUserId(vmsUserId)
 		}
 
+		/*
 		if helperUser.VmsUserLevel.Int32 == 5 {
 			jenisPenyedia.Valid = true
 			jenisPenyedia.String = "dpt"
@@ -48,13 +43,13 @@ func InsertRefPermintaan() {
 			jenisPenyedia.Valid = true
 			jenisPenyedia.String = "luar_dpt"
 		}
+		*/
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
-			KodePermintaan:      tblPaketPl.IdPaketPl,
 			KodeUnit:            kodeUnit,
-			JenisPenyedia:       jenisPenyedia,
+			JenisPenyedia:       tblPaketPl.JenisPenyedia,
 			KodeVendor:          helperUser.KodeVendor,
-			NamaPaket:           tblPaketPl.NamaPesananPl,
+			NamaPaket:           tblPaketPl.NamaPesanan,
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 		}
 

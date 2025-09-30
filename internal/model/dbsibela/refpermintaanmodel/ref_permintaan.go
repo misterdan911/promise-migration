@@ -46,7 +46,6 @@ func InsertNew(refPermintaan RefPermintaan) {
 
 	qIns := `
 	INSERT INTO ref_permintaan(
-		kode_permintaan,
 		kode_unit,
 		jenis_penyedia,
 		kode_vendor,
@@ -76,7 +75,6 @@ func InsertNew(refPermintaan RefPermintaan) {
 		kode_rup,
 		tgl_selesai_negosiasi
   ) VALUES (
-    @kode_permintaan,
 		@kode_unit,
 		@jenis_penyedia,
 		@kode_vendor,
@@ -108,7 +106,6 @@ func InsertNew(refPermintaan RefPermintaan) {
   )`
 
 	args := pgx.NamedArgs{
-		"kode_permintaan":              refPermintaan.KodePermintaan,
 		"kode_unit":                    refPermintaan.KodeUnit,
 		"jenis_penyedia":               refPermintaan.JenisPenyedia,
 		"kode_vendor":                  refPermintaan.KodeVendor,
