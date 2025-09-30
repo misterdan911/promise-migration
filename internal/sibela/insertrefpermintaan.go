@@ -14,14 +14,14 @@ import (
 func InsertRefPermintaan() {
 
 	allTblPaketPl := tblpaketplmodel.GetAllData()
+	// allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
 		var userPP helperusermodel.HelperUser
 		var userPPK helperusermodel.HelperUser
 		var kodeUnit pgtype.Text
 
-		// userVendor := helperusermodel.GetByVmsUserId(tblPaketPl.)
-
+		// dapatkan kodeUnit
 		if (tblPaketPl.IdUserpp != pgtype.Int4{}) {
 			userPP = helperusermodel.GetByVmsUserId(tblPaketPl.IdUserpp)
 			kodeUnit = userPP.KodeUnit

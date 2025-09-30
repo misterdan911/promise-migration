@@ -18,10 +18,10 @@ type RefVendor struct {
 	StatusFormLuarDpt pgtype.Text
 	Verifikator       pgtype.Text
 	WaktuVerifikasi   pgtype.Timestamptz
+	StatusAktifVendor pgtype.Text
 	Udcr              pgtype.Timestamptz
 	Udch              pgtype.Timestamptz
 }
-
 
 func DeleteByKodeVendor(kodeVendor pgtype.Int4) {
 	ctx := context.Background()
@@ -34,10 +34,10 @@ func DeleteByKodeVendor(kodeVendor pgtype.Int4) {
 }
 
 func GetDataByKodeVendor(kodeVendor pgtype.Int4) RefVendor {
-    ctx := context.Background()
-    var vendor RefVendor
+	ctx := context.Background()
+	var vendor RefVendor
 
-    qRefVendor := `
+	qRefVendor := `
     SELECT
       kode_vendor,
       kode_jenis_vendor,
@@ -46,26 +46,27 @@ func GetDataByKodeVendor(kodeVendor pgtype.Int4) RefVendor {
       status_form_luar_dpt,
 			verifikator,
 			waktu_verifikasi,
+			status_aktif_vendor,
       udcr,
       udch
     FROM ref_vendor
     WHERE kode_vendor = $1
     ORDER BY kode_vendor ASC`
 
-    rwVendor, err := db.DbSidapet.Query(ctx, qRefVendor, kodeVendor)
-    if err != nil {
-        log.Fatal("qRefVendor Failed, " + err.Error() + " " + qRefVendor)
-    }
+	rwVendor, err := db.DbSidapet.Query(ctx, qRefVendor, kodeVendor)
+	if err != nil {
+		log.Fatal("qRefVendor Failed, " + err.Error() + " " + qRefVendor)
+	}
 
-    allVendors, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[RefVendor])
-    if err2 != nil {
-        log.Fatal("failed collecting rwVendor (ref_vendor.go), " + err2.Error())
-    }
-    defer rwVendor.Close()
+	allVendors, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[RefVendor])
+	if err2 != nil {
+		log.Fatal("failed collecting rwVendor (ref_vendor.go), " + err2.Error())
+	}
+	defer rwVendor.Close()
 
-    if len(allVendors) > 0 {
-        vendor = allVendors[0]
-    }
+	if len(allVendors) > 0 {
+		vendor = allVendors[0]
+	}
 
-    return vendor
+	return vendor
 }

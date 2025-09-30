@@ -1,12 +1,13 @@
 package tblpersonaliaperusahaanmodel
 
 import (
+	"log"
 	"database/sql"
 	"promise-migration/db"
 )
 
 type TblPersonaliaPerusahaanDocument struct {
-	IdProfilPenyedia sql.NullInt32
+	IdPersonalia sql.NullInt32
 	PathPersonal   sql.NullString
 }
 
@@ -14,14 +15,14 @@ func GetAllDocument() ([]TblPersonaliaPerusahaanDocument, error) {
 
   qData := `
   SELECT
-		id_profil_penyedia,
+		id_personalia,
 		path_personal
-  FROM tbl_personalia_perusahaan`
+  FROM tbl_personalia_perusahaan1`
 
-  results, err := db.MyVmsDb.Query(qData)
+  results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
-    return nil, err
-  }
+		log.Fatal(err)
+	}
   defer results.Close()
 
   var documents []TblPersonaliaPerusahaanDocument
@@ -29,7 +30,7 @@ func GetAllDocument() ([]TblPersonaliaPerusahaanDocument, error) {
   for results.Next() {
       var doc TblPersonaliaPerusahaanDocument
       err := results.Scan(
-          &doc.IdProfilPenyedia,
+          &doc.IdPersonalia,
           &doc.PathPersonal,
       )
       if err != nil {

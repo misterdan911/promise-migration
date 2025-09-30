@@ -10,10 +10,10 @@ import (
 )
 
 func GetAllData() []structs.TblProfilePenyedia {
-  var allData []structs.TblProfilePenyedia
-  ctx := context.Background()
+	var allData []structs.TblProfilePenyedia
+	ctx := context.Background()
 
-  qData := `
+	qData := `
   SELECT
     id_profil_penyedia,
     id_user,
@@ -50,20 +50,19 @@ func GetAllData() []structs.TblProfilePenyedia {
     update_time
   FROM tbl_profile_penyedia`
 
-  rwData, err := db.VmsDb.Query(ctx, qData)
-  if err != nil {
-    log.Fatal("qData Failed, " + err.Error() + " " + qData)
-  }
+	rwData, err := db.VmsDb.Query(ctx, qData)
+	if err != nil {
+		log.Fatal("qData Failed, " + err.Error() + " " + qData)
+	}
 
-  allData, err = pgx.CollectRows(rwData, pgx.RowToStructByName[structs.TblProfilePenyedia])
-  if err != nil {
-    log.Fatal("failed collecting rwData, " + err.Error())
-  }
-  defer rwData.Close()
+	allData, err = pgx.CollectRows(rwData, pgx.RowToStructByName[structs.TblProfilePenyedia])
+	if err != nil {
+		log.Fatal("failed collecting rwData, " + err.Error())
+	}
+	defer rwData.Close()
 
-  return allData
+	return allData
 }
-
 
 func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
 
@@ -116,7 +115,7 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
 
 	allPenyedia, err2 := pgx.CollectRows(rwPenyedia, pgx.RowToStructByName[structs.TblProfilePenyedia])
 	if err2 != nil {
-		log.Fatal("failed collecting rwUser (tbl_profile_penyedia.go), " + err2.Error())
+		log.Fatal("failed collecting rwUser (internal/model/vmsdb/tblprofilepenyediamodel/tbl_profile_penyedia.go), " + err2.Error())
 	}
 	defer rwPenyedia.Close()
 
@@ -127,12 +126,11 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
 	return penyedia
 }
 
-
 func GetDataByIdProfile(idProfile pgtype.Int4) structs.TblProfilePenyedia {
-  ctx := context.Background()
-  var penyedia structs.TblProfilePenyedia
+	ctx := context.Background()
+	var penyedia structs.TblProfilePenyedia
 
-  qTblProfilePenyedia := `
+	qTblProfilePenyedia := `
     SELECT
       id_profil_penyedia,
       id_user,
@@ -171,21 +169,21 @@ func GetDataByIdProfile(idProfile pgtype.Int4) structs.TblProfilePenyedia {
     WHERE id_profil_penyedia = $1
     ORDER BY id_profil_penyedia ASC`
 
-  rwPenyedia, err := db.VmsDb.Query(ctx, qTblProfilePenyedia, idProfile)
-  if err != nil {
-    log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
-  }
+	rwPenyedia, err := db.VmsDb.Query(ctx, qTblProfilePenyedia, idProfile)
+	if err != nil {
+		log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
+	}
 
-  allPenyedia, err2 := pgx.CollectRows(rwPenyedia, pgx.RowToStructByName[structs.TblProfilePenyedia])
-  if err2 != nil {
-    log.Fatal("failed collecting rwUser (tbl_profile_penyedia.go), " + err2.Error())
-  }
-  defer rwPenyedia.Close()
+	allPenyedia, err2 := pgx.CollectRows(rwPenyedia, pgx.RowToStructByName[structs.TblProfilePenyedia])
+	if err2 != nil {
+		log.Fatal("failed collecting rwUser (tbl_profile_penyedia.go), " + err2.Error())
+	}
+	defer rwPenyedia.Close()
 
-  if len(allPenyedia) > 0 {
-    penyedia = allPenyedia[0]
-  }
+	if len(allPenyedia) > 0 {
+		penyedia = allPenyedia[0]
+	}
 
-  return penyedia
+	return penyedia
 
 }

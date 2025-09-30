@@ -61,7 +61,7 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
 
 	allPenyedia, err2 := pgx.CollectRows(rwPenyedia, pgx.RowToStructByName[structs.TblProfilePenyedia])
 	if err2 != nil {
-		log.Fatal("failed collecting rwUser (tbl_profile_penyedia.go), " + err2.Error())
+		log.Fatal("failed collecting rwUser (internal/model/promise_sibela/tblprofilepenyediamodel/tbl_profile_penyedia.go), " + err2.Error())
 	}
 	defer rwPenyedia.Close()
 

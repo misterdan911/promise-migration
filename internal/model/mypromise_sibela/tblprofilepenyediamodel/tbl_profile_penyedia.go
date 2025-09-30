@@ -1,6 +1,7 @@
 package tblprofilepenyediamodel
 
 import (
+		"log"
     "database/sql"
     "promise-migration/db"
 )
@@ -14,9 +15,6 @@ type TblProfilePenyediaDocument struct {
     PathLapPerus       sql.NullString
     PathIkutSerta      sql.NullString
     PathKuasa          sql.NullString
-    PathSkb            sql.NullString
-    PathSkpp23         sql.NullString
-    PathPphDibebaskan  sql.NullString
 }
 
 // Helper method to convert NullString to regular string
@@ -39,16 +37,13 @@ func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
         path_npwp,
         path_lap_perus,
         path_ikut_serta,
-        path_kuasa,
-        path_skb,
-        path_skpp23,
-        path_pph_dibebaskan
+        path_kuasa
     FROM tbl_profile_penyedia`
 
-    results, err := db.MyVmsDb.Query(qData)
-    if err != nil {
-        return nil, err
-    }
+  results, err := db.MyPromiseSibela.Query(qData)
+  if err != nil {
+		log.Fatal(err)
+	}
     defer results.Close()
 
     var documents []TblProfilePenyediaDocument
@@ -64,9 +59,6 @@ func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
             &doc.PathLapPerus,
             &doc.PathIkutSerta,
             &doc.PathKuasa,
-            &doc.PathSkb,
-            &doc.PathSkpp23,
-            &doc.PathPphDibebaskan,
         )
         if err != nil {
             return nil, err

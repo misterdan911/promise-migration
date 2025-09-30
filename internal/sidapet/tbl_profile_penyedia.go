@@ -65,6 +65,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
     nama_perusahaan,
     is_tetap,
     status_form_luar_dpt,
+		status_aktif_vendor,
     udcr,
     udch
   ) VALUES (
@@ -72,6 +73,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
     @nama_perusahaan,
     @is_tetap,
     @status_form_luar_dpt,
+		@status_aktif_vendor,
     @udcr,
     @udch
   ) RETURNING *`
@@ -88,6 +90,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		"nama_perusahaan":      profilePenyedia.Nama,
 		"is_tetap":             isTetap,
 		"status_form_luar_dpt": pgtype.Text{Valid: true, String: "selesai"},
+		"status_aktif_vendor": pgtype.Text{Valid: true, String: "aktif"},
 		"udcr":                 profilePenyedia.CreateTime,
 		"udch":                 profilePenyedia.UpdateTime,
 	}
@@ -101,7 +104,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	allVendor, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[refvendormodel.RefVendor])
 	if err2 != nil {
-		log.Fatal("failed collecting rwVendor (tbl_profile_penyedia.go), " + err2.Error())
+		log.Fatal("failed collecting rwVendor (internal/sidapet/tbl_profile_penyedia.go), " + err2.Error())
 	}
 	defer rwVendor.Close()
 
@@ -135,7 +138,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)
 
-	// Insert to ref_datadiri_umum
+	// Insert to ref_umum or ref_datadiri based on jenis_penyedia
 	if profilePenyedia.IdJenisPenyedia.Int32 == 1 {
 		InsertRefUmum(profilePenyedia, helperUser)
 	}

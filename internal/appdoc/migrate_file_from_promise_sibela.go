@@ -238,7 +238,7 @@ func MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan() {
         // Process path_personal field
         if tblPersonaliaPerusahaan.PathPersonal.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_personal"
-            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdPersonalia.Int32
 
             originalPath.String = tblPersonaliaPerusahaan.PathPersonal.String
             ProcessOriginalPath(originalPath)
@@ -256,7 +256,7 @@ func MigrateFileFromPromiseSibelaTblSahamPerusahaan() {
         // Process path_saham field
         if tblSahamPerusahaan.PathSaham.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_saham"
-            g.LogDoc.PkId = tblSahamPerusahaan.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblSahamPerusahaan.IdSaham.Int32
 
             originalPath.String = tblSahamPerusahaan.PathSaham.String
             ProcessOriginalPath(originalPath)
