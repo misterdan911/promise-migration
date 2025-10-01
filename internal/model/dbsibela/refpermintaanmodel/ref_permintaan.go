@@ -12,7 +12,7 @@ import (
 type RefPermintaan struct {
 	KodePermintaan             pgtype.Int4
 	KodeUnit                   pgtype.Text
-	JenisPenyedia              pgtype.Text // Note: This is an enum type "public.jenis_penyedia"
+	JenisPenyedia              pgtype.Text
 	KodeVendor                 pgtype.Int4
 	NamaPaket                  pgtype.Text
 	KodeSkemaPembayaran        pgtype.Int4
@@ -139,5 +139,67 @@ func InsertNew(refPermintaan RefPermintaan) {
 	_, errIns := db.DbSibela.Exec(ctx, qIns, args)
 	if errIns != nil {
 		log.Fatal("unable to insert ref_permintaan, " + errIns.Error())
+	}
+}
+
+func GetAllData() []RefPermintaan {
+	ctx := context.Background()
+
+	qAllData := `
+	SELECT
+		kode_permintaan,
+		kode_unit,
+		jenis_penyedia,
+		kode_vendor,
+		nama_paket,
+		kode_skema_pembayaran,
+		kode_jenis_pengadaan,
+		kode_jenis_aset,
+		kode_uraian_klmpk,
+		file_kerangka_ak,
+		nilai_hps,
+		file_rincian_hps,
+		file_dok_pendukung,
+		file_dok_pendukung_penyedia,
+		kode_jenis_kontrak,
+		tgl_kirim_ke_penyedia,
+		tgl_selesai_kontrak,
+		tgl_berita_acara,
+		isi_berita_acara,
+		kode_status_permintaan,
+		ucr,
+		uch,
+		udcr,
+		udch,
+		ruang_lingkup,
+		nama_unit,
+		deskripsi_pendukung_penyedia,
+		kode_rup,
+		tgl_selesai_negosiasi
+	FROM ref_permintaan
+	ORDER BY kode_permintaan
+	`
+
+	rwRefPermintaan, errQuery := db.DbSibela.Query(ctx, qAllData)
+	if errQuery != nil {
+		log.Fatal("qAllData Failed, " + errQuery.Error() + " " + qAllData)
+	}
+
+	allData, errCollect := pgx.CollectRows(rwRefPermintaan, pgx.RowToStructByName[RefPermintaan])
+	if errCollect != nil {
+		log.Fatal("failed collecting rows, " + errCollect.Error())
+	}
+	defer rwRefPermintaan.Close()
+
+	return allData
+}
+
+func DeleteByKodePermintaan(kodePermintaan pgtype.Int4) {
+	ctx := context.Background()
+
+	qDelete := `DELETE FROM ref_permintaan WHERE kode_permintaan = $1`
+	_, err := db.DbSibela.Exec(ctx, qDelete, kodePermintaan)
+	if err != nil {
+		log.Fatal("failed deleting RefPermintaan (ref_permintaan.go), " + err.Error())
 	}
 }

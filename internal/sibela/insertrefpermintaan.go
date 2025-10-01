@@ -35,15 +35,20 @@ func InsertRefPermintaan() {
 			helperUser = helperusermodel.GetByVmsUserId(vmsUserId)
 		}
 
-		/*
-		if helperUser.VmsUserLevel.Int32 == 5 {
-			jenisPenyedia.Valid = true
-			jenisPenyedia.String = "dpt"
-		} else if helperUser.VmsUserLevel.Int32 == 9 {
-			jenisPenyedia.Valid = true
-			jenisPenyedia.String = "luar_dpt"
+		var kodeJenisPengadaan pgtype.Int4
+		kodeJenisPengadaan.Valid = true
+
+		if tblPaketPl.IdKriteria.Int32 == 1 {
+			kodeJenisPengadaan.Int32 = 1
+		} else if tblPaketPl.IdKriteria.Int32 == 2 {
+			kodeJenisPengadaan.Int32 = 3
+		} else if tblPaketPl.IdKriteria.Int32 == 3 {
+			kodeJenisPengadaan.Int32 = 4
+		} else if tblPaketPl.IdKriteria.Int32 == 4 {
+			kodeJenisPengadaan.Int32 = 2
+		} else {
+			kodeJenisPengadaan.Valid = false
 		}
-		*/
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeUnit:            kodeUnit,
@@ -51,6 +56,7 @@ func InsertRefPermintaan() {
 			KodeVendor:          helperUser.KodeVendor,
 			NamaPaket:           tblPaketPl.NamaPesanan,
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
+			KodeJenisPengadaan:  kodeJenisPengadaan,
 		}
 
 		refpermintaanmodel.InsertNew(refPermintaan)

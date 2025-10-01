@@ -2,6 +2,8 @@ package subcmd
 
 import (
 	"promise-migration/db"
+	"promise-migration/internal/g"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/sibela"
 	"promise-migration/internal/sibela/sibelahelper"
 
@@ -27,6 +29,9 @@ var SibelaCmd = &cobra.Command{
 		defer db.PromiseSibela.Close()
 
 		sibelahelper.DropAllForeignKey()
+
+		g.ExcludedEmails = ghelper.GetExcludedEmail()
+		
 		sibelahelper.TruncateTableAndLog()
 
 		sibela.InsertRefPermintaan()
