@@ -10,44 +10,110 @@ Table users {
 }
 */
 
-Enum metode_evaluasi {
-  harga_terendah
-  sistem_nilai
-}
 
 Table ref_pengadaan {
   kode_pengadaan serial [pk]
-  tahun_anggaran int(4)
-  no_rup int(4)
-  nilai_hps int4
+
+  no_rup varchar(20) [note: "Ambil dari SI-PPan"]
+  // apakah Data DRAUK dan RUP nya perlu di de-normalisasi ?
+
+  nilai_hps int4 [note: 'Harga Perkiraan sendiri']
+
+  kode_kategori int4 [note: "Ambil dari SI-DaPeT"]
+  kode_kualifikasi_usaha int4 [note: "Ambil dari SI-DaPeT"]
+
   kode_jenis_kontrak int4
-  file_kerangka_ak varchar(255) [note: 'Kerangka Acuan Kerja']
-  file_boq varchar(255) [note: 'Bill of Quantity']
-  file_rancangan_kontrak varchar(255)
   kode_status_pengadaan int4
-  file_s_tugas_pokja varchar(255) [note: 'Surat tugas Pokja']
+  kode_pokja int4 
+
   metode_evaluasi metode_evaluasi [note: 'harga_terendah, sistem_nilai']
-  tgl_pengumuman_pengadaan_awal datetime
-  tgl_pengumuman_pengadaan_akhir datetime
-  tgl_pemberian_penjelasan_awal datetime
-  tgl_pemberian_penjelasan_akhir datetime
-  tgl_pemasukan_penawaran_awal datetime
-  tgl_pemasukan_penawaran_akhir datetime
-  tgl_pembukaan_penawaran_awal datetime
-  tgl_pembukaan_penawaran_akhir datetime
-  tgl_eval_klasifikasi_nego_awal datetime
-  tgl_eval_klasifikasi_nego_akhir datetime
-  tgl_penetapan_pengumuman_pemenang_awal datetime
-  tgl_penetapan_pengumuman_pemenang_akhir datetime
+
+  tgl_pengumuman_pengadaan_awal timestamptz
+  tgl_pengumuman_pengadaan_akhir timestamptz
+  tgl_pemberian_penjelasan_awal timestamptz
+  tgl_pemberian_penjelasan_akhir timestamptz
+  tgl_pemasukan_penawaran_awal timestamptz
+  tgl_pemasukan_penawaran_akhir timestamptz
+  tgl_pembukaan_penawaran_awal timestamptz
+  tgl_pembukaan_penawaran_akhir timestamptz
+  tgl_eval_klasifikasi_nego_awal timestamptz
+  tgl_eval_klasifikasi_nego_akhir timestamptz
+  tgl_penetapan_pengumuman_pemenang_awal timestamptz
+  tgl_penetapan_pengumuman_pemenang_akhir timestamptz
   ucr varchar(80)
   uch varchar(80)
   udcr timestamptz
   udch timestamptz
+
+  note: "Dokumen Persiapan Pengadaan"
 }
 
-Table ref_tahun_anggaran {
-  tahun int4 [pk]
+Table trx_kualifikasi_usaha_vendor {
+  kode_kuv serial [pk]
+  kode_pengadaan int4
+  // kode_kategori int4 [note: "Ambil dari SI-DaPeT"]
+  kode_kualifikasi_usaha int4 [note: "Ambil dari SI-DaPeT"]
+
+  note: "Kualifikasi Usaha Vendor - satu pengadaan bisa lebih dari satu"
 }
+Ref: "trx_kualifikasi_usaha_vendor"."kode_pengadaan" < "ref_pengadaan"."kode_pengadaan"
+
+Table ref_ket_pertor {
+  kode_ket_pertor serial [pk]
+}
+
+Table ref_kelompok_dok {
+  kode_kelompok int2 [pk]
+  nama_kelompok varchar(50)
+
+  note: "DPP, Surat Tugas Pokja, Kaji Ulang, dll..."
+}
+
+Table ref_nama_dok {
+  kode_nama_dok int4 [pk]
+  kode_kelompok int2
+  nama_dok varchar(50)
+
+  note: "Kerangka Acuan Kerja, Bill of Quantity, Rancangan Kontrak, dll..."
+}
+
+Table trx_dok_pengadaan {
+  kode_dok serial [pk]
+  kode_pengadaan int4
+  kode_nama_dok int4
+  file_dok varchar(255)
+  encrypt_key varchar(255)
+  udcr timestamptz
+}
+
+Table trx_dok_pengadaan_hist {
+  kode_hist serial [pk]
+  kode_dok int4
+  file_dok varchar(255)
+  encrypt_key varchar(255)
+  udcr timestamptz
+
+  note: "history revisi dokumen di trx_dok_pengadaan"
+}
+
+
+Enum status_tugas {
+  proses
+  selesai
+}
+
+Table trx_pokja {
+  kode_pokja serial [pk]
+  status_tugas status_tugas
+}
+
+Table trx_anggota_pokja {
+  kode_anggota_pokja serial [pk]
+  kode_pokja int4
+  email varchar(80)
+}
+
+
 
 
 Enum ya_tidak {
@@ -84,13 +150,17 @@ Table ref_rup_detail {
 }
 
 Table ref_jenis_kontrak {
-  kode_jenis_kontrak int4 [pk, not null]
+  kode_jenis_kontrak int4 [pk]
   jenis_kontrak varchar(255)
+
+  note: '"lumpsum","harga satuan","gabungan lumpsum dan harga satuan","Berbasis Kinerja (Performance Based Contract)","waktu penugasan","payung","biaya plus imbalan (cost plus fee)","tukar kunci (turnkey)"'
 }
 
 Table ref_status_pengadaan {
-  kode_status_pengadaan int4
+  kode_status_pengadaan int4 [pk]
   status varchar(255)
+
+  note: "Draft, Proses pada Direktur, Revisi DPP, Proses Kaji Pokja, Proses Pemilihan, Proses Kontrak, Selesai Kontrak"
 }
 
 Table trx_surat_panutan {
@@ -99,60 +169,334 @@ Table trx_surat_panutan {
   id_panutan int4
 }
 
-Table trx_pokja_terpilih {
-  kode_trx serial [pk]
-  kode_pengadaan int4
-  email_pokja varchar(80)
+Table ref_status_ku {
+  kode_status_ku int2 [pk]
+  status varchar(50)
+
+  note: "Surat Undangan Belum Diproses ke PPK, Proses BA Kaji Ulang di Pokja, Pemberian Tanggapan oleh PPK, Finalisasi BA Kaji Ulang oleh Pokja, Selesai"
 }
 
-Table trx_undangan_kaji_ulang {
+Table ref_status_revisi_dpp {
+  kode_status_revisi_dpp int2 [pk]
+  status varchar(50)
+
+  note: "Proses Pengisian, Proses Pemeriksaan, Selesai"
+}
+
+Table trx_kaji_ulang {
+  kode_ku serial [pk]
+  kode_pengadaan int4
+  tgl_kaji_ulang timestamptz
+  waktu_mulai time
+  waktu_selesai time
+  is_online bool [note: "Apakah acara kaji ulangnya diadakan secara online"]
+  tempat_tautan text [note: "Kalau kaji ulangnya secara online, diisi dengan tautan link, kalau offline, diisi dengan lokasi tempat pertemuan"]
+  catatan text [note: "catatan undangan kaji ulang"]
+  is_undangan_diproses bool [default: false]
+  kode_status_ku int2
+  kesimpulan text [note: "Kesimpulan akhir dari Berita Acara Kaji Ulang"]
+  is_revisi bool [note: "Flag apakah permintaan pengadaan perlu direvisi"]
+  kode_status_revisi_dpp int
+  ket_perubahan text
+  is_dok_revisi_sudah_diunggah bool
+  is_revisi_diterima bool
+  alasan_tolak text
+
+  note: "Untuk mencatat jadwal kaji ulang permintaan pengadaan"
+}
+
+Table ref_reviu_item_ku {
+  kode_reviu_item serial [pk]
+  reviu_item varchar(100)
+  keterangan text
+  is_aktif bool [default: true]
+}
+
+Table ref_item_tanya_ku {
+  kode_item_tanya serial [pk]
+  item_tanya text
+  is_aktif bool [default: true]
+}
+
+Table trx_reviu_item_item_tanya {
+  kode_trx serial [pk]
+  kode_reviu_item int4
+  kode_item_tanya int4
+
+  note: "Untuk memasangkan reviu_item dengan item_tanya, karena tiap reviu_item punya item_tanya masing2"
+}
+
+Table ref_multiple_choice_ku {
+  kode_mc serial [pk]
+  jawaban varchar(100)
+}
+
+Table trx_jenis_pengadaan_reviu_item {
+  kode_trx serial [pk]
+  kode_jenis_pengadaan int4 [note: "ambil dari Sippan"]
+  order int2
+  kode_reviu_item int4
+
+  note: "Untuk memasangkan jenis_pengadaan dengan reviu_item, karena reviu_item untuk tiap jenis_pengadaan bisa berbeda beda"
+}
+
+Table trx_tanya_jawab_ku {
+  kode_tanya_jawab serial [pk]
+  kode_ku int4
+  kode_reviu_item int4
+  kode_item_tanya int4
+  jawab text
+}
+
+Table trx_rekomen_tanggap_ku {
+  kode_rekomen_tanggap serial [pk]
+  kode_ku int4
+  kode_reviu_item int4
+  rekomendasi text
+  tanggapan text
+}
+
+Table trx_penerima_undangan_ku {
+  kode_penerima_undangan serial [pk]
+  kode_ku int4
+  email varchar(80)
+  nama varchar(100)
+}
+
+Table trx_anggota_pokja_ku {
+  kode_anggota serial [pk]
+  kode_ku int4
+  email varchar(80)
+  nama varchar(100)
+  is_hadir bool
+  is_penandatangan bool
+
+  note: "Daftar anggota pokja yg hadir pada acara kaji ulang"
+}
+
+Table trx_dokumentasi_ku {
+  kode_dokumentasi serial [pk]
+  kode_ku int4
+  file_dokumentasi varchar(255)
+  
+  note: "File2 dokumentasi Berita Acara Kaji Ulang"
+}
+
+Table ref_metode_pemasukan_dok {
+  kode_metode_pemasukan_dok int2 [pk]
+  metode varchar(100)
+}
+
+Enum metode_evaluasi {
+  harga_terendah
+  sistem_nilai
+}
+
+Table trx_persiapan_pemilihan {
+  kode_persiapan_pemilihan serial [pk]
+  kode_pengadaan int4
+  kode_metode_pemasukan_dok int2
+  metode_evaluasi metode_evaluasi
+  tgl_pengumuman_awal date
+  tgl_pengumuman_akhir date
+  tgl_penjelasan_awal date
+  tgl_penjelasan_akhir date
+  tgl_pemasukan_penawaran_awal date
+  tgl_pemasukan_penawaran_akhir date
+  tgl_pembukaan_penawaran_awal date
+  tgl_pembukaan_penawaran_akhir date
+  tgl_eval_klasif_nego_awal date
+  tgl_eval_klasif_nego_akhir date
+  tgl_penetapan_pengumuman_awal date
+  tgl_penetapan_pengumuman_akhir date
+  // is_jadwal_pelaksanaan_complete bool [note: "Flag apakah data dari tgl_pengumuman sampai tgl_penetapan suda diisi semua"]
+  // is_mdp_complete bool
+  // is_kriteria_complete bool
+  // is_undangan_complete bool
+  is_undangan_diproses bool
+}
+
+Table trx_calon_vendor {
+  kode_calon serial [pk]
+  kode_persiapan_pemilihan int4
+  kode_vendor int4
+}
+
+Table ref_jenis_kriteria {
+  kode_jenis_kriteria int2 [pk]
+  jenis_kriteria varchar(50)
+
+  note: "Adminstrasi dan Kualifikasi, Teknis, Harga"
+}
+
+Table trx_kriteria_pemilihan {
+  kode_kriteria serial [pk]
+  kode_persiapan_pemilihan int4
+  kode_jenis_kriteria int2
+  kriteria varchar(255)
+  order int2
+}
+
+Table trx_undangan_pemilihan {
   kode_undangan serial [pk]
+  kode_persiapan_pemilihan int4
+  tgl_surat date
+  tgl_penjelasan date
+  waktu_penjelasan_awal time
+  waktu_penjelasan_akhir time
+  is_penjelasan_online bool [note: "Apakah Pemberian Penjelasanya diadakan secara online"]
+  tempat_tautan text [note: "Kalau Pemberian Penjelasanya secara online, diisi dengan tautan link, kalau offline, diisi dengan lokasi tempat pertemuan"]
+  tgl_peninjauan date [note: "Tgl Peninjauan Lapangan"]
+  waktu_peninjauan_awal time
+  waktu_peninjauan_akhir time
+  tempat_peninjauan varchar(255)
+  tgl_penyampaian_penawaran date
+  waktu_penyampaian_penawaran_awal time
+  waktu_penyampaian_penawaran_akhir time
+  laman text [note: "autogenerate sesuai dengan tautan modul"]
+}
+
+Table trx_penerima_undangan_pemilihan {
+  kode_penerima_undangan serial [pk]
+  kode_undangan int4
+  email varchar(80)
+  is_hadir bool [note: "konfirmasi kehadiran"]
+}
+
+Table trx_pemberian_penjelasan {
+  kode_penjelasan serial [pk]
   kode_pengadaan int4
-  tgl_undangan timestamptz
-  is_online bool
-  platform_konferensi varchar(100)
-  link_konferensi text
-  lokasi varchar(255)
-  catatan text
-
-  note: "Untuk mencatat jadwal verifikasi penyedia dengan DMAU"
+  tgl_berita_acara timestamptz
+  kode_dok_ba_penjelasan int4 [note: "Dokumen Berita Acara Pemberian Penjelasan"]
+  is_dpp_revisi bool [note: "apakah DPP perlu direvisi"]
+  ket_perubahan_dpp text
+  is_mdp_revisi bool [note: "apakah MDP perlu direvisi"]
+  tgl_surat_mdp date
+  is_ldp_revisi bool
+  ket_perubahan_ldp text
+  kode_dok_ldp int4
+  is_ldk_revisi bool
+  kode_dok_ldk int4
+  ket_perubahan_ldk text
+  tgl_ba_addendum date [note: "Tanggal Surat Berita Acara Addendum"]
+  kode_dok_addendum int4
 }
 
-Table trx_penerima_undangan_kaji_ulang {
-  kode_trx serial [pk]
-  kode_undangan int4
-  email_penerima varchar(800)
+Table trx_chat_penjelasan {
+  kode_chat serial [pk]
+  kode_penjelasan int4
+  email varchar(80)
+  chat text
+  udcr timestamptz
 }
 
-Table trx_berita_acara_ku {
-  kode_berita_acara serial [pk]
-  kode_undangan int4
-  is_revisi bool
+Enum flag_proses {
+  proses
+  selesai
 }
 
-Table ref_pertanyaan_ku {
-  kode_pertanyaan serial [pk]
-  pertanyaan text
+Table trx_flag_proses {
+  kode_flag serial [pk]
+  kode_pengadaan int4
 
-  note: 'Daftar pertanyaan kaji ulang'
+  input_jadwal_pelaksanaan flag_proses
+  upload_mdp flag_proses
+  input_kriteria flag_proses
+  input_undangan_pemilihan flag_proses
+
+  pemberian_penjelasan flag_proses
+  peninjauan_lapangan flag_proses
+  ba_pemberian_penjelasan flag_proses
+  addendum_pemberial_penjelasan flag_proses
+
+  pembukaan_penawaran flag_proses
+  evaluasi_klarifikasi_negosiasi flag_proses
+  penetapan_pengumuman flag_proses
 }
 
-Table ref_jawaban_ku {
-  kode_jawaban serial [pk]
-  jawaban varchar
-  is_aktif bool
+Table trx_flag_tte {
+  kode_flag serial [pk]
+  kode_dok int4
+  email varchar(80)
+  is_sudah_tte bool [default: false]
 
-  note: 'Daftar jawaban kaji ulang'
+  note: "mencatat siapa saja yg sudah melakukan TTE dokumen di trx_dok_pengadaan"
+  }
+
+Table trx_pembukaan_penawaran {
+  kode_pembukaan_penawaran serial [pk]
+  kode_pengadaan int4
+  tgl_ba_pembukaan_penawaran date
+  kode_dok_ba_pembukaan_penawaran int4
+  kode_dok_ba_evaluasi_klarifikasi int4
+  tgl_ba_nego date
+  tgl_nego_mulai timestamptz
+  tgl_nego_selesai timestamptz
+  kode_dok_ba_nego int4
+  tgl_ba_hasil_pemilihan date
+  kode_dok_ba_hasil_pemilihan int4
+  tgl_ba_penetapan_pemenang date
+  kode_dok_ba_penetapan_pemenang int4
 }
 
-Table trx_pertanyaan_ku {
-  kode_trx serial [pk]
-  kode_berita_acara int4
-  kode_pertanyaan int4
-  kode_jawaban int4
-  catatan text
+Enum status_evaluasi {
+  belum_evaluasi
+  gugur
+  lolos
 }
 
+Table trx_penawaran_vendor {
+  kode_penawaran_vendor serial [pk]
+  kode_pembukaan_penawaran int4
+  kode_vendor int4
+  nilai_penawaran int4
+  is_data_complete bool [note: "flag apakah vendor sudah selesai mengisi data"]
+
+  // evaluasi, verifikasi
+  status_evaluasi status_evaluasi
+
+  // penetapan
+  peringkat int2 [note: "Pemenang, Cadangan 1, Cadangan 2"]
+}
+
+Table trx_kriteria_dok_penawaran_vendor {
+  kode_kdpv serial [pk]
+  kode_penawaran_vendor int4
+  kode_kriteria int4
+
+  // evaluasi, verifikasi
+  is_memenuhi bool
+  alasan_tidak_memenuhi text
+}
+
+Enum negotiator {
+  pokja
+  penyedia
+}
+
+Table trx_nego_penawaran {
+  kode_nego_penawaran serial [pk]
+  kode_penawaran_vendor int4
+  negotiator negotiator
+  harga_nego int4
+  kode_dok int4
+  tgl_nego timestamptz
+  is_deal bool
+}
+
+Table trx_dok_penawaran_vendor {
+  kode_dok_penawaran serial [pk]
+  kode_kdpv int4
+  kode_dok int4
+
+  // evaluasi, verifikasi
+  is_sesuai bool
+  is_ada_klarifikasi bool
+  hasil_klarifikasi text
+}
+
+
+/*
 Table trx_vendor_pengadaan {
   kode_trx serial [pk]
   kode_pengadaan int4
@@ -161,7 +505,7 @@ Table trx_vendor_pengadaan {
   nama_narahubung varchar(255)
   email varchar(80)
 }
-
+*/
 
 
 
@@ -171,16 +515,85 @@ Ref: "ref_jenis_kontrak"."kode_jenis_kontrak" < "ref_pengadaan"."kode_jenis_kont
 
 Ref: "ref_status_pengadaan"."kode_status_pengadaan" < "ref_pengadaan"."kode_status_pengadaan"
 
-Ref: "ref_pengadaan"."kode_pengadaan" < "trx_pokja_terpilih"."kode_pengadaan"
 
-Ref: "trx_undangan_kaji_ulang"."kode_undangan" < "trx_penerima_undangan_kaji_ulang"."kode_undangan"
+Ref: "trx_kaji_ulang"."kode_ku" < "trx_penerima_undangan_ku"."kode_ku"
 
-Ref: "trx_berita_acara_ku"."kode_berita_acara" < "trx_pertanyaan_ku"."kode_berita_acara"
 
-Ref: "ref_pertanyaan_ku"."kode_pertanyaan" < "trx_pertanyaan_ku"."kode_pertanyaan"
 
-Ref: "ref_jawaban_ku"."kode_jawaban" < "trx_pertanyaan_ku"."kode_jawaban"
+Ref: "ref_pengadaan"."kode_pengadaan" < "trx_kaji_ulang"."kode_pengadaan"
 
-Ref: "ref_pengadaan"."kode_pengadaan" < "trx_undangan_kaji_ulang"."kode_pengadaan"
 
-Ref: "trx_undangan_kaji_ulang"."kode_undangan" < "trx_berita_acara_ku"."kode_undangan"
+Ref: "trx_dok_pengadaan"."kode_dok" < "trx_dok_pengadaan_hist"."kode_dok"
+
+Ref: "ref_nama_dok"."kode_nama_dok" < "trx_dok_pengadaan"."kode_nama_dok"
+
+Ref: "ref_pengadaan"."kode_pengadaan" < "trx_dok_pengadaan"."kode_pengadaan"
+
+Ref: "ref_kelompok_dok"."kode_kelompok" < "ref_nama_dok"."kode_kelompok"
+
+Ref: "trx_pokja"."kode_pokja" < "trx_anggota_pokja"."kode_pokja"
+
+
+Ref: "trx_pokja"."kode_pokja" - "ref_pengadaan"."kode_pokja" [delete: cascade]
+
+
+Ref: "trx_kaji_ulang"."kode_ku" < "trx_anggota_pokja_ku"."kode_ku"
+
+Ref: "trx_kaji_ulang"."kode_ku" < "trx_dokumentasi_ku"."kode_ku"
+
+Ref: "ref_reviu_item_ku"."kode_reviu_item" < "trx_reviu_item_item_tanya"."kode_reviu_item"
+
+Ref: "ref_item_tanya_ku"."kode_item_tanya" < "trx_reviu_item_item_tanya"."kode_item_tanya"
+
+Ref: "ref_reviu_item_ku"."kode_reviu_item" < "trx_jenis_pengadaan_reviu_item"."kode_reviu_item"
+
+Ref: "trx_kaji_ulang"."kode_ku" < "trx_tanya_jawab_ku"."kode_ku"
+
+Ref: "ref_reviu_item_ku"."kode_reviu_item" < "trx_tanya_jawab_ku"."kode_reviu_item"
+
+Ref: "ref_item_tanya_ku"."kode_item_tanya" < "trx_tanya_jawab_ku"."kode_item_tanya"
+
+Ref: "trx_kaji_ulang"."kode_ku" < "trx_rekomen_tanggap_ku"."kode_ku"
+
+Ref: "ref_reviu_item_ku"."kode_reviu_item" < "trx_rekomen_tanggap_ku"."kode_reviu_item"
+
+Ref: "ref_status_ku"."kode_status_ku" < "trx_kaji_ulang"."kode_status_ku"
+
+Ref: "ref_status_revisi_dpp"."kode_status_revisi_dpp" < "trx_kaji_ulang"."kode_status_revisi_dpp"
+
+Ref: "ref_pengadaan"."kode_pengadaan" - "trx_persiapan_pemilihan"."kode_pengadaan"
+
+Ref: "ref_metode_pemasukan_dok"."kode_metode_pemasukan_dok" < "trx_persiapan_pemilihan"."kode_metode_pemasukan_dok"
+
+Ref: "trx_persiapan_pemilihan"."kode_persiapan_pemilihan" < "trx_calon_vendor"."kode_persiapan_pemilihan"
+
+Ref: "trx_persiapan_pemilihan"."kode_persiapan_pemilihan" < "trx_kriteria_pemilihan"."kode_persiapan_pemilihan"
+
+Ref: "ref_jenis_kriteria"."kode_jenis_kriteria" < "trx_kriteria_pemilihan"."kode_jenis_kriteria"
+
+Ref: "trx_persiapan_pemilihan"."kode_persiapan_pemilihan" - "trx_undangan_pemilihan"."kode_persiapan_pemilihan"
+
+Ref: "trx_undangan_pemilihan"."kode_undangan" < "trx_penerima_undangan_pemilihan"."kode_undangan"
+
+Ref: "trx_dok_pengadaan"."kode_dok" < "trx_flag_tte"."kode_dok"
+
+Ref: "trx_pemberian_penjelasan"."kode_penjelasan" < "trx_chat_penjelasan"."kode_penjelasan"
+
+Ref: "trx_dok_pengadaan"."kode_dok" - "trx_pemberian_penjelasan"."kode_dok_ba_penjelasan"
+
+
+Ref: "trx_penawaran_vendor"."kode_penawaran_vendor" < "trx_kriteria_dok_penawaran_vendor"."kode_penawaran_vendor"
+
+Ref: "trx_dok_pengadaan"."kode_dok" - "trx_dok_penawaran_vendor"."kode_dok"
+
+Ref: "trx_pembukaan_penawaran"."kode_pembukaan_penawaran" < "trx_penawaran_vendor"."kode_pembukaan_penawaran"
+
+Ref: "trx_dok_pengadaan"."kode_dok" - "trx_pembukaan_penawaran"."kode_dok_ba_pembukaan_penawaran"
+
+Ref: "ref_pengadaan"."kode_pengadaan" - "trx_pemberian_penjelasan"."kode_pengadaan"
+Ref: "ref_pengadaan"."kode_pengadaan" - "trx_pembukaan_penawaran"."kode_pengadaan"
+
+
+Ref: "trx_kriteria_dok_penawaran_vendor"."kode_kdpv" < "trx_dok_penawaran_vendor"."kode_kdpv"
+
+Ref: "trx_penawaran_vendor"."kode_penawaran_vendor" < "trx_nego_penawaran"."kode_penawaran_vendor"

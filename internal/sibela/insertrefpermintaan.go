@@ -24,15 +24,16 @@ func InsertRefPermintaan() {
 		userPPK = helperusermodel.GetByVmsUserId(tblPaketPl.IdPpk)
 		kodeUnit = userPPK.KodeUnit
 
-		// dapatkan jenis_penyedia
-		// var jenisPenyedia pgtype.Text
+		// dapatkan kodeVendor
 		var profilePenyedia structs.TblProfilePenyedia
 		var helperUser helperusermodel.HelperUser
+		var kodeVendor pgtype.Int4
 
 		if (tblPaketPl.IdProfilPenyedia != pgtype.Int4{}) {
 			profilePenyedia = sibelaprofile.GetPenyediaById(tblPaketPl.IdProfilPenyedia)
 			vmsUserId := profilePenyedia.IdUser
 			helperUser = helperusermodel.GetByVmsUserId(vmsUserId)
+			kodeVendor = helperUser.KodeVendor
 		}
 
 		var kodeJenisPengadaan pgtype.Int4
@@ -53,10 +54,11 @@ func InsertRefPermintaan() {
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeUnit:            kodeUnit,
 			JenisPenyedia:       tblPaketPl.JenisPenyedia,
-			KodeVendor:          helperUser.KodeVendor,
+			KodeVendor:          kodeVendor,
 			NamaPaket:           tblPaketPl.NamaPesanan,
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
+			// Ucr:                 helperUser.VmsUserEmail,
 		}
 
 		refpermintaanmodel.InsertNew(refPermintaan)

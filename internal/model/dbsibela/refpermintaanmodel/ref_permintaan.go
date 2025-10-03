@@ -203,3 +203,13 @@ func DeleteByKodePermintaan(kodePermintaan pgtype.Int4) {
 		log.Fatal("failed deleting RefPermintaan (ref_permintaan.go), " + err.Error())
 	}
 }
+
+func DeleteWhereUcrNull() {
+  ctx := context.Background()
+
+  qDelete := `DELETE FROM ref_permintaan WHERE ucr IS NULL`
+  _, err := db.DbSibela.Exec(ctx, qDelete)
+  if err != nil {
+    log.Fatal("failed deleting ref_permintaan (ref_permintaan.go:DeleteWhereUcrNull), " + err.Error())
+  }
+}

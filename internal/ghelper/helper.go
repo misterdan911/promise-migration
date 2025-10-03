@@ -23,7 +23,7 @@ type VmsUserId struct {
 
 func GetExcludedEmail() []string {
   var emails []string
-  path := filepath.Join("files", "excluded_email.txt")
+  path := filepath.Join("files", "excluded_email", "email.txt")
 
   // Open the file
   file, err := os.Open(path)

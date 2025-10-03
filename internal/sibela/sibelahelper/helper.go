@@ -73,3 +73,22 @@ type Lengthable interface {
 func GetLen[T Lengthable](myValue T) string {
 	return " (" + strconv.Itoa(len(myValue)) + ")"
 }
+
+func UpdatePkSequenceFromFile() {
+
+	var path string
+
+	path = filepath.Join("files", "sibela", "sql", "update_serial_sequence.sql")
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatal("Error ReadFile: " + err.Error())
+	}
+
+	qFk := string(data)
+	ctx := context.Background()
+	_, errQFk := db.DbSibela.Exec(ctx, qFk)
+	if errQFk != nil {
+		log.Fatal("UpdatePkSequenceFromFile Failed, " + errQFk.Error())
+	}
+}
