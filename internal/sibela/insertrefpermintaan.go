@@ -51,6 +51,18 @@ func InsertRefPermintaan() {
 			kodeJenisPengadaan.Valid = false
 		}
 
+		// dapatkan kode_jenis_aset
+		var kodeJenisAset pgtype.Text
+		kodeJenisAset.Valid = true
+
+		if tblPaketPl.JenisAset.String == "persediaan" || tblPaketPl.JenisAset.String == "baranghabispakai" {
+			kodeJenisAset.String = "11"
+		} else if tblPaketPl.JenisAset.String == "asettetap" {
+			kodeJenisAset.String = "12"
+		} else {
+			kodeJenisAset.Valid = false
+		}
+
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeUnit:            kodeUnit,
 			JenisPenyedia:       tblPaketPl.JenisPenyedia,
@@ -58,6 +70,7 @@ func InsertRefPermintaan() {
 			NamaPaket:           tblPaketPl.NamaPesanan,
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
+			KodeJenisAset:       kodeJenisAset,
 			// Ucr:                 helperUser.VmsUserEmail,
 		}
 
