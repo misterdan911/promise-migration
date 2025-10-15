@@ -3,6 +3,8 @@ package sibela
 import (
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
+	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/sibela/sibelahelper"
@@ -63,6 +65,9 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
+		// dapatkan nama_unit 
+		namaUnit := GetNamaUnit(kodeUnit)
+
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeUnit:            kodeUnit,
 			JenisPenyedia:       tblPaketPl.JenisPenyedia,
@@ -71,6 +76,7 @@ func InsertRefPermintaan() {
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
+			NamaUnit:            namaUnit,
 			// Ucr:                 helperUser.VmsUserEmail,
 		}
 
@@ -79,4 +85,16 @@ func InsertRefPermintaan() {
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")
 
+}
+
+func GetNamaUnit(kodeUnit pgtype.Text) pgtype.Text {
+	var namaUnit pgtype.Text
+
+	namaUnit = tblunitsubmodel.GetNamaUnitByKodeUnit(kodeUnit)
+
+	if namaUnit.Valid == false {
+		namaUnit = tblunitsubbarumodel.GetNamaUnitByKodeUnit(kodeUnit)
+	}
+
+	return namaUnit
 }
