@@ -41,7 +41,7 @@ type RefPermintaan struct {
 	TglSelesaiNegosiasi        pgtype.Timestamptz
 }
 
-func InsertNew(refPermintaan RefPermintaan) {
+func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
 	ctx := context.Background()
 
 	qIns := `
@@ -103,7 +103,7 @@ func InsertNew(refPermintaan RefPermintaan) {
 		@deskripsi_pendukung_penyedia,
 		@kode_rup,
 		@tgl_selesai_negosiasi
-  )`
+  ) RETURNING *`
 
 	args := pgx.NamedArgs{
 		"kode_unit":                    refPermintaan.KodeUnit,
@@ -136,10 +136,22 @@ func InsertNew(refPermintaan RefPermintaan) {
 		"tgl_selesai_negosiasi":        refPermintaan.TglSelesaiNegosiasi,
 	}
 
-	_, errIns := db.DbSibela.Exec(ctx, qIns, args)
+	rwIns, errIns := db.DbSibela.Query(ctx, qIns, args)
 	if errIns != nil {
 		log.Fatal("unable to insert ref_permintaan, " + errIns.Error())
 	}
+
+
+	defer rwIns.Close()
+
+	allRows, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefPermintaan])
+
+	if errRwIns != nil {
+		log.Fatal("failed collecting RefPermintaan (ref_permintaan.go), " + errRwIns.Error())
+	}
+
+	return allRows[0]
+
 }
 
 func GetAllData() []RefPermintaan {

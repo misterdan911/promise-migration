@@ -32,9 +32,9 @@ type TblPaketPlOnion struct {
 	StatusUndangan     pgtype.Int4
 	StatusTermin       pgtype.Text
 	Keterangan         pgtype.Text
-	CreateAt           pgtype.Timestamp
-	UpdatedAt          pgtype.Timestamp
-	DeletedAt          pgtype.Timestamp
+	CreateAt           pgtype.Timestamptz
+	UpdatedAt          pgtype.Timestamptz
+	DeletedAt          pgtype.Timestamptz
 }
 
 func GetAllData() []TblPaketPlOnion {

@@ -65,6 +65,7 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
+
 		// dapatkan nama_unit 
 		namaUnit := GetNamaUnit(kodeUnit)
 
@@ -80,7 +81,9 @@ func InsertRefPermintaan() {
 			// Ucr:                 helperUser.VmsUserEmail,
 		}
 
-		refpermintaanmodel.InsertNew(refPermintaan)
+		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
+
+		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")
