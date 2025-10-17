@@ -26,5 +26,5 @@ func TruncateTableAndLog() {
 
 	refpermintaanmodel.DeleteWhereUcrNull()
 
-	UpdatePkSequenceFromFile()
+	UpdatePrimaryKeySequenceFromFile()
 }

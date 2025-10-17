@@ -74,7 +74,7 @@ func GetLen[T Lengthable](myValue T) string {
 	return " (" + strconv.Itoa(len(myValue)) + ")"
 }
 
-func UpdatePkSequenceFromFile() {
+func UpdatePrimaryKeySequenceFromFile() {
 
 	var path string
 

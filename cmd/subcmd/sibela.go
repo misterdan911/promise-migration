@@ -28,10 +28,10 @@ var SibelaCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-		sibelahelper.DropAllForeignKey()
+		// sibelahelper.DropAllForeignKey()
 
 		g.ExcludedEmails = ghelper.GetExcludedEmail()
-		
+
 		sibelahelper.TruncateTableAndLog()
 
 		sibela.InsertRefPermintaan()

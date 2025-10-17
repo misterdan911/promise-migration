@@ -1,4 +1,4 @@
-package tblpesananplmodel
+package tblpesanandptplmodel
 
 import (
 	"context"
@@ -15,7 +15,7 @@ func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
 
 	qTblPesanan := `
   SELECT
-		id_pesanan_pl AS id_pesanan,
+	id_pesanan_pl AS id_pesanan,
 		id_paket_pl AS id_paket,
 		kode_bmn AS kode_bmn,
 		kode_ruang AS kode_ruang,
@@ -26,8 +26,8 @@ func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
 		negosiasi_pl AS negosiasi,
 		total_harga_pl AS total_harga,
 		status_pesanan_pl AS status_pesanan
-	FROM tbl_pesanan_pl
-	WHERE id_paket_pl = $1
+	FROM tbl_pesanandpt_pl
+	WHERE id_paket = $1
 	`
   rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblPesanan, idPaket)
   if err != nil {
