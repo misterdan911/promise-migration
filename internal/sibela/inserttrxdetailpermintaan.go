@@ -15,9 +15,10 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 
 	var tblPesanan structs.TblPesanan
 
-	if tblPaketPl.JenisPenyedia.String == "luar_dpt" {
+	switch tblPaketPl.JenisPenyedia.String {
+	case "luar_dpt":
 		tblPesanan = tblpesananplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
-	} else if tblPaketPl.JenisPenyedia.String == "dpt" {
+	case "dpt":
 		tblPesanan = tblpesanandptplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
 	}
 

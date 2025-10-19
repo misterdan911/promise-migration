@@ -1,6 +1,7 @@
 package sibela
 
 import (
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
@@ -65,6 +66,10 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
+		// dapatkan nilai_hps
+    var nilaiHps pgtype.Int4
+		nilaiHps.Valid = true
+	  nilaiHps.Int32 = ghelper.StringToInt32WithDefault(tblPaketPl.Total.String, 0)
 
 		// dapatkan nama_unit 
 		namaUnit := GetNamaUnit(kodeUnit)
@@ -77,6 +82,7 @@ func InsertRefPermintaan() {
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
+			NilaiHps:            nilaiHps,
 			NamaUnit:            namaUnit,
 			// Ucr:                 helperUser.VmsUserEmail,
 		}
