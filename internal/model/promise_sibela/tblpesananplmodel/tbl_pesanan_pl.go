@@ -9,8 +9,8 @@ import (
 	"promise-migration/internal/sibela/structs"
 )
 
-func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
-	var tblPesanan structs.TblPesanan
+func GetDataByIdPaket(idPaket pgtype.Int4) []structs.TblPesanan {
+	// var tblPesanan structs.TblPesanan
 	ctx := context.Background()
 
 	qTblPesanan := `
@@ -40,9 +40,11 @@ func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
   }
   defer rwTblPesanan.Close()
 
+	/*
 	if len(allTblPesanan) > 0 {
 		tblPesanan = allTblPesanan[0]
 	}
+	*/
 
-	return tblPesanan
+	return allTblPesanan
 }

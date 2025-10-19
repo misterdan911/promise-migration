@@ -3,19 +3,18 @@ package tblpesanandptplmodel
 import (
 	"context"
 	"log"
-	"promise-migration/db"
-	"promise-migration/internal/sibela/structs"
-
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"promise-migration/db"
+	"promise-migration/internal/sibela/structs"
 )
 
-func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
-	var tblPesanan structs.TblPesanan
+func GetDataByIdPaket(idPaket pgtype.Int4) []structs.TblPesanan {
+	// var tblPesanan structs.TblPesanan
 	ctx := context.Background()
 
 	qTblPesanan := `
-	  SELECT
+  SELECT
 		id_pesanan_dptpl AS id_pesanan,
 		id_paket_dptpl AS id_paket,
 		kode_bmn AS kode_bmn,
@@ -30,20 +29,22 @@ func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblPesanan {
 	FROM tbl_pesanandpt_pl
 	WHERE id_paket_dptpl = $1
 	`
-	rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblPesanan, idPaket)
-	if err != nil {
-		log.Fatal("qTblPesanan Failed, " + err.Error() + " " + qTblPesanan)
-	}
+  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblPesanan, idPaket)
+  if err != nil {
+    log.Fatal("qTblPesanan Failed, " + err.Error() + " " + qTblPesanan)
+  }
 
-	allTblPesanan, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[structs.TblPesanan])
-	if err != nil {
-		log.Fatal("failed collecting rwTblPesanan, " + err.Error())
-	}
-	defer rwTblPesanan.Close()
+  allTblPesanan, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[structs.TblPesanan])
+  if err != nil {
+    log.Fatal("failed collecting rwTblPesanan, " + err.Error())
+  }
+  defer rwTblPesanan.Close()
 
+	/*
 	if len(allTblPesanan) > 0 {
 		tblPesanan = allTblPesanan[0]
 	}
+	*/
 
-	return tblPesanan
+	return allTblPesanan
 }

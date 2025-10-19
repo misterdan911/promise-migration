@@ -13,30 +13,36 @@ import (
 
 func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) {
 
-	var tblPesanan structs.TblPesanan
+	var allTblPesanan []structs.TblPesanan
 
 	switch tblPaketPl.JenisPenyedia.String {
 	case "luar_dpt":
-		tblPesanan = tblpesananplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
+		allTblPesanan = tblpesananplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
 	case "dpt":
-		tblPesanan = tblpesanandptplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
+		allTblPesanan = tblpesanandptplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
 	}
+	
+	for _, tblPesanan := range allTblPesanan {
 
-	var kuantitas pgtype.Int4
-	kuantitas.Valid = true
-	kuantitas.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.Kuantitas.String, 0)
+		// dapatkan kuantitas
+		var kuantitas pgtype.Int4
+		kuantitas.Valid = true
+		kuantitas.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.Kuantitas.String, 0)
 
-	var hargaSatuan pgtype.Int4
-	hargaSatuan.Valid = true
-	hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.HargaSatuan.String, 0)
+		// dapatkan harga satuan
+		var hargaSatuan pgtype.Int4
+		hargaSatuan.Valid = true
+		hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.HargaSatuan.String, 0)
 
-	trxDetailPermintaan := trxdetailpermintaanmodel.TrxDetailPermintaan{
-		KodePermintaan: kodePermintaan,
-		KodeRuang:      tblPesanan.KodeRuang,
-		Kuantitas:      kuantitas,
-		Satuan:         tblPesanan.SatuanUkuran,
-		Harga:          hargaSatuan,
+		trxDetailPermintaan := trxdetailpermintaanmodel.TrxDetailPermintaan{
+			KodePermintaan: kodePermintaan,
+			KodeBmut:       tblPesanan.KodeBMN,
+			KodeRuang:      tblPesanan.KodeRuang,
+			Kuantitas:      kuantitas,
+			Satuan:         tblPesanan.SatuanUkuran,
+			Harga:          hargaSatuan,
+		}
+
+		trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
 	}
-
-	trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
 }
