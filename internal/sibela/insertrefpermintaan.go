@@ -4,9 +4,11 @@ import (
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
+	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/sibela/sibelahelper"
 	"promise-migration/internal/structs"
@@ -20,6 +22,17 @@ func InsertRefPermintaan() {
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
+
+		// dapakan kode_rup
+		var kodeRup pgtype.Int4
+		kodeRup.Valid = false
+		noRup := tblruputmodel.GetNoRupByIdRupUt(tblPaketPl.IdRupUt)
+		if noRup.String != "" {
+			kodeRup.Valid = true
+			kodeRup = refrupmodel.GetKodeRupByNoRup(noRup)
+			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
+		}
+
 		var userPPK helperusermodel.HelperUser
 		var kodeUnit pgtype.Text
 
@@ -75,6 +88,7 @@ func InsertRefPermintaan() {
 		namaUnit := GetNamaUnit(kodeUnit)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
+			KodeRup:             kodeRup,
 			KodeUnit:            kodeUnit,
 			JenisPenyedia:       tblPaketPl.JenisPenyedia,
 			KodeVendor:          kodeVendor,

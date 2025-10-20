@@ -3,10 +3,18 @@ package refrupmodel
 import (
 	"context"
 	"log"
+	// "fmt"
+	// "os"
+	"strings"
 	"promise-migration/db"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
+
+type KodeNoRup struct {
+	KodeRup pgtype.Int4
+	NoRup   pgtype.Text
+}
 
 func DeleteByUcr(email pgtype.Text) {
 
@@ -19,3 +27,31 @@ func DeleteByUcr(email pgtype.Text) {
   }
 
 }
+
+func GetKodeRupByNoRup(noRup pgtype.Text) pgtype.Int4 {
+
+	ctx := context.Background()
+	noRup.String = strings.TrimSpace(noRup.String)
+	qSelect := `
+	SELECT 
+		kode_rup,
+		no_rup
+	FROM 
+		ref_rup
+	WHERE 
+		no_rup = $1
+	`
+	var kodeNoRup KodeNoRup
+
+	err := db.DbSippan.QueryRow(ctx, qSelect, noRup).Scan(
+		&kodeNoRup.KodeRup,
+		&kodeNoRup.NoRup,
+	)
+	if err != nil {
+		// fmt.Fprintf(os.Stderr, "GetKodeRupByNoRup return null value: %v\n", err)
+		return pgtype.Int4{}
+	}
+
+	return kodeNoRup.KodeRup
+}
+
