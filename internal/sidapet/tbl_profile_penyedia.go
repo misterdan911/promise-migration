@@ -22,11 +22,11 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/rsahambumodel"
 	"promise-migration/internal/sidapet/model/sidapet/rsertifperomodel"
 	"promise-migration/internal/sidapet/model/sidapet/rtenagaahlibumodel"
-	"time"
 
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
+
 	// "promise-migration/internal/model/dbsidapet/refvendorregistermodel"
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
@@ -60,26 +60,28 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 
 	qInsRefVendor := `
-  INSERT INTO ref_vendor (
-    kode_jenis_vendor, 
-    nama_perusahaan,
-    is_tetap,
-    status_form_luar_dpt,
+	INSERT INTO ref_vendor (
+		kode_jenis_vendor, 
+		nama_perusahaan,
+		is_tetap,
+		status_form_luar_dpt,
 		status_aktif_vendor,
-    udcr,
-    udch
-  ) VALUES (
-    @kode_jenis_vendor,
-    @nama_perusahaan,
-    @is_tetap,
-    @status_form_luar_dpt,
+		udcr,
+		udch
+	) VALUES (
+		@kode_jenis_vendor,
+		@nama_perusahaan,
+		@is_tetap,
+		@status_form_luar_dpt,
 		@status_aktif_vendor,
-    @udcr,
-    @udch
-  ) RETURNING *`
+		@udcr,
+		@udch
+	) RETURNING *`
 
 	isTetap := sql.NullBool{Valid: true}
 	if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
+		isTetap.Bool = false
+	} else if !profilePenyedia.PenyediaTerpilih.Valid {
 		isTetap.Bool = false
 	} else {
 		isTetap.Bool = true
@@ -90,7 +92,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		"nama_perusahaan":      profilePenyedia.Nama,
 		"is_tetap":             isTetap,
 		"status_form_luar_dpt": pgtype.Text{Valid: true, String: "selesai"},
-		"status_aktif_vendor": pgtype.Text{Valid: true, String: "aktif"},
+		"status_aktif_vendor":  pgtype.Text{Valid: true, String: "aktif"},
 		"udcr":                 profilePenyedia.CreateTime,
 		"udch":                 profilePenyedia.UpdateTime,
 	}
@@ -126,14 +128,19 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	// kasih akses masuk ke Si-Dapet
 	// karena semua vendor pasti bisa masuk Si-Dapet
-	currentTime := time.Now().UTC()
-	trxGroupUser := trxgroupusermodel.TrxGroupUser{
-		KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},
-		IdUser:    helperUser.UsmanRefUserId,
-		Status:    pgtype.Text{Valid: true, String: "1"},
-		Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
-	}
-	trxgroupusermodel.InsertNew(trxGroupUser)
+	/*
+		currentTime := time.Now().UTC()
+		trxGroupUser := trxgroupusermodel.TrxGroupUser{
+			KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},
+			IdUser:    helperUser.UsmanRefUserId,
+			Status:    pgtype.Text{Valid: true, String: "1"},
+			Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
+		}
+		trxgroupusermodel.InsertNew(trxGroupUser)
+	*/
+	kodeGroup := pgtype.Text{Valid: true, String: "G01.8"}
+	idUser := helperUser.UsmanRefUserId
+	trxgroupusermodel.InsertIfNotExists(kodeGroup, idUser)
 
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)

@@ -2,6 +2,7 @@ package sibela
 
 import (
 	"promise-migration/internal/ghelper"
+	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/trxdetailpermintaanmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblpesanandptplmodel"
@@ -21,7 +22,10 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 	case "dpt":
 		allTblPesanan = tblpesanandptplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
 	}
-	
+
+	var nilaiHps pgtype.Int4
+	nilaiHps.Valid = true
+
 	for _, tblPesanan := range allTblPesanan {
 
 		// dapatkan kuantitas
@@ -32,10 +36,13 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 		// dapatkan harga satuan
 		var hargaSatuan pgtype.Int4
 		hargaSatuan.Valid = true
-		hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.HargaSatuan.String, 0)
+		hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.Negosiasi.String, 0)
+
+		nilaiHps.Int32 += hargaSatuan.Int32 * kuantitas.Int32
 
 		trxDetailPermintaan := trxdetailpermintaanmodel.TrxDetailPermintaan{
 			KodePermintaan: kodePermintaan,
+			Deskripsi:      tblPesanan.NamaBarang,
 			KodeBmut:       tblPesanan.KodeBMN,
 			KodeRuang:      tblPesanan.KodeRuang,
 			Kuantitas:      kuantitas,
@@ -43,6 +50,19 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 			Harga:          hargaSatuan,
 		}
 
-		trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
+		trxDetailPermintaan = trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
+
+		InsertNegosiasiHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPesanan)
+
+		/*
+			for _, logSibela := range allLogSibela {
+				if strings.TrimSpace(logSibela.Tahap.String) == "Negosiasi" && logSibela.KeteranganNegosiasi.Valid == false {
+					InsertTrxNegoHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPesanan, logSibela)
+				}
+			}
+		*/
+
 	}
+
+	refpermintaanmodel.UpdateHps(kodePermintaan, nilaiHps)
 }

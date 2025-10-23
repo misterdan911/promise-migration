@@ -1,29 +1,31 @@
 package trxgroupusermodel
 
 import (
- "context"
- "fmt"
- "github.com/jackc/pgx/v5"
- "github.com/jackc/pgx/v5/pgtype"
- "promise-migration/db"
+	"context"
+	"fmt"
+	"promise-migration/db"
+	"time"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type TrxGroupUser struct {
- IdGroupUser pgtype.Int4
- KodeGroup   pgtype.Text
- IdUser      pgtype.Int4
- Status      pgtype.Text
- Ucr         pgtype.Text
- Uch         pgtype.Text
- Udcr        pgtype.Text
- Udch        pgtype.Text
+	IdGroupUser pgtype.Int4
+	KodeGroup   pgtype.Text
+	IdUser      pgtype.Int4
+	Status      pgtype.Text
+	Ucr         pgtype.Text
+	Uch         pgtype.Text
+	Udcr        pgtype.Text
+	Udch        pgtype.Text
 }
 
 func InsertNew(trxgroupuser TrxGroupUser) {
 
-  ctx := context.Background()
+	ctx := context.Background()
 
-  qInsert := `
+	qInsert := `
     INSERT INTO trx_group_user (
     kode_group,
     id_user,
@@ -42,20 +44,20 @@ func InsertNew(trxgroupuser TrxGroupUser) {
     @udch
   )`
 
-  args := pgx.NamedArgs{
-    "kode_group": trxgroupuser.KodeGroup,
-    "id_user":    trxgroupuser.IdUser,
-    "status":     trxgroupuser.Status,
-    "ucr":        trxgroupuser.Ucr,
-    "uch":        trxgroupuser.Uch,
-    "udcr":       trxgroupuser.Udcr,
-    "udch":       trxgroupuser.Udch,
-  }
+	args := pgx.NamedArgs{
+		"kode_group": trxgroupuser.KodeGroup,
+		"id_user":    trxgroupuser.IdUser,
+		"status":     trxgroupuser.Status,
+		"ucr":        trxgroupuser.Ucr,
+		"uch":        trxgroupuser.Uch,
+		"udcr":       trxgroupuser.Udcr,
+		"udch":       trxgroupuser.Udch,
+	}
 
-  _, errIns := db.DbUsman.Exec(ctx, qInsert, args)
-  if errIns != nil {
-    fmt.Println("unable to insert trx_group_user, " + errIns.Error())
-  }
+	_, errIns := db.DbUsman.Exec(ctx, qInsert, args)
+	if errIns != nil {
+		fmt.Println("unable to insert trx_group_user, " + errIns.Error())
+	}
 }
 
 /*
@@ -68,35 +70,37 @@ func InsertIfNotExists(kodeGroup pgtype.Text, idUser pgtype.Int4) {
 */
 
 func InsertIfNotExists(kodeGroup pgtype.Text, idUser pgtype.Int4) {
-    ctx := context.Background()
+	ctx := context.Background()
 
-    // First, check if the record exists
-    qSelect := `
+	// First, check if the record exists
+	qSelect := `
         SELECT COUNT(*) 
         FROM trx_group_user 
         WHERE kode_group = @kode_group AND id_user = @id_user
     `
-    
-    args := pgx.NamedArgs{
-        "kode_group": kodeGroup,
-        "id_user":    idUser,
-    }
 
-    var count int
-    err := db.DbUsman.QueryRow(ctx, qSelect, args).Scan(&count)
-    if err != nil {
-        fmt.Println("unable to check if trx_group_user exists, " + err.Error())
-        return
-    }
+	args := pgx.NamedArgs{
+		"kode_group": kodeGroup,
+		"id_user":    idUser,
+	}
 
-    // If no record exists, insert a new one
-    if count == 0 {
-        newUser := TrxGroupUser{
-            KodeGroup: kodeGroup,
-            IdUser:    idUser,
-            Status:    pgtype.Text{String: "1", Valid: true}, // Assuming default status
-        }
-        InsertNew(newUser)
-    }
-    // If record exists, do nothing
+	var count int
+	err := db.DbUsman.QueryRow(ctx, qSelect, args).Scan(&count)
+	if err != nil {
+		fmt.Println("unable to check if trx_group_user exists, " + err.Error())
+		return
+	}
+
+	// If no record exists, insert a new one
+	if count == 0 {
+		currentTime := time.Now().UTC()
+		newUser := TrxGroupUser{
+			KodeGroup: kodeGroup,
+			IdUser:    idUser,
+			Status:    pgtype.Text{String: "1", Valid: true}, // Assuming default status
+			Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
+		}
+		InsertNew(newUser)
+	}
+	// If record exists, do nothing
 }

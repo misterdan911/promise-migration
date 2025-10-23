@@ -3,9 +3,10 @@ package refuserexternalmodel
 import (
 	"context"
 	"fmt"
+	"promise-migration/db"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
-	"promise-migration/db"
 )
 
 type RefUserExternal struct {
@@ -36,14 +37,14 @@ func InsertNew(user RefUserExternal) {
     id_user
   ) VALUES (
   	@id,
-		@username,
-		@nama,
-		@nik,
-		@siup,
-		@status_pengguna,
-		@udcr,
-		@udch,
-		@id_user
+	@username,
+	@nama,
+	@nik,
+	@siup,
+	@status_pengguna,
+	@udcr,
+	@udch,
+	@id_user
 	) ON CONFLICT (id)
 		DO UPDATE SET
   	id = EXCLUDED.id,
@@ -58,7 +59,7 @@ func InsertNew(user RefUserExternal) {
   `
 
 	args := pgx.NamedArgs{
-		"id":        			 user.Id,
+		"id":              user.Id,
 		"username":        user.Username,
 		"nama":            user.Nama,
 		"nik":             user.Nik,
@@ -74,4 +75,3 @@ func InsertNew(user RefUserExternal) {
 		fmt.Println("unable to insert ref_user_external, " + errIns.Error())
 	}
 }
-

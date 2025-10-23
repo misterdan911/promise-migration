@@ -1,15 +1,14 @@
 package sibela
 
 import (
-	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsippan/refrupmodel"
-	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
-	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
-	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	"promise-migration/internal/model/promise_sippan/tblruputmodel"
+	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
+	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
 	"promise-migration/internal/sibela/sibelahelper"
 	"promise-migration/internal/structs"
 
@@ -80,11 +79,13 @@ func InsertRefPermintaan() {
 		}
 
 		// dapatkan nilai_hps
-    var nilaiHps pgtype.Int4
-		nilaiHps.Valid = true
-	  nilaiHps.Int32 = ghelper.StringToInt32WithDefault(tblPaketPl.Total.String, 0)
+		/*
+			var nilaiHps pgtype.Int4
+			nilaiHps.Valid = true
+			nilaiHps.Int32 = ghelper.StringToInt32WithDefault(tblPaketPl.Total.String, 0)
+		*/
 
-		// dapatkan nama_unit 
+		// dapatkan nama_unit
 		namaUnit := GetNamaUnit(kodeUnit)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
@@ -96,14 +97,15 @@ func InsertRefPermintaan() {
 			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
-			NilaiHps:            nilaiHps,
-			NamaUnit:            namaUnit,
+			// NilaiHps:            nilaiHps,
+			NamaUnit: namaUnit,
 			// Ucr:                 helperUser.VmsUserEmail,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
 		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
+		// TODO Insert trx_negosiasi_teknis
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")

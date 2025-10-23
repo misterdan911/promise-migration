@@ -23,10 +23,10 @@ type TrxDetailPermintaan struct {
 	Harga                pgtype.Int4
 }
 
-func InsertNewData(trxDetailPermintaan TrxDetailPermintaan) error {
+func InsertNewData(trxDetailPermintaan TrxDetailPermintaan) TrxDetailPermintaan {
 	ctx := context.Background()
 
-	qInsert := `
+	qIns := `
 	INSERT INTO trx_detail_permintaan (
 		kode_permintaan,
 		kode_bmut,
@@ -45,25 +45,43 @@ func InsertNewData(trxDetailPermintaan TrxDetailPermintaan) error {
 		@kuantitas,
 		@satuan,
 		@harga
-	)`
+	) RETURNING *`
 
 	args := pgx.NamedArgs{
-		"kode_permintaan":        trxDetailPermintaan.KodePermintaan,
-		"kode_bmut":              trxDetailPermintaan.KodeBmut,
-		"kode_ruang":             trxDetailPermintaan.KodeRuang,
-		"merk":                   trxDetailPermintaan.Merk,
-		"deskripsi":              trxDetailPermintaan.Deskripsi,
-		"kuantitas":              trxDetailPermintaan.Kuantitas,
-		"satuan":                 trxDetailPermintaan.Satuan,
-		"harga":                  trxDetailPermintaan.Harga,
+		"kode_permintaan": trxDetailPermintaan.KodePermintaan,
+		"kode_bmut":       trxDetailPermintaan.KodeBmut,
+		"kode_ruang":      trxDetailPermintaan.KodeRuang,
+		"merk":            trxDetailPermintaan.Merk,
+		"deskripsi":       trxDetailPermintaan.Deskripsi,
+		"kuantitas":       trxDetailPermintaan.Kuantitas,
+		"satuan":          trxDetailPermintaan.Satuan,
+		"harga":           trxDetailPermintaan.Harga,
 	}
 
-	_, errIns := db.DbSibela.Exec(ctx, qInsert, args)
+	/*
+		rwTrxDetailPermintaan, errIns := db.DbSibela.Query(ctx, qInsert, args)
+		if errIns != nil {
+			fmt.Println("satuan: " + trxDetailPermintaan.Satuan.String + ghelper.GetLen(trxDetailPermintaan.Satuan.String))
+			log.Fatal("unable to insert trx_detail_permintaan (trx_detail_permintaan.go:InsertNewData), " + errIns.Error())
+			// return nil, errIns
+		}
+
+		return trxDetailPermintaan2
+	*/
+
+	rwIns, errIns := db.DbSibela.Query(ctx, qIns, args)
 	if errIns != nil {
 		fmt.Println("satuan: " + trxDetailPermintaan.Satuan.String + ghelper.GetLen(trxDetailPermintaan.Satuan.String))
 		log.Fatal("unable to insert trx_detail_permintaan (trx_detail_permintaan.go:InsertNewData), " + errIns.Error())
-		return errIns
 	}
 
-	return nil
+	defer rwIns.Close()
+
+	allRows, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxDetailPermintaan])
+
+	if errRwIns != nil {
+		log.Fatal("failed collecting RefPermintaan (trx_detail_permintaan.go), " + errRwIns.Error())
+	}
+
+	return allRows[0]
 }
