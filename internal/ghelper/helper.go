@@ -22,32 +22,61 @@ type VmsUserId struct {
 }
 
 func GetExcludedEmail() []string {
-  var emails []string
-  path := filepath.Join("files", "excluded_email", "email.txt")
+	var emails []string
+	path := filepath.Join("files", "excluded_email", "email.txt")
 
-  // Open the file
-  file, err := os.Open(path)
-  if err != nil {
-    log.Fatalf("Error opening file: %v", err)
-  }
-  defer file.Close()
+	// Open the file
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Error opening file: %v", err)
+	}
+	defer file.Close()
 
-  // Create a scanner to read the file line by line
-  scanner := bufio.NewScanner(file)
+	// Create a scanner to read the file line by line
+	scanner := bufio.NewScanner(file)
 
-  for scanner.Scan() {
-    line := strings.TrimSpace(scanner.Text())
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
 
-    // Skip empty lines
-    if line == "" {
-     continue
-    }
+		// Skip empty lines
+		if line == "" {
+			continue
+		}
 
-    // Process the non-empty line
-    emails = append(emails, line)
-  }
+		// Process the non-empty line
+		emails = append(emails, line)
+	}
 
-  return emails
+	return emails
+}
+
+func GetExcludedEmail2(emailListFile string) []string {
+	var emails []string
+	path := filepath.Join("files", "excluded_email", emailListFile)
+
+	// Open the file
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatalf("Error opening file: %v", err)
+	}
+	defer file.Close()
+
+	// Create a scanner to read the file line by line
+	scanner := bufio.NewScanner(file)
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+
+		// Skip empty lines
+		if line == "" {
+			continue
+		}
+
+		// Process the non-empty line
+		emails = append(emails, line)
+	}
+
+	return emails
 }
 
 func GetExcludedVmsUserId() []int32 {
@@ -55,15 +84,15 @@ func GetExcludedVmsUserId() []int32 {
 	ctx := context.Background()
 	var sliceUserId []int32
 
-  // Create the IN clause part
+	// Create the IN clause part
 	quotedEmails := make([]string, len(g.ExcludedEmails))
 	for i, email := range g.ExcludedEmails {
 		quotedEmails[i] = fmt.Sprintf("'%s'", email)
 	}
 	inClause := strings.Join(quotedEmails, ", ")
-	
+
 	// Generate the full query
-	qHelperUser := fmt.Sprintf("SELECT vms_user_id FROM helper_user WHERE vms_user_email IN (%s)", inClause) 
+	qHelperUser := fmt.Sprintf("SELECT vms_user_id FROM helper_user WHERE vms_user_email IN (%s)", inClause)
 
 	rwHelperUser, err := db.DbSidapet.Query(ctx, qHelperUser)
 	if err != nil {
@@ -81,7 +110,7 @@ func GetExcludedVmsUserId() []int32 {
 	}
 
 	return sliceUserId
-} 
+}
 
 type Lengthable interface {
 	//~string | ~[]int | ~[]string

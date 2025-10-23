@@ -31,12 +31,13 @@ var SibelaCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-    db.ConnectProSippan()
-    defer db.ProSippan.Close()
+		db.ConnectProSippan()
+		defer db.ProSippan.Close()
 
 		// sibelahelper.DropAllForeignKey()
 
-		g.ExcludedEmails = ghelper.GetExcludedEmail()
+		// g.ExcludedEmails = ghelper.GetExcludedEmail()
+		g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sibela.txt")
 
 		sibelahelper.TruncateTableAndLog()
 
