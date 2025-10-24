@@ -51,18 +51,37 @@ func InsertRefPermintaan() {
 			kodeVendor = helperUser.KodeVendor
 		}
 
+		// dapatkan KodeSkemaPembayaran
+		var kodeSkemaPembayaran pgtype.Int4
+		kodeSkemaPembayaran.Valid = true
+
+		switch tblPaketPl.IdPembayaran.Int32 {
+		case 1:
+			kodeSkemaPembayaran.Int32 = 4
+		case 2:
+			kodeSkemaPembayaran.Int32 = 3
+		case 3:
+			kodeSkemaPembayaran.Int32 = 2
+		case 4:
+			kodeSkemaPembayaran.Int32 = 1
+		default:
+			kodeSkemaPembayaran.Valid = false
+		}
+
+		// dapatkan kode_jenis_pengadaan
 		var kodeJenisPengadaan pgtype.Int4
 		kodeJenisPengadaan.Valid = true
 
-		if tblPaketPl.IdKriteria.Int32 == 1 {
+		switch tblPaketPl.IdKriteria.Int32 {
+		case 1:
 			kodeJenisPengadaan.Int32 = 1
-		} else if tblPaketPl.IdKriteria.Int32 == 2 {
+		case 2:
 			kodeJenisPengadaan.Int32 = 3
-		} else if tblPaketPl.IdKriteria.Int32 == 3 {
+		case 3:
 			kodeJenisPengadaan.Int32 = 4
-		} else if tblPaketPl.IdKriteria.Int32 == 4 {
+		case 4:
 			kodeJenisPengadaan.Int32 = 2
-		} else {
+		default:
 			kodeJenisPengadaan.Valid = false
 		}
 
@@ -70,11 +89,12 @@ func InsertRefPermintaan() {
 		var kodeJenisAset pgtype.Text
 		kodeJenisAset.Valid = true
 
-		if tblPaketPl.JenisAset.String == "persediaan" || tblPaketPl.JenisAset.String == "baranghabispakai" {
+		switch tblPaketPl.JenisAset.String {
+		case "persediaan", "baranghabispakai":
 			kodeJenisAset.String = "11"
-		} else if tblPaketPl.JenisAset.String == "asettetap" {
+		case "asettetap":
 			kodeJenisAset.String = "12"
-		} else {
+		default:
 			kodeJenisAset.Valid = false
 		}
 
@@ -94,7 +114,7 @@ func InsertRefPermintaan() {
 			JenisPenyedia:       tblPaketPl.JenisPenyedia,
 			KodeVendor:          kodeVendor,
 			NamaPaket:           tblPaketPl.NamaPesanan,
-			KodeSkemaPembayaran: tblPaketPl.IdPembayaran,
+			KodeSkemaPembayaran: kodeSkemaPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
 			// NilaiHps:            nilaiHps,

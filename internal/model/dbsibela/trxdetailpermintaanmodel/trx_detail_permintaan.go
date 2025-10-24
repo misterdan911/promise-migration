@@ -80,7 +80,8 @@ func InsertNewData(trxDetailPermintaan TrxDetailPermintaan) TrxDetailPermintaan 
 	allRows, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxDetailPermintaan])
 
 	if errRwIns != nil {
-		log.Fatal("failed collecting RefPermintaan (trx_detail_permintaan.go), " + errRwIns.Error())
+		fmt.Println("satuan: " + trxDetailPermintaan.Satuan.String + ghelper.GetLen(trxDetailPermintaan.Satuan.String))
+		log.Fatal("failed collecting TrxDetailPermintaan (trx_detail_permintaan.go), " + errRwIns.Error())
 	}
 
 	return allRows[0]

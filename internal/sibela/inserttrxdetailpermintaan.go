@@ -33,11 +33,12 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 		kuantitas.Valid = true
 		kuantitas.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.Kuantitas.String, 0)
 
-		// dapatkan harga satuan
+		// dapatkan harga satuan (sebelum di nego)
 		var hargaSatuan pgtype.Int4
 		hargaSatuan.Valid = true
-		hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.Negosiasi.String, 0)
+		hargaSatuan.Int32 = ghelper.StringToInt32WithDefault(tblPesanan.HargaSatuan.String, 0)
 
+		// nilai HPS -> akumulsai (harga satuan x kuantitas) sebelum dinego
 		nilaiHps.Int32 += hargaSatuan.Int32 * kuantitas.Int32
 
 		trxDetailPermintaan := trxdetailpermintaanmodel.TrxDetailPermintaan{
@@ -47,7 +48,7 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 			KodeRuang:      tblPesanan.KodeRuang,
 			Kuantitas:      kuantitas,
 			Satuan:         tblPesanan.SatuanUkuran,
-			Harga:          hargaSatuan,
+			Harga:          hargaSatuan, // Harga satuan awal (harga sebelum di nego)
 		}
 
 		trxDetailPermintaan = trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)

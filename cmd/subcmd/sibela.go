@@ -36,7 +36,6 @@ var SibelaCmd = &cobra.Command{
 
 		// sibelahelper.DropAllForeignKey()
 
-		// g.ExcludedEmails = ghelper.GetExcludedEmail()
 		g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sibela.txt")
 
 		sibelahelper.TruncateTableAndLog()

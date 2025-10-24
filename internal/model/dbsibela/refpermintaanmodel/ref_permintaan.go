@@ -2,6 +2,7 @@ package refpermintaanmodel
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"promise-migration/db"
 
@@ -211,6 +212,7 @@ func DeleteByKodePermintaan(kodePermintaan pgtype.Int4) {
 	qDelete := `DELETE FROM ref_permintaan WHERE kode_permintaan = $1`
 	_, err := db.DbSibela.Exec(ctx, qDelete, kodePermintaan)
 	if err != nil {
+		fmt.Printf(qDelete+" %d\n", kodePermintaan.Int32)
 		log.Fatal("failed deleting RefPermintaan (ref_permintaan.go), " + err.Error())
 	}
 }
