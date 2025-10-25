@@ -54,15 +54,6 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 		trxDetailPermintaan = trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
 
 		InsertNegosiasiHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPaketPl, tblPesanan)
-
-		/*
-			for _, logSibela := range allLogSibela {
-				if strings.TrimSpace(logSibela.Tahap.String) == "Negosiasi" && logSibela.KeteranganNegosiasi.Valid == false {
-					InsertTrxNegoHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPesanan, logSibela)
-				}
-			}
-		*/
-
 	}
 
 	refpermintaanmodel.UpdateHps(kodePermintaan, nilaiHps)

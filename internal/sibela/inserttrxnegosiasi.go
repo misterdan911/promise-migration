@@ -13,10 +13,13 @@ import (
 
 func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion, tblPesanan structs.TblPesanan) error {
 
-	// buat testing
-	if tblPesanan.IDPesanan.Int32 != 31283 {
-		return nil
-	}
+	// // buat testing
+	// if tblPesanan.IDPesanan.Int32 != 31283 {
+	// 	return nil
+	// }
+	// if tblPesanan.IDPaket.Int32 != 2146 {
+	// 	return nil
+	// }
 
 	allLogSibela := logsibelamodel.GetDataByIdPesanan(tblPesanan.IDPesanan, tblPaketPl)
 
@@ -31,30 +34,45 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 	}
 
 	var count int = 0
+	var hargaNego pgtype.Int8
 
 	for _, logSibela := range allLogSibela {
 
-		if strings.ToLower(logSibela.KeteranganNegosiasi.String) == "pp menyetujui negosiasi" {
+		if logSibela.Tahap.String == "Update Negosiasi" {
 			continue
 		}
-		// if strings.ToLower(logSibela.KeteranganNegosiasi.String) == "terima"
 
 		switch strings.ToLower(logSibela.KeteranganNegosiasi.String) {
+		case "tolak":
+			continue
 		case "pp menyetujui negosiasi":
 			continue
 		case "terima":
+
+			trxNegoHarga := trxnegohargamodel.TrxNegoHarga{
+				KodeDetailPermintaan: kodeDetailPermintaan,
+				HargaAwal:            hargaSatuan,
+				HargaNego:            hargaNego,
+				Negotiator:           logSibela.Role,
+				TglNego:              logSibela.CreatedAt,
+				Tahapan:              tahapan,
+			}
+			trxnegohargamodel.InsertNewData(trxNegoHarga)
 			trxnegohargamodel.UpdatePersetujuan(kodeDetailPermintaan)
+			count++
+
 		default:
 
-			var hargaNego pgtype.Int8
 			if !logSibela.Negosiasi.Valid {
 				hargaNego = hargaSatuan
 			} else {
 				hargaNego = logSibela.Negosiasi
 			}
 
-			if count > 0 && (count%2) == 0 {
-				tahapan.Int32++
+			if count > 0 {
+				if count%2 == 0 {
+					tahapan.Int32++
+				}
 			}
 
 			trxNegoHarga := trxnegohargamodel.TrxNegoHarga{
@@ -67,20 +85,12 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 			}
 
 			trxnegohargamodel.InsertNewData(trxNegoHarga)
-
 			count++
 		}
 
 	}
 
 	return nil
-
-	// allLogSibela := logsibelamodel.GetDataByIdPesanan(tblPesanan.IDPesanan)
-
-	// if strings.TrimSpace(logSibela.Tahap.String) == "Negosiasi" && logSibela.KeteranganNegosiasi.Valid == false {
-	// 	InsertTrxNegoHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPesanan, logSibela)
-	// }
-
 }
 
 func InsertTrxNegoHarga(kodeDetailPermintaan pgtype.Int4, tblPesanan structs.TblPesanan, logSibela logsibelamodel.LogSibela) {
