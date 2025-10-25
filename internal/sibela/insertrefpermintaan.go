@@ -125,7 +125,7 @@ func InsertRefPermintaan() {
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
 		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
-		// TODO Insert trx_negosiasi_teknis
+		InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")
