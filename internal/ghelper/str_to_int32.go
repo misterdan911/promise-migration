@@ -23,24 +23,28 @@ func StringToInt32(s string) (int32, error) {
 		return 0, fmt.Errorf("string contains only whitespace/padding characters")
 	}
 
-	// Check for valid numeric format (optional, for more specific error messages)
-	if !isValidNumber(trimmed) {
-		return 0, fmt.Errorf("invalid number format: %s", s)
-	}
-
-	// Convert to int64 first to check for int32 range overflow
-	val, err := strconv.ParseInt(trimmed, 10, 64)
+	// Use ParseFloat to handle decimal numbers
+	val, err := strconv.ParseFloat(trimmed, 64)
 	if err != nil {
 		// Handle specific conversion errors
 		if numErr, ok := err.(*strconv.NumError); ok {
 			switch numErr.Err {
 			case strconv.ErrRange:
-				return 0, fmt.Errorf("number out of int32 range: %s", s)
+				return 0, fmt.Errorf("number out of range: %s", s)
 			case strconv.ErrSyntax:
 				return 0, fmt.Errorf("invalid syntax: %s", s)
 			}
 		}
 		return 0, fmt.Errorf("conversion failed: %w", err)
+	}
+
+	// Check if the number has a fractional part
+	if val != math.Trunc(val) {
+		// Option 1: Return error for decimal numbers
+		// return 0, fmt.Errorf("decimal numbers not allowed: %s", s)
+
+		// Option 2: Truncate the decimal part (floor towards zero)
+		val = math.Trunc(val)
 	}
 
 	// Check int32 range

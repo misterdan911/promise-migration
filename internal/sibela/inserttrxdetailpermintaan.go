@@ -53,7 +53,7 @@ func InsertTrxDetailPermintaan(kodePermintaan pgtype.Int4, tblPaketPl tblpaketpl
 
 		trxDetailPermintaan = trxdetailpermintaanmodel.InsertNewData(trxDetailPermintaan)
 
-		InsertNegosiasiHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPesanan)
+		InsertNegosiasiHarga(trxDetailPermintaan.KodeDetailPermintaan, tblPaketPl, tblPesanan)
 
 		/*
 			for _, logSibela := range allLogSibela {

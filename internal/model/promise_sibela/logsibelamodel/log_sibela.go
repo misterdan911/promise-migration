@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -26,8 +27,17 @@ type LogSibela struct {
 	UpdatedAt                 pgtype.Timestamptz
 }
 
-func GetDataByIdPesanan(idPesanan pgtype.Int4) []LogSibela {
+func GetDataByIdPesanan(idPesanan pgtype.Int4, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) []LogSibela {
 	ctx := context.Background()
+
+	var jenis pgtype.Text
+	jenis.Valid = true
+	switch tblPaketPl.JenisPenyedia.String {
+	case "luar_dpt":
+		jenis.String = "luardpt"
+	case "dpt":
+		jenis.String = "dpt"
+	}
 
 	qLogSibela := `
 		SELECT 
@@ -46,11 +56,16 @@ func GetDataByIdPesanan(idPesanan pgtype.Int4) []LogSibela {
 			created_at,
 			updated_at
 		FROM public.log_sibela
-		WHERE id_pesanan = $1
+		WHERE
+			jenis = $1
+			AND
+			(id_pesanan = $2
+			OR
+			(id_paket = $3 and keterangan_negosiasi is not null))
 		ORDER BY id_log_sibela ASC
 	`
 
-	rwLogSibela, err := db.PromiseSibela.Query(ctx, qLogSibela, idPesanan)
+	rwLogSibela, err := db.PromiseSibela.Query(ctx, qLogSibela, jenis, idPesanan, tblPaketPl.IdPaket)
 	if err != nil {
 		log.Fatal("qLogSibela Failed, " + err.Error() + " " + qLogSibela)
 	}

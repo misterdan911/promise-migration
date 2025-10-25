@@ -54,3 +54,15 @@ func InsertNewData(trxNegoharga TrxNegoHarga) {
 		log.Fatal("unable to insert trx_nego_harga (trx_nego_harga.go:InsertNewData), " + errIns.Error())
 	}
 }
+
+func UpdatePersetujuan(kodeDetailPermintaan pgtype.Int4) {
+	ctx := context.Background()
+
+	qUpdate := `UPDATE trx_nego_harga SET persetujuan = true WHERE kode_detail_permintaan = $1`
+
+	_, errIns := db.DbSibela.Exec(ctx, qUpdate, kodeDetailPermintaan)
+	if errIns != nil {
+		log.Fatal("unable to update trx_nego_harga.persetujuan (trx_nego_harga.go:UpdatePersetujuan), " + errIns.Error())
+	}
+
+}
