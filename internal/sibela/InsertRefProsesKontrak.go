@@ -16,6 +16,7 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		KodeStatusKontrak:        pgtype.Int4{Valid: true, Int32: 1},
 		KodeStepPersiapanKontrak: pgtype.Int4{Valid: true, Int32: 6},
 		StatusPengisian:          pgtype.Text{Valid: true, String: "Selesai"},
+		Ucr:                      refPermintaan.Ucr,
 	}
 	refproseskontrakmodel.InsertNewData(refProsesKontrak1)
 
@@ -24,6 +25,7 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		KodePermintaan:    refPermintaan.KodePermintaan,
 		KodeStatusKontrak: pgtype.Int4{Valid: true, Int32: 2},
 		StatusPengisian:   pgtype.Text{Valid: true, String: "Selesai"},
+		Ucr:               refPermintaan.Ucr,
 	}
 	refproseskontrakmodel.InsertNewData(refProsesKontrak2)
 	InsertSuratPesanan(refPermintaan.KodePermintaan, tblPaketPl)

@@ -4,6 +4,7 @@ import (
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsippan/refrupmodel"
+	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
@@ -101,6 +102,21 @@ func InsertRefPermintaan() {
 		// dapatkan nama_unit
 		namaUnit := GetNamaUnit(kodeUnit)
 
+		// dapatkan Ucr
+		var ucr pgtype.Text
+		ucr.Valid = true
+		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
+		if len(allLogPaket) > 0 {
+			if allLogPaket[0].IdUser.Valid {
+				userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
+				ucr.String = userPp.VmsUserEmail.String + "|" + userPp.VmsUserName.String
+			} else {
+				ucr.String = userPPK.VmsUserEmail.String + "|" + userPPK.VmsUserName.String
+			}
+		} else {
+			ucr.String = "-"
+		}
+
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeRup:             kodeRup,
 			KodeUnit:            kodeUnit,
@@ -111,6 +127,7 @@ func InsertRefPermintaan() {
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
 			NamaUnit:            namaUnit,
+			Ucr:                 ucr,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
