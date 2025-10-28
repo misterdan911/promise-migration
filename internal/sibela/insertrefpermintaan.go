@@ -98,13 +98,6 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
-		// dapatkan nilai_hps
-		/*
-			var nilaiHps pgtype.Int4
-			nilaiHps.Valid = true
-			nilaiHps.Int32 = ghelper.StringToInt32WithDefault(tblPaketPl.Total.String, 0)
-		*/
-
 		// dapatkan nama_unit
 		namaUnit := GetNamaUnit(kodeUnit)
 
@@ -117,15 +110,16 @@ func InsertRefPermintaan() {
 			KodeSkemaPembayaran: kodeSkemaPembayaran,
 			KodeJenisPengadaan:  kodeJenisPengadaan,
 			KodeJenisAset:       kodeJenisAset,
-			// NilaiHps:            nilaiHps,
-			NamaUnit: namaUnit,
-			// Ucr:                 helperUser.VmsUserEmail,
+			NamaUnit:            namaUnit,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
-		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
-		InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
+		// InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
+		// InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
+		// InsertBeritaAcaraNego(refPermintaan.KodePermintaan, tblPaketPl)
+		// Berita Acara Hasil Pemilihan belum ada
+		InsertRefProsesKontrak(refPermintaan, tblPaketPl)
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")
@@ -137,7 +131,7 @@ func GetNamaUnit(kodeUnit pgtype.Text) pgtype.Text {
 
 	namaUnit = tblunitsubmodel.GetNamaUnitByKodeUnit(kodeUnit)
 
-	if namaUnit.Valid == false {
+	if !namaUnit.Valid {
 		namaUnit = tblunitsubbarumodel.GetNamaUnitByKodeUnit(kodeUnit)
 	}
 
