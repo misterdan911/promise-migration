@@ -20,7 +20,7 @@ type TrxTte struct {
 	NomorSurat           pgtype.Text
 }
 
-func InsertTrxTte(trxTte TrxTte) {
+func InsertNew(trxTte TrxTte) {
 	ctx := context.Background()
 
 	qInsert := `

@@ -46,3 +46,8 @@ type TblSuratpesananPl struct {
 	AlamatSdr           pgtype.Text
 	TertanggalSp        pgtype.Timestamptz
 }
+
+type StatusTerminBast struct {
+	NamaTermin       pgtype.Text
+	StatusTerminBast pgtype.Int8
+}

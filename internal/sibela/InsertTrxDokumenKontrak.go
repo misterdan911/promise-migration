@@ -1,7 +1,9 @@
 package sibela
 
 import (
-	"promise-migration/internal/model/dbsibela/trxttemodel"
+	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
+	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
+	"promise-migration/internal/model/dbsibela/trxdokumenkontrakmodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratpesanandptplmodel"
@@ -11,7 +13,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func InsertSuratPesanan(kodePermintaan pgtype.Int4, tblPaket tblpaketplonionmodel.TblPaketPlOnion) error {
+func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblPaket tblpaketplonionmodel.TblPaketPlOnion, refProsesKontrak refproseskontrakmodel.RefProsesKontrak) error {
 	var tblSuratPesanan structs.TblSuratpesananPl
 
 	switch tblPaket.JenisPenyedia.String {
@@ -34,13 +36,25 @@ func InsertSuratPesanan(kodePermintaan pgtype.Int4, tblPaket tblpaketplonionmode
 		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 	}
 
-	trxTte := trxttemodel.TrxTte{
-		KodePermintaan: kodePermintaan,
-		KategoriTte:    pgtype.Text{Valid: true, String: "surat_pesanan"},
-		PathDokumen:    pathDokumen,
+	trxDokumenKontrak := trxdokumenkontrakmodel.TrxDokumenKontrak{
+		KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
+		TglSurat:          pgtype.Timestamp(tblSuratPesanan.TanggalSp),
+		KodeBentukKontrak: pgtype.Int4{Valid: true, Int32: 5},
+		NomorSuratPesanan: tblSuratPesanan.NomorpesananSp,
+		Ucr:               refPermintaan.Ucr,
 	}
 
-	trxttemodel.InsertTrxTte(trxTte)
+	trxdokumenkontrakmodel.InsertNew(trxDokumenKontrak)
+
+	/*
+		trxTte := trxttemodel.TrxTte{
+			KodePermintaan: kodePermintaan,
+			KategoriTte:    pgtype.Text{Valid: true, String: "surat_pesanan"},
+			PathDokumen:    pathDokumen,
+		}
+
+		trxttemodel.InsertNew(trxTte)
+	*/
 
 	return nil
 

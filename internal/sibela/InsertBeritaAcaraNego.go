@@ -41,7 +41,7 @@ func InsertBeritaAcaraNego(kodePermintaan pgtype.Int4, tblPaket tblpaketplonionm
 		PathDokumen:    pathDokumen,
 	}
 
-	trxttemodel.InsertTrxTte(trxTte)
+	trxttemodel.InsertNew(trxTte)
 
 	return nil
 }
