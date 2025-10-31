@@ -31,10 +31,10 @@ import (
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 
+	"promise-migration/internal/model/dbusman/refuserexternalmodel"
+	"promise-migration/internal/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
-	"promise-migration/internal/usman/model/dbusman/refuserexternalmodel"
-	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"

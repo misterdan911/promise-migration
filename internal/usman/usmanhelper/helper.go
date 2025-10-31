@@ -87,14 +87,13 @@ func UpdatePkSequence(tableName string, pkFieldname string) {
 func UpdatePkSequence2(tableName string, pkFieldname string, seqName string) {
 	ctx := context.Background()
 
-	qUpdateSeq := `SELECT setval('` + seqName + `', COALESCE((SELECT MAX(` + pkFieldname + `) FROM ` + tableName + `), 1))`;	
+	qUpdateSeq := `SELECT setval('` + seqName + `', COALESCE((SELECT MAX(` + pkFieldname + `) FROM ` + tableName + `), 1))`
 	fmt.Println(qUpdateSeq)
 	_, errUpdateSeq := db.DbUsman.Exec(ctx, qUpdateSeq)
 	if errUpdateSeq != nil {
 		fmt.Println("unable to update " + seqName + ", " + errUpdateSeq.Error())
 	}
 }
-
 
 func ResetSequence(seqName string) {
 	ctx := context.Background()

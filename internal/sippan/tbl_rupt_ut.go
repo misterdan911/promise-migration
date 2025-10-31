@@ -8,8 +8,8 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/sippan/sippanhelper"
-	"promise-migration/internal/usman/model/dbusman/trxgroupusermodel"
 	"slices"
 	"strconv"
 	"time"
@@ -90,8 +90,10 @@ func MigrateTblRupUt() {
 
 	for _, oldRup := range allOldRuptUt {
 
-    	skipUser := slices.Contains(g.ExcludedVmsUserId, oldRup.IdUser.Int32)
-	    if skipUser { continue }
+		skipUser := slices.Contains(g.ExcludedVmsUserId, oldRup.IdUser.Int32)
+		if skipUser {
+			continue
+		}
 
 		uraian_spek_kerja := sippanhelper.GetUraianSpekKerja(oldRup.UraianPekerjaan.String, oldRup.SpesifikasiPekerjaan.String)
 
@@ -183,4 +185,3 @@ func MigrateTblRupUt() {
 
 	fmt.Println("Migrating tbl_rup_ut... SELESAI")
 }
-

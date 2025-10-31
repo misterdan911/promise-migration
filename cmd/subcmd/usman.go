@@ -2,8 +2,6 @@ package subcmd
 
 import (
 	"promise-migration/db"
-	"promise-migration/internal/g"
-	"promise-migration/internal/ghelper"
 	"promise-migration/internal/usman"
 	"promise-migration/internal/usman/usmanhelper"
 
@@ -28,24 +26,25 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-	  g.ExcludedEmails = ghelper.GetExcludedEmail()
+		// g.ExcludedEmails = ghelper.GetExcludedEmail()
 
 		// usmanhelper.DropAllForeignKey()
-		usmanhelper.TruncateTableAndLog()
 
-		// usman.PopulateHelperUserNip()
-		usman.PopulateHelperUser()
-		usman.MigrateUserToUsman()
-		usman.UpdateUsmanRefUserIdOnHelperUser()
+		// usmanhelper.TruncateTableAndLog()
+		usmanhelper.TruncateTableAndLog2()
 
-		// usmanhelper.CreateAllForeignKey()
+		usman.MigrateUserInternal()
+
+		// // usman.PopulateHelperUserNip()
+		// usman.PopulateHelperUser()
+		// usman.MigrateUserToUsman()
+		// usman.UpdateUsmanRefUserIdOnHelperUser()
+
+		// // usmanhelper.CreateAllForeignKey()
 
 	},
 }
 
-
-
 func init() {
 	// Emang Kosongz
 }
-

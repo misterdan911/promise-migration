@@ -8,9 +8,11 @@ import (
 
 func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan, tblPaket tblpaketplonionmodel.TblPaketPlOnion, refProsesKontrak refproseskontrakmodel.RefProsesKontrak) error {
 
-	refRiwayatPelaksanaan := refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{
-		KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
-	}
+	// refRiwayatPelaksanaan := refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{
+	// 	KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
+	// }
 
-	refriwayatpelaksanaanmodel.InsertNew(refRiwayatPelaksanaan)
+	// refriwayatpelaksanaanmodel.InsertNew(refRiwayatPelaksanaan)
+
+	return nil
 }

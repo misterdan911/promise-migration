@@ -2,12 +2,13 @@ package usermodel
 
 import (
 	"context"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
 	"runtime"
 	"strconv"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type User struct {
@@ -99,4 +100,46 @@ func GetUserById(userId pgtype.Int4) User {
 	}
 
 	return user
+}
+
+func GetAllInternalUser() []User {
+	var allUser []User
+	ctx := context.Background()
+
+	qUser := `
+	SELECT
+		id,
+		name,
+		id_level,
+		email,
+		email_real,
+		password,
+		is_ppk,
+		is_pp,
+		is_pkualitas,
+		is_tutor,
+		undang,
+		internasional,
+		remember_token,
+		created_at,
+		updated_at,
+		email_verified_at,
+		andro_user,
+		andro_password
+	FROM users
+  WHERE id_level not in (1,5,9,17,20,31,32,34)
+  `
+
+	rwUser, err := db.VmsDb.Query(ctx, qUser)
+	if err != nil {
+		log.Fatal("qUser Failed, " + err.Error() + " " + qUser)
+	}
+
+	allUser, err = pgx.CollectRows(rwUser, pgx.RowToStructByName[User])
+	if err != nil {
+		log.Fatal("failed collecting rwUser (usermodel.go::GetAllInternalUser), " + err.Error())
+	}
+	defer rwUser.Close()
+
+	return allUser
 }
