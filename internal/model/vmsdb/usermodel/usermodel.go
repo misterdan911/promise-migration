@@ -143,3 +143,50 @@ func GetAllInternalUser() []User {
 
 	return allUser
 }
+
+func GetUserByEmailReal(emailReal pgtype.Text) User {
+	var allUser []User
+	ctx := context.Background()
+
+	qUser := `
+	SELECT
+		id,
+		name,
+		id_level,
+		email,
+		email_real,
+		password,
+		is_ppk,
+		is_pp,
+		is_pkualitas,
+		is_tutor,
+		undang,
+		internasional,
+		remember_token,
+		created_at,
+		updated_at,
+		email_verified_at,
+		andro_user,
+		andro_password
+	FROM users
+	WHERE email = $1`
+
+	rwUser, err := db.VmsDb.Query(ctx, qUser, emailReal)
+	if err != nil {
+		log.Fatal("qUser Failed, " + err.Error() + " " + qUser)
+	}
+
+	allUser, err = pgx.CollectRows(rwUser, pgx.RowToStructByName[User])
+	if err != nil {
+		log.Fatal("failed collecting rwUser (usermodel.go line: " + GetCurrentLine() + "), " + err.Error())
+	}
+	defer rwUser.Close()
+
+	var userReal User
+	if len(allUser) > 0 {
+		userReal = allUser[0]
+	}
+
+	return userReal
+
+}

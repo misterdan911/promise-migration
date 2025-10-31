@@ -18,7 +18,7 @@ type RefUserInternal struct {
 	IdUser   pgtype.Int4
 }
 
-func InsertNew(user RefUserInternal) {
+func InsertNew(refUserInternal RefUserInternal) {
 	ctx := context.Background()
 
 	qInsert := `
@@ -37,11 +37,11 @@ func InsertNew(user RefUserInternal) {
   )`
 
 	args := pgx.NamedArgs{
-		"nip":      user.Nip,
-		"username": user.Username,
-		"udcr":     user.Udcr,
-		"udch":     user.Udch,
-		"id_user":  user.IdUser,
+		"nip":      refUserInternal.Nip,
+		"username": refUserInternal.Username,
+		"udcr":     refUserInternal.Udcr,
+		"udch":     refUserInternal.Udch,
+		"id_user":  refUserInternal.IdUser,
 	}
 
 	_, errIns := db.DbUsman.Exec(ctx, qInsert, args)

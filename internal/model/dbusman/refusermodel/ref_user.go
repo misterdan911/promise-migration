@@ -3,10 +3,11 @@ package refusermodel
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgtype"
 	"log"
 	"promise-migration/db"
+
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 type RefUser struct {
@@ -27,10 +28,10 @@ type RefUser struct {
 }
 
 func GetAllData() []RefUser {
-  var allUsers []RefUser
-  ctx := context.Background()
+	var allUsers []RefUser
+	ctx := context.Background()
 
-  qRefUser := `
+	qRefUser := `
   SELECT
       id,
       email,
@@ -48,18 +49,18 @@ func GetAllData() []RefUser {
       otp_time
   FROM ref_user`
 
-  rows, err := db.DbUsman.Query(ctx, qRefUser)
-  if err != nil {
-    log.Fatal("qRefUser Failed, " + err.Error() + " " + qRefUser)
-  }
+	rows, err := db.DbUsman.Query(ctx, qRefUser)
+	if err != nil {
+		log.Fatal("qRefUser Failed, " + err.Error() + " " + qRefUser)
+	}
 
-  allUsers, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefUser])
-  if err != nil {
-    log.Fatal("failed collecting rows (ref_user.go:GetAllData), " + err.Error())
-  }
-  defer rows.Close()
+	allUsers, err = pgx.CollectRows(rows, pgx.RowToStructByName[RefUser])
+	if err != nil {
+		log.Fatal("failed collecting rows (ref_user.go:GetAllData), " + err.Error())
+	}
+	defer rows.Close()
 
-  return allUsers
+	return allUsers
 }
 
 func InsertNew(refUser RefUser) RefUser {
@@ -67,6 +68,7 @@ func InsertNew(refUser RefUser) RefUser {
 
 	qInsert := `
   INSERT INTO ref_user (
+  		id,
 		email,
 		password,
 		api_token,
@@ -81,6 +83,7 @@ func InsertNew(refUser RefUser) RefUser {
 		otp,
 		otp_time
   ) VALUES (
+   		@id,
 		@email,
 		@password,
 		@api_token,
@@ -97,6 +100,7 @@ func InsertNew(refUser RefUser) RefUser {
 	) RETURNING *`
 
 	args := pgx.NamedArgs{
+		"id":                refUser.Id,
 		"email":             refUser.Email,
 		"password":          refUser.Password,
 		"api_token":         refUser.ApiToken,
@@ -127,12 +131,12 @@ func InsertNew(refUser RefUser) RefUser {
 }
 
 func DeleteByEmail(email pgtype.Text) {
-  ctx := context.Background()
+	ctx := context.Background()
 
 	qDelete := `DELETE FROM ref_user WHERE email = $1`
-  _, err := db.DbUsman.Exec(ctx, qDelete, email)
-  if err != nil {
-    log.Fatal("failed deleting RefUser (ref_user.go), " + err.Error())
-  }
+	_, err := db.DbUsman.Exec(ctx, qDelete, email)
+	if err != nil {
+		log.Fatal("failed deleting RefUser (ref_user.go), " + err.Error())
+	}
 
 }

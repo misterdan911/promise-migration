@@ -17,6 +17,8 @@ func MigrateUserInternal() {
 
 	for _, internalUser := range allInternalUser {
 
+		internalUserReal := usermodel.GetUserByEmailReal(internalUser.EmailReal)
+
 		// dapetin kode_unit_pbj dan nip
 		var kodeUnit pgtype.Text
 		var kodeUnitPbj pgtype.Int4 // untuk di trx_user_tampung
@@ -50,21 +52,26 @@ func MigrateUserInternal() {
 				Udch:       internalUser.UpdatedAt,
 				StatusUser: pgtype.Text{Valid: true, String: "internal"},
 			}
+			// fmt.Printf("IdUser: %d\n", internalUser.Id.Int32)
 			refusermodel.InsertNew(refUser)
 
 			// masukin ke ref_user_internal
 			refUserInternal := refuserinternalmodel.RefUserInternal{
+				IdUser:   internalUser.Id,
 				Nip:      nip,
 				Username: internalUser.Name,
 				Udcr:     internalUser.CreatedAt,
 				Udch:     internalUser.UpdatedAt,
 			}
+			// fmt.Printf("IdUser: %d\n", refUserInternal.IdUser.Int32)
 			refuserinternalmodel.InsertNew(refUserInternal)
+
+			// fmt.Printf("\n")
 		}
 
 		trxUserTampung := trxusertampungmodel.TrxUserTampung{
-			Nama:        internalUser.Name,
-			Email:       internalUser.Email,
+			Nama:        internalUserReal.Name,
+			Email:       internalUserReal.EmailReal,
 			KodeUnitPbj: kodeUnitPbj,
 			Nip:         nip,
 			KodeJabatan: internalUser.IdLevel,
