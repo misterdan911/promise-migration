@@ -42,6 +42,8 @@ var UsmanCmd = &cobra.Command{
 
 		// // usmanhelper.CreateAllForeignKey()
 
+		usmanhelper.UpdatePkSequenceFromFile()
+
 	},
 }
 

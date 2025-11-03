@@ -95,6 +95,22 @@ func UpdatePkSequence2(tableName string, pkFieldname string, seqName string) {
 	}
 }
 
+func UpdatePkSequenceFromFile() {
+
+	var path = filepath.Join("files", "usman", "sql", "update_serial_sequence.sql")
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatal("Error ReadFile: " + err.Error())
+	}
+
+	qFk := string(data)
+	ctx := context.Background()
+	_, errQFk := db.DbUsman.Exec(ctx, qFk)
+	if errQFk != nil {
+		log.Fatal("UpdatePkSequenceFromFile Failed, " + errQFk.Error())
+	}
+}
 func ResetSequence(seqName string) {
 	ctx := context.Background()
 	qUpdateSeq := `ALTER SEQUENCE ` + seqName + ` RESTART WITH 1`
