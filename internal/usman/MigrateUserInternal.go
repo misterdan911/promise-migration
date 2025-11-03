@@ -1,6 +1,7 @@
 package usman
 
 import (
+	"promise-migration/internal/model/dbusman/helperuserkodeunitmodel"
 	"promise-migration/internal/model/dbusman/refunitpbjmodel"
 	"promise-migration/internal/model/dbusman/refuserinternalmodel"
 	"promise-migration/internal/model/dbusman/refusermodel"
@@ -19,7 +20,6 @@ func MigrateUserInternal() {
 
 		internalUserReal := usermodel.GetUserByEmailReal(internalUser.EmailReal)
 
-		// dapetin kode_unit_pbj dan nip
 		var kodeUnit pgtype.Text
 		var kodeUnitPbj pgtype.Int4 // untuk di trx_user_tampung
 		var nip pgtype.Text
@@ -33,6 +33,10 @@ func MigrateUserInternal() {
 			if (tblPpkSub != tblppksubmodel.TblPpkSub{}) {
 				kodeUnit = tblPpkSub.KodeUnit
 				nip = tblPpkSub.Nip
+			} else {
+				helperUserKodeUnit := helperuserkodeunitmodel.GetByEmail(internalUserReal.EmailReal)
+				kodeUnit = helperUserKodeUnit.KodeUnit
+				nip = helperUserKodeUnit.Nip
 			}
 		}
 
