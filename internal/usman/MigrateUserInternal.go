@@ -45,6 +45,10 @@ func MigrateUserInternal() {
 			kodeUnitPbj = refUnitPbj.KodeUnitPbj
 		}
 
+		if !kodeUnitPbj.Valid {
+			continue
+		}
+
 		// kalau email dan email_real sama
 		if internalUser.Email == internalUser.EmailReal {
 			// masukin ke ref_user

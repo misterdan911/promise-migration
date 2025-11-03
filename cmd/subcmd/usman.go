@@ -34,6 +34,7 @@ var UsmanCmd = &cobra.Command{
 		usmanhelper.TruncateTableAndLog2()
 
 		usman.MigrateUserInternal()
+		usman.MigrateUserExternal()
 
 		// // usman.PopulateHelperUserNip()
 		// usman.PopulateHelperUser()
