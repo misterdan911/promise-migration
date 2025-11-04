@@ -20,6 +20,9 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectDbUsman()
 		defer db.DbUsman.Close()
 
+		db.ConnectProSippan()
+		defer db.ProSippan.Close()
+		
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
@@ -35,6 +38,7 @@ var UsmanCmd = &cobra.Command{
 
 		usman.MigrateUserInternal()
 		usman.MigrateUserExternal()
+		usman.PopulateTrxGroupUser()
 
 		// // usman.PopulateHelperUserNip()
 		// usman.PopulateHelperUser()
