@@ -2,6 +2,7 @@ package usermodel
 
 import (
 	"context"
+	// "fmt"
 	"log"
 	"promise-migration/db"
 	"runtime"
@@ -82,7 +83,7 @@ func GetUserById(userId pgtype.Int4) User {
 	var user User
 	ctx := context.Background()
 
-	qUser := `SELECT email, "password" FROM users WHERE id = $1`
+	qUser := `SELECT * FROM users WHERE id = $1`
 	rwUser, errUser := db.VmsDb.Query(ctx, qUser, userId)
 	if errUser != nil {
 		log.Fatal("qUser Failed, " + errUser.Error() + " " + qUser)
@@ -90,8 +91,8 @@ func GetUserById(userId pgtype.Int4) User {
 
 	allUser, errUser := pgx.CollectRows(rwUser, pgx.RowToStructByName[User])
 	if errUser != nil {
-		//log.Fatal("failed collecting rwUser, " + errUser.Error())
-		log.Fatal("failed collecting rwUser (usermodel.go line: " + GetCurrentLine() + "), " + errUser.Error())
+		log.Fatal("failed collecting rwUser, " + errUser.Error())
+		// fmt.Println("failed collecting rwUser (usermodel.go line: " + GetCurrentLine() + "), " + errUser.Error())
 	}
 	defer rwUser.Close()
 

@@ -7,11 +7,12 @@ import (
 	"log"
 	"promise-migration/db"
 	"promise-migration/internal/g"
-	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/model/dbusman/trxgroupusermodel"
+	// "promise-migration/internal/model/dbsidapet/helperusermodel"
+	// "promise-migration/internal/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/sippan/sippanhelper"
+	"promise-migration/internal/model/vmsdb/usermodel"
 	"slices"
-	"strconv"
+	// "strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -128,12 +129,16 @@ func MigrateTblRupUt() {
 		tglRencPemanfaatanAwal := sippanhelper.ConvertToFirstDayOfMonth(oldRup.RencanaPemilihan.String)
 		tglRencPemanfaatanAkhir := sippanhelper.ConvertToLastDayOfMonth(oldRup.RencanaPemilihanAkhir.String)
 
+		/*
 		helperUser := helperusermodel.GetByVmsUserId(oldRup.IdUser)
 
 		if (helperUser == helperusermodel.HelperUser{}) {
 			fmt.Println("vms_user_id: " + strconv.Itoa(int(oldRup.IdUser.Int32)) + " tidak ada di helper_user (data not migrated)")
 			continue
 		}
+		*/
+
+		userUcr := usermodel.GetUserById(oldRup.IdUser)
 
 		qInsert := `INSERT INTO ref_rup (no_rup, no_drauk, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
 		VALUES (@no_rup, @no_drauk, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
@@ -164,7 +169,7 @@ func MigrateTblRupUt() {
 			"tgl_renc_pemanfaatan_awal":  tglRencPemanfaatanAwal,
 			"tgl_renc_pemanfaatan_akhir": tglRencPemanfaatanAkhir,
 			"status_rup":                 sql.NullString{Valid: true, String: "diajukan"},
-			"ucr":                        helperUser.VmsUserEmail,
+			"ucr":                        userUcr.EmailReal,
 			"uch":                        sql.NullTime{Valid: false},
 			"udcr":                       oldRup.CreatedAt,
 			"udch":                       oldRup.UpdatedAt,
@@ -176,11 +181,13 @@ func MigrateTblRupUt() {
 
 		// kalau levelnya adalah PPK, proses data di db_usman.tabel trx_group_user
 		// supaya user tersebut punya role sebagai PPK di aplikasi Si-Ppan
+		/*
 		if helperUser.VmsUserLevel.Int32 == 7 {
 			kodeGroup := pgtype.Text{Valid: true, String: "G03.2"}
 			idUser := helperUser.UsmanRefUserId
 			trxgroupusermodel.InsertIfNotExists(kodeGroup, idUser)
 		}
+		*/
 	}
 
 	fmt.Println("Migrating tbl_rup_ut... SELESAI")

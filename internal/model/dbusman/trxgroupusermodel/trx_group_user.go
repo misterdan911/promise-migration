@@ -56,7 +56,7 @@ func InsertNew(trxgroupuser TrxGroupUser) {
 
 	_, errIns := db.DbUsman.Exec(ctx, qInsert, args)
 	if errIns != nil {
-		fmt.Println("unable to insert trx_group_user, " + errIns.Error())
+		fmt.Printf("unable to insert trx_group_user, %s id_user: (%d) tidak ada di ref_user\n", errIns.Error(), trxgroupuser.IdUser.Int32)
 	}
 }
 
