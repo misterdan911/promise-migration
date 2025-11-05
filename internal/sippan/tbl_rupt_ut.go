@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strings"
 	"promise-migration/db"
 	"promise-migration/internal/g"
 	// "promise-migration/internal/model/dbsidapet/helperusermodel"
@@ -140,11 +141,15 @@ func MigrateTblRupUt() {
 
 		userUcr := usermodel.GetUserById(oldRup.IdUser)
 
-		qInsert := `INSERT INTO ref_rup (no_rup, no_drauk, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
-		VALUES (@no_rup, @no_drauk, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
+		multiYears := GetMultiYears(oldRup)
+
+		qInsert := `INSERT INTO ref_rup (kode_rup, no_rup, no_drauk, multi_years, kode_unit, nama_paket, uraian_spek_kerja, volume_pekerjaan, satuan_volume, kode_kab_kota, lokasi, detail_lokasi, tahun_anggaran, prod_dalam_negri, is_kualifikasi_k, is_kualifikasi_m, is_kualifikasi_b, jml_pagu, is_pra_drauk, kode_jenis_pengadaan, kode_metode_pengadaan, tgl_renc_pemilihan_awal, tgl_renc_pemilihan_akhir, tgl_renc_pelaksanaan_awal, tgl_renc_pelaksanaan_akhir, tgl_renc_pemanfaatan_awal, tgl_renc_pemanfaatan_akhir, status_rup, ucr, uch, udcr, udch)
+		VALUES (@kode_rup, @no_rup, @no_drauk, @multi_years, @kode_unit, @nama_paket, @uraian_spek_kerja, @volume_pekerjaan, @satuan_volume, @kode_kab_kota, @lokasi, @detail_lokasi, @tahun_anggaran, @prod_dalam_negri, @is_kualifikasi_k, @is_kualifikasi_m, @is_kualifikasi_b, @jml_pagu, @is_pra_drauk, @kode_jenis_pengadaan, @kode_metode_pengadaan, @tgl_renc_pemilihan_awal, @tgl_renc_pemilihan_akhir, @tgl_renc_pelaksanaan_awal, @tgl_renc_pelaksanaan_akhir, @tgl_renc_pemanfaatan_awal, @tgl_renc_pemanfaatan_akhir, @status_rup, @ucr, @uch, @udcr, @udch)`
 		args := pgx.NamedArgs{
+			"kode_rup":                   oldRup.IdRupUt,
 			"no_rup":                     oldRup.NomorRupUt.String,
 			"no_drauk":                   sql.NullInt16{Valid: false}, // Tidak ada datanya dari DB lama
+			"multi_years":                multiYears,
 			"kode_unit":                  oldRup.KodeUnit,
 			"nama_paket":                 oldRup.NamaPaket,
 			"uraian_spek_kerja":          uraian_spek_kerja,
@@ -191,4 +196,37 @@ func MigrateTblRupUt() {
 	}
 
 	fmt.Println("Migrating tbl_rup_ut... SELESAI")
+}
+
+func GetMultiYears(oldRup OldRupUt) pgtype.Bool{
+
+	var multiYears pgtype.Bool
+	multiYears.Valid = true
+
+	switch strings.TrimSpace(oldRup.IzinTahunJamak.String){
+	case "2020" :
+		fmt.Println("2020")
+		multiYears.Bool = true
+	case "2021" :
+		fmt.Println("2021")
+		multiYears.Bool = true
+	case "2022":
+		fmt.Println("2022")
+		multiYears.Bool = true
+	case "2023":
+		fmt.Println("2023")
+		multiYears.Bool = true
+	case "2024":
+		fmt.Println("2024")
+		multiYears.Bool = true
+	default:
+		str := oldRup.IzinTahunJamak.String
+		if strings.Contains(str, ".") && strings.Contains(str, "/") {
+			multiYears.Bool = true
+		} else {
+			multiYears.Bool = false
+		}
+	}
+
+	return multiYears
 }

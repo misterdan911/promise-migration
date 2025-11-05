@@ -39,9 +39,11 @@ var SippanCmd = &cobra.Command{
     g.ExcludedEmails = ghelper.GetExcludedEmail()
     g.ExcludedVmsUserId = ghelper.GetExcludedVmsUserId()
 
-    sippanhelper.TruncateTableAndLog()
+    sippanhelper.TruncateTableAndLog2()
     sippan.MigrateTblRupUt()
     sippan.UpdateProvKabKota()
+
+		sippanhelper.UpdatePkSequenceFromFile()
   },
 }
 

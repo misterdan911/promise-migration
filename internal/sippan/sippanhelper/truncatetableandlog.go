@@ -1,10 +1,13 @@
 package sippanhelper
 
 import (
+	"promise-migration/db"
   "promise-migration/internal/g"
   "promise-migration/internal/model/dbsippan/refrupmodel"
   "promise-migration/internal/model/vmsdb/usermodel"
   "slices"
+  "context"
+  "log"
 )
 
 func TruncateTableAndLog() {
@@ -21,4 +24,16 @@ func TruncateTableAndLog() {
   }
 
   UpdatePkSequence("ref_rup", "kode_rup")
+}
+
+func TruncateTableAndLog2() {
+
+	ctx := context.Background()
+
+	qTruncate := "TRUNCATE TABLE ref_rup CASCADE"
+	_, err := db.DbSippan.Exec(ctx, qTruncate)
+	if err != nil {
+		log.Fatal("Truncate ref_rup Failed, " + err.Error())
+	}
+	ResetSequence("ref_rup_kode_rup_seq")
 }
