@@ -34,6 +34,7 @@ func InsertNew(helperUser HelperUser) {
 
 	qInsert := `
   INSERT INTO helper_user (
+    id,
     vms_user_id,
     vms_user_name,
     vms_user_level,
@@ -49,6 +50,7 @@ func InsertNew(helperUser HelperUser) {
     usman_ref_user_id,
     kode_vendor
   ) VALUES (
+    @id,
     @vms_user_id,
     @vms_user_name,
     @vms_user_level,
@@ -66,6 +68,7 @@ func InsertNew(helperUser HelperUser) {
   )`
 
 	args := pgx.NamedArgs{
+		"id":         helperUser.VmsUserId,
 		"vms_user_id":         helperUser.VmsUserId,
 		"vms_user_name":       helperUser.VmsUserName,
 		"vms_user_level":      helperUser.VmsUserLevel,

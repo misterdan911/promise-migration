@@ -205,19 +205,14 @@ func GetMultiYears(oldRup OldRupUt) pgtype.Bool{
 
 	switch strings.TrimSpace(oldRup.IzinTahunJamak.String){
 	case "2020" :
-		fmt.Println("2020")
 		multiYears.Bool = true
 	case "2021" :
-		fmt.Println("2021")
 		multiYears.Bool = true
 	case "2022":
-		fmt.Println("2022")
 		multiYears.Bool = true
 	case "2023":
-		fmt.Println("2023")
 		multiYears.Bool = true
 	case "2024":
-		fmt.Println("2024")
 		multiYears.Bool = true
 	default:
 		str := oldRup.IzinTahunJamak.String

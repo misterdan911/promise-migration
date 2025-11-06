@@ -7,14 +7,16 @@ import (
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/helperusernipmodel"
 	promisesibela "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
-	"promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
-	"promise-migration/internal/model/vmsdb/tblppksubmodel"
+	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
+	// "promise-migration/internal/model/vmsdb/tblppksubmodel"
 	vmspenyedia "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 	"promise-migration/internal/structs"
 	"promise-migration/internal/usman/model/vmsdb/usermodel"
 	// "regexp"
 	"strconv"
 	"strings"
+
+	"promise-migration/internal/model/dbusman/helperuserkodeunitmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -50,6 +52,7 @@ func PopulateHelperUser() {
 		var strDbPenyedia string
 		var namaPenyedia pgtype.Text
 		var jenisPenyedia pgtype.Text
+		var kodeVendor pgtype.Int4 
 
 		if (penyedia == structs.TblProfilePenyedia{}) {
 			// kalau data penyedia di vms_db gak ada, coba cari di db promise_sibela
@@ -66,6 +69,7 @@ func PopulateHelperUser() {
 		if (penyedia != structs.TblProfilePenyedia{}) {
 			dbPenyedia = pgtype.Text{Valid: true, String: strDbPenyedia}
 			namaPenyedia = pgtype.Text{Valid: true, String: penyedia.Nama.String}
+			kodeVendor = vmsUser.Id
 
 			if penyedia.IdJenisPenyedia.Int32 == 1 {
 				jenisPenyedia = pgtype.Text{Valid: true, String: "perusahaan"}
@@ -84,6 +88,7 @@ func PopulateHelperUser() {
 		}
 
 		// kalau usernya bukan user penyedia, coba dapatkan NIP nya
+		/*
 		nip := pgtype.Text{}
 		if (vmsUser.IdLevel.Int32 != 5) || (vmsUser.IdLevel.Int32 != 9) {
 			// GetNip
@@ -97,10 +102,18 @@ func PopulateHelperUser() {
 		} else if vmsUser.IdLevel.Int32 == 7 {
 			kodeUnit = tblppksubmodel.GetKodeUnitByUserId(vmsUser.Id)
 		}
+		*/
+
+		var nip pgtype.Text
+		var kodeUnit pgtype.Text
+		helperUserKodeUnit := helperuserkodeunitmodel.GetByEmail(vmsUser.EmailReal)
+		nip = helperUserKodeUnit.Nip
+		kodeUnit = helperUserKodeUnit.KodeUnit
 
 		// fmt.Println("kodeUnit: " + kodeUnit.String)
 
 		helperUser := helperusermodel.HelperUser{
+			Id:        vmsUser.Id,
 			VmsUserId:        vmsUser.Id,
 			VmsUserName:      vmsUser.Name,
 			VmsUserLevel:     vmsUser.IdLevel,
@@ -113,6 +126,8 @@ func PopulateHelperUser() {
 			DbPenyedia:       dbPenyedia,
 			NamaPenyedia:     namaPenyedia,
 			JenisPenyedia:    jenisPenyedia,
+			UsmanRefUserId:    vmsUser.Id,
+			KodeVendor:   kodeVendor,
 		}
 
 		helperusermodel.InsertNew(helperUser)
