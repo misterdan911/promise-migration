@@ -39,6 +39,9 @@ func TruncateTableAndLog() {
 
 func TruncateTableAndLog2() {
 
+	// Kosongkan tabel db_sidapet.helper_user
+	TruncatedbSidapetHelperUser()
+
 	ctx := context.Background()
 
 	qTruncate := "TRUNCATE TABLE ref_user CASCADE"

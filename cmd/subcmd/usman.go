@@ -41,7 +41,7 @@ var UsmanCmd = &cobra.Command{
 		usman.PopulateTrxGroupUser()
 
 		// // usman.PopulateHelperUserNip()
-		// usman.PopulateHelperUser()
+		usman.PopulateHelperUser()
 		// usman.MigrateUserToUsman()
 		// usman.UpdateUsmanRefUserIdOnHelperUser()
 
