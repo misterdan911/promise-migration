@@ -187,3 +187,24 @@ func GetDataByIdProfile(idProfile pgtype.Int4) structs.TblProfilePenyedia {
 	return penyedia
 
 }
+
+func GetAllIdUser() []structs.IdUser{
+	var allData []structs.IdUser
+	ctx := context.Background()
+
+	qData := `
+  SELECT id_user FROM tbl_profile_penyedia tpp WHERE id_user IS NOT NULL GROUP BY id_user`
+
+	rwData, err := db.VmsDb.Query(ctx, qData)
+	if err != nil {
+		log.Fatal("qData Failed, " + err.Error() + " " + qData)
+	}
+
+	allData, err = pgx.CollectRows(rwData, pgx.RowToStructByName[structs.IdUser])
+	if err != nil {
+		log.Fatal("failed collecting rwData, " + err.Error())
+	}
+	defer rwData.Close()
+
+	return allData
+}

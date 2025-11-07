@@ -208,6 +208,7 @@ func InsertNew(refVendorRegister RefVendorRegister) RefVendorRegister {
 
 	qInsert := `
 	INSERT INTO ref_vendor_register (
+		kode_register,
 		kode_jenis_vendor,
 		nama_perusahaan,
 		email,
@@ -232,6 +233,7 @@ func InsertNew(refVendorRegister RefVendorRegister) RefVendorRegister {
 		encrypt_key_npwp,
 		nik
 	) VALUES (
+		@kode_register,
 		@kode_jenis_vendor,
 		@nama_perusahaan,
 		@email,
@@ -258,6 +260,7 @@ func InsertNew(refVendorRegister RefVendorRegister) RefVendorRegister {
 	) RETURNING *`
 
 	args := pgx.NamedArgs{
+		"kode_register":    refVendorRegister.KodeRegister,
 		"kode_jenis_vendor":    refVendorRegister.KodeJenisVendor,
 		"nama_perusahaan":      refVendorRegister.NamaPerusahaan,
 		"email":                refVendorRegister.Email,

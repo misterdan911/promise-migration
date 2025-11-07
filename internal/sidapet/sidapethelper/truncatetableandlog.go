@@ -1,6 +1,9 @@
 package sidapethelper
 
 import (
+	"context"
+	"log"
+	"promise-migration/db"
 	"promise-migration/internal/g"
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
@@ -47,4 +50,24 @@ func TruncateTableAndLog() {
 
 	// Truncate Log File
 	ghelper.TruncateLog("pengalaman_bu.txt")
+}
+
+func TruncateTableAndLog2() {
+
+	ctx := context.Background()
+
+	qTruncate := "TRUNCATE TABLE ref_vendor CASCADE"
+	_, err := db.DbSidapet.Exec(ctx, qTruncate)
+	if err != nil {
+		log.Fatal("Truncate ref_vendor Failed, " + err.Error())
+	}
+
+
+	qTruncate = "TRUNCATE TABLE trx_penjaringan CASCADE"
+	_, err = db.DbSidapet.Exec(ctx, qTruncate)
+	if err != nil {
+		log.Fatal("Truncate trx_penjaringan Failed, " + err.Error())
+	}
+
+	UpdatePkSequenceFromFile()
 }

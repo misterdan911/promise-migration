@@ -3,7 +3,7 @@ package subcmd
 import (
 	"promise-migration/db"
 	"promise-migration/internal/g"
-	"promise-migration/internal/ghelper"
+	// "promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet"
 	"promise-migration/internal/sidapet/sidapethelper"
@@ -34,9 +34,9 @@ var SidapetCmd = &cobra.Command{
 		// sidapethelper.DropAllForeignKey()
 
 		// g.ExcludedEmails = ghelper.GetExcludedEmail()
-		g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sidapet.txt")
+		// g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sidapet.txt")
 
-		sidapethelper.TruncateTableAndLog()
+		sidapethelper.TruncateTableAndLog2()
 
 		allHelperUser := helperusermodel.GetAllUser()
 
@@ -67,6 +67,7 @@ var SidapetCmd = &cobra.Command{
 		// sidapet.MigrateTblVerif()
 		// sidapethelper.CreateAllForeignKey()
 
+	  sidapethelper.UpdatePkSequenceFromFile()
 	},
 }
 

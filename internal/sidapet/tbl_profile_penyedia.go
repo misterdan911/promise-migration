@@ -31,8 +31,8 @@ import (
 	promisesibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 
-	"promise-migration/internal/model/dbusman/refuserexternalmodel"
-	"promise-migration/internal/model/dbusman/trxgroupusermodel"
+	// "promise-migration/internal/model/dbusman/refuserexternalmodel"
+	// "promise-migration/internal/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 
@@ -61,6 +61,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	qInsRefVendor := `
 	INSERT INTO ref_vendor (
+		kode_vendor,
 		kode_jenis_vendor, 
 		nama_perusahaan,
 		is_tetap,
@@ -69,6 +70,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		udcr,
 		udch
 	) VALUES (
+		@kode_vendor,
 		@kode_jenis_vendor,
 		@nama_perusahaan,
 		@is_tetap,
@@ -88,6 +90,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	}
 
 	args := pgx.NamedArgs{
+		"kode_vendor":    profilePenyedia.IdUser,
 		"kode_jenis_vendor":    profilePenyedia.IdJenisPenyedia,
 		"nama_perusahaan":      profilePenyedia.Nama,
 		"is_tetap":             isTetap,
@@ -104,17 +107,20 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		fmt.Println("unable to insert ref_vendor, " + errInsRefVendor.Error())
 	}
 
-	allVendor, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[refvendormodel.RefVendor])
+	_, err2 := pgx.CollectRows(rwVendor, pgx.RowToStructByName[refvendormodel.RefVendor])
 	if err2 != nil {
 		log.Fatal("failed collecting rwVendor (internal/sidapet/tbl_profile_penyedia.go), " + err2.Error())
 	}
 	defer rwVendor.Close()
 
 	// update kode_vendor di db_sidapet.helper_user
+	/*
 	helperUser.KodeVendor = allVendor[0].KodeVendor
 	helperusermodel.UpdateKodeVendor(helperUser)
+	*/
 
 	// masukan data ke  db_usman.ref_user_external
+	/*
 	refUserExternal := refuserexternalmodel.RefUserExternal{
 		Id:             helperUser.KodeVendor,
 		IdUser:         helperUser.UsmanRefUserId,
@@ -125,6 +131,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		Udch:           helperUser.VmsUserUpdatedAt,
 	}
 	refuserexternalmodel.InsertNew(refUserExternal)
+  */
 
 	// kasih akses masuk ke Si-Dapet
 	// karena semua vendor pasti bisa masuk Si-Dapet
@@ -138,9 +145,12 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		}
 		trxgroupusermodel.InsertNew(trxGroupUser)
 	*/
+
+	/*
 	kodeGroup := pgtype.Text{Valid: true, String: "G01.8"}
 	idUser := helperUser.UsmanRefUserId
 	trxgroupusermodel.InsertIfNotExists(kodeGroup, idUser)
+	*/
 
 	// Insert to ref_vendor_register & ref_vendor_reg_history
 	InsertRefVendorRegister(profilePenyedia, helperUser)

@@ -27,6 +27,10 @@ type RefUser struct {
 	OtpTime         pgtype.Timestamptz
 }
 
+type Id struct {
+	Id              pgtype.Int4
+}
+
 func GetAllData() []RefUser {
 	var allUsers []RefUser
 	ctx := context.Background()
@@ -139,4 +143,26 @@ func DeleteByEmail(email pgtype.Text) {
 		log.Fatal("failed deleting RefUser (ref_user.go), " + err.Error())
 	}
 
+}
+
+func GetAllIdUserEksternal() []Id {
+	var allUsers []Id
+	ctx := context.Background()
+
+	qRefUser := `
+  SELECT id FROM ref_user WHERE status_user = 'external'`
+
+	rows, err := db.DbUsman.Query(ctx, qRefUser)
+	if err != nil {
+		log.Fatal("qRefUser Failed, " + err.Error() + " " + qRefUser)
+	}
+
+	allUsers, err = pgx.CollectRows(rows, pgx.RowToStructByName[Id])
+	if err != nil {
+		log.Fatal("failed collecting rows (ref_user.go:GetAllData), " + err.Error())
+	}
+	defer rows.Close()
+
+	return allUsers
+	
 }

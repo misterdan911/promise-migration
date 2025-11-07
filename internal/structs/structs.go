@@ -38,6 +38,10 @@ type TblProfilePenyedia struct {
 	UpdateTime        pgtype.Timestamptz
 }
 
+type IdUser struct {
+	IdUser pgtype.Int4
+}
+
 /*
 type TblProfilePenyedia struct {
 	IdProfilPenyedia  pgtype.Int4

@@ -35,6 +35,7 @@ func InsertRefVendorRegister(profilePenyedia structs.TblProfilePenyedia, helperU
   encryptKeyNpwp := helperDokumen.EncryptKey
 
  refVendorRegister := refvendorregistermodel.RefVendorRegister{
+  KodeRegister:    profilePenyedia.IdUser,
   KodeJenisVendor:    profilePenyedia.IdJenisPenyedia,
   NamaPerusahaan:     profilePenyedia.Nama,
   Email:              helperUser.VmsUserEmail,
