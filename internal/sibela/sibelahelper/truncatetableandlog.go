@@ -1,9 +1,12 @@
 package sibelahelper
 
 import (
+	"promise-migration/db"
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 
+	"context"
+	"log"
 	"slices"
 	"strings"
 )
@@ -25,6 +28,20 @@ func TruncateTableAndLog() {
 	// ----------------------
 
 	refpermintaanmodel.DeleteWhereUcrNull()
+
+	UpdatePrimaryKeySequenceFromFile()
+}
+
+
+func TruncateTableAndLog2() {
+
+	ctx := context.Background()
+
+	qTruncate := "TRUNCATE TABLE ref_permintaan CASCADE"
+	_, err := db.DbSibela.Exec(ctx, qTruncate)
+	if err != nil {
+		log.Fatal("Truncate ref_permintaan Failed, " + err.Error())
+	}
 
 	UpdatePrimaryKeySequenceFromFile()
 }

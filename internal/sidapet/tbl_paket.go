@@ -63,7 +63,7 @@ func MigrateTblPaket() {
 			TglEvaluasiAwal:     vmsPaket.TglEvalAwal,
 			TglEvaluasiAkhir:    vmsPaket.TglEvalAkhir,
 			TglPengumuman:       vmsPaket.TglUmumPaket,
-			Ucr:                 pgtype.Text{Valid: true, String: "upbj@gmail.com"},
+			Ucr:                 pgtype.Text{Valid: true, String: "adrian@ecampus.ut.ac.id"},
 			Udcr:                vmsPaket.CreatedAt,
 			Udch:                vmsPaket.CreatedAt,
 		}

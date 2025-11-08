@@ -33,10 +33,10 @@ func InsertRefPermintaan() {
 			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
 		}
 
+		// dapatkan kodeUnit
 		var userPPK helperusermodel.HelperUser
 		var kodeUnit pgtype.Text
 
-		// dapatkan kodeUnit
 		userPPK = helperusermodel.GetByVmsUserId(tblPaketPl.IdPpk)
 		kodeUnit = userPPK.KodeUnit
 
@@ -109,9 +109,9 @@ func InsertRefPermintaan() {
 		if len(allLogPaket) > 0 {
 			if allLogPaket[0].IdUser.Valid {
 				userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
-				ucr.String = userPp.VmsUserEmail.String + "|" + userPp.VmsUserName.String
+				ucr.String = userPp.VmsUserEmailReal.String + "|" + userPp.VmsUserName.String
 			} else {
-				ucr.String = userPPK.VmsUserEmail.String + "|" + userPPK.VmsUserName.String
+				ucr.String = userPPK.VmsUserEmailReal.String + "|" + userPPK.VmsUserName.String
 			}
 		} else {
 			ucr.String = "-"

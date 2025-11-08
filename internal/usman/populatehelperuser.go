@@ -118,6 +118,7 @@ func PopulateHelperUser() {
 			VmsUserName:      vmsUser.Name,
 			VmsUserLevel:     vmsUser.IdLevel,
 			VmsUserEmail:     vmsUser.Email,
+			VmsUserEmailReal:     vmsUser.EmailReal,
 			VmsUserPass:      pgtype.Text{Valid: true, String: newHashedPass},
 			VmsUserCreatedAt: vmsUser.CreatedAt,
 			VmsUserUpdatedAt: vmsUser.UpdatedAt,

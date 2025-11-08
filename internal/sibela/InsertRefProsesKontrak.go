@@ -3,6 +3,7 @@ package sibela
 import (
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
+	"promise-migration/internal/model/dbsibela/trxjenislaporanmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tbltermindptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblterminplmodel"
@@ -12,15 +13,7 @@ import (
 
 func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) {
 
-	// Persiapan Kontrak
-	refProsesKontrak1 := refproseskontrakmodel.RefProsesKontrak{
-		KodePermintaan:           refPermintaan.KodePermintaan,
-		KodeStatusKontrak:        pgtype.Int4{Valid: true, Int32: 1},
-		KodeStepPersiapanKontrak: pgtype.Int4{Valid: true, Int32: 6},
-		StatusPengisian:          pgtype.Text{Valid: true, String: "Selesai"},
-		Ucr:                      refPermintaan.Ucr,
-	}
-	refproseskontrakmodel.InsertNewData(refProsesKontrak1)
+	InsertPersiapanKontrak(refPermintaan)
 
 	// Dokumen Kontrak
 	refProsesKontrak2 := refproseskontrakmodel.RefProsesKontrak{
@@ -60,4 +53,24 @@ func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.
 	}
 
 	return statusPengisian
+}
+
+func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan) {
+	// Persiapan Kontrak
+	refProsesKontrak := refproseskontrakmodel.RefProsesKontrak{
+		KodePermintaan:           refPermintaan.KodePermintaan,
+		KodeStatusKontrak:        pgtype.Int4{Valid: true, Int32: 1},
+		KodeStepPersiapanKontrak: pgtype.Int4{Valid: true, Int32: 6},
+		StatusPengisian:          pgtype.Text{Valid: true, String: "Selesai"},
+		Ucr:                      refPermintaan.Ucr,
+	}
+	refProsesKontrak = refproseskontrakmodel.InsertNewData(refProsesKontrak)
+
+	trxJenisLaporan := trxjenislaporanmodel.TrxJenisLaporan{
+		KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
+		Ucr:                      refPermintaan.Ucr,
+		NamaLaporan:              pgtype.Text{Valid:true, String: "-"},
+	}
+
+	trxjenislaporanmodel.InsertNew(trxJenisLaporan)
 }

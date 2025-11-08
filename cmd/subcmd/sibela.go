@@ -38,7 +38,7 @@ var SibelaCmd = &cobra.Command{
 
 		g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sibela.txt")
 
-		sibelahelper.TruncateTableAndLog()
+		sibelahelper.TruncateTableAndLog2()
 
 		sibela.InsertRefPermintaan()
 

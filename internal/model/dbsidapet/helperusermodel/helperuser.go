@@ -16,6 +16,7 @@ type HelperUser struct {
 	VmsUserName      pgtype.Text
 	VmsUserLevel     pgtype.Int4
 	VmsUserEmail     pgtype.Text
+	VmsUserEmailReal     pgtype.Text
 	VmsUserPass      pgtype.Text
 	VmsUserCreatedAt pgtype.Timestamptz
 	VmsUserUpdatedAt pgtype.Timestamptz
@@ -39,6 +40,7 @@ func InsertNew(helperUser HelperUser) {
     vms_user_name,
     vms_user_level,
     vms_user_email,
+    vms_user_email_real,
     vms_user_pass,
     vms_user_created_at,
     vms_user_updated_at,
@@ -55,6 +57,7 @@ func InsertNew(helperUser HelperUser) {
     @vms_user_name,
     @vms_user_level,
     @vms_user_email,
+    @vms_user_email_real,
     @vms_user_pass,
     @vms_user_created_at,
     @vms_user_updated_at,
@@ -73,6 +76,7 @@ func InsertNew(helperUser HelperUser) {
 		"vms_user_name":       helperUser.VmsUserName,
 		"vms_user_level":      helperUser.VmsUserLevel,
 		"vms_user_email":      helperUser.VmsUserEmail,
+		"vms_user_email_real":      helperUser.VmsUserEmailReal,
 		"vms_user_pass":       helperUser.VmsUserPass,
 		"vms_user_created_at": helperUser.VmsUserCreatedAt,
 		"vms_user_updated_at": helperUser.VmsUserUpdatedAt,
@@ -168,6 +172,7 @@ func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
     vms_user_name,
     vms_user_level,
     vms_user_email,
+    vms_user_email_real,
     vms_user_pass,
     vms_user_created_at,
     vms_user_updated_at,
