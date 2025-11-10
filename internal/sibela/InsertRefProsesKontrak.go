@@ -112,7 +112,6 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
-			//fmt.Printf("persen_termin: %s\n", allTblTermin[0].PersenTermin.String)
 			fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
 				Float64: persenTermin,
@@ -136,21 +135,5 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 	}
 
-	/*
-	if totalTermin > 0 {
-	}
-
-	if len(allTblTermin) > 0 {
-
-		if allTblTermin[0].IdPaketPl.Int32 != 1347 {
-			return nil
-		}
-		
-		
-
-	}
-	*/
-
 	return nil
-
 }
