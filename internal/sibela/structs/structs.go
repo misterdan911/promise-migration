@@ -51,3 +51,40 @@ type StatusTerminBast struct {
 	NamaTermin       pgtype.Text
 	StatusTerminBast pgtype.Int8
 }
+
+type TblTerminPl struct {
+	IdTerminPl             pgtype.Int8
+	IdPaketPl              pgtype.Int4
+	NamaTermin             pgtype.Text
+	PersenTermin           pgtype.Text
+	StatusTerminBast       pgtype.Int8
+	StatusPajak            pgtype.Int8
+	SppSebelumnya          pgtype.Text
+	SppIni                 pgtype.Text
+	SppIniSd               pgtype.Text
+	SisaPagu               pgtype.Text
+	PathKwitansi           pgtype.Text
+	PathBastPenyedia       pgtype.Text
+	PathBastPp             pgtype.Text
+	HashDokumenBast        pgtype.Text
+	TerminFile             pgtype.Text
+	FileScanBast           pgtype.Text
+	KwitansiFile           pgtype.Text
+	HashDokumenKwitansi    pgtype.Text
+	SppFile                pgtype.Text
+	HashDokumenSpp         pgtype.Text
+	FileScanSpp            pgtype.Text
+	TanggalKwitansi        pgtype.Date
+	NomorKwitansi          pgtype.Text
+	PathKwitansiPpk        pgtype.Text
+	PathKwitansiPenyedia   pgtype.Text
+	TanggalSpp             pgtype.Date
+	NomorSpp               pgtype.Text
+	JenisPembayaran        pgtype.Text
+	SumberDana             pgtype.Text
+	IDUnitLayanan          pgtype.Int8
+	UnitLayanan            pgtype.Text
+	TanggalBastTerealisasi pgtype.Date
+	CreateAt               pgtype.Timestamptz
+	StatusAset             pgtype.Int8
+}
