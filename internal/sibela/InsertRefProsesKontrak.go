@@ -80,7 +80,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 	trxjenislaporanmodel.InsertNew(trxJenisLaporan)
 
-	//Jenis Pembayaran
+	// Jenis Pembayaran
 	var allTblTermin []structs.TblTerminPl
 	switch tblPaketPl.JenisPenyedia.String {
 	case "luar_dpt":
@@ -89,36 +89,67 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		allTblTermin = tbltermindptplmodel.GetByIdPaketPl(tblPaketPl.IdPaket)
 	}
 
+	jenisPembayaran := pgtype.Text{Valid:true}
+	totalTermin := len(allTblTermin)
+
+	if totalTermin > 1 {
+		jenisPembayaran.String = "termin"
+	} else if totalTermin == 1 {
+		jenisPembayaran.String = "sekaligus"
+	} else {
+		jenisPembayaran.Valid = false
+	}
+
+	if jenisPembayaran.Valid {
+
+		trxSistemPembayaran := trxsistempembayaranmodel.TrxSistemPembayaran{
+			KodeProsesKontrak:     refProsesKontrak.KodeProsesKontrak,
+			JenisPembayaran:       jenisPembayaran,
+			KategoriSispembayaran: jenisPembayaran,
+			Ucr:                   refPermintaan.Ucr,
+		}
+		trxSistemPembayaran = trxsistempembayaranmodel.InsertNew(trxSistemPembayaran)
+
+		for _, tblTermin := range allTblTermin {
+			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
+			//fmt.Printf("persen_termin: %s\n", allTblTermin[0].PersenTermin.String)
+			fmt.Println("persen_termin: ", persenTermin)
+			persentase := pgtype.Float8{
+				Float64: persenTermin,
+				Valid:   true,
+			}
+
+			sppIni, _ := strconv.ParseFloat(tblTermin.SppIni.String, 64)
+			nilaiRupiah := pgtype.Float8{
+				Float64: sppIni,
+				Valid:   true,
+			}
+
+			trxJenisSispembayaran := trxjenissispembayaranmodel.TrxJenisSispembayaran{
+				KodeSistemPembayaran: trxSistemPembayaran.KodeSistemPembayaran,
+				NamaSispembayaran: tblTermin.NamaTermin,
+				Persentase: persentase,
+				NilaiRupiah: nilaiRupiah,
+			}
+			trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
+		}
+
+	}
+
+	/*
+	if totalTermin > 0 {
+	}
+
 	if len(allTblTermin) > 0 {
 
 		if allTblTermin[0].IdPaketPl.Int32 != 1347 {
 			return nil
 		}
 		
-		trxSistemPembayaran := trxsistempembayaranmodel.TrxSistemPembayaran{
-			KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
-			JenisPembayaran: pgtype.Text{Valid: true, String:"termin"},
-			KategoriSispembayaran: pgtype.Text{Valid: true, String:"termin"},
-			Ucr:                      refPermintaan.Ucr,
-		}
-		trxSistemPembayaran = trxsistempembayaranmodel.InsertNew(trxSistemPembayaran)
+		
 
-		persenTermin, _ := strconv.ParseFloat(allTblTermin[0].PersenTermin.String, 64)
-		//fmt.Printf("persen_termin: %s\n", allTblTermin[0].PersenTermin.String)
-		fmt.Println("persen_termin: ", persenTermin)
-		aa := pgtype.Float8{
-			Float64: persenTermin,
-			Valid:   true,
-		}
-
-		trxJenisSispembayaran := trxjenissispembayaranmodel.TrxJenisSispembayaran{
-			KodeSistemPembayaran: trxSistemPembayaran.KodeSistemPembayaran,
-			NamaSispembayaran: pgtype.Text{Valid: true, String:"Coba"},
-			Persentase: aa,
-			NilaiRupiah: aa,
-		}
-		trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
 	}
+	*/
 
 	return nil
 

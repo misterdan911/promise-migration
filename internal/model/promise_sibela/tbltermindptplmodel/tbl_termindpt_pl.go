@@ -83,8 +83,8 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
 					tanggal_bast_terealisasi,
 					create_at,
 					status_aset
-        FROM public.tbl_termindpt_pl
-        WHERE id_paket_pl = $1`
+        FROM tbl_termindpt_pl
+        WHERE id_paket_dptpl = $1`
 
 	rwTblTerminPl, err := db.PromiseSibela.Query(ctx, qTblTerminPl, idPaketPl)
 	if err != nil {
