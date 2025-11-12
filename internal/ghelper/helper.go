@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -120,3 +121,68 @@ type Lengthable interface {
 func GetLen[T Lengthable](myValue T) string {
 	return " (" + strconv.Itoa(len(myValue)) + ")"
 }
+
+
+// CountDaysBetween counts the number of days between two dates
+func CountDaysBetween(beginDate, endDate string) (int, error) {
+    start, err := time.Parse("2006-01-02", beginDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    end, err := time.Parse("2006-01-02", endDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    // Calculate the difference in days
+    days := int(end.Sub(start).Hours() / 24)
+    return days, nil
+}
+
+// CountMonthsBetween counts the number of complete months between two dates
+func CountMonthsBetween(beginDate, endDate string) (int, error) {
+    start, err := time.Parse("2006-01-02", beginDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    end, err := time.Parse("2006-01-02", endDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    // Calculate the difference in months
+    months := (end.Year() - start.Year()) * 12 + int(end.Month()) - int(start.Month())
+    
+    // If end day is before start day, subtract one month
+    if end.Day() < start.Day() {
+        months--
+    }
+    
+    return months, nil
+}
+
+// CountYearsBetween counts the number of complete years between two dates
+func CountYearsBetween(beginDate, endDate string) (int, error) {
+    start, err := time.Parse("2006-01-02", beginDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    end, err := time.Parse("2006-01-02", endDate)
+    if err != nil {
+        return 0, err
+    }
+    
+    // Calculate the difference in years
+    years := end.Year() - start.Year()
+    
+    // If the end month is before the start month, or same month but end day is before start day, subtract one year
+    if end.Month() < start.Month() || (end.Month() == start.Month() && end.Day() < start.Day()) {
+        years--
+    }
+    
+    return years, nil
+}
+

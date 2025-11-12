@@ -135,5 +135,13 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 	}
 
+
+
+	/*
+	trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
+	}
+	trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
+	*/
+
 	return nil
 }
