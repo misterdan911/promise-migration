@@ -122,67 +122,65 @@ func GetLen[T Lengthable](myValue T) string {
 	return " (" + strconv.Itoa(len(myValue)) + ")"
 }
 
-
 // CountDaysBetween counts the number of days between two dates
-func CountDaysBetween(beginDate, endDate string) (int, error) {
-    start, err := time.Parse("2006-01-02", beginDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    end, err := time.Parse("2006-01-02", endDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    // Calculate the difference in days
-    days := int(end.Sub(start).Hours() / 24)
-    return days, nil
+func CountDaysBetween(beginDate, endDate time.Time) (int, error) {
+	//start, err := time.Parse("2006-01-02", beginDate)
+	//if err != nil {
+	//    return 0, err
+	//}
+	//
+	//end, err := time.Parse("2006-01-02", endDate)
+	//if err != nil {
+	//    return 0, err
+	//}
+
+	// Calculate the difference in days
+	days := int(endDate.Sub(beginDate).Hours() / 24)
+	return days, nil
 }
 
 // CountMonthsBetween counts the number of complete months between two dates
-func CountMonthsBetween(beginDate, endDate string) (int, error) {
-    start, err := time.Parse("2006-01-02", beginDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    end, err := time.Parse("2006-01-02", endDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    // Calculate the difference in months
-    months := (end.Year() - start.Year()) * 12 + int(end.Month()) - int(start.Month())
-    
-    // If end day is before start day, subtract one month
-    if end.Day() < start.Day() {
-        months--
-    }
-    
-    return months, nil
+func CountMonthsBetween(beginDate, endDate time.Time) (int, error) {
+	// start, err := time.Parse("2006-01-02", beginDate)
+	// if err != nil {
+	// 	return 0, err
+	// }
+	//
+	// end, err := time.Parse("2006-01-02", endDate)
+	// if err != nil {
+	// 	return 0, err
+	// }
+
+	// Calculate the difference in months
+	months := (endDate.Year()-beginDate.Year())*12 + int(endDate.Month()) - int(beginDate.Month())
+
+	// If  day is before beginDate day, subtract one month
+	if endDate.Day() < beginDate.Day() {
+		months--
+	}
+
+	return months, nil
 }
 
 // CountYearsBetween counts the number of complete years between two dates
-func CountYearsBetween(beginDate, endDate string) (int, error) {
-    start, err := time.Parse("2006-01-02", beginDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    end, err := time.Parse("2006-01-02", endDate)
-    if err != nil {
-        return 0, err
-    }
-    
-    // Calculate the difference in years
-    years := end.Year() - start.Year()
-    
-    // If the end month is before the start month, or same month but end day is before start day, subtract one year
-    if end.Month() < start.Month() || (end.Month() == start.Month() && end.Day() < start.Day()) {
-        years--
-    }
-    
-    return years, nil
-}
+func CountYearsBetween(beginDate, endDate time.Time) (int, error) {
+	// start, err := time.Parse("2006-01-02", beginDate)
+	// if err != nil {
+	// 	return 0, err
+	// }
+	//
+	// end, err := time.Parse("2006-01-02", endDate)
+	// if err != nil {
+	// 	return 0, err
+	// }
 
+	// Calculate the difference in years
+	years := endDate.Year() - beginDate.Year()
+
+	// If the endDate month is before the beginDate month, or same month but endDate day is before beginDate day, subtract one year
+	if endDate.Month() < beginDate.Month() || (endDate.Month() == beginDate.Month() && endDate.Day() < beginDate.Day()) {
+		years--
+	}
+
+	return years, nil
+}

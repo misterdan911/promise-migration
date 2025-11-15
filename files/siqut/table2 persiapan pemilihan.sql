@@ -82,54 +82,85 @@ ALTER TABLE "trx_undangan_pemilihan" ADD FOREIGN KEY ("kode_persiapan_pemilihan"
 
 
 -- Persyaratan
+-- ref_tpl_kat_persyaratan
 DROP TABLE IF EXISTS ref_tpl_kat_persyaratan;
 CREATE TABLE ref_tpl_kat_persyaratan (
   kode_tpl_kat int4 PRIMARY KEY,
-  step varchar(100)
+  nama_kat varchar(100)
 );
+COMMENT ON TABLE "ref_tpl_kat_persyaratan" IS 'Template Kategori Persyaratan';
 
-INSERT INTO ref_tpl_kat_persyaratan (kode_tpl_kat, step) VALUES
-  (1, 'Administrasi dan Kualifikasi'),
-  (2, 'Teknis'),
-  (3, 'Harga');
-
+-- ref_tpl_sub_kat_persyaratan
 DROP TABLE IF EXISTS ref_tpl_sub_kat_persyaratan;
 CREATE TABLE ref_tpl_sub_kat_persyaratan (
   kode_tpl_sub_kat int4 PRIMARY KEY,
   kode_tpl_kat int4,
-  nama_persyaratan varchar(255),
+  nama_sub_kat varchar(255),
   deskripsi text
 );
-ALTER TABLE "ref_tpl_sub_kat_persyaratan" ADD FOREIGN KEY ("kode_tpl_kat int4") REFERENCES "ref_tpl_kat_persyaratan" ("kode_tpl_kat") ON DELETE CASCADE;
+COMMENT ON TABLE "ref_tpl_sub_kat_persyaratan" IS 'Template Sub Kategori Persyaratan';
+ALTER TABLE "ref_tpl_sub_kat_persyaratan" ADD FOREIGN KEY ("kode_tpl_kat") REFERENCES "ref_tpl_kat_persyaratan" ("kode_tpl_kat") ON DELETE CASCADE;
 
-INSERT INTO ref_tpl_sub_kat_persyaratan (kode_tpl_sub_kat, kode_tpl_kat, nama_persyaratan) VALUES
-  (1, 1, 'Surat Penawaran'),
-  (2, 1, 'Nomor Induk Berusaha (NIB)'),
-  (3, 1, 'Sertifikat Badan Usaha (SBU)'),
-  (4, 2, 'Tenaga Ahli'),
-  (5, 2, 'Pengalaman'),
-  (6, 2, 'Peralatan dan Kantor'),
-  (7, 3, 'Harga')
-;
 
--- ref_tpl_item_tanya
-DROP TABLE IF EXISTS ref_tpl_item_tanya;
-CREATE TABLE ref_tpl_item_tanya (
-  kode_tpl_item_tanya serial PRIMARY KEY,
+-- ref_tpl_item_tanya_persyaratan
+DROP TABLE IF EXISTS ref_tpl_item_tanya_persyaratan;
+CREATE TABLE ref_tpl_item_tanya_persyaratan (
+  kode_tpl_item_tanya int4 PRIMARY KEY,
   kode_tpl_sub_kat int4,
   item_tanya varchar(255),
   tipe varchar(50)
 );
-ALTER TABLE "ref_tpl_item_tanya" ADD FOREIGN KEY ("kode_tpl_sub_kat") REFERENCES "ref_tpl_sub_kat_persyaratan" ("kode_tpl_sub_kat") ON DELETE CASCADE;
+ALTER TABLE "ref_tpl_item_tanya_persyaratan" ADD FOREIGN KEY ("kode_tpl_sub_kat") REFERENCES "ref_tpl_sub_kat_persyaratan" ("kode_tpl_sub_kat") ON DELETE CASCADE;
+-- SELECT setval('ref_tpl_item_tanya_kode_tpl_item_tanya_seq', (SELECT MAX(kode_item_tanya) FROM ref_tpl_item_tanya_persyaratan));
 
-INSERT INTO ref_tpl_item_tanya (kode_tpl_item_tanya, kode_tpl_sub_kat, item_tanya, tipe) VALUES
-  (1, 1, 'File', 'file'),
-  (2, 1, 'Nomor Surat', 'text'),
-  (3, 1, 'Tanggal Surat', 'tanggal'),
-  (4, 1, 'Nilai Penawaran', 'text'),
-  (5, 1, 'Jangka Waktu', 'text'),
-  (6, 1, 'Masa Berlaku', 'text')
-;
-ref_tpl_item_tanya_kode_tpl_item_tanya_seq
+
+-- ref_tpl_sub_item_tanya_persyaratan
+DROP TABLE IF EXISTS ref_tpl_sub_item_tanya_persyaratan;
+CREATE TABLE ref_tpl_sub_item_tanya_persyaratan (
+  kode_tpl_sub_item_tanya int4 PRIMARY KEY,
+  kode_tpl_item_tanya int4,
+  item_tanya varchar(255),
+  tipe varchar(50)
+);
+ALTER TABLE "ref_tpl_sub_item_tanya_persyaratan" ADD FOREIGN KEY ("kode_tpl_item_tanya") REFERENCES "ref_tpl_item_tanya_persyaratan" ("kode_tpl_item_tanya") ON DELETE CASCADE;
+
+
+-- trx_sub_kat_persyaratan
+DROP TABLE IF EXISTS trx_sub_kat_persyaratan;
+CREATE TABLE trx_sub_kat_persyaratan (
+  kode_trx_sub_kat int4 PRIMARY KEY,
+  kode_ku int4,
+  kode_tpl_kat int4,
+  nama_persyaratan varchar(255),
+  deskripsi text
+);
+ALTER TABLE "trx_sub_kat_persyaratan" ADD FOREIGN KEY ("kode_ku") REFERENCES "trx_kaji_ulang" ("kode_ku") ON DELETE CASCADE;
+ALTER TABLE "trx_sub_kat_persyaratan" ADD FOREIGN KEY ("kode_tpl_kat") REFERENCES "ref_tpl_kat_persyaratan" ("kode_tpl_kat") ON DELETE CASCADE;
+
+
+-- trx_item_tanya_persyaratan
+DROP TABLE IF EXISTS trx_item_tanya_persyaratan;
+CREATE TABLE trx_item_tanya_persyaratan (
+  kode_trx_item_tanya serial PRIMARY KEY
+  kode_trx_sub_kat int4,
+  item_tanya varchar(255),
+  tipe varchar(50)
+);
+ALTER TABLE "trx_item_tanya_persyaratan" ADD FOREIGN KEY ("kode_trx_sub_kat") REFERENCES "trx_sub_kat_persyaratan" ("kode_trx_sub_kat") ON DELETE CASCADE;
+
+
+-- trx_sub_item_tanya_persyaratan
+DROP TABLE IF EXISTS trx_sub_item_tanya_persyaratan;
+CREATE TABLE trx_sub_item_tanya_persyaratan (
+  kode_trx_sub_item_tanya serial PRIMARY KEY
+  kode_trx_item_tanya int4,
+  sub_item_tanya varchar(255),
+  tipe varchar(50)
+);
+ALTER TABLE "trx_sub_item_tanya_persyaratan" ADD FOREIGN KEY ("kode_trx_item_tanya") REFERENCES "trx_item_tanya_persyaratan" ("kode_trx_item_tanya") ON DELETE CASCADE;
+
+
+
 
 -- lorem_ipsum
+

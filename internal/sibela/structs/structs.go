@@ -53,7 +53,7 @@ type StatusTerminBast struct {
 }
 
 type TblTerminPl struct {
-	IdTerminPl             pgtype.Int8
+	IdTerminPl             pgtype.Int4
 	IdPaketPl              pgtype.Int4
 	NamaTermin             pgtype.Text
 	PersenTermin           pgtype.Text

@@ -2,8 +2,10 @@ package sibela
 
 import (
 	"fmt"
+	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
+	"promise-migration/internal/model/dbsibela/trxjangkawaktumodel"
 	"promise-migration/internal/model/dbsibela/trxjenislaporanmodel"
 	"promise-migration/internal/model/dbsibela/trxjenissispembayaranmodel"
 	"promise-migration/internal/model/dbsibela/trxsistempembayaranmodel"
@@ -61,6 +63,7 @@ func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.
 }
 
 func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) error {
+
 	// Persiapan Kontrak
 	refProsesKontrak := refproseskontrakmodel.RefProsesKontrak{
 		KodePermintaan:           refPermintaan.KodePermintaan,
@@ -89,7 +92,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		allTblTermin = tbltermindptplmodel.GetByIdPaketPl(tblPaketPl.IdPaket)
 	}
 
-	jenisPembayaran := pgtype.Text{Valid:true}
+	jenisPembayaran := pgtype.Text{Valid: true}
 	totalTermin := len(allTblTermin)
 
 	if totalTermin > 1 {
@@ -112,6 +115,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
+		  fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
 			fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
 				Float64: persenTermin,
@@ -126,22 +130,47 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 			trxJenisSispembayaran := trxjenissispembayaranmodel.TrxJenisSispembayaran{
 				KodeSistemPembayaran: trxSistemPembayaran.KodeSistemPembayaran,
-				NamaSispembayaran: tblTermin.NamaTermin,
-				Persentase: persentase,
-				NilaiRupiah: nilaiRupiah,
+				NamaSispembayaran:    tblTermin.NamaTermin,
+				Persentase:           persentase,
+				NilaiRupiah:          nilaiRupiah,
 			}
 			trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
 		}
 
+		beginDate := allTblTermin[0].TanggalBastTerealisasi.Time
+		endDate := allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Time
+		totalDays, _ := ghelper.CountDaysBetween(beginDate, endDate)
+		totalMonths, _ := ghelper.CountMonthsBetween(beginDate, endDate)
+		totalYears, _ := ghelper.CountYearsBetween(beginDate, endDate)
+
+		fmt.Printf("todalDays: %d\n", totalDays)
+		fmt.Printf("totalMonths: %d\n", totalMonths)
+		fmt.Printf("totalMonths: %d\n", totalYears)
+
+		satuanJangkaWaktu := pgtype.Text{Valid: true}
+		jangkaWaktu := pgtype.Int4{Valid: true}
+
+		if totalYears > 0 {
+			satuanJangkaWaktu.String = "tahunan"
+			jangkaWaktu.Int32 = int32(totalYears)
+		} else if totalMonths > 0 {
+			satuanJangkaWaktu.String = "bulanan"
+			jangkaWaktu.Int32 = int32(totalMonths)
+		} else {
+			satuanJangkaWaktu.String = "harian"
+			jangkaWaktu.Int32 = int32(totalDays)
+		}
+
+			trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
+				KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
+				JangkaWaktu: jangkaWaktu,
+				Dari: beginDate,
+				SampaiDengan: endDate,
+				SatuanJangkaWaktu: satuanJangkaWaktu,
+			}
+			trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
 	}
 
-
-
-	/*
-	trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
-	}
-	trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
-	*/
 
 	return nil
 }

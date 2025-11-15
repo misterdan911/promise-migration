@@ -75,7 +75,8 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
             create_at,
             status_aset
         FROM public.tbl_termin_pl
-        WHERE id_paket_pl = $1`
+        WHERE id_paket_pl = $1
+				ORDER BY id_termin_pl ASC`
 
 	rwTblTerminPl, err := db.PromiseSibela.Query(ctx, qTblTerminPl, idPaketPl)
 	if err != nil {
