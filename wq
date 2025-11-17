@@ -115,7 +115,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
-			fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
+		  fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
 			fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
 				Float64: persenTermin,
@@ -161,28 +161,14 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			jangkaWaktu.Int32 = int32(totalDays)
 		}
 
-		fmt.Printf("IdTerminPl: %d\n", allTblTermin[0].IdTerminPl.Int32)
-		fmt.Printf("IdPaketPl: %d\n", allTblTermin[0].IdPaketPl.Int32)
-
-		if !allTblTermin[0].TanggalBastTerealisasi.Valid {
-			allTblTermin[0].TanggalBastTerealisasi.Valid = true
-			allTblTermin[0].TanggalBastTerealisasi.Scan("1970-01-01 08:00:00")
-		}
-
-		if !allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Valid {
-			allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Valid = true
-			allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Scan("1970-01-01 08:00:00")
-		}
-
-		trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
-			KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
-			JangkaWaktu:       jangkaWaktu,
-			Dari:              allTblTermin[0].TanggalBastTerealisasi,
-			SampaiDengan:      allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi,
-			SatuanJangkaWaktu: satuanJangkaWaktu,
-			Ucr: refPermintaan.Ucr,
-		}
-		trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
+			trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
+				KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
+				JangkaWaktu: jangkaWaktu,
+				Dari: allTblTermin[0].TanggalBastTerealisasi,
+				SampaiDengan: allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi,
+				SatuanJangkaWaktu: satuanJangkaWaktu,
+			}
+			trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
 	}
 
 	return nil

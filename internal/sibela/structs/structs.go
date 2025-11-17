@@ -84,7 +84,7 @@ type TblTerminPl struct {
 	SumberDana             pgtype.Text
 	IDUnitLayanan          pgtype.Int8
 	UnitLayanan            pgtype.Text
-	TanggalBastTerealisasi pgtype.Date
+	TanggalBastTerealisasi pgtype.Timestamp
 	CreateAt               pgtype.Timestamptz
 	StatusAset             pgtype.Int8
 }
