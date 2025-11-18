@@ -3,9 +3,9 @@ package sibela
 import (
 	"fmt"
 	"promise-migration/internal/ghelper"
-	"promise-migration/internal/model/dbsibela/refkeluaranproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
+	"promise-migration/internal/model/dbsibela/refkeluaranproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/trxjangkawaktumodel"
 	"promise-migration/internal/model/dbsibela/trxjenislaporanmodel"
 	"promise-migration/internal/model/dbsibela/trxjenissispembayaranmodel"
@@ -183,33 +183,30 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			Dari:              allTblTermin[0].TanggalBastTerealisasi,
 			SampaiDengan:      allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi,
 			SatuanJangkaWaktu: satuanJangkaWaktu,
-			Ucr:               refPermintaan.Ucr,
+			Ucr: refPermintaan.Ucr,
 		}
 		trxjangkawaktumodel.InsertNew(trxJangkaWaktu)
 
 		// Keluaran
 		refKeluaranProsesKontrak := refkeluaranproseskontrakmodel.RefKeluaranProsesKontrak{
 			KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
-			Keluaran:          pgtype.Text{Valid: true, String: "-"},
-			Ucr:               refPermintaan.Ucr,
-			StatusAktif:       pgtype.Int2{Valid: true, Int16: 1},
+			Keluaran: pgtype.Text{Valid: true, String: "-"},
+			Ucr: refPermintaan.Ucr,
+			StatusAktif: pgtype.Int2{Valid: true, Int16: 1},
 		}
 		refkeluaranproseskontrakmodel.InsertNew(refKeluaranProsesKontrak)
 
 		// Serah Terima
 		var persentase pgtype.Numeric
 		persentase.Valid = true
-		err := persentase.Scan("100")
-		if err != nil {
-			return err
-		}
+		persentase.Scan(100)
 
 		trxSerahTerima := trxserahterimamodel.TrxSerahTerima{
-			KodeProsesKontrak:   refProsesKontrak.KodeProsesKontrak,
+			KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
 			KategoriSerahTerima: pgtype.Text{Valid: true, String: "sekaligus"},
-			Rincian:             pgtype.Text{Valid: true, String: "-"},
-			Persentase:          persentase,
-			Ucr:                 refPermintaan.Ucr,
+			Rincian: pgtype.Text{Valid: true, String: "-"},
+			Persentase: persentase,
+			Ucr: refPermintaan.Ucr,
 		}
 		trxserahterimamodel.InsertNew(trxSerahTerima)
 
