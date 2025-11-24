@@ -94,8 +94,6 @@ var DokumenCmd = &cobra.Command{
 		// tbl_komisaris_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()
 
-		// tbl_paket
-		// appdoc.MigrateFileFromPromiseSibelaTblPaket()	// tidak ada file
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
@@ -110,21 +108,23 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()
 
 		// tbl_personalia_perusahaan
-		appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan() // untested
+		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan() // untested
 
 		// tbl_profile_penyedia
-		appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia() //untested
+		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia() //untested
 
 		// tbl_saham_perusahaan
-		appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan() // untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan() // untested
 
 		// tbl_sertif_perorangan
-		appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
+		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
 
 		// tbl_surat_keputusan
 
 		g.AppName = "Si-BeLa"
 
+		// tbl_paket_pl
+		appdoc.MigrateFileFromPromiseSibelaTblPaketPl()	// untested
 	},
 }
 

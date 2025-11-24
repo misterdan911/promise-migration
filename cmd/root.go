@@ -44,7 +44,7 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	//rootCmd.SetArgs([]string{"migrate", "dokumen"})
+	// rootCmd.SetArgs([]string{"migrate", "dokumen"})
 	//rootCmd.SetArgs([]string{"migrate", "usman"})
 	//rootCmd.SetArgs([]string{"migrate", "sidapet"})
 	//rootCmd.SetArgs([]string{"migrate", "sibela"})

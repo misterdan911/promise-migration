@@ -16,7 +16,8 @@ import (
 	"promise-migration/internal/model/mypromise_sibela/tblpengalamansekarangmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblpersonaliaperusahaanmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblsahamperusahaanmodel"
-
+	"promise-migration/internal/model/mypromise_sibela/tblpaketplmodel"
+	
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -262,4 +263,22 @@ func MigrateFileFromPromiseSibelaTblSahamPerusahaan() {
             ProcessOriginalPath(originalPath)
         }
     }
+}
+
+func MigrateFileFromPromiseSibelaTblPaketPl() {
+    allRows, _ := tblpaketplmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+        // Process path_sibela
+				if row.PathSibela.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket_pl.path_sibela"
+            g.LogDoc.PkId = row.IdPaket.Int32
+
+            originalPath.String = row.PathSibela.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+	
 }
