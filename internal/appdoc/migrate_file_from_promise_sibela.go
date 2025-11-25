@@ -282,3 +282,25 @@ func MigrateFileFromPromiseSibelaTblPaketPl() {
     }
 	
 }
+
+/*
+func MigrateFileFromPromiseSibelaTblSuratPesananPl() {
+	allRows, _ := tblsuratpesananplmodel.GetAllDocument()
+	originalPath := pgtype.Text{Valid: true, String: ""}
+
+	for _, row := range allRows {
+			
+		// Process suratpesanan_file
+		if row.SuratpesananFile.String != "" {
+			g.LogDoc.FieldName = "promise_sibela.tbl_suratpesanan_pl.suratpesanan_file"
+			g.LogDoc.PkId = row.IdSuratPesananPl.Int32
+
+			originalPath.String = row.SuratpesananFile.String
+			ProcessOriginalPath(originalPath)
+		}
+	}
+}
+*/
+
+
+

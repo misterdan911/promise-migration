@@ -34,7 +34,6 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	refProsesKontrak2 = refproseskontrakmodel.InsertNewData(refProsesKontrak2)
 	InsertTrxDokumenKontrak(refPermintaan, tblPaketPl, refProsesKontrak2)
 
-	// Riwayat Pelaksanaan
 	statusPengisian := GetStatusPengisian(tblPaketPl)
 	refProsesKontrak3 := refproseskontrakmodel.RefProsesKontrak{
 		KodePermintaan:    refPermintaan.KodePermintaan,
@@ -43,7 +42,7 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		Ucr:               refPermintaan.Ucr,
 	}
 	refProsesKontrak3 = refproseskontrakmodel.InsertNewData(refProsesKontrak3)
-	InsertRefRiwayatPelaksanaan(refPermintaan, tblPaketPl, refProsesKontrak2)
+	InsertRefRiwayatPelaksanaan(refPermintaan, tblPaketPl, refProsesKontrak3)
 }
 
 func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.Text {
@@ -136,7 +135,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 				Persentase:           persentase,
 				NilaiRupiah:          nilaiRupiah,
 			}
-			trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
+			trxJenisSispembayaran = trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
 		}
 
 		// Jangka Waktu
