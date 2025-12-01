@@ -57,7 +57,7 @@ type TblTerminPl struct {
 	IdPaketPl              pgtype.Int4
 	NamaTermin             pgtype.Text
 	PersenTermin           pgtype.Text
-	StatusTerminBast       pgtype.Int8
+	StatusTerminBast       pgtype.Int4
 	StatusPajak            pgtype.Int8
 	SppSebelumnya          pgtype.Text
 	SppIni                 pgtype.Text
@@ -87,4 +87,20 @@ type TblTerminPl struct {
 	TanggalBastTerealisasi pgtype.Timestamp
 	CreateAt               pgtype.Timestamptz
 	StatusAset             pgtype.Int8
+}
+
+type TblSuratBap struct {
+    IDSuratBap     pgtype.Int4
+    IDTerminPl     pgtype.Int4
+    IDPkualitas    pgtype.Int4
+    NomorBap       pgtype.Text
+    TanggalBap     pgtype.Timestamptz
+    PathBap        pgtype.Text
+    NominalDenda   pgtype.Text
+    BapStatus      pgtype.Text
+    BapBarcode     pgtype.Text
+    BapFile        pgtype.Text
+    HashDokumen    pgtype.Text
+    FileScanBap    pgtype.Text
+    TertanggalBap  pgtype.Timestamptz
 }

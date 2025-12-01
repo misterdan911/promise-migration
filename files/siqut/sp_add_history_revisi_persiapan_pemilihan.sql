@@ -36,6 +36,8 @@ BEGIN
         tgl_penetapan_pengumuman_akhir,
         tgl_surat_mdp,
         kode_dok_mdp,
+		udcr,
+        alasan_revisi,
         revisi_ke
     )
     SELECT 
@@ -57,6 +59,8 @@ BEGIN
         tgl_penetapan_pengumuman_akhir,
         tgl_surat_mdp,
         kode_dok_mdp,
+		udcr,
+        alasan_revisi,
         revisi_ke
     FROM trx_persiapan_pemilihan
     WHERE kode_persiapan_pemilihan = p_kode_persiapan_pemilihan;

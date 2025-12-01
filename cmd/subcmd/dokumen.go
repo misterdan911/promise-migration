@@ -124,10 +124,10 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "Si-BeLa"
 
 		// tbl_paket_pl
-		// appdoc.MigrateFileFromPromiseSibelaTblPaketPl()	// untested
+		appdoc.MigrateFileFromPromiseSibelaTblPaketPl()	// untested
 
 		// tbl_surat_pesanan_pl
-		appdoc.MigrateFileFromPromiseSibelaTblSuratPesananPl()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratPesananPl()	// untested
 	},
 }
 

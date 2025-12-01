@@ -16,12 +16,15 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+var gTblPaketPl tblpaketplonionmodel.TblPaketPlOnion
+
 func InsertRefPermintaan() {
 
 	// allTblPaketPl := tblpaketplmodel.GetAllData()
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
+		gTblPaketPl = tblPaketPl
 
 		// dapakan kode_rup
 		var kodeRup pgtype.Int4

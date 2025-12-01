@@ -31,7 +31,7 @@ var allHelperRiwayatPelaksanaan []HelperRiwayatPelaksanaan
 
 func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) {
 
-	allHelperRiwayatPelaksanaan = nil
+	allTrxJenisSispembayaran = nil
 	InsertPersiapanKontrak(refPermintaan, tblPaketPl)
 
 	// Dokumen Kontrak
@@ -146,6 +146,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 				NilaiRupiah:          nilaiRupiah,
 			}
 			trxJenisSispembayaran = trxjenissispembayaranmodel.InsertNew(trxJenisSispembayaran)
+			allTrxJenisSispembayaran = append(allTrxJenisSispembayaran, trxJenisSispembayaran)
 
 			allHelperRiwayatPelaksanaan = append(allHelperRiwayatPelaksanaan, HelperRiwayatPelaksanaan{
 				TrxJenisSispembayaran: trxJenisSispembayaran,
