@@ -94,7 +94,7 @@ type TblSuratBap struct {
     IDTerminPl     pgtype.Int4
     IDPkualitas    pgtype.Int4
     NomorBap       pgtype.Text
-    TanggalBap     pgtype.Timestamptz
+    TanggalBap     pgtype.Timestamp
     PathBap        pgtype.Text
     NominalDenda   pgtype.Text
     BapStatus      pgtype.Text

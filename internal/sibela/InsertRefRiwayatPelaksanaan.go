@@ -4,6 +4,8 @@ import (
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refriwayatpelaksanaanmodel"
+	"promise-migration/internal/model/dbsibela/refbapemeriksaanmodel"
+	"promise-migration/internal/model/dbsibela/trxriwayatpelaksanaanmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
@@ -38,12 +40,6 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		refRiwayatPelaksanaan = refriwayatpelaksanaanmodel.InsertNew(refRiwayatPelaksanaan)
 
 		//insert trx_riwayat_pelaksanaan
-		trxRiwayatPelaksanaan := trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
-			KodeRiwayatPelaksanaan: refRiwayatPelaksanaan.KodeRiwayatPelaksanaan,
-		}
-		trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
-
-		// insert ref_ba_pemeriksaan
 		var tblSuratBap structs.TblSuratBap
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luar_dpt":
@@ -51,6 +47,18 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		case "dpt":
 			tblSuratBap = tblsuratbapdptmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		}
+
+		statusStep := pgtype.Text{Valid: true, String: "selesai"}
+		trxRiwayatPelaksanaan := trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
+			KodeRiwayatPelaksanaan: refRiwayatPelaksanaan.KodeRiwayatPelaksanaan,
+			KodeStepRiwayatPelaksanaan: pgtype.Int4{Valid: true, Int32: 1},	// BAP
+			StatusStep: statusStep,
+			Ucr: refPermintaan.Ucr,
+			Udcr: tblSuratBap.TanggalBap,
+		}
+		trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
+
+		// insert ref_ba_pemeriksaan
 
 		refBaPemeriksaan := refbapemeriksaanmodel.RefBaPemeriksaan{
 		}
