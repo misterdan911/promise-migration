@@ -16,11 +16,11 @@ type TrxTte struct {
 	KategoriTte          pgtype.Text
 	PathDokumen          pgtype.Text
 	PathDokumenSelesai   pgtype.Text
-	TglSelesai           pgtype.Timestamptz
+	TglSelesai           pgtype.Timestamp
 	NomorSurat           pgtype.Text
 }
 
-func InsertNew(trxTte TrxTte) {
+func InsertNew(trxTte TrxTte) TrxTte {
 	ctx := context.Background()
 
 	qInsert := `
@@ -40,7 +40,7 @@ func InsertNew(trxTte TrxTte) {
 		@path_dokumen_selesai,
 		@tgl_selesai,
 		@nomor_surat
-	)`
+	) RETURNING *`
 
 	args := pgx.NamedArgs{
 		"kode_trx_penandatangan": trxTte.KodeTrxPenandatangan,
@@ -52,8 +52,21 @@ func InsertNew(trxTte TrxTte) {
 		"nomor_surat":            trxTte.NomorSurat,
 	}
 
-	_, errIns := db.DbSibela.Exec(ctx, qInsert, args)
+	// allData, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	// if errIns != nil {
+	// 	log.Fatal("unable to insert trx_tte (trx_tte.go:InsertTrxTte), " + errIns.Error())
+	// }
+
+	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
 	if errIns != nil {
 		log.Fatal("unable to insert trx_tte (trx_tte.go:InsertTrxTte), " + errIns.Error())
 	}
+	defer rwIns.Close()
+
+	allTte, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxTte])
+	if err != nil {
+		log.Fatal("failed collecting TrxTte, " + err.Error())
+	}
+
+	return allTte[0]
 }

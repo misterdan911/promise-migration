@@ -90,9 +90,9 @@ type TblTerminPl struct {
 }
 
 type TblSuratBap struct {
-    IDSuratBap     pgtype.Int4
-    IDTerminPl     pgtype.Int4
-    IDPkualitas    pgtype.Int4
+    IdSuratBap     pgtype.Int4
+    IdTerminPl     pgtype.Int4
+    IdPkualitas    pgtype.Int4
     NomorBap       pgtype.Text
     TanggalBap     pgtype.Timestamp
     PathBap        pgtype.Text

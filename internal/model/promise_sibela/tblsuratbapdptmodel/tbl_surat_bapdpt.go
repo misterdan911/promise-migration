@@ -33,7 +33,7 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
 	FROM tbl_surat_bap
 	WHERE id_termin_pl = $1`
 
-	rwSuratBap, err := db.DbSidapet.Query(ctx, qSuratBap, idTerminPl)
+	rwSuratBap, err := db.PromiseSibela.Query(ctx, qSuratBap, idTerminPl)
 	if err != nil {
 		log.Fatal("qSuratBap Failed, " + err.Error() + " " + qSuratBap)
 	}

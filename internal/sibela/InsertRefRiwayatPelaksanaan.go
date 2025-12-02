@@ -6,9 +6,12 @@ import (
 	"promise-migration/internal/model/dbsibela/refriwayatpelaksanaanmodel"
 	"promise-migration/internal/model/dbsibela/refbapemeriksaanmodel"
 	"promise-migration/internal/model/dbsibela/trxriwayatpelaksanaanmodel"
+	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sibela/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -56,13 +59,40 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			Ucr: refPermintaan.Ucr,
 			Udcr: tblSuratBap.TanggalBap,
 		}
-		trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
 
 		// insert ref_ba_pemeriksaan
+		// ---------------------------------------------------------------------------------------------
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSuratBap.BapFile)
+		var pathDokumen pgtype.Text
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblSuratBap.BapFile.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		trxTte := trxttemodel.TrxTte{
+			KodePermintaan: refPermintaan.KodePermintaan,
+			KategoriTte:pgtype.Text{Valid: true, String: "ba_pemeriksaan"},
+			PathDokumen: pathDokumen,
+			TglSelesai: tblSuratBap.TanggalBap,
+			NomorSurat: tblSuratBap.NomorBap,
+		}
+		trxTte = trxttemodel.InsertNew(trxTte)
+
+		helperUser := helperusermodel.GetByVmsUserId(tblSuratBap.IdPkualitas)
 
 		refBaPemeriksaan := refbapemeriksaanmodel.RefBaPemeriksaan{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			KodeTte: trxTte.KodeTte,
+			TanggalBap: tblSuratBap.TanggalBap,
+			DokHasilPekerjaan: pathDokumen, 
+			NamaPemeriksa: helperUser.VmsUserName,
+			Ucr: refPermintaan.Ucr,
 		}
 		refbapemeriksaanmodel.InsertNew(refBaPemeriksaan)
+		// ---------------------------------------------------------------------------------------------
 
 
 	}

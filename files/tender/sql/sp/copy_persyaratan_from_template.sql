@@ -10,6 +10,7 @@ DECLARE
     v_new_kode_item_tanya INT;
     v_tipe_input VARCHAR;
     v_item_tanya_expand RECORD;
+    v_valid_tipe_input_expand VARCHAR;
 
 BEGIN
 
@@ -60,10 +61,31 @@ BEGIN
             )
             RETURNING kode_item_tanya, tipe_input INTO v_new_kode_item_tanya, v_tipe_input;
 
-            FOR v_item_tanya_expand IN
-                SELECT * FROM ref_item_tanya_expand_persyaratan_template
-                WHERE tipe_input_lama = v_tipe_input
-            LOOP
+
+            SELECT tipe_input_lama INTO v_valid_tipe_input_expand
+            FROM ref_item_tanya_expand_persyaratan_template
+            WHERE tipe_input_lama = v_tipe_input;
+
+            IF v_valid_tipe_input_expand IS NOT NULL THEN
+
+                FOR v_item_tanya_expand IN
+                    SELECT * FROM ref_item_tanya_expand_persyaratan_template
+                    WHERE tipe_input_lama = v_tipe_input
+                LOOP
+                    INSERT INTO ref_item_tanya_expand_persyaratan (
+                        kode_item_tanya,
+                        tipe_input_lama,
+                        nama_item,
+                        tipe_input_baru
+                    ) VALUES (
+                        v_new_kode_item_tanya,
+                        v_item_tanya_expand.tipe_input_lama,
+                        v_item_tanya_expand.nama_item,
+                        v_item_tanya_expand.tipe_input_baru
+                    );
+                END LOOP;
+                
+            ELSE
                 INSERT INTO ref_item_tanya_expand_persyaratan (
                     kode_item_tanya,
                     tipe_input_lama,
@@ -71,11 +93,12 @@ BEGIN
                     tipe_input_baru
                 ) VALUES (
                     v_new_kode_item_tanya,
-                    v_item_tanya_expand.tipe_input_lama,
-                    v_item_tanya_expand.nama_item,
-                    v_item_tanya_expand.tipe_input_baru
+                    v_item_template.tipe_input,
+                    v_item_template.nama_item,
+                    v_item_template.tipe_input
                 );
-            END LOOP;
+
+            END IF;
 
         END LOOP;
         
