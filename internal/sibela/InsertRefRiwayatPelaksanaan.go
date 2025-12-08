@@ -42,7 +42,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		refRiwayatPelaksanaan = refriwayatpelaksanaanmodel.InsertNew(refRiwayatPelaksanaan)
 
-		//insert trx_riwayat_pelaksanaan
+		//insert trx_riwayat_pelaksanaan (list step tiap termin: step BAP, step BAST, step Kuitansi, dll..)
 		var tblSuratBap structs.TblSuratBap
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luar_dpt":
@@ -50,19 +50,22 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		case "dpt":
 			tblSuratBap = tblsuratbapdptmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		}
+		kodeStepRiwayatPelaksanaan := pgtype.Int4{Valid: true}
 
+		// insert ref_ba_pemeriksaan
+		// ---------------------------------------------------------------------------------------------
 		statusStep := pgtype.Text{Valid: true, String: "selesai"}
+		kodeStepRiwayatPelaksanaan.Int32 = 1 // BAP
+
 		trxRiwayatPelaksanaan := trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
 			KodeRiwayatPelaksanaan: refRiwayatPelaksanaan.KodeRiwayatPelaksanaan,
-			KodeStepRiwayatPelaksanaan: pgtype.Int4{Valid: true, Int32: 1},	// BAP
+			KodeStepRiwayatPelaksanaan: kodeStepRiwayatPelaksanaan,
 			StatusStep: statusStep,
 			Ucr: refPermintaan.Ucr,
 			Udcr: tblSuratBap.TanggalBap,
 		}
 		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
 
-		// insert ref_ba_pemeriksaan
-		// ---------------------------------------------------------------------------------------------
 		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSuratBap.BapFile)
 		var pathDokumen pgtype.Text
 		pathDokumen.Valid = true
@@ -93,6 +96,46 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		refbapemeriksaanmodel.InsertNew(refBaPemeriksaan)
 		// ---------------------------------------------------------------------------------------------
+
+		// insert trx_bast
+		// ---------------------------------------------------------------------------------------------
+		var tblBaserahterimaPl structs.TblBaserahterimaPl
+		switch tblPaketPl.JenisPenyedia.String {
+		case "luar_dpt":
+			tblBaserahterimaPl = tblbaserahterimaplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+		case "dpt":
+			tblBaserahterimaPl = tblbaserahterimadptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+		}
+
+		kodeStepRiwayatPelaksanaan.Int32 = 2 // BAST
+
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
+			KodeRiwayatPelaksanaan: refRiwayatPelaksanaan.KodeRiwayatPelaksanaan,
+			KodeStepRiwayatPelaksanaan: kodeStepRiwayatPelaksanaan,
+			StatusStep: statusStep,
+			Ucr: refPermintaan.Ucr,
+			Udcr: tblSuratBap.TanggalBap,
+		}
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
+
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblTerminPl.TerminFile)
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblTerminPl.TerminFile.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		trxTte = trxttemodel.TrxTte{
+			KodePermintaan: refPermintaan.KodePermintaan,
+			KategoriTte:pgtype.Text{Valid: true, String: "ba_serah_terima"},
+			PathDokumen: pathDokumen,
+			TglSelesai: tblTerminPl.TanggalBastTerealisasi,
+			NomorSurat: tblSuratBap.NomorBap,
+		}
+		trxTte = trxttemodel.InsertNew(trxTte)
+
+
 
 
 	}
