@@ -74,7 +74,7 @@ type TblTerminPl struct {
 	SppFile                pgtype.Text
 	HashDokumenSpp         pgtype.Text
 	FileScanSpp            pgtype.Text
-	TanggalKwitansi        pgtype.Date
+	TanggalKwitansi        pgtype.Timestamp
 	NomorKwitansi          pgtype.Text
 	PathKwitansiPpk        pgtype.Text
 	PathKwitansiPenyedia   pgtype.Text
@@ -103,4 +103,15 @@ type TblSuratBap struct {
     HashDokumen    pgtype.Text
     FileScanBap    pgtype.Text
     TertanggalBap  pgtype.Timestamptz
+}
+
+type TblBaserahterimaPl struct {
+	IdBaserahterimaPl pgtype.Int8
+	IdTerminPl        pgtype.Int8
+	IdPpkualitas      pgtype.Int8
+	NomorSt           pgtype.Text
+	NomorSkrek        pgtype.Text
+	TanggalSt         pgtype.Timestamp
+	KedudukanSkrek    pgtype.Text
+	TertanggalSt      pgtype.Timestamptz
 }

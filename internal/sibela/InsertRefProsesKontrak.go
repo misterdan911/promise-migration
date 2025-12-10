@@ -161,9 +161,9 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		totalMonths, _ := ghelper.CountMonthsBetween(beginDate, endDate)
 		totalYears, _ := ghelper.CountYearsBetween(beginDate, endDate)
 
-		fmt.Printf("todalDays: %d\n", totalDays)
-		fmt.Printf("totalMonths: %d\n", totalMonths)
-		fmt.Printf("totalMonths: %d\n", totalYears)
+		// fmt.Printf("todalDays: %d\n", totalDays)
+		// fmt.Printf("totalMonths: %d\n", totalMonths)
+		// fmt.Printf("totalMonths: %d\n", totalYears)
 
 		satuanJangkaWaktu := pgtype.Text{Valid: true}
 		jangkaWaktu := pgtype.Int4{Valid: true}
@@ -179,8 +179,8 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			jangkaWaktu.Int32 = int32(totalDays)
 		}
 
-		fmt.Printf("IdTerminPl: %d\n", allTblTermin[0].IdTerminPl.Int32)
-		fmt.Printf("IdPaketPl: %d\n", allTblTermin[0].IdPaketPl.Int32)
+		// fmt.Printf("IdTerminPl: %d\n", allTblTermin[0].IdTerminPl.Int32)
+		// fmt.Printf("IdPaketPl: %d\n", allTblTermin[0].IdPaketPl.Int32)
 
 		if !allTblTermin[0].TanggalBastTerealisasi.Valid {
 			allTblTermin[0].TanggalBastTerealisasi.Valid = true

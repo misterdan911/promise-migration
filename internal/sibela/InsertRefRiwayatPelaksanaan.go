@@ -1,12 +1,17 @@
 package sibela
 
 import (
+	"fmt"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refriwayatpelaksanaanmodel"
 	"promise-migration/internal/model/dbsibela/refbapemeriksaanmodel"
 	"promise-migration/internal/model/dbsibela/trxriwayatpelaksanaanmodel"
+	"promise-migration/internal/model/dbsibela/trxbastmodel"
+	"promise-migration/internal/model/dbsibela/trxkwitansimodel"
 	"promise-migration/internal/model/dbsibela/trxttemodel"
+	"promise-migration/internal/model/promise_sibela/tblbaserahterimaplmodel"
+	"promise-migration/internal/model/promise_sibela/tblbaserahterimadptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
@@ -97,6 +102,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		refbapemeriksaanmodel.InsertNew(refBaPemeriksaan)
 		// ---------------------------------------------------------------------------------------------
 
+
 		// insert trx_bast
 		// ---------------------------------------------------------------------------------------------
 		var tblBaserahterimaPl structs.TblBaserahterimaPl
@@ -114,7 +120,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			KodeStepRiwayatPelaksanaan: kodeStepRiwayatPelaksanaan,
 			StatusStep: statusStep,
 			Ucr: refPermintaan.Ucr,
-			Udcr: tblSuratBap.TanggalBap,
+			Udcr: tblBaserahterimaPl.TanggalSt,
 		}
 		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
 
@@ -131,13 +137,66 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			KategoriTte:pgtype.Text{Valid: true, String: "ba_serah_terima"},
 			PathDokumen: pathDokumen,
 			TglSelesai: tblTerminPl.TanggalBastTerealisasi,
-			NomorSurat: tblSuratBap.NomorBap,
+			NomorSurat: tblBaserahterimaPl.NomorSt,
 		}
 		trxTte = trxttemodel.InsertNew(trxTte)
 
+		trxBast := trxbastmodel.TrxBast{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			KodeTte: trxTte.KodeTte,
+			Ucr: pgtype.Text{Valid: true, String: "-"},
+			TglSurat: tblBaserahterimaPl.TanggalSt,
+		}
+		trxbastmodel.InsertNew(trxBast)
+		// ---------------------------------------------------------------------------------------------
 
+		// insert trx_kwitansi
+		// ---------------------------------------------------------------------------------------------
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblTerminPl.PathKwitansiPpk)
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblTerminPl.PathKwitansiPpk.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
 
+		fmt.Println(pathDokumen.String);
 
+		kategoriInput := pgtype.Text{Valid: true, String: "ppk"}
+
+		trxKwitansi := trxkwitansimodel.TrxKwitansi{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			NomorKwitansi: tblTerminPl.NomorKwitansi,
+			NamaDokKwitansi: pathDokumen,
+			NamaDokKwitansiSelesai: pathDokumen,
+			KategoriInput: kategoriInput,
+			Ucr: refPermintaan.Ucr,
+			NamaUploader: userPPK.VmsUserName,
+			TanggalKwitansi: tblTerminPl.TanggalKwitansi,
+		}
+		trxkwitansimodel.InsertNew(trxKwitansi)
+
+		kategoriInput = pgtype.Text{Valid: true, String: "penyedia"}
+
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblTerminPl.PathKwitansiPenyedia)
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblTerminPl.PathKwitansiPenyedia.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		trxKwitansi = trxkwitansimodel.TrxKwitansi{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			NomorKwitansi: tblTerminPl.NomorKwitansi,
+			NamaDokKwitansi: pathDokumen,
+			NamaDokKwitansiSelesai: pathDokumen,
+			KategoriInput: kategoriInput,
+			Ucr: refPermintaan.Ucr,
+			NamaUploader: gUserVendor.VmsUserName,
+			TanggalKwitansi: tblTerminPl.TanggalKwitansi,
+		}
+		trxkwitansimodel.InsertNew(trxKwitansi)
 	}
 
 	return nil

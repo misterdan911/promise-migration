@@ -30,8 +30,8 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
 		hash_dokumen,
 		file_scan_bap,
 		tertanggal_bapdpt AS tertanggal_bap
-	FROM tbl_surat_bap
-	WHERE id_termin_pl = $1`
+	FROM tbl_surat_bapdpt
+	WHERE id_termin_dptpl = $1`
 
 	rwSuratBap, err := db.PromiseSibela.Query(ctx, qSuratBap, idTerminPl)
 	if err != nil {

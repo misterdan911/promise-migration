@@ -6,6 +6,7 @@ import (
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
+	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
@@ -17,6 +18,8 @@ import (
 )
 
 var gTblPaketPl tblpaketplonionmodel.TblPaketPlOnion
+var userPPK helperusermodel.HelperUser
+var gUserVendor helperusermodel.HelperUser
 
 func InsertRefPermintaan() {
 
@@ -37,10 +40,11 @@ func InsertRefPermintaan() {
 		}
 
 		// dapatkan kodeUnit
-		var userPPK helperusermodel.HelperUser
 		var kodeUnit pgtype.Text
 
-		userPPK = helperusermodel.GetByVmsUserId(tblPaketPl.IdPpk)
+		userIdPpk := tblppksubmodel.GetUserIdUserPpkActive(tblPaketPl.IdPpk)
+
+		userPPK = helperusermodel.GetByVmsUserId(userIdPpk)
 		kodeUnit = userPPK.KodeUnit
 
 		// dapatkan kodeVendor
@@ -52,6 +56,7 @@ func InsertRefPermintaan() {
 			profilePenyedia = sibelaprofile.GetPenyediaById(tblPaketPl.IdProfilPenyedia)
 			vmsUserId := profilePenyedia.IdUser
 			helperUser = helperusermodel.GetByVmsUserId(vmsUserId)
+			gUserVendor = helperUser
 			kodeVendor = helperUser.KodeVendor
 		}
 
