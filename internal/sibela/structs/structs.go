@@ -115,3 +115,29 @@ type TblBaserahterimaPl struct {
 	KedudukanSkrek    pgtype.Text
 	TertanggalSt      pgtype.Timestamptz
 }
+
+type TblSptjm struct {
+	IdSptjm              pgtype.Int8
+	IdPaketPl            pgtype.Int8
+	TanggalSptjm         pgtype.Timestamp
+	SisaNp               pgtype.Int8
+	JaminanBank          pgtype.Text
+	TanggalJb            pgtype.Timestamptz
+	NomorJb              pgtype.Text
+	NomorSuratKuasa      pgtype.Text
+	TanggalSk            pgtype.Timestamptz
+	Bank                 pgtype.Text
+	NomorBank            pgtype.Text
+	TanggalBank          pgtype.Timestamptz
+	SebesarBank          pgtype.Numeric
+	NomorBastSementara   pgtype.Text
+	TanggalBastSementara pgtype.Timestamp
+	BastsFile            pgtype.Text
+	SperkesFile          pgtype.Text
+	SperkesFilePenyedia  pgtype.Text
+	SperpemFile         pgtype.Text
+	SperpemFilePenyedia pgtype.Text
+	SptjmFile            pgtype.Text
+	CreatedAt            pgtype.Timestamptz
+}
+
