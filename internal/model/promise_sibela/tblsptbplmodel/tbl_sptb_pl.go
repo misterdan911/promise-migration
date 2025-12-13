@@ -11,7 +11,7 @@ import (
 	"promise-migration/internal/sibela/structs"
 )
 
-func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
+func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSptbPl {
 	var tblSuratBap structs.TblSuratBap
 	ctx := context.Background()
 
