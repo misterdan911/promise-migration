@@ -12,6 +12,8 @@ import (
 	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/dbsibela/refsptjmmodel"
 	"promise-migration/internal/model/dbsibela/trxsptjmmodel"
+	"promise-migration/internal/model/dbsibela/trxpajakmodel"
+	"promise-migration/internal/model/dbsibela/trxpembayaranmodel"
 	"promise-migration/internal/model/promise_sibela/tblbaserahterimaplmodel"
 	"promise-migration/internal/model/promise_sibela/tblbaserahterimadptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
@@ -19,6 +21,8 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmdptmodel"
+	"promise-migration/internal/model/promise_sibela/tblsptbplmodel"
+	"promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sibela/structs"
@@ -209,7 +213,61 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxkwitansimodel.InsertNew(trxKwitansi)
 
-		// pajak di skip dulu
+		// trx_pajak
+		// ------------------------------------------------------------------
+		var tblSptbPl structs.TblSptbPl
+		switch tblPaketPl.JenisPenyedia.String {
+		case "luar_dpt":
+			tblSptbPl = tblsptbplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+		case "dpt":
+			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+		}
+
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblSptbPl.FakturPajakFile)
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblSptbPl.FakturPajakFile.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		trxPajak := trxpajakmodel.TrxPajak{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+		}
+		trxpajakmodel.InsertNew(trxPajak)
+		// ------------------------------------------------------------------
+
+
+		// Pencairan - Pembayaran - trx_pembayaran
+		// -------------------------------------------------------------------------
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblTerminPl.SppFile)
+		pathDokumen.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumen.String = tblTerminPl.SppFile.String
+		} else {
+			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		trxTte = trxttemodel.TrxTte{
+			KodePermintaan: refPermintaan.KodePermintaan,
+			KategoriTte:pgtype.Text{Valid: true, String: "s_pembayaran"},
+			PathDokumen: pathDokumen,
+			TglSelesai: tblTerminPl.TanggalSpp,
+			NomorSurat: tblTerminPl.NomorSpp,
+		}
+		trxTte = trxttemodel.InsertNew(trxTte)
+
+		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			KodeTte: trxTte.KodeTte,
+			TglSuratSpp: tblTerminPl.TanggalSpp,
+			NoSuratSpp: tblTerminPl.NomorSpp,
+			Ucr: refPermintaan.Ucr,
+		}
+		
+		trxpembayaranmodel.InsertNew(trxPembayaran)
+		// -------------------------------------------------------------------------
+
 
 		lastKodeTrxRiwayatPelaksanaan = trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan
 	}

@@ -78,7 +78,7 @@ type TblTerminPl struct {
 	NomorKwitansi          pgtype.Text
 	PathKwitansiPpk        pgtype.Text
 	PathKwitansiPenyedia   pgtype.Text
-	TanggalSpp             pgtype.Date
+	TanggalSpp             pgtype.Timestamp
 	NomorSpp               pgtype.Text
 	JenisPembayaran        pgtype.Text
 	SumberDana             pgtype.Text
@@ -141,3 +141,41 @@ type TblSptjm struct {
 	CreatedAt            pgtype.Timestamptz
 }
 
+type TblSptbPl struct {
+	IDSptbPl                 pgtype.Int8
+	IDTerminPl               pgtype.Int8
+	NomorSptb                pgtype.Text
+	JenisObjekPajak          pgtype.Text
+	JenisPengadaan           pgtype.Text
+	NilaiPerhitungan         pgtype.Text
+	DppPpn                   pgtype.Text
+	DppPph                   pgtype.Text
+	PpnSptb                  pgtype.Text
+	PphSptb                  pgtype.Text
+	JenisPph                 pgtype.Text
+	IDObjekPajak             pgtype.Int8
+	Additional               pgtype.Text
+	DokNonPkp                pgtype.Text
+	DokKetentuanKhusus       pgtype.Text
+	DokKetentuanKhususJenis  pgtype.Text
+	KetentuanKhusus          pgtype.Text
+	KetentuanKhususKeterangan pgtype.Text
+	KetentuanKhususDpp       pgtype.Text
+	KetentuanKhususJenis     pgtype.Text
+	SptbFile                 pgtype.Text
+	HashDokumenSptb          pgtype.Text
+	FileScanSptb             pgtype.Text
+	RingkasankontrakFile     pgtype.Text
+	HashDokumenRingkasankontrak pgtype.Text
+	FileScanRk               pgtype.Text
+	NomorFakturPajak         pgtype.Text
+	TanggalFakturPajak       pgtype.Text
+	FakturPajakFile          pgtype.Text
+	HashDokumenFakturPajak   pgtype.Text
+	SspFile                  pgtype.Text
+	HashDokumenSsp           pgtype.Text
+	PpnPersen                pgtype.Text
+	PphPersen                pgtype.Text
+	Transaksi                pgtype.Text
+	TertanggalSptb           pgtype.Timestamptz
+}
