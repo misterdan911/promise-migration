@@ -4,13 +4,14 @@ import (
 	"context"
 	"log"
 	"promise-migration/db"
-	"promise-migration/internal/g"
-	"promise-migration/internal/ghelper"
-	"promise-migration/internal/model/dbusman/refusermodel"
-	"promise-migration/internal/usman/model/vmsdb/usermodel"
-	"slices"
+	// "promise-migration/internal/g"
+	// "promise-migration/internal/ghelper"
+	// "promise-migration/internal/model/dbusman/refusermodel"
+	// "promise-migration/internal/usman/model/vmsdb/usermodel"
+	// "slices"
 )
 
+/*
 func TruncateTableAndLog() {
 
 	// Kosongkan tabel db_sidapet.helper_user
@@ -36,6 +37,7 @@ func TruncateTableAndLog() {
 	//TruncateLog("pengalaman_bu.txt")
 	ghelper.DeleteLogUserFolder()
 }
+*/
 
 func TruncateTableAndLog2() {
 
