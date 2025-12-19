@@ -233,6 +233,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		trxPajak := trxpajakmodel.TrxPajak{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			KategoriNilaiTransaksi: pgtype.Text{Valid: true, String: "nilai_kontrak"},
 		}
 		trxpajakmodel.InsertNew(trxPajak)
 		// ------------------------------------------------------------------

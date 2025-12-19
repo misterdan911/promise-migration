@@ -12,7 +12,7 @@ import (
 )
 
 func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSptbPl {
-	var tblSuratBap structs.TblSuratBap
+	var tblSptbPl structs.TblSptbPl
 	ctx := context.Background()
 
 	qSptbPl := `
@@ -61,15 +61,15 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSptbPl {
 		log.Fatal("qSptbPl Failed, " + err.Error() + " " + qSptbPl)
 	}
 
-	allSptbPl, err := pgx.CollectRows(rwSptbPl, pgx.RowToStructByName[structs.TblSuratBap])
+	allSptbPl, err := pgx.CollectRows(rwSptbPl, pgx.RowToStructByName[structs.TblSptbPl])
 	if err != nil {
-		log.Fatal("failed collecting rwSptbPl (tblsptbplmodel.go:GetByIdTerminPl), " + err.Error())
+		log.Fatal("failed collecting rwSptbPl (tblsptbdptplmodel.go:GetByIdTerminPl), " + err.Error())
 	}
 	defer rwSptbPl.Close()
 
 	if len(allSptbPl) > 0 {
-		tblSuratBap = allSptbPl[0]
+		tblSptbPl = allSptbPl[0]
 	}
 
-	return tblSuratBap
+	return tblSptbPl
 }
