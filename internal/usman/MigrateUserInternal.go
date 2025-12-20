@@ -1,6 +1,8 @@
 package usman
 
 import (
+	"strings"
+
 	"promise-migration/internal/model/dbusman/helperuserkodeunitmodel"
 	"promise-migration/internal/model/dbusman/refunitpbjmodel"
 	"promise-migration/internal/model/dbusman/refuserinternalmodel"
@@ -51,11 +53,17 @@ func MigrateUserInternal() {
 
 		// kalau email dan email_real sama
 		if internalUser.Email == internalUser.EmailReal {
+
+			// Mitigasi password supaya cocok dg sistem yg baru
+			hashedPassword := internalUser.Password.String
+			hashedPassword = strings.Replace(hashedPassword, "$2y$", "$2b$", 1)
+			newHashedPass := strings.Replace(hashedPassword, "$2a$", "$2b$", 1)		
+
 			// masukin ke ref_user
 			refUser := refusermodel.RefUser{
 				Id:         internalUser.Id,
 				Email:      internalUser.Email,
-				Password:   internalUser.Password,
+				Password:   pgtype.Text{Valid: true, String: newHashedPass},
 				Udcr:       internalUser.CreatedAt,
 				Udch:       internalUser.UpdatedAt,
 				StatusUser: pgtype.Text{Valid: true, String: "internal"},

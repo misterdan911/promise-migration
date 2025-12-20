@@ -1,6 +1,8 @@
 package usman
 
 import (
+	"strings"
+
 	"github.com/jackc/pgx/v5/pgtype"
 	"promise-migration/internal/model/vmsdb/usermodel"
 	"promise-migration/internal/model/dbusman/refuserexternalmodel"
@@ -15,10 +17,15 @@ func MigrateUserExternal() {
 
 	for _, externalUser := range allExternalUser {
 
+		// Mitigasi password supaya cocok dg sistem yg baru
+		hashedPassword := externalUser.Password.String
+		hashedPassword = strings.Replace(hashedPassword, "$2y$", "$2b$", 1)
+		newHashedPass := strings.Replace(hashedPassword, "$2a$", "$2b$", 1)		
+
 		refUser := refusermodel.RefUser{
 			Id:         externalUser.Id,
 			Email:      externalUser.Email,
-			Password:   externalUser.Password,
+			Password:   pgtype.Text{Valid: true, String: newHashedPass},
 			Udcr:       externalUser.CreatedAt,
 			Udch:       externalUser.UpdatedAt,
 			StatusUser: pgtype.Text{Valid: true, String: "external"},
