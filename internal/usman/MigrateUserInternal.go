@@ -23,6 +23,7 @@ func MigrateUserInternal() {
 		internalUserReal := usermodel.GetUserByEmailReal(internalUser.EmailReal)
 
 		var kodeUnit pgtype.Text
+		var namaUnit pgtype.Text
 		var kodeUnitPbj pgtype.Int4 // untuk di trx_user_tampung
 		var nip pgtype.Text
 
@@ -45,6 +46,7 @@ func MigrateUserInternal() {
 		if kodeUnit.Valid {
 			refUnitPbj := refunitpbjmodel.GetByKodePbj(kodeUnit)
 			kodeUnitPbj = refUnitPbj.KodeUnitPbj
+			namaUnit = refUnitPbj.NamaUnit
 		}
 
 		if !kodeUnitPbj.Valid {
@@ -91,6 +93,9 @@ func MigrateUserInternal() {
 			KodeUnitPbj: kodeUnitPbj,
 			Nip:         nip,
 			KodeJabatan: internalUser.IdLevel,
+			StatusAktif: pgtype.Bool{Valid: true, Bool: true},
+			KodeUnit:    kodeUnit,
+			NamaUnit:    namaUnit,
 		}
 
 		trxusertampungmodel.InsertNew(trxUserTampung)
