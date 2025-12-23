@@ -28,7 +28,7 @@ func MigrateUserExternal() {
 			Password:   pgtype.Text{Valid: true, String: newHashedPass},
 			Udcr:       externalUser.CreatedAt,
 			Udch:       externalUser.UpdatedAt,
-			StatusUser: pgtype.Text{Valid: true, String: "external"},
+			StatusUser: pgtype.Text{Valid: true, String: "eksternal"},
 		}
 		// fmt.Printf("IdUser: %d\n", externalUser.Id.Int32)
 		refusermodel.InsertNew(refUser)

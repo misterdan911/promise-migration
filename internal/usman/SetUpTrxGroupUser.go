@@ -6,7 +6,7 @@ import(
 	"promise-migration/internal/model/dbusman/refusermodel"
 	"promise-migration/internal/model/dbusman/trxgroupusermodel"
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
-	"promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	// "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 )
 
 func PopulateTrxGroupUser() {
@@ -35,6 +35,7 @@ func SetupPpkAccessForSippan() {
 }
 
 func SetupVendorAccessForSidapet(){
+	/*
 	allIdUserTblProfilePenyedia := tblprofilepenyediamodel.GetAllIdUser()
 	allIdUserEksternal := refusermodel.GetAllIdUserEksternal()
 	
@@ -55,4 +56,19 @@ func SetupVendorAccessForSidapet(){
 			}
 		}
 	}
+	*/
+
+	allIdUserEksternal := refusermodel.GetAllIdUserEksternal()
+
+	for _, idUser2 := range allIdUserEksternal {
+		currentTime := time.Now().UTC()
+		trxGroupUser := trxgroupusermodel.TrxGroupUser{
+			KodeGroup: pgtype.Text{Valid: true, String: "G01.8"},
+			IdUser:    idUser2.Id,
+			Status:    pgtype.Text{Valid: true, String: "1"},
+			Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
+		}
+		trxgroupusermodel.InsertNew(trxGroupUser)
+	}
+
 }

@@ -150,7 +150,7 @@ func GetAllIdUserEksternal() []Id {
 	ctx := context.Background()
 
 	qRefUser := `
-  SELECT id FROM ref_user WHERE status_user = 'external'`
+  SELECT id FROM ref_user WHERE status_user = 'eksternal'`
 
 	rows, err := db.DbUsman.Query(ctx, qRefUser)
 	if err != nil {
