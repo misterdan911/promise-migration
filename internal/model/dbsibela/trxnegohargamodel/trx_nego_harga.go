@@ -51,7 +51,7 @@ func InsertNewData(trxNegoharga TrxNegoHarga) {
 
 	_, errIns := db.DbSibela.Exec(ctx, qInsert, args)
 	if errIns != nil {
-		log.Fatal("unable to insert trx_nego_harga (trx_nego_harga.go:InsertNewData), " + errIns.Error())
+		log.Fatal("unable to insert data (trx_nego_harga.go:InsertNewData), " + errIns.Error())
 	}
 }
 

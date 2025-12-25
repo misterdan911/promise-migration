@@ -2,15 +2,16 @@ package sibelahelper
 
 import (
 	"promise-migration/db"
-	"promise-migration/internal/g"
-	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
+	// "promise-migration/internal/g"
+	// "promise-migration/internal/model/dbsibela/refpermintaanmodel"
 
 	"context"
 	"log"
-	"slices"
-	"strings"
+	// "slices"
+	// "strings"
 )
 
+/*
 func TruncateTableAndLog() {
 
 	// hapus data di tabel db.sibela.ref_permintaan tapi hanya yg ucr nya tidak terdaftar di daftar email excluded
@@ -31,7 +32,7 @@ func TruncateTableAndLog() {
 
 	UpdatePrimaryKeySequenceFromFile()
 }
-
+*/
 
 func TruncateTableAndLog2() {
 
@@ -41,6 +42,13 @@ func TruncateTableAndLog2() {
 	_, err := db.DbSibela.Exec(ctx, qTruncate)
 	if err != nil {
 		log.Fatal("Truncate ref_permintaan Failed, " + err.Error())
+	}
+
+	// Delete akses penyedia ke sibela
+	qDeleteSibelaAccess := "DELETE FROM trx_group_user WHERE kode_group = 'G04.3'"
+	_, err2 := db.DbUsman.Exec(ctx, qDeleteSibelaAccess)
+	if err2 != nil {
+		log.Fatal("qDeleteSibelaAccess Failed, " + err2.Error())
 	}
 
 	UpdatePrimaryKeySequenceFromFile()

@@ -12,7 +12,7 @@ import (
 	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/dbsibela/refsptjmmodel"
 	"promise-migration/internal/model/dbsibela/trxsptjmmodel"
-	"promise-migration/internal/model/dbsibela/trxpajakmodel"
+	// "promise-migration/internal/model/dbsibela/trxpajakmodel"
 	"promise-migration/internal/model/dbsibela/trxpembayaranmodel"
 	"promise-migration/internal/model/promise_sibela/tblbaserahterimaplmodel"
 	"promise-migration/internal/model/promise_sibela/tblbaserahterimadptplmodel"
@@ -21,8 +21,8 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmdptmodel"
-	"promise-migration/internal/model/promise_sibela/tblsptbplmodel"
-	"promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
+	// "promise-migration/internal/model/promise_sibela/tblsptbplmodel"
+	// "promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sibela/structs"
@@ -177,6 +177,10 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		fmt.Println(pathDokumen.String);
 
+		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 3 // Kuitansi
+		trxRiwayatPelaksanaan.Udcr = tblTerminPl.TanggalKwitansi
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
+
 		kategoriInput := pgtype.Text{Valid: true, String: "ppk"}
 
 		trxKwitansi := trxkwitansimodel.TrxKwitansi{
@@ -215,6 +219,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		// trx_pajak
 		// ------------------------------------------------------------------
+		/*
 		var tblSptbPl structs.TblSptbPl
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luar_dpt":
@@ -236,6 +241,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			KategoriNilaiTransaksi: pgtype.Text{Valid: true, String: "nilai_kontrak"},
 		}
 		trxpajakmodel.InsertNew(trxPajak)
+		*/
 		// ------------------------------------------------------------------
 
 
@@ -262,7 +268,9 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
 			KodeTte: trxTte.KodeTte,
 			TglSuratSpp: tblTerminPl.TanggalSpp,
-			NoSuratSpp: tblTerminPl.NomorSpp,
+			NoSuratSpp: tblTerminPl.NomorSpp,			// Surat Permintaan Pembayaran / Surat Pembayaran
+			NoSuratSptjb: pgtype.Text{Valid: true, String: "-"},		// Surat Pernyataan Tanggung Jawab Belanja
+			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
 			Ucr: refPermintaan.Ucr,
 		}
 		

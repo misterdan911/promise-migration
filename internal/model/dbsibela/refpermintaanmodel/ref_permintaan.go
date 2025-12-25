@@ -235,3 +235,12 @@ func UpdateHps(kodePermintaan pgtype.Int4, nilaiHps pgtype.Int4) {
 		log.Fatal("failed updating RefPermintaan (ref_permintaan.go), " + err.Error())
 	}
 }
+
+func UpdateKodeStatusPermintaan(kodePermintaan pgtype.Int4, kodeStatusPermintaan pgtype.Int4) {
+	ctx := context.Background()
+	qUpdate := `UPDATE ref_permintaan SET kode_status_permintaan = $1 WHERE kode_permintaan = $2`
+	_, err := db.DbSibela.Exec(ctx, qUpdate, kodeStatusPermintaan, kodePermintaan)
+	if err != nil {
+		log.Fatal("failed UpdateKodeStatusPermintaan (ref_permintaan.go), " + err.Error())
+	}
+}

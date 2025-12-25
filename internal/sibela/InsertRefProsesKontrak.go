@@ -44,6 +44,7 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	refProsesKontrak2 = refproseskontrakmodel.InsertNewData(refProsesKontrak2)
 	InsertTrxDokumenKontrak(refPermintaan, tblPaketPl, refProsesKontrak2)
 
+	// Riwayat Pelaksanaan
 	statusPengisian := GetStatusPengisian(tblPaketPl)
 	refProsesKontrak3 := refproseskontrakmodel.RefProsesKontrak{
 		KodePermintaan:    refPermintaan.KodePermintaan,
@@ -105,6 +106,14 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 	jenisPembayaran := pgtype.Text{Valid: true}
 	totalTermin := len(allTblTermin)
+
+	if totalTermin > 0 {
+		gKodeStatusPermintaan.Int32 = 8
+		
+		if allTblTermin[totalTermin - 1].StatusTerminBast.Int32 == 3 {
+			gKodeStatusPermintaan.Int32 = 9
+		}
+	}
 
 	if totalTermin > 1 {
 		jenisPembayaran.String = "termin"

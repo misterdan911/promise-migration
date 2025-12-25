@@ -16,6 +16,9 @@ var SibelaCmd = &cobra.Command{
 	Long:  `Perintah ini untuk melakukan migrasi database dari promise_sibela ke db_sibela`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		db.ConnectDbUsman()
+		defer db.DbUsman.Close()
+
 		db.ConnectVmsDb()
 		defer db.VmsDb.Close()
 
@@ -36,10 +39,10 @@ var SibelaCmd = &cobra.Command{
 
 		// sibelahelper.DropAllForeignKey()
 
-		g.ExcludedEmails = ghelper.GetExcludedEmail2("for_sibela.txt")
+		g.ExcludedEmails = ghelper.GetExcludedEmail2("email.txt")
 
 		sibelahelper.TruncateTableAndLog2()
-
+		sibela.SetupVendorAccessForSibela()
 		sibela.InsertRefPermintaan()
 
 		// sibelahelper.CreateAllForeignKey()

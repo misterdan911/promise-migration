@@ -66,7 +66,7 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
             path_kwitansi_ppk,
             path_kwitansi_penyedia,
             tanggal_spp,
-            nomor_spp,
+            COALESCE(nomor_spp, '-') AS nomor_spp,
             jenis_pembayaran,
             sumber_dana,
             id_unit_layanan,

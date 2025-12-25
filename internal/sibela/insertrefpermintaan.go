@@ -21,6 +21,8 @@ var gTblPaketPl tblpaketplonionmodel.TblPaketPlOnion
 var userPPK helperusermodel.HelperUser
 var gUserVendor helperusermodel.HelperUser
 
+var gKodeStatusPermintaan pgtype.Int4
+
 func InsertRefPermintaan() {
 
 	// allTblPaketPl := tblpaketplmodel.GetAllData()
@@ -29,7 +31,10 @@ func InsertRefPermintaan() {
 	for _, tblPaketPl := range allTblPaketPl {
 		gTblPaketPl = tblPaketPl
 
-		// dapakan kode_rup
+		gKodeStatusPermintaan.Valid = true
+		gKodeStatusPermintaan.Int32 = 0
+
+		// dapatkan kode_rup
 		var kodeRup pgtype.Int4
 		kodeRup.Valid = false
 		noRup := tblruputmodel.GetNoRupByIdRupUt(tblPaketPl.IdRupUt)
@@ -107,6 +112,9 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
+		// dapatkan kode_status_permintaan
+
+
 		// dapatkan nama_unit
 		namaUnit := GetNamaUnit(kodeUnit)
 
@@ -136,15 +144,18 @@ func InsertRefPermintaan() {
 			KodeJenisAset:       kodeJenisAset,
 			NamaUnit:            namaUnit,
 			Ucr:                 ucr,
+			Udcr: 							 tblPaketPl.CreateAt,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
-		// InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
-		// InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
-		// InsertBeritaAcaraNego(refPermintaan.KodePermintaan, tblPaketPl)
-		// Berita Acara Hasil Pemilihan belum ada
+		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
+		InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
+		InsertBeritaAcaraNego(refPermintaan.KodePermintaan, tblPaketPl)
+		// // Berita Acara Hasil Pemilihan belum ada
 		InsertRefProsesKontrak(refPermintaan, tblPaketPl)
+
+		refpermintaanmodel.UpdateKodeStatusPermintaan(refPermintaan.KodePermintaan, gKodeStatusPermintaan)
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")

@@ -75,7 +75,7 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
 					hash_dokumen_spp,
 					file_scan_spp,
 					tanggal_spp,
-					nomor_spp,
+					COALESCE(nomor_spp, '-') AS nomor_spp,
 					jenis_pembayaran,
 					sumber_dana,
 					id_unit_layanan,
