@@ -110,6 +110,7 @@ func MigrateTblPaket() {
 		  trxVendorPenjr := trxvendorpenjrmodel.TrxVendorPenjr {
 		    KodePenjaringan: kodePenjaringan,
 		    KodeVendor: refVendor.KodeVendor,
+				StatusDpt: statusDpt,
 		  }
 
 		  kodeVendorPenjr := trxvendorpenjrmodel.InsertNew(trxVendorPenjr)

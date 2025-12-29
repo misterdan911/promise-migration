@@ -29,6 +29,14 @@ func InsertRefPermintaan() {
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
+
+
+		/*
+		if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
+			continue
+		}
+		*/
+
 		gTblPaketPl = tblPaketPl
 
 		gKodeStatusPermintaan.Valid = true

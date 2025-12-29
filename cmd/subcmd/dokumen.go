@@ -26,7 +26,8 @@ var DokumenCmd = &cobra.Command{
 
 		ghelper.TruncateLog("dokumen.log")
 
-		g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
+		// g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
+		g.UrlBasePathExisting = "https://sidapet-promiseterbuka.ut.ac.id"
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
@@ -75,7 +76,8 @@ var DokumenCmd = &cobra.Command{
 
 		// tbl_surat_keputusan
 
-		g.BasePath = "https://sibela-promiseterbuka.ut.ac.id"
+		// g.BasePath = "https://sibela-promiseterbuka.ut.ac.id"
+		g.UrlBasePathExisting = "https://sibela-promiseterbuka.ut.ac.id"
 
 		// tbl_akta_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()

@@ -10,6 +10,7 @@ import (
 )
 
 type HelperDokumen struct {
+	AppName pgtype.Text
   OriginalPath pgtype.Text
   Newfilename pgtype.Text
   EncryptKey pgtype.Text
@@ -20,16 +21,19 @@ func InsertNew(helperDokumen HelperDokumen) {
 
   qInsert := `
   INSERT INTO helper_dokumen (
+    app_name,
     original_path,
     newfilename,
     encrypt_key
   ) VALUES (
+    @app_name,
     @original_path,
     @newfilename,
     @encrypt_key
   )`
 
   args := pgx.NamedArgs{
+    "app_name": helperDokumen.AppName,
     "original_path": helperDokumen.OriginalPath,
     "newfilename":   helperDokumen.Newfilename,
     "encrypt_key":   helperDokumen.EncryptKey,
@@ -47,6 +51,7 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
 
   qDokumen := `
   SELECT
+    app_name,
     original_path,
     newfilename,
     encrypt_key
