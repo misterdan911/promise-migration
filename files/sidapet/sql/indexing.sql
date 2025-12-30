@@ -1,4 +1,7 @@
 
+-- penting
+CREATE INDEX idx_helper_dokumen_original_path ON helper_dokumen (original_path);
+
 -- Create indexes for kode_vendor field
 CREATE INDEX idx_ref_adm_bu_kode_vendor ON ref_adm_bu (kode_vendor);
 CREATE INDEX idx_ref_administrasi_pero_kode_vendor ON ref_administrasi_pero (kode_vendor);

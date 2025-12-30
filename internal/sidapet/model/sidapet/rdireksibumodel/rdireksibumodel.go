@@ -7,6 +7,7 @@ import (
 	"promise-migration/db"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/bridgingiddireksimodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
 	"strconv"
@@ -23,6 +24,18 @@ type VTblDireksi struct {
  NoKtpDireksi            pgtype.Text
  PathKtpDireksi          pgtype.Text
  StatusDireksiPerusahaan pgtype.Int4
+}
+
+type RefDireksiBu struct {
+    KodeDireksi     pgtype.Int4
+    KodeVendor      pgtype.Int4
+    NmDireksi       pgtype.Text
+    JbtnDireksi     pgtype.Text
+    HpDireksi       pgtype.Text
+    NoKtpDireksi    pgtype.Text
+    PathKtpDireksi  pgtype.Text
+    EncryptKey      pgtype.Text
+    RevisiKe        pgtype.Int2
 }
 
 func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia, helperUser helperusermodel.HelperUser) {
@@ -90,7 +103,7 @@ func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia, helperUser h
     @no_ktp_direksi,
     @path_ktp_direksi,
     @encrypt_key
-  )`
+  ) RETURNING *`
 
   args := pgx.NamedArgs{
    "kode_vendor":      helperUser.KodeVendor,
@@ -102,11 +115,40 @@ func InsertRefDireksiBu(profilePenyedia structs.TblProfilePenyedia, helperUser h
    "encrypt_key":      encryptKey,
   }
 
-  _, errIns := db.DbSidapet.Exec(ctx, qIns, args)
+  // _, errIns := db.DbSidapet.Exec(ctx, qIns, args)
+	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)
   if errIns != nil {
    fmt.Println("no_ktp_direksi: " + vTD.NoKtpDireksi.String + sidapethelper.GetLen(vTD.NoKtpDireksi.String))
    log.Fatal("unable to insert ref_direksi_bu, " + errIns.Error())
   }
+
+	defer rwIns.Close()
+
+	allRefDireksiBu, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefDireksiBu])
+	if err != nil {
+		log.Fatal("failed collecting RefDireksiBu, " + err.Error())
+	}
+
+	var dptPenyedia pgtype.Text
+	dptPenyedia.Valid = true
+
+	if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
+		dptPenyedia.String = "luardpt"
+	} else if !profilePenyedia.PenyediaTerpilih.Valid {
+		dptPenyedia.String = "luardpt"
+	} else {
+		dptPenyedia.String = "dpt"
+	}
+	
+	refDireksiBu := allRefDireksiBu[0]
+
+	bridgingIdDireksi := bridgingiddireksimodel.BridgingIdDireksi{
+		IdDireksiPerus: vTD.IdDireksiPerus,
+		DptPenyedia:    dptPenyedia,
+		KodeDireksi:    refDireksiBu.KodeDireksi,
+		JbtnDireksi:    refDireksiBu.JbtnDireksi,
+	}
+	bridgingiddireksimodel.InsertNew(bridgingIdDireksi)
 
  }
 }
