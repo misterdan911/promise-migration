@@ -52,6 +52,10 @@ var SidapetCmd = &cobra.Command{
 				Name: helperUser.VmsUserName,
 			}
 
+			if helperUser.KodeVendor.Int32 != 151 {
+				continue
+			}
+
 			// yg diproses hanya user dg level vendor
 			if (helperUser.VmsUserLevel.Int32 == 5 || helperUser.VmsUserLevel.Int32 == 9) && (helperUser.DbPenyedia != pgtype.Text{}) {
 				sidapet.MigrateTblProfilePenyedia(helperUser)

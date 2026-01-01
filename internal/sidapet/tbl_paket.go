@@ -91,6 +91,10 @@ func MigrateTblPaket() {
       // dapatkan kodeJenisVendor
       refVendor := refvendormodel.GetDataByKodeVendor(helperUser.KodeVendor)
 
+			// ini dipake pas testing InsertIntoCustomTable
+      if (refVendor.KodeVendor == pgtype.Int4{}) {
+      	continue
+      }
 
       // insert ke trx_vendor_penjr
 			statusVerifikasi := pgtype.Text{Valid:true, String: ""}
@@ -114,6 +118,10 @@ func MigrateTblPaket() {
 		  }
 
 		  kodeVendorPenjr := trxvendorpenjrmodel.InsertNew(trxVendorPenjr)
+
+			InsertIntoCustomTable(kodePenjaringan, refVendor.KodeVendor)
+
+			fmt.Printf("kodeVendor: %d\n", refVendor.KodeVendor.Int32)
 
 		  // Insert trx_nilai_akhir
 			trxnilaiakhirmodel.InsertTrxNilaiakhir(refVendor.KodeJenisVendor, kodeVendorPenjr, tblVerif)
