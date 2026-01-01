@@ -1,6 +1,7 @@
 package helperdokumenmodel
 
 import (
+	"fmt"
 	"context"
 	"log"
 	"promise-migration/db"
@@ -31,6 +32,9 @@ func InsertNew(helperDokumen HelperDokumen) {
     @newfilename,
     @encrypt_key
   )`
+
+	fmt.Printf("AAAAAAAAAAA %t\n", helperDokumen.AppName.Valid)
+	fmt.Println("AAAAAAAAAAA " + helperDokumen.AppName.String)
 
   args := pgx.NamedArgs{
     "app_name": helperDokumen.AppName,

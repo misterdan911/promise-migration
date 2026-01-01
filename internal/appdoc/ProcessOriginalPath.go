@@ -15,11 +15,9 @@ import (
 
 func ProcessOriginalPath(originalPath pgtype.Text) error {
 
-	/*
-	if g.LogDoc.PkId != 175 {
+	if g.LogDoc.PkId < 331 {
 		return nil
 	}
-	*/
 
 	// reset FilePath	
 	g.FilePath = "D:/Danu/repo/golang/promise-migration/files/tmp"
@@ -37,16 +35,23 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // download dokumen start
     // --------------------------------------------------------------------------------------------
+		
 		fileName := path.Base(urlPath)
 		g.FileExt = strings.ToLower(filepath.Ext(fileName))
 		fileNameEncoded := url.PathEscape(fileName)
 		urlPath = strings.Replace(urlPath, fileName, fileNameEncoded, 1)
 
 		g.FilePath = g.FilePath + "/" + fileNameEncoded
-
-		fmt.Println(g.FilePath)
-		fmt.Println(g.FileExt)
 	
+		if g.FileExt == ".rar" || g.FileExt == ".zip" {
+			// skip aja proses downloadnya untuk sementara
+			fmt.Println("Skipping... " + urlPath)
+			return nil
+		} else {
+			fmt.Println("Extension: " + g.FileExt)
+		}
+
+		fmt.Println("Downloading File: " + urlPath)
     errDl := DownloadFile(urlPath)
     if errDl != nil {
 
@@ -78,6 +83,7 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // upload dokumen start
     // --------------------------------------------------------------------------------------------
+		fmt.Println("Uploading File...")
 		var SuccessResponse ResponseServiceUpload
 		var errUp error
 
@@ -130,14 +136,14 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // defer DeleteFile(g.FilePath)
 
+
     // Insert ke table db_sidapet.helper_dokumen
 		if g.LogDoc.UpStat == "Success" {
-			fmt.Println(g.AppName)
-			helperDokumen.AppName.String = g.AppName
+			helperDokumen.AppName = pgtype.Text{Valid:true, String:g.AppName}
 			helperDokumen.OriginalPath = originalPath
 			helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
 			helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
-			// helperdokumenmodel.InsertNew(helperDokumen)
+			helperdokumenmodel.InsertNew(helperDokumen)
 		}
 
   }
