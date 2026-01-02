@@ -3,6 +3,7 @@ package sidapet
 import (
 	"context"
 	"log"
+	"strconv"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
@@ -310,7 +311,14 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_sertifikat_usaha_bu_custom, " + errIns.Error())
 	}
 
+	strKodeVendor := strconv.Itoa(int(kodeVendor.Int32))
+	strKodePenjaringan := strconv.Itoa(int(kodePenjaringan.Int32))
 
+	qIns = "CALL copy_ref_to_custom(" + strKodeVendor + ", " + strKodePenjaringan + ")"
+	_, errIns = db.DbSidapet.Exec(ctx, qIns, args)
+	if errIns != nil {
+		log.Fatal("unable to call copy_tenaga_ahli_to_custom, " + errIns.Error())
+	}
 
 }
 
