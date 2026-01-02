@@ -92,9 +92,9 @@ func MigrateTblPaket() {
       refVendor := refvendormodel.GetDataByKodeVendor(helperUser.KodeVendor)
 
 			// ini dipake pas testing InsertIntoCustomTable
-      if (refVendor.KodeVendor == pgtype.Int4{}) {
-      	continue
-      }
+      // if (refVendor.KodeVendor == pgtype.Int4{}) {
+      // 	continue
+      // }
 
       // insert ke trx_vendor_penjr
 			statusVerifikasi := pgtype.Text{Valid:true, String: ""}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"strconv"
+
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 
@@ -12,10 +13,10 @@ import (
 
 func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) {
 
-  ctx := context.Background()
+	ctx := context.Background()
 
 	// ref_komisaris_bu_custom
-  qIns := `
+	qIns := `
 	INSERT INTO public.ref_komisaris_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -43,8 +44,8 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 	WHERE kode_vendor = @kode_vendor`
 
 	args := pgx.NamedArgs{
-		"kode_penjaringan":   kodePenjaringan,
-		"kode_vendor":        kodeVendor,
+		"kode_penjaringan": kodePenjaringan,
+		"kode_vendor":      kodeVendor,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qIns, args)
@@ -53,8 +54,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_komisaris_bu_custom, " + errIns.Error())
 	}
 
-
-  qIns = `
+	qIns = `
 	INSERT INTO ref_direksi_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -86,7 +86,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_komisaris_bu_custom, " + errIns.Error())
 	}
 
-  qIns = `
+	qIns = `
 	INSERT INTO ref_izin_usaha_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -122,7 +122,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_izin_usaha_bu_custom, " + errIns.Error())
 	}
 
-  qIns = `
+	qIns = `
 	INSERT INTO ref_fasilitas_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -164,7 +164,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_fasilitas_bu_custom, " + errIns.Error())
 	}
 
-  qIns = `
+	qIns = `
 	INSERT INTO ref_saham_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -192,8 +192,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_saham_bu_custom, " + errIns.Error())
 	}
 
-
-  qIns = `
+	qIns = `
 	INSERT INTO ref_kantor_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -235,8 +234,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_kantor_bu_custom, " + errIns.Error())
 	}
 
-
-  qIns = `
+	qIns = `
 	INSERT INTO ref_pengalaman_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -272,8 +270,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to insert ref_pengalaman_bu_custom, " + errIns.Error())
 	}
 
-
-  qIns = `
+	qIns = `
 	INSERT INTO ref_sertifikat_usaha_bu_custom (
 			kode_vendor,
 			kode_penjaringan,
@@ -317,10 +314,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 	qIns = "CALL copy_ref_to_custom(" + strKodeVendor + ", " + strKodePenjaringan + ")"
 	_, errIns = db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		log.Fatal("unable to call copy_tenaga_ahli_to_custom, " + errIns.Error())
+		log.Fatal("unable to call copy_ref_to_custom, " + errIns.Error())
 	}
 
 }
-
-
-
