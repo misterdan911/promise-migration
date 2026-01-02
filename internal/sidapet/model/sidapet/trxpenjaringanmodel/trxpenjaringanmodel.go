@@ -48,6 +48,7 @@ type TrxPenjaringan struct {
   Ucr                      pgtype.Text
   Udcr                     pgtype.Timestamptz
   Udch                     pgtype.Timestamptz
+	KodeStatusPenjaringan     pgtype.Int4
   KeypassFilePersyaratan    pgtype.Text
   FilePersyaratanDraft     pgtype.Text
   TanggalTteSuratTugas     pgtype.Date
@@ -162,6 +163,7 @@ func InsertTrxPenjaringan(trx TrxPenjaringan) pgtype.Int4 {
     ucr,
     udcr,
     udch,
+		kode_status_penjaringan,
     keypass_file_persyaratan,
     file_persyaratan_draft,
     tanggal_tte_surat_tugas
@@ -199,7 +201,8 @@ func InsertTrxPenjaringan(trx TrxPenjaringan) pgtype.Int4 {
     @ucr,
     @udcr,
     @udch,
-    @keypass_file_persyaratan,
+    @kode_status_penjaringan,
+		@keypass_file_persyaratan,
     @file_persyaratan_draft,
     @tanggal_tte_surat_tugas
   ) RETURNING kode_penjaringan`
@@ -238,6 +241,7 @@ func InsertTrxPenjaringan(trx TrxPenjaringan) pgtype.Int4 {
     "ucr":                      trx.Ucr,
     "udcr":                     trx.Udcr,
     "udch":                     trx.Udch,
+    "kode_status_penjaringan":  trx.KodeStatusPenjaringan,
     "keypass_file_persyaratan": trx.KeypassFilePersyaratan,
     "file_persyaratan_draft":   trx.FilePersyaratanDraft,
     "tanggal_tte_surat_tugas":  trx.TanggalTteSuratTugas,

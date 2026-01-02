@@ -83,7 +83,7 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 
 	_, errIns = db.DbSidapet.Exec(ctx, qIns, args)
 	if errIns != nil {
-		log.Fatal("unable to insert ref_komisaris_bu_custom, " + errIns.Error())
+		log.Fatal("unable to insert ref_direksi_bu_custom, " + errIns.Error())
 	}
 
 	qIns = `

@@ -71,7 +71,6 @@ func MigrateTblPaket() {
 			Ucr:                 pgtype.Text{Valid: true, String: "adrian@ecampus.ut.ac.id"},
 			Udcr:                vmsPaket.CreatedAt,
 			Udch:                vmsPaket.CreatedAt,
-			KodeStatusPenjaringan: kodeStatusPenjaringan,
 		}
 
 		kodePenjaringan := trxpenjaringanmodel.InsertTrxPenjaringan(trxPenjaringan)
@@ -158,10 +157,6 @@ func GetKodeStatusPenjaringan(tblPaket tblpaketmodel.TblPaket) pgtype.Int4 {
 		kodeStatusPenjaringan.Int32 = 15
 	} else if currentTimestamptz.Time.After(tblPaket.TglEvalAkhir.Time) {
 		kodeStatusPenjaringan.Int32 = 13
-	} else if currentTimestamptz.Time.After(tblPaket.TglEvalAwal.Time) {
-		kodeStatusPenjaringan.Int32 = 12
-	} else if currentTimestamptz.Time.After(tblPaket.TglDaftarAwal.Time) {
-		kodeStatusPenjaringan.Int32 = 11
 	}
 
 	 return kodeStatusPenjaringan
