@@ -14,6 +14,9 @@ var UsmanCmd = &cobra.Command{
 	Long:  `Perintah ini untuk melakukan migrasi user dari vms_db ke db_usman`,
 	Run: func(cmd *cobra.Command, args []string) {
 
+		db.ConnectDbEsign()
+		defer db.DbEsign.Close()
+
 		db.ConnectVmsDb()
 		defer db.VmsDb.Close()
 
@@ -22,7 +25,7 @@ var UsmanCmd = &cobra.Command{
 
 		db.ConnectProSippan()
 		defer db.ProSippan.Close()
-		
+
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 

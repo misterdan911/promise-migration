@@ -22,6 +22,10 @@ type IdUserPpkActive struct {
 	IdUser pgtype.Int4
 }
 
+type JabatanPpk struct {
+	UraianJabatan pgtype.Text
+}
+
 
 func GetKodeUnitByUserId(userId pgtype.Int4) pgtype.Text {
 
@@ -113,4 +117,27 @@ func GetUserIdUserPpkActive(idPpk pgtype.Int4) pgtype.Int4{
 	}
 
 	return tblPpkSub.IdUser
+}
+
+func GetJabatanByIdUser(idUser pgtype.Int4) []JabatanPpk {
+	ctx := context.Background()
+
+	qSelect := `
+	SELECT tp.uraian_jabatan
+	FROM tbl_ppk_sub tps
+	LEFT JOIN tbl_ppk tp ON tps.id_ppk = tp.id_ppk
+	WHERE id_user = $1`
+
+	rwPPK, err := db.VmsDb.Query(ctx, qSelect, idUser)
+	if err != nil {
+		log.Fatal("qSelect Failed, " + err.Error() + " " + qSelect)
+	}
+
+	allRows, err := pgx.CollectRows(rwPPK, pgx.RowToStructByName[JabatanPpk])
+	if err != nil {
+		log.Fatal("failed collecting rwPPK >> GetJabatanByIdUser (tbl_ppk_sub.go), " + err.Error())
+	}
+	defer rwPPK.Close()
+
+	return allRows
 }

@@ -19,6 +19,10 @@ type TblPejabatPembelianSub struct {
 	UraianJabatan pgtype.Text
 }
 
+type JabatanPp struct {
+	UraianJabatan pgtype.Text
+}
+
 func GetKodeUnitByUserId(userId pgtype.Int4) pgtype.Text {
 
 	ctx := context.Background()
@@ -79,4 +83,27 @@ func GetPpByIdUser(userId pgtype.Int4) TblPejabatPembelianSub {
 	}
 
 	return tblPejabatPembelianSub
+}
+
+func GetJabatanByIdUser(idUser pgtype.Int4) []JabatanPp {
+	ctx := context.Background()
+
+	qSelect := `
+	SELECT tpp.uraian_jabatan
+	FROM tbl_pejabat_pembelian_sub tpps
+	LEFT JOIN tbl_pejabat_pembelian tpp ON tpps.id_pejabat_pembelian = tpp.id_pejabat_pembelian
+	WHERE id_user = $1`
+
+	rwPPK, err := db.VmsDb.Query(ctx, qSelect, idUser)
+	if err != nil {
+		log.Fatal("qSelect Failed, " + err.Error() + " " + qSelect)
+	}
+
+	allRows, err := pgx.CollectRows(rwPPK, pgx.RowToStructByName[JabatanPp])
+	if err != nil {
+		log.Fatal("failed collecting rwPPK >> GetJabatanByIdUser (tbl_pejabat_pembelian_sub.go), " + err.Error())
+	}
+	defer rwPPK.Close()
+
+	return allRows
 }

@@ -16,17 +16,22 @@ type HelperUser struct {
 	VmsUserName      pgtype.Text
 	VmsUserLevel     pgtype.Int4
 	VmsUserEmail     pgtype.Text
-	VmsUserEmailReal     pgtype.Text
+	VmsUserEmailReal pgtype.Text
 	VmsUserPass      pgtype.Text
 	VmsUserCreatedAt pgtype.Timestamptz
 	VmsUserUpdatedAt pgtype.Timestamptz
 	Nip              pgtype.Text
 	KodeUnit         pgtype.Text
-	DbPenyedia       pgtype.Text
-	NamaPenyedia     pgtype.Text
-	JenisPenyedia    pgtype.Text
-	UsmanRefUserId   pgtype.Int4
-	KodeVendor       pgtype.Int4
+
+	Jabatan           pgtype.Text
+	StatusUser        pgtype.Text
+	KodePenandatangan pgtype.Int4
+
+	DbPenyedia     pgtype.Text
+	NamaPenyedia   pgtype.Text
+	JenisPenyedia  pgtype.Text
+	UsmanRefUserId pgtype.Int4
+	KodeVendor     pgtype.Int4
 }
 
 func InsertNew(helperUser HelperUser) {
@@ -46,6 +51,9 @@ func InsertNew(helperUser HelperUser) {
     vms_user_updated_at,
     nip,
     kode_unit,
+		jabatan,
+		status_user,
+		kode_penandatangan,
     db_penyedia,
     nama_penyedia,
     jenis_penyedia,
@@ -63,6 +71,9 @@ func InsertNew(helperUser HelperUser) {
     @vms_user_updated_at,
     @nip,
     @kode_unit,
+		@jabatan,
+		@status_user,
+		@kode_penandatangan,
     @db_penyedia,
     @nama_penyedia,
     @jenis_penyedia,
@@ -71,17 +82,20 @@ func InsertNew(helperUser HelperUser) {
   )`
 
 	args := pgx.NamedArgs{
-		"id":         helperUser.VmsUserId,
+		"id":                  helperUser.VmsUserId,
 		"vms_user_id":         helperUser.VmsUserId,
 		"vms_user_name":       helperUser.VmsUserName,
 		"vms_user_level":      helperUser.VmsUserLevel,
 		"vms_user_email":      helperUser.VmsUserEmail,
-		"vms_user_email_real":      helperUser.VmsUserEmailReal,
+		"vms_user_email_real": helperUser.VmsUserEmailReal,
 		"vms_user_pass":       helperUser.VmsUserPass,
 		"vms_user_created_at": helperUser.VmsUserCreatedAt,
 		"vms_user_updated_at": helperUser.VmsUserUpdatedAt,
 		"nip":                 helperUser.Nip,
 		"kode_unit":           helperUser.KodeUnit,
+		"jabatan":             helperUser.Jabatan,
+		"status_user":         helperUser.StatusUser,
+		"kode_penandatangan":  helperUser.KodePenandatangan,
 		"db_penyedia":         helperUser.DbPenyedia,
 		"nama_penyedia":       helperUser.NamaPenyedia,
 		"jenis_penyedia":      helperUser.JenisPenyedia,
@@ -92,6 +106,7 @@ func InsertNew(helperUser HelperUser) {
 	_, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert helper_user, " + errIns.Error())
+		log.Fatal("unable to insert helper_user, " + errIns.Error())
 	}
 }
 
