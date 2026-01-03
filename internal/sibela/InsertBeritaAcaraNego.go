@@ -16,7 +16,7 @@ func InsertBeritaAcaraNego(kodePermintaan pgtype.Int4, tblPaket tblpaketplonionm
 	var tblUndangan structs.TblUndanganPl
 
 	switch tblPaket.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		tblUndangan = tblundanganplmodel.GetDataByIdPaket(tblPaket.IdPaket)
 	case "dpt":
 		tblUndangan = tblundangandptplmodel.GetDataByIdPaket(tblPaket.IdPaket)

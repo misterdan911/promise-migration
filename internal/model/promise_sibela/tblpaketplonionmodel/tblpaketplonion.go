@@ -47,7 +47,7 @@ func GetAllData() []TblPaketPlOnion {
 		id_ppk,
 		id_userpp,
 		id_direksi_perus,
-		'luar_dpt' AS jenis_penyedia,
+		'luardpt' AS jenis_penyedia,
 		id_profil_penyedia,
 		id_rup_ut,
 		nama_pesanan_pl as nama_pesanan,

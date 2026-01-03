@@ -33,7 +33,7 @@ func GetDataByIdPesanan(idPesanan pgtype.Int4, tblPaketPl tblpaketplonionmodel.T
 	var jenis pgtype.Text
 	jenis.Valid = true
 	switch tblPaketPl.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		jenis.String = "luardpt"
 	case "dpt":
 		jenis.String = "dpt"
@@ -86,7 +86,7 @@ func GetDataNegoTeknis(tblPaket tblpaketplonionmodel.TblPaketPlOnion) []LogSibel
 	var jenis pgtype.Text
 	jenis.Valid = true
 	switch tblPaket.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		jenis.String = "luardpt"
 	case "dpt":
 		jenis.String = "dpt"

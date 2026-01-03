@@ -106,6 +106,10 @@ func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
 		@tgl_selesai_negosiasi
   ) RETURNING *`
 
+  if refPermintaan.JenisPenyedia.String == "luardpt" {
+  	refPermintaan.JenisPenyedia.String = "luar_dpt"
+  }
+
 	args := pgx.NamedArgs{
 		"kode_unit":                    refPermintaan.KodeUnit,
 		"jenis_penyedia":               refPermintaan.JenisPenyedia,

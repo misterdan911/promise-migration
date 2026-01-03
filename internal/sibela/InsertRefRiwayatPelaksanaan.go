@@ -65,7 +65,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		//insert trx_riwayat_pelaksanaan (list step tiap termin: step BAP, step BAST, step Kuitansi, dll..)
 		var tblSuratBap structs.TblSuratBap
 		switch tblPaketPl.JenisPenyedia.String {
-		case "luar_dpt":
+		case "luardpt":
 			tblSuratBap = tblsuratbapmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		case "dpt":
 			tblSuratBap = tblsuratbapdptmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
@@ -122,7 +122,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		// ---------------------------------------------------------------------------------------------
 		var tblBaserahterimaPl structs.TblBaserahterimaPl
 		switch tblPaketPl.JenisPenyedia.String {
-		case "luar_dpt":
+		case "luardpt":
 			tblBaserahterimaPl = tblbaserahterimaplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		case "dpt":
 			tblBaserahterimaPl = tblbaserahterimadptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
@@ -222,7 +222,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		/*
 		var tblSptbPl structs.TblSptbPl
 		switch tblPaketPl.JenisPenyedia.String {
-		case "luar_dpt":
+		case "luardpt":
 			tblSptbPl = tblsptbplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		case "dpt":
 			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
@@ -285,7 +285,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 	var tblSptjm structs.TblSptjm
 
 	switch tblPaketPl.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		tblSptjm = tblsptjmmodel.GetByIdPaket(tblPaketPl.IdPaket)
 	case "dpt":
 		tblSptjm = tblsptjmdptmodel.GetByIdPaket(tblPaketPl.IdPaket)

@@ -57,16 +57,38 @@ func TruncateTableAndLog2() {
 	if err3 != nil {
 		log.Fatal("qDeleteEsign Failed, " + err3.Error())
 	}
+	
+	UpdatePrimaryKeySequenceFromFile()
+	UpdateEsignSequence()
+}
 
+func UpdateEsignSequence() {
+
+	ctx := context.Background()
+	
 	qResetSeq := `
-	SELECT setval('trx_penandatangan_kode_trx_penandatangan_seq', (SELECT COALESCE(MAX(kode_trx_penandatangan), 1) FROM trx_penandatangan), false);
-	SELECT setval('trx_detail_penandatangan_kode_detail_penandatangan_seq', (SELECT COALESCE(MAX(kode_detail_penandatangan), 1) FROM trx_detail_penandatangan), false);
+	select setval('trx_penandatangan_kode_trx_penandatangan_seq', (
+	SELECT 
+			CASE 
+					WHEN MAX(kode_trx_penandatangan) IS NULL THEN 1
+					ELSE MAX(kode_trx_penandatangan) + 1
+			END
+			AS next_id
+	 from trx_penandatangan
+	), false);
+	select setval('trx_detail_penandatangan_kode_detail_penandatangan_seq', (
+	SELECT 
+			CASE 
+					WHEN MAX(kode_detail_penandatangan) IS NULL THEN 1
+					ELSE MAX(kode_detail_penandatangan) + 1
+			END
+			AS next_id
+	 from trx_detail_penandatangan
+	), false);
 	`
-	_, err3 = db.DbEsign.Exec(ctx, qResetSeq)
+	_, err3 := db.DbEsign.Exec(ctx, qResetSeq)
 	if err3 != nil {
 		log.Fatal("qResetSeq Failed, " + err3.Error())
 	}
-	
-	
-	UpdatePrimaryKeySequenceFromFile()
+
 }

@@ -60,7 +60,7 @@ func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.
 	var statusTerminBast pgtype.Int8
 
 	switch tblPaketPl.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		statusTerminBast = tblterminplmodel.GetLastStatusTerminBast(tblPaketPl.IdPaket)
 	case "dpt":
 		statusTerminBast = tbltermindptplmodel.GetLastStatusTerminBast(tblPaketPl.IdPaket)
@@ -98,7 +98,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	// Jenis Pembayaran
 	var allTblTermin []structs.TblTerminPl
 	switch tblPaketPl.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		allTblTermin = tblterminplmodel.GetByIdPaketPl(tblPaketPl.IdPaket)
 	case "dpt":
 		allTblTermin = tbltermindptplmodel.GetByIdPaketPl(tblPaketPl.IdPaket)

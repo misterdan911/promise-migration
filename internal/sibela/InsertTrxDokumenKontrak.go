@@ -23,7 +23,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	var tblSuratPesanan structs.TblSuratpesananPl
 
 	switch tblPaket.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		tblSuratPesanan = tblsuratpesananplmodel.GetDataByIdPaket(tblPaket.IdPaket)
 	case "dpt":
 		tblSuratPesanan = tblsuratpesanandptplmodel.GetDataByIdPaket(tblPaket.IdPaket)
@@ -56,7 +56,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	jenisPaket := pgtype.Text{Valid: true}
 	switch tblPaket.JenisPenyedia.String {
-	case "luar_dpt":
+	case "luardpt":
 		jenisPaket.String = "luardpt"
 	case "dpt":
 		jenisPaket.String = "dpt"
