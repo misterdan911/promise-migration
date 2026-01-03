@@ -41,7 +41,7 @@ func TruncateTableAndLog2() {
 	qTruncate := "TRUNCATE TABLE ref_permintaan CASCADE"
 	_, err := db.DbSibela.Exec(ctx, qTruncate)
 	if err != nil {
-		log.Fatal("Truncate ref_permintaan Failed, " + err.Error())
+		log.Fatal("Truncate ref_permintaan Failedddd, " + err.Error())
 	}
 
 	// Delete akses penyedia ke sibela
@@ -51,5 +51,22 @@ func TruncateTableAndLog2() {
 		log.Fatal("qDeleteSibelaAccess Failed, " + err2.Error())
 	}
 
+	// Delete data di E-Sign
+	qDeleteEsign := "DELETE FROM trx_penandatangan WHERE nama_aplikasi = 'Si-BeLa'"
+	_, err3 := db.DbEsign.Exec(ctx, qDeleteEsign)
+	if err3 != nil {
+		log.Fatal("qDeleteEsign Failed, " + err3.Error())
+	}
+
+	qResetSeq := `
+	SELECT setval('trx_penandatangan_kode_trx_penandatangan_seq', (SELECT COALESCE(MAX(kode_trx_penandatangan), 1) FROM trx_penandatangan), false);
+	SELECT setval('trx_detail_penandatangan_kode_detail_penandatangan_seq', (SELECT COALESCE(MAX(kode_detail_penandatangan), 1) FROM trx_detail_penandatangan), false);
+	`
+	_, err3 = db.DbEsign.Exec(ctx, qResetSeq)
+	if err3 != nil {
+		log.Fatal("qResetSeq Failed, " + err3.Error())
+	}
+	
+	
 	UpdatePrimaryKeySequenceFromFile()
 }

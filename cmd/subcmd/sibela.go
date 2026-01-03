@@ -31,11 +31,15 @@ var SibelaCmd = &cobra.Command{
 		db.ConnectDbSippan()
 		defer db.DbSippan.Close()
 
+		db.ConnectDbEsign()
+		defer db.DbEsign.Close()
+
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
 		db.ConnectProSippan()
 		defer db.ProSippan.Close()
+
 
 		// sibelahelper.DropAllForeignKey()
 

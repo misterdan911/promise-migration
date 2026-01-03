@@ -15,9 +15,9 @@ import (
 
 func ProcessOriginalPath(originalPath pgtype.Text) error {
 
-	if g.LogDoc.PkId < 331 {
-		return nil
-	}
+	// if g.LogDoc.PkId < 331 {
+	// 	return nil
+	// }
 
 	// reset FilePath	
 	g.FilePath = "D:/Danu/repo/golang/promise-migration/files/tmp"
@@ -43,13 +43,13 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
 		g.FilePath = g.FilePath + "/" + fileNameEncoded
 	
-		if g.FileExt == ".rar" || g.FileExt == ".zip" {
-			// skip aja proses downloadnya untuk sementara
-			fmt.Println("Skipping... " + urlPath)
-			return nil
-		} else {
-			fmt.Println("Extension: " + g.FileExt)
-		}
+		// if g.FileExt == ".rar" || g.FileExt == ".zip" {
+		// 	// skip aja proses downloadnya untuk sementara
+		// 	fmt.Println("Skipping... " + urlPath)
+		// 	return nil
+		// } else {
+		// 	fmt.Println("Extension: " + g.FileExt)
+		// }
 
 		fmt.Println("Downloading File: " + urlPath)
     errDl := DownloadFile(urlPath)

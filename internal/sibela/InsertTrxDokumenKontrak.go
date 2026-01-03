@@ -1,13 +1,19 @@
 package sibela
 
 import (
+	"fmt"
+	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/trxdokumenkontrakmodel"
+	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
+	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratpesanandptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratpesananplmodel"
+	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
 	"promise-migration/internal/sibela/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -32,9 +38,56 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
 		pathDokumen.String = tblSuratPesanan.SuratpesananFile.String
-	} else {
-		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		helperDokumen.EncryptKey.Valid = true
+		helperDokumen.EncryptKey.String = "NO ENCRYPT"
 	}
+
+	// Bikin transaksi si Esign
+	trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
+		NamaAplikasi: gAppName,
+		NomorSurat: tblSuratPesanan.NomorpesananSp,
+		JenisSurat: pgtype.Text{Valid: true, String: "Surat Pesanan"},
+		KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
+		PathDokumen: pathDokumen,
+		PathDokumenSelesai: pathDokumen,
+		TglSelesai: pgtype.Timestamp(tblSuratPesanan.TanggalSp),
+	}
+	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
+
+	jenisPaket := pgtype.Text{Valid: true}
+	switch tblPaket.JenisPenyedia.String {
+	case "luar_dpt":
+		jenisPaket.String = "luardpt"
+	case "dpt":
+		jenisPaket.String = "dpt"
+	}
+
+	allSignatureSP := tblsignaturemodel.GetAllSignatureSP(tblPaket.IdPaket, jenisPaket)
+
+	fmt.Println("-----------------------------------------------------------------------")
+	fmt.Printf("allSignatureSp: %d\n", len(allSignatureSP))
+
+	for _, signatureSP := range allSignatureSP {
+
+		trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
+			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+			StatusJabatanPenandatangan: pgtype.Text{Valid: true, String: "internal"},
+			Jabatan: pgtype.Text{Valid: true, String: "Belum Ketemu"},
+			StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
+			TglTte: signatureSP.CreatedAt,
+			KodePenandatangan: gUserPP.KodePenandatangan,
+		}
+		trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
+
+	}
+
+	trxTte := trxttemodel.TrxTte{
+		KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+		KodePermintaan: refPermintaan.KodePermintaan,
+		KategoriTte:    pgtype.Text{Valid: true, String: "surat_pesanan"},
+		PathDokumen:    pathDokumen,
+	}
+	trxttemodel.InsertNew(trxTte)
 
 	trxDokumenKontrak := trxdokumenkontrakmodel.TrxDokumenKontrak{
 		KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
@@ -43,19 +96,16 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 		NomorSuratPesanan: tblSuratPesanan.NomorpesananSp,
 		Ucr:               refPermintaan.Ucr,
 	}
+	trxDokumenKontrak = trxdokumenkontrakmodel.InsertNew(trxDokumenKontrak)
 
-	trxdokumenkontrakmodel.InsertNew(trxDokumenKontrak)
-
-	/*
-		trxTte := trxttemodel.TrxTte{
-			KodePermintaan: kodePermintaan,
-			KategoriTte:    pgtype.Text{Valid: true, String: "surat_pesanan"},
-			PathDokumen:    pathDokumen,
-		}
-
-		trxttemodel.InsertNew(trxTte)
-	*/
+	refDokDetailTransaksi := refdokdetailtransaksimodel.RefDokDetailTransaksi{
+		KodeTransaksi: trxDokumenKontrak.KodeDokumenKontrak, 
+		NamaDokumen: pathDokumen,
+		KeyyDok: helperDokumen.EncryptKey,
+		KeteranganDok: pgtype.Text{Valid: true, String: "Dokumen Kontrak"},
+		KategoriTransaksi: pgtype.Text{Valid: true, String: "dokumen_kontrak"},
+	}
+	refdokdetailtransaksimodel.InsertNew(refDokDetailTransaksi)
 
 	return nil
-
 }

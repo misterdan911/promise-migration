@@ -1,12 +1,14 @@
 package sibela
 
 import (
+	"promise-migration/internal/model/dbesign/refpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
+	"promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
@@ -17,25 +19,32 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type UserPP struct {
+	KodePenandatangan pgtype.Int4
+	Jabatan pgtype.Text
+}
+
 var gTblPaketPl tblpaketplonionmodel.TblPaketPlOnion
 var userPPK helperusermodel.HelperUser
+var gUserPP UserPP
 var gUserVendor helperusermodel.HelperUser
-
 var gKodeStatusPermintaan pgtype.Int4
+var gAppName = pgtype.Text{Valid:true, String: "Si-BeLa"}
 
 func InsertRefPermintaan() {
+
+	// reset gUserPP
+	gUserPP = UserPP{}
 
 	// allTblPaketPl := tblpaketplmodel.GetAllData()
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
 
-
-		/*
+		// untuk testing aja
 		if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
 			continue
 		}
-		*/
 
 		gTblPaketPl = tblPaketPl
 
@@ -130,13 +139,23 @@ func InsertRefPermintaan() {
 		var ucr pgtype.Text
 		ucr.Valid = true
 		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
+
 		if len(allLogPaket) > 0 {
+		
 			if allLogPaket[0].IdUser.Valid {
 				userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
 				ucr.String = userPp.VmsUserEmailReal.String + "|" + userPp.VmsUserName.String
+				
+				tblPejabatPembelianSub := tblpejabatpembeliansubmodel.GetPpByIdUser(userPp.VmsUserId)
+				refPenandatangan := refpenandatanganmodel.GetByEmail(userPp.VmsUserEmailReal)
+
+				gUserPP.KodePenandatangan = refPenandatangan.KodePenandatangan
+				gUserPP.Jabatan = tblPejabatPembelianSub.UraianJabatan
+			
 			} else {
 				ucr.String = userPPK.VmsUserEmailReal.String + "|" + userPPK.VmsUserName.String
 			}
+
 		} else {
 			ucr.String = "-"
 		}

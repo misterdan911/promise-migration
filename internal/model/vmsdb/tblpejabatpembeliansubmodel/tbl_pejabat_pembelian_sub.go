@@ -16,6 +16,7 @@ type KodeUnit struct {
 type TblPejabatPembelianSub struct {
 	KodeUnit pgtype.Text
 	Nip      pgtype.Text
+	UraianJabatan pgtype.Text
 }
 
 func GetKodeUnitByUserId(userId pgtype.Int4) pgtype.Text {
@@ -57,7 +58,7 @@ func GetPpByIdUser(userId pgtype.Int4) TblPejabatPembelianSub {
 	var tblPejabatPembelianSub TblPejabatPembelianSub
 
 	qKodeInput := `
-	SELECT tpp.kode_unit, tpps.nip_pp as nip
+	SELECT tpp.kode_unit, tpps.nip_pp as nip, tpp.uraian_jabatan
 	FROM tbl_pejabat_pembelian_sub tpps
 	LEFT JOIN tbl_pejabat_pembelian tpp ON tpps.id_pejabat_pembelian = tpp.id_pejabat_pembelian
 	WHERE id_user = $1`
