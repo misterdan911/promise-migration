@@ -115,25 +115,7 @@ func GetAllUser() []HelperUser {
 	var allUser []HelperUser
 	ctx := context.Background()
 
-	qHUser := `
-  SELECT
-    id,
-    vms_user_id,
-    vms_user_name,
-    vms_user_level,
-    vms_user_email,
-    vms_user_email_real,
-    vms_user_pass,
-    vms_user_created_at,
-    vms_user_updated_at,
-    nip,
-    kode_unit,
-    db_penyedia,
-    nama_penyedia,
-    jenis_penyedia,
-    usman_ref_user_id,
-    kode_vendor
-  FROM helper_user hu`
+	qHUser := `SELECT * FROM helper_user`
 
 	rwHUser, err := db.DbSidapet.Query(ctx, qHUser)
 	if err != nil {
@@ -182,24 +164,7 @@ func GetByVmsUserId(vmsUserId pgtype.Int4) HelperUser {
 	ctx := context.Background()
 
 	qHUser := `
-  SELECT
-    id,
-    vms_user_id,
-    vms_user_name,
-    vms_user_level,
-    vms_user_email,
-    vms_user_email_real,
-    vms_user_pass,
-    vms_user_created_at,
-    vms_user_updated_at,
-    nip,
-    kode_unit,
-    db_penyedia,
-    nama_penyedia,
-    jenis_penyedia,
-    usman_ref_user_id,
-    kode_vendor
-  FROM helper_user hu
+  SELECT * FROM helper_user hu
   WHERE vms_user_id = $1`
 
 	rwHUser, err := db.DbSidapet.Query(ctx, qHUser, vmsUserId)
@@ -226,24 +191,7 @@ func GetByVmsUserEmail(vmsUserEmail pgtype.Text) HelperUser {
 	ctx := context.Background()
 
 	qHUser := `
-  SELECT
-    id,
-    vms_user_id,
-    vms_user_name,
-    vms_user_level,
-    vms_user_email,
-    vms_user_email_real,
-    vms_user_pass,
-    vms_user_created_at,
-    vms_user_updated_at,
-    nip,
-    kode_unit,
-    db_penyedia,
-    nama_penyedia,
-    jenis_penyedia,
-    usman_ref_user_id,
-    kode_vendor
-  FROM helper_user hu
+  SELECT * FROM helper_user hu
   WHERE vms_user_email = $1`
 
 	rwHUser, err := db.DbSidapet.Query(ctx, qHUser, vmsUserEmail)

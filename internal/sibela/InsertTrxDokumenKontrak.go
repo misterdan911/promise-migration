@@ -1,19 +1,20 @@
 package sibela
 
 import (
-	"fmt"
-	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	// "fmt"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
+	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/trxdokumenkontrakmodel"
-	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
 	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
+	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratpesanandptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratpesananplmodel"
-	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
 	"promise-migration/internal/sibela/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -43,6 +44,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	}
 
 	// Bikin transaksi si Esign
+	// -------------------------------------------------------------
 	trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
 		NamaAplikasi: gAppName,
 		NomorSurat: tblSuratPesanan.NomorpesananSp,
@@ -54,32 +56,25 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	}
 	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
-	jenisPaket := pgtype.Text{Valid: true}
-	switch tblPaket.JenisPenyedia.String {
-	case "luardpt":
-		jenisPaket.String = "luardpt"
-	case "dpt":
-		jenisPaket.String = "dpt"
-	}
-
-	allSignatureSP := tblsignaturemodel.GetAllSignatureSP(tblPaket.IdPaket, jenisPaket)
-
-	fmt.Println("-----------------------------------------------------------------------")
-	fmt.Printf("allSignatureSp: %d\n", len(allSignatureSP))
+	allSignatureSP := tblsignaturemodel.GetAllSignatureSP(tblPaket.IdPaket, tblPaket.JenisPenyedia)
 
 	for _, signatureSP := range allSignatureSP {
 
+		userPenandatangan := helperusermodel.GetByVmsUserId(signatureSP.IdUser)
+
 		trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
 			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
-			StatusJabatanPenandatangan: pgtype.Text{Valid: true, String: "internal"},
-			Jabatan: pgtype.Text{Valid: true, String: "Belum Ketemu"},
+			StatusJabatanPenandatangan: userPenandatangan.StatusUser,
+			Jabatan: userPenandatangan.Jabatan,
 			StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
 			TglTte: signatureSP.CreatedAt,
-			KodePenandatangan: gUserPP.KodePenandatangan,
+			KodePenandatangan: userPenandatangan.KodePenandatangan,
 		}
 		trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
 
 	}
+	// -------------------------------------------------------------
+
 
 	trxTte := trxttemodel.TrxTte{
 		KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,

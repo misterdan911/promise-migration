@@ -1,7 +1,9 @@
 package sibela
 
 import (
-	"fmt"
+	// "fmt"
+	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refriwayatpelaksanaanmodel"
@@ -21,6 +23,8 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
 	"promise-migration/internal/model/promise_sibela/tblsptjmdptmodel"
+	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
+
 	// "promise-migration/internal/model/promise_sibela/tblsptbplmodel"
 	// "promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
@@ -147,7 +151,43 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
+		// Bikin transaksi si Esign
+		// -------------------------------------------------------------
+		trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
+			NamaAplikasi: gAppName,
+			NomorSurat: tblBaserahterimaPl.NomorSt,
+			JenisSurat: pgtype.Text{Valid: true, String: "Surat Berita Serah Terima (BAST)"},
+			KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
+			PathDokumen: pathDokumen,
+			PathDokumenSelesai: pathDokumen,
+			TglSelesai: pgtype.Timestamp(tblBaserahterimaPl.TanggalSt),
+		}
+		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
+
+		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
+
+		for _, signature := range allSignature {
+
+			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+
+			trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
+				KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+				StatusJabatanPenandatangan: userPenandatangan.StatusUser,
+				Jabatan: userPenandatangan.Jabatan,
+				StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
+				TglTte: signature.CreatedAt,
+				KodePenandatangan: userPenandatangan.KodePenandatangan,
+			}
+			trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
+
+		}
+		// -------------------------------------------------------------
+
+
+
 		trxTte = trxttemodel.TrxTte{
+			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
 			KodePermintaan: refPermintaan.KodePermintaan,
 			KategoriTte:pgtype.Text{Valid: true, String: "ba_serah_terima"},
 			PathDokumen: pathDokumen,
@@ -175,7 +215,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
-		fmt.Println(pathDokumen.String);
+		// fmt.Println(pathDokumen.String);
 
 		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 3 // Kuitansi
 		trxRiwayatPelaksanaan.Udcr = tblTerminPl.TanggalKwitansi

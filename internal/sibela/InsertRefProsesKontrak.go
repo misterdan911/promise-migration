@@ -1,7 +1,7 @@
 package sibela
 
 import (
-	"fmt"
+	// "fmt"
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refkeluaranproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
@@ -135,8 +135,8 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
-			fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
-			fmt.Println("persen_termin: ", persenTermin)
+			// fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
+			// fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
 				Float64: persenTermin,
 				Valid:   true,

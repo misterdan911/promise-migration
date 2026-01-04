@@ -10,12 +10,26 @@ import(
 )
 
 func PopulateTrxGroupUser() {
+
+	// Setup Kepala UPBJ
+	// SetupAksesKepalaUpbjForSidapet()
 	
 	// Setup user akses sippan
 	SetupPpkAccessForSippan()
 
 	// Setup user akses sidapet
 	SetupVendorAccessForSidapet()
+}
+
+func SetupAksesKepalaUpbjForSidapet() {
+	currentTime := time.Now().UTC()
+	trxGroupUser := trxgroupusermodel.TrxGroupUser{
+		KodeGroup: pgtype.Text{Valid: true, String: "G01.3"},
+		IdUser:    pgtype.Int4{Valid: true, Int32: 10195},
+		Status:    pgtype.Text{Valid: true, String: "1"},
+		Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
+	}
+	trxgroupusermodel.InsertNew(trxGroupUser)
 }
 
 func SetupPpkAccessForSippan() {

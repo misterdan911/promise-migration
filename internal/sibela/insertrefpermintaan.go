@@ -41,7 +41,7 @@ func InsertRefPermintaan() {
 
 	for _, tblPaketPl := range allTblPaketPl {
 
-		// untuk testing aja
+		// quicktest
 		if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
 			continue
 		}

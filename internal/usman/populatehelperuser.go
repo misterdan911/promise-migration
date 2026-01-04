@@ -148,11 +148,12 @@ func PopulateHelperUser() {
 		}
 
 		// Kode Penandatangan
-		var kodePenandatangan = pgtype.Int4{Valid: true}
+		var kodePenandatangan pgtype.Int4
 
 		for _, refPenandatangan := range allRefPenandatangan {
 			if vmsUser.EmailReal.String == refPenandatangan.Email.String {
 				kodePenandatangan = refPenandatangan.KodePenandatangan
+				break
 			}
 		}
 
