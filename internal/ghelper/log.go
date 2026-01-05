@@ -24,7 +24,7 @@ func Log(fileName string, line string) {
 	filePath := filepath.Join(folderName, fileName)
 	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatal("failed to open file: " + err.Error())
+		log.Fatal("failed to open file (log.go): " + err.Error())
 		//return fmt.Errorf("failed to open file: %v", err)
 	}
 	defer file.Close()

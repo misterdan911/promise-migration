@@ -167,7 +167,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
-		// Bikin transaksi si Esign
+		// Bikin transaksi Esign
 		// -------------------------------------------------------------
 		trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
 			NamaAplikasi: gAppName,
@@ -185,7 +185,13 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		for _, signature := range allSignature {
 
+			fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
+
 			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+			if (userPenandatangan == helperusermodel.HelperUser{}) {
+				// ada id user yg tandatangan, tapi data usernya sudah tidak ada (id_user: 12134, id_profile_penyedia: 981)
+				continue
+			}
 
 			trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
 				KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
@@ -367,9 +373,13 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 	}
 
+	lastIndex := len(allHelperRiwayatPelaksanaan) - 1
+	if lastIndex < 0 {
+		fmt.Printf("last Index %d\n", lastIndex)
+		return nil
+	}
 
-	lastTblTerminPl := allHelperRiwayatPelaksanaan[len(allHelperRiwayatPelaksanaan) - 1].TblTerminPl
-	// lastTblTerminPl := lastHelperRiwayat.TblTerminPl
+	lastTblTerminPl := allHelperRiwayatPelaksanaan[lastIndex].TblTerminPl
 
 	// insert sptjm
 	var tblSptjm structs.TblSptjm
@@ -586,10 +596,11 @@ func BikinTransaksiEsign(dataTrx DataTrxEsign) pgtype.Int4{
 	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
 	// jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
-	fmt.Println()
 	allSignature := tblsignaturemodel.GetAllSignatureSptjm(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, dataTrx.JenisSignature)
 
 	for _, signature := range allSignature {
+
+		fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 

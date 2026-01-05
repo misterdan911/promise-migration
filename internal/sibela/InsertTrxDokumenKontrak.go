@@ -1,7 +1,7 @@
 package sibela
 
 import (
-	// "fmt"
+	"fmt"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
@@ -59,6 +59,8 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	allSignatureSP := tblsignaturemodel.GetAllSignatureSP(tblPaket.IdPaket, tblPaket.JenisPenyedia)
 
 	for _, signatureSP := range allSignatureSP {
+
+		fmt.Printf("signatureSP.IdUser: %d\n", signatureSP.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signatureSP.IdUser)
 

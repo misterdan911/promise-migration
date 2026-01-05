@@ -83,11 +83,13 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
     // upload dokumen start
     // --------------------------------------------------------------------------------------------
-		fmt.Println("Uploading File...")
+		fmt.Println("Uploading File...: ", g.FileExt)
 		var SuccessResponse ResponseServiceUpload
+		var SuccessResponseMix ResponseServiceUploadMix
 		var errUp error
 
-		if g.FileExt == ".pdf" {
+		switch g.FileExt {
+		case ".pdf":
 			SuccessResponse, errUp = UploadFilePdf(g.AppName, g.FilePath)
 			if errUp != nil {
 
@@ -118,9 +120,8 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				g.LogDoc.UpStat = "Success"
         DeleteFile(g.FilePath)
 			}
-		}
 
-		if g.FileExt == ".xlsx" || g.FileExt == ".xls" {
+		case ".xlsx", ".xls":
 			SuccessResponse, errUp = UploadFileExcel(g.AppName, g.FilePath)
 			if errUp != nil {
 				g.LogDoc.UpStat = "Failed"
@@ -130,7 +131,36 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				g.LogDoc.UpStat = "Success"
         DeleteFile(g.FilePath)
 			}
+
+		case ".jpeg", ".jpg", ".png":
+			SuccessResponse, errUp = UploadFileImage(g.AppName, g.FilePath)
+			if errUp != nil {
+				g.LogDoc.UpStat = "Failed"
+				PrintLog()
+				log.Fatal(errUp.Error())
+			} else {
+				g.LogDoc.UpStat = "Success"
+        DeleteFile(g.FilePath)
+			}
+
+		case ".docx", ".doc", ".rar", ".zip":
+			SuccessResponseMix, errUp = UploadFileMix(g.AppName, g.FilePath)		// nanti masuknya ke folder upload-pdf
+			if errUp != nil {
+				g.LogDoc.UpStat = "Failed"
+				PrintLog()
+				log.Fatal(errUp.Error())
+			} else {
+				g.LogDoc.UpStat = "Success Mix"
+        DeleteFile(g.FilePath)
+			}
+
+		default:
+			g.LogDoc.UpStat = "Failed - invalid file Extension"
+			PrintLog()
+			return nil // Supaya func ProcessOriginalPath berhenti sampai disini
 		}
+
+
     // upload dokumen end
     // --------------------------------------------------------------------------------------------
 
@@ -143,6 +173,21 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 			helperDokumen.OriginalPath = originalPath
 			helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
 			helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
+		} else if g.LogDoc.UpStat == "Success Mix" {
+			helperDokumen.AppName = pgtype.Text{Valid:true, String:g.AppName}
+			helperDokumen.OriginalPath = originalPath
+			helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponseMix.Data.Files[0].FileName}
+
+			var keypass string
+			if SuccessResponseMix.Data.Files[0].Keypass == nil {
+				keypass = ""
+			} else {
+				keypass = SuccessResponseMix.Data.Files[0].Keypass.(string)
+			}
+			helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: keypass}
+		}
+
+		if g.LogDoc.UpStat == "Success" || g.LogDoc.UpStat == "Success Mix" {
 			helperdokumenmodel.InsertNew(helperDokumen)
 		}
 

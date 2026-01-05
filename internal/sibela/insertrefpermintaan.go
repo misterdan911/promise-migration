@@ -1,14 +1,14 @@
 package sibela
 
 import (
-	"promise-migration/internal/model/dbesign/refpenandatanganmodel"
+	// "promise-migration/internal/model/dbesign/refpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
-	"promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
+	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
@@ -26,7 +26,7 @@ type UserPP struct {
 
 var gTblPaketPl tblpaketplonionmodel.TblPaketPlOnion
 var userPPK helperusermodel.HelperUser
-var gUserPP UserPP
+// var gUserPP UserPP
 var gUserVendor helperusermodel.HelperUser
 var gKodeStatusPermintaan pgtype.Int4
 var gAppName = pgtype.Text{Valid:true, String: "Si-BeLa"}
@@ -34,17 +34,17 @@ var gAppName = pgtype.Text{Valid:true, String: "Si-BeLa"}
 func InsertRefPermintaan() {
 
 	// reset gUserPP
-	gUserPP = UserPP{}
+	// gUserPP = UserPP{}
 
 	// allTblPaketPl := tblpaketplmodel.GetAllData()
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
 
-		// quicktest
-		if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
-			continue
-		}
+		// quick testing for debug
+		// if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
+		// 	continue
+		// }
 
 		gTblPaketPl = tblPaketPl
 
@@ -63,11 +63,17 @@ func InsertRefPermintaan() {
 
 		// dapatkan kodeUnit
 		var kodeUnit pgtype.Text
-
 		userIdPpk := tblppksubmodel.GetUserIdUserPpkActive(tblPaketPl.IdPpk)
-
 		userPPK = helperusermodel.GetByVmsUserId(userIdPpk)
 		kodeUnit = userPPK.KodeUnit
+
+		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
+		if len(allLogPaket) > 0 {
+			idUserPp := allLogPaket[0].IdUser
+			userPp := helperusermodel.GetByVmsUserId(idUserPp)
+			kodeUnit = userPp.KodeUnit
+		}
+
 
 		// dapatkan kodeVendor
 		var profilePenyedia structs.TblProfilePenyedia
@@ -138,20 +144,12 @@ func InsertRefPermintaan() {
 		// dapatkan Ucr
 		var ucr pgtype.Text
 		ucr.Valid = true
-		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
 
 		if len(allLogPaket) > 0 {
 		
 			if allLogPaket[0].IdUser.Valid {
 				userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
 				ucr.String = userPp.VmsUserEmailReal.String + "|" + userPp.VmsUserName.String
-				
-				tblPejabatPembelianSub := tblpejabatpembeliansubmodel.GetPpByIdUser(userPp.VmsUserId)
-				refPenandatangan := refpenandatanganmodel.GetByEmail(userPp.VmsUserEmailReal)
-
-				gUserPP.KodePenandatangan = refPenandatangan.KodePenandatangan
-				gUserPP.Jabatan = tblPejabatPembelianSub.UraianJabatan
-			
 			} else {
 				ucr.String = userPPK.VmsUserEmailReal.String + "|" + userPPK.VmsUserName.String
 			}

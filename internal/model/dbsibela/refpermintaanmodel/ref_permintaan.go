@@ -248,3 +248,4 @@ func UpdateKodeStatusPermintaan(kodePermintaan pgtype.Int4, kodeStatusPermintaan
 		log.Fatal("failed UpdateKodeStatusPermintaan (ref_permintaan.go), " + err.Error())
 	}
 }
+

@@ -25,6 +25,23 @@ type ResponseServiceUpload struct {
 	} `json:"data"`
 }
 
+type ResponseServiceUploadMix struct {
+    Code    int    `json:"code"`
+    Status  string `json:"status"`
+    Message string `json:"message"`
+    Data    struct {
+        Total   int `json:"total"`
+        Images  int `json:"images"`
+        PDFs    int `json:"pdfs"`
+        Files   []struct {
+            FileName string      `json:"file_name"`
+            FileType string      `json:"file_type"`
+            Keypass  interface{} `json:"keypass"` // Use interface{} since it can be null
+        } `json:"files"`
+    } `json:"data"`
+}
+
+
 // var FilePath string = "D:/Danu/repo/golang/promise-migration/files/tmp/dokumen.pdf"
 
 func DownloadFile(url string) error {
@@ -204,7 +221,7 @@ func UploadFilePdf(appName string, filePath string) (ResponseServiceUpload, erro
 	// Open the file to upload
 	file, err := os.Open(filePath)
 	if err != nil {
-		return successResp, fmt.Errorf("failed to open file: %v", err)
+		return successResp, fmt.Errorf("failed to open file - UploadFilePdf: %v", err)
 	}
 	defer file.Close()
 
@@ -371,6 +388,206 @@ func UploadFileExcel(appName string, filePath string) (ResponseServiceUpload, er
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return successResp, nil
 }
+
+func UploadFileImage(appName string, filePath string) (ResponseServiceUpload, error) {
+
+	var successResp ResponseServiceUpload
+
+	// Open the file to upload
+	file, err := os.Open(filePath)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to open file: %v", err)
+	}
+	defer file.Close()
+
+	// Create a buffer to store our request body
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	// Add the nama_aplikasi field
+	err = writer.WriteField("nama_aplikasi", appName)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to write nama_aplikasi field: %v", err)
+	}
+
+	var contentType []string 
+
+	switch g.FileExt {
+	case ".jpeg", ".jpg":
+		contentType = []string{"image/jpeg"}
+	case ".png":
+		contentType = []string{"image/png"}
+	}
+
+	part, err := writer.CreatePart(textproto.MIMEHeader{
+		"Content-Disposition": []string{fmt.Sprintf(`form-data; name="%s"; filename="%s"`, "file", filepath.Base(filePath))},
+		"Content-Type":        contentType, // Explicitly set PDF MIME type
+	})
+	if err != nil {
+		return successResp, fmt.Errorf("failed to create form file: %v", err)
+	}
+
+	// Copy the file content to the form field
+	_, err = io.Copy(part, file)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to copy file content: %v", err)
+	}
+
+	// Close the multipart writer to finalize the body
+	err = writer.Close()
+	if err != nil {
+		return successResp, fmt.Errorf("failed to close multipart writer: %v", err)
+	}
+
+	// Create the request
+	urlServiceUpload := os.Getenv("URL_SERVICE_UPLOAD") + "/" + "image"
+	req, err := http.NewRequest("POST", urlServiceUpload, body)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	// fmt.Println(req)
+
+	// Set the content type header with the boundary
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	// Create a custom transport that skips TLS verification
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	// Send the request
+	client := &http.Client{Transport: tr}
+	resp, err := client.Do(req)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to send request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Read and print the response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to read response body: %v", err)
+	}
+
+	if err := json.Unmarshal(respBody, &successResp); err != nil { // Parse []byte to the go struct pointer
+		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
+	}
+
+
+	// Check the response
+	if resp.StatusCode != http.StatusOK {
+    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
+	}
+
+
+	// fmt.Printf("Upload successful! Response: %s\n", respBody)
+	return successResp, nil
+}
+
+func UploadFileMix(appName string, filePath string) (ResponseServiceUploadMix, error) {
+
+	var successResp ResponseServiceUploadMix
+
+	// Open the file to upload
+	file, err := os.Open(filePath)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to open file: %v", err)
+	}
+	defer file.Close()
+
+	// Create a buffer to store our request body
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	// Add the nama_aplikasi field
+	err = writer.WriteField("nama_aplikasi", appName)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to write nama_aplikasi field: %v", err)
+	}
+
+	var contentType []string 
+
+	switch g.FileExt {
+	case ".docx", ".doc":
+		contentType = []string{"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
+	case ".zip":
+		contentType = []string{"application/zip"}
+	case ".rar":
+		contentType = []string{"application/vnd.rar"}
+	}
+
+	part, err := writer.CreatePart(textproto.MIMEHeader{
+		"Content-Disposition": []string{fmt.Sprintf(`form-data; name="%s"; filename="%s"`, "file", filepath.Base(filePath))},
+		"Content-Type":        contentType, // Explicitly set MIME type
+	})
+	if err != nil {
+		return successResp, fmt.Errorf("failed to create form file: %v", err)
+	}
+
+	// Copy the file content to the form field
+	_, err = io.Copy(part, file)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to copy file content: %v", err)
+	}
+
+	// Close the multipart writer to finalize the body
+	err = writer.Close()
+	if err != nil {
+		return successResp, fmt.Errorf("failed to close multipart writer: %v", err)
+	}
+
+	// Create the request
+	urlServiceUpload := os.Getenv("URL_SERVICE_UPLOAD") + "/" + "pdf-mix"
+	fmt.Println("urlServiceUpload: ", urlServiceUpload)
+
+	req, err := http.NewRequest("POST", urlServiceUpload, body)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to create request: %v", err)
+	}
+
+	// fmt.Println(req)
+
+	// Set the content type header with the boundary
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	// Create a custom transport that skips TLS verification
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	// Send the request
+	client := &http.Client{Transport: tr}
+	resp, err := client.Do(req)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to send request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Read and print the response body
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return successResp, fmt.Errorf("failed to read response body: %v", err)
+	}
+
+	if err := json.Unmarshal(respBody, &successResp); err != nil { // Parse []byte to the go struct pointer
+		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
+	}
+
+
+	// Check the response
+	if resp.StatusCode != http.StatusOK {
+    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
+	}
+
+
+	// fmt.Printf("Upload successful! Response: %s\n", respBody)
+	return successResp, nil
+}
+
+
 // deleteFile safely removes the specified file
 func DeleteFile(filepath string) error {
 	err := os.Remove(filepath)

@@ -54,6 +54,22 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	}
 	refProsesKontrak3 = refproseskontrakmodel.InsertNewData(refProsesKontrak3)
 	InsertRefRiwayatPelaksanaan(refPermintaan, tblPaketPl, refProsesKontrak3)
+
+	// Serah Terima
+	/*
+	if statusPengisian.String == "Selesai" {
+		refProsesKontrak4 := refproseskontrakmodel.RefProsesKontrak{
+			KodePermintaan:    refPermintaan.KodePermintaan,
+			KodeStatusKontrak: pgtype.Int4{Valid: true, Int32: 4},
+			StatusPengisian:   statusPengisian,
+			Ucr:               refPermintaan.Ucr,
+		}
+		refProsesKontrak4 = refproseskontrakmodel.InsertNewData(refProsesKontrak4)
+		InsertRefRiwayatPelaksanaan(refPermintaan, tblPaketPl, refProsesKontrak4)
+	}
+	*/
+
+
 }
 
 func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.Text {

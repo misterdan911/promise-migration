@@ -17,6 +17,11 @@ import (
 	"promise-migration/internal/model/mypromise_sibela/tblpersonaliaperusahaanmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblsahamperusahaanmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblpaketplmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblpaketdptplmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblsignaturemodel"
+	"promise-migration/internal/model/mypromise_sibela/tblsptbplmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblsptbdptplmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblsptjmmodel"
 	
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -272,15 +277,276 @@ func MigrateFileFromPromiseSibelaTblPaketPl() {
     for _, row := range allRows {
         
         // Process path_sibela
-				if row.PathSibela.String != "" {
+		if row.PathSibela.String != "" {
             g.LogDoc.FieldName = "promise_sibela.tbl_paket_pl.path_sibela"
             g.LogDoc.PkId = row.IdPaket.Int32
 
             originalPath.String = row.PathSibela.String
             ProcessOriginalPath(originalPath)
         }
+
+        // Process path_sibela
+        if row.PathSibelaPenyedia.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paket_pl.path_sibela_penyedia_pl"
+            g.LogDoc.PkId = row.IdPaket.Int32
+
+            originalPath.String = row.PathSibelaPenyedia.String
+            ProcessOriginalPath(originalPath)
+        }
+
     }
 	
+}
+
+func MigrateFileFromPromiseSibelaTblPaketDptPl() {
+    allRows, _ := tblpaketdptplmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+        // Process path_sibela
+        if row.PathSibela.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paketdpt_pl.path_sibela_dptpl"
+            g.LogDoc.PkId = row.IdPaket.Int32
+
+            originalPath.String = row.PathSibela.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // Process path_sibela
+        if row.PathSibelaPenyedia.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_paketdpt_pl.path_sibela_penyedia_dptpl"
+            g.LogDoc.PkId = row.IdPaket.Int32
+
+            originalPath.String = row.PathSibelaPenyedia.String
+            ProcessOriginalPath(originalPath)
+        }
+
+    }
+    
+}
+
+func MigrateFileFromPromiseSibelaTblSignature() {
+    allRows, _ := tblsignaturemodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+        if row.PathFinalDok.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_signature.path_final_dok"
+            g.LogDoc.PkId = row.IdSignature.Int32
+
+            originalPath.String = row.PathFinalDok.String
+            ProcessOriginalPath(originalPath)
+        }
+
+    }
+    
+}
+
+func MigrateFileFromPromiseSibelaTblSptbPl() {
+    allRows, _ := tblsptbplmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+        // dok_non_pkp
+        if row.DokNonPkp.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_non_pkp"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.DokNonPkp.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus
+        if row.DokKetentuanKhusus.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.DokKetentuanKhusus.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus_jenis
+        if row.DokKetentuanKhususJenis.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus_jenis"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.DokKetentuanKhususJenis.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // sptb_file
+        if row.SptbFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.sptb_file"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.SptbFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // file_scan_sptb
+        if row.FileScanSptb.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_sptb"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.FileScanSptb.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // ringkasankontrak_file
+        if row.RingkasankontrakFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ringkasankontrak_file"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.RingkasankontrakFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // file_scan_rk
+        if row.FileScanRk.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_rk"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.FileScanRk.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // faktur_pajak_file
+        if row.FakturPajakFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.faktur_pajak_file"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.FakturPajakFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // ssp_file
+        if row.SspFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ssp_file"
+            g.LogDoc.PkId = row.IdSptbPl.Int32
+
+            originalPath.String = row.SspFile.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+    
+}
+
+func MigrateFileFromPromiseSibelaTblSptbDptPl() {
+    allRows, _ := tblsptbdptplmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+        // dok_non_pkp
+        if row.DokNonPkp.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_non_pkp"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.DokNonPkp.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus
+        if row.DokKetentuanKhusus.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.DokKetentuanKhusus.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus_jenis
+        if row.DokKetentuanKhususJenis.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus_jenis"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.DokKetentuanKhususJenis.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // sptb_file
+        if row.SptbFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.sptb_file"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.SptbFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // file_scan_sptb
+        if row.FileScanSptb.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_sptb"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.FileScanSptb.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // ringkasankontrak_file
+        if row.RingkasankontrakFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ringkasankontrak_file"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.RingkasankontrakFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // file_scan_rk
+        if row.FileScanRk.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_rk"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.FileScanRk.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // faktur_pajak_file
+        if row.FakturPajakFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.faktur_pajak_file"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.FakturPajakFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // ssp_file
+        if row.SspFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ssp_file"
+            g.LogDoc.PkId = row.IdSptbDptpl.Int32
+
+            originalPath.String = row.SspFile.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+    
+}
+
+
+func MigrateFileFromPromiseSibelaTblSptjm() {
+    allRows, _ := tblsptjmmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+        
+				// basts_file
+        if row.BastsFile.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.basts_file"
+            g.LogDoc.PkId = row.IdSptjm.Int32
+
+            originalPath.String = row.BastsFile.String
+            ProcessOriginalPath(originalPath)
+        }
+
+				// sperkes_file
+				// sperkes_file_penyedia
+				// sperpem_file
+				// sperpem_file_penyedia
+				// sptjm_file
+    }
+    
 }
 
 /*
