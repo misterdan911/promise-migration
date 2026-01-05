@@ -177,5 +177,5 @@ type TblSptbPl struct {
 	PpnPersen                pgtype.Text
 	PphPersen                pgtype.Text
 	Transaksi                pgtype.Text
-	TertanggalSptb           pgtype.Timestamptz
+	TertanggalSptb           pgtype.Timestamp
 }

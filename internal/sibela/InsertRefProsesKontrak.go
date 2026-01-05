@@ -110,9 +110,9 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	if totalTermin > 0 {
 		gKodeStatusPermintaan.Int32 = 8
 		
-		// if allTblTermin[totalTermin - 1].StatusTerminBast.Int32 == 3 {
-		// 	gKodeStatusPermintaan.Int32 = 9
-		// }
+		if allTblTermin[totalTermin - 1].StatusTerminBast.Int32 == 3 {
+			gKodeStatusPermintaan.Int32 = 9
+		}
 	}
 
 	if totalTermin > 1 {

@@ -1,32 +1,34 @@
 package sibela
 
 import (
-	// "fmt"
-	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	"fmt"
+	"log"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
+	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
+	"promise-migration/internal/model/dbsibela/refbapemeriksaanmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refriwayatpelaksanaanmodel"
-	"promise-migration/internal/model/dbsibela/refbapemeriksaanmodel"
-	"promise-migration/internal/model/dbsibela/trxriwayatpelaksanaanmodel"
+	"promise-migration/internal/model/dbsibela/refsptjmmodel"
 	"promise-migration/internal/model/dbsibela/trxbastmodel"
 	"promise-migration/internal/model/dbsibela/trxkwitansimodel"
-	"promise-migration/internal/model/dbsibela/trxttemodel"
-	"promise-migration/internal/model/dbsibela/refsptjmmodel"
-	"promise-migration/internal/model/dbsibela/trxsptjmmodel"
-	// "promise-migration/internal/model/dbsibela/trxpajakmodel"
 	"promise-migration/internal/model/dbsibela/trxpembayaranmodel"
-	"promise-migration/internal/model/promise_sibela/tblbaserahterimaplmodel"
+	"promise-migration/internal/model/dbsibela/trxriwayatpelaksanaanmodel"
+	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/promise_sibela/tblbaserahterimadptplmodel"
+	"promise-migration/internal/model/promise_sibela/tblbaserahterimaplmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
-	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
-	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
-	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
-	"promise-migration/internal/model/promise_sibela/tblsptjmdptmodel"
 	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
+	"promise-migration/internal/model/promise_sibela/tblsptjmdptmodel"
+	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
+	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
+	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
 
-	// "promise-migration/internal/model/promise_sibela/tblsptbplmodel"
-	// "promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
+	"promise-migration/internal/model/dbsibela/trxpajakmodel"
+	"promise-migration/internal/model/dbsibela/trxsptjmmodel"
+	"promise-migration/internal/model/promise_sibela/tblsptbdptplmodel"
+	"promise-migration/internal/model/promise_sibela/tblsptbplmodel"
+
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sibela/structs"
@@ -39,9 +41,23 @@ type SptjmParam struct {
 	RefPermintaan refpermintaanmodel.RefPermintaan
 }
 
+type DataTrxEsign struct {
+	NomorSurat pgtype.Text
+	JenisSurat pgtype.Text
+	PathDokumen pgtype.Text
+	TglSelesai pgtype.Timestamp
+	JenisSignature pgtype.Text
+	TblPaketPl tblpaketplonionmodel.TblPaketPlOnion
+	TblTerminPl structs.TblTerminPl
+}
+
 var lastKodeTrxRiwayatPelaksanaan pgtype.Int4
+// var lastTerminPl structs.TblTerminPl
 
 func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion, refProsesKontrak3 refproseskontrakmodel.RefProsesKontrak) error {
+
+	refRiwayatPelaksanaan := refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{}
+	trxRiwayatPelaksanaan := trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{}
 
 	// looping per-termin
 	for _, helperRiwayatPelaksanaan:= range allHelperRiwayatPelaksanaan {
@@ -58,7 +74,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			statusRiwayatPelaksanaan.String = "proses"
 		}
 
-		refRiwayatPelaksanaan := refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{
+		refRiwayatPelaksanaan = refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{
 			KodeProsesKontrak: refProsesKontrak3.KodeProsesKontrak,
 			KodeTrxJenisSispembayaran: trxJenisSispembayaran.KodeTrxJenisSispembayaran,
 			StatusRiwayatPelaksanaan: statusRiwayatPelaksanaan,
@@ -81,7 +97,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		statusStep := pgtype.Text{Valid: true, String: "selesai"}
 		kodeStepRiwayatPelaksanaan.Int32 = 1 // BAP
 
-		trxRiwayatPelaksanaan := trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{
 			KodeRiwayatPelaksanaan: refRiwayatPelaksanaan.KodeRiwayatPelaksanaan,
 			KodeStepRiwayatPelaksanaan: kodeStepRiwayatPelaksanaan,
 			StatusStep: statusStep,
@@ -223,6 +239,11 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		kategoriInput := pgtype.Text{Valid: true, String: "ppk"}
 
+		tglKwitansi := tblTerminPl.TanggalKwitansi
+		if !tglKwitansi.Valid {
+			tglKwitansi = tblTerminPl.TanggalBastTerealisasi
+		}
+
 		trxKwitansi := trxkwitansimodel.TrxKwitansi{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
 			NomorKwitansi: tblTerminPl.NomorKwitansi,
@@ -231,7 +252,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			KategoriInput: kategoriInput,
 			Ucr: refPermintaan.Ucr,
 			NamaUploader: userPPK.VmsUserName,
-			TanggalKwitansi: tblTerminPl.TanggalKwitansi,
+			TanggalKwitansi: tglKwitansi,
 		}
 		trxkwitansimodel.InsertNew(trxKwitansi)
 
@@ -259,7 +280,6 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		// trx_pajak
 		// ------------------------------------------------------------------
-		/*
 		var tblSptbPl structs.TblSptbPl
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luardpt":
@@ -267,6 +287,10 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		case "dpt":
 			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
 		}
+
+		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 4 // Pajak
+		trxRiwayatPelaksanaan.Udcr = tblSptbPl.TertanggalSptb
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
 
 		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblSptbPl.FakturPajakFile)
 		pathDokumen.Valid = true
@@ -276,12 +300,35 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
+		nilaiTransaksi := pgtype.Numeric{}
+		if tblSptbPl.NilaiPerhitungan.Valid {
+			err := nilaiTransaksi.Scan(tblSptbPl.NilaiPerhitungan.String)
+			if err != nil {
+				fmt.Println("tblSptbPl.NilaiPerhitungan.String: ", tblSptbPl.NilaiPerhitungan.String)
+				log.Fatalf("Error converting to pgtype.Numeric: %v", err)
+			}
+		}
+
+		// TanggalEfaktur
+	    // tblSptbPl.TanggalFakturPajak.String
+		var tglEfaktur pgtype.Timestamp
+		errTglEfaktur := tglEfaktur.Scan("2024-01-15 14:30:00")
+		if errTglEfaktur != nil {
+			fmt.Printf("ErrTglEfaktur: %v\n", errTglEfaktur)
+		} else {
+			// fmt.Printf("From string: %v (Valid: %v)\n", tglEfaktur, tglEfaktur.Valid)
+		}
+
+
 		trxPajak := trxpajakmodel.TrxPajak{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
-			KategoriNilaiTransaksi: pgtype.Text{Valid: true, String: "nilai_kontrak"},
+			// KategoriNilaiTransaksi: pgtype.Text{Valid: true, String: "nilai_kontrak"},
+			NilaiTransaksi: nilaiTransaksi,
+			NamaDokEfaktur: pathDokumen,
+			NomorEfaktur: tblSptbPl.NomorFakturPajak,
+			TanggalEfaktur : tglEfaktur,
 		}
 		trxpajakmodel.InsertNew(trxPajak)
-		*/
 		// ------------------------------------------------------------------
 
 
@@ -318,8 +365,11 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		// -------------------------------------------------------------------------
 
 
-		lastKodeTrxRiwayatPelaksanaan = trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan
 	}
+
+
+	lastTblTerminPl := allHelperRiwayatPelaksanaan[len(allHelperRiwayatPelaksanaan) - 1].TblTerminPl
+	// lastTblTerminPl := lastHelperRiwayat.TblTerminPl
 
 	// insert sptjm
 	var tblSptjm structs.TblSptjm
@@ -330,19 +380,25 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 	case "dpt":
 		tblSptjm = tblsptjmdptmodel.GetByIdPaket(tblPaketPl.IdPaket)
 	}
+
+	trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 5 // SPTJM
+	trxRiwayatPelaksanaan.Udcr = tblSptjm.TanggalSptjm
+	trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
 	
+	lastKodeTrxRiwayatPelaksanaan = trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan
+
 	sptjmParam := SptjmParam{
 		TblSptjm: tblSptjm,
 		RefPermintaan: refPermintaan,
 	}
 
-	InsertSptjm(sptjmParam)
+	InsertSptjm(sptjmParam, tblPaketPl, lastTblTerminPl)
 
 	return nil
 }
 
 
-func InsertSptjm(sptjmParam SptjmParam) error {
+func InsertSptjm(sptjmParam SptjmParam, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion, lastTblTerminPl structs.TblTerminPl) error {
 
 	tblSptjm := sptjmParam.TblSptjm
 	refPermintaan := sptjmParam.RefPermintaan
@@ -371,7 +427,19 @@ func InsertSptjm(sptjmParam SptjmParam) error {
 		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 	}
 
+	dataTrxEsign := DataTrxEsign{
+		NomorSurat: pgtype.Text{},
+		JenisSurat: pgtype.Text{Valid: true, String: "Surat SPTJM"},
+		PathDokumen: pathDokumen,
+		TglSelesai: pgtype.Timestamp(tblSptjm.TanggalSptjm),
+		JenisSignature: pgtype.Text{Valid: true, String: "Surat Pernyataan Tanggung Jawab Mutlak"},
+		TblPaketPl: tblPaketPl,
+		TblTerminPl: lastTblTerminPl,
+	}
+	kodeTrxPenandatangan := BikinTransaksiEsign(dataTrxEsign)
+
 	trxTte := trxttemodel.TrxTte{
+		KodeTrxPenandatangan: kodeTrxPenandatangan,
 		KodePermintaan: refPermintaan.KodePermintaan,
 		KategoriTte:pgtype.Text{Valid: true, String: "sptjm"},
 		PathDokumen: pathDokumen,
@@ -397,7 +465,14 @@ func InsertSptjm(sptjmParam SptjmParam) error {
 		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 	}
 
+	dataTrxEsign.NomorSurat = tblSptjm.NomorBastSementara
+	dataTrxEsign.JenisSurat.String = "Surat Berita Serah Terima Sementara"
+	dataTrxEsign.PathDokumen = pathDokumen
+	dataTrxEsign.JenisSignature.String = "Berita Acara Serah Terima Sementara"
+	kodeTrxPenandatangan = BikinTransaksiEsign(dataTrxEsign)
+
 	trxTte = trxttemodel.TrxTte{
+		KodeTrxPenandatangan: kodeTrxPenandatangan,
 		KodePermintaan: refPermintaan.KodePermintaan,
 		KategoriTte:pgtype.Text{Valid: true, String: "bast_sementara"},
 		PathDokumen: pathDokumen,
@@ -423,7 +498,14 @@ func InsertSptjm(sptjmParam SptjmParam) error {
 		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 	}
 
+	dataTrxEsign.NomorSurat = tblSptjm.NomorBastSementara
+	dataTrxEsign.JenisSurat.String = "Surat Perjanjian Pembayaran"
+	dataTrxEsign.PathDokumen = pathDokumen
+	dataTrxEsign.JenisSignature.String = "Berita Acara Serah Terima Sementara"
+	kodeTrxPenandatangan = BikinTransaksiEsign(dataTrxEsign)
+
 	trxTte = trxttemodel.TrxTte{
+		KodeTrxPenandatangan: kodeTrxPenandatangan,
 		KodePermintaan: refPermintaan.KodePermintaan,
 		KategoriTte:pgtype.Text{Valid: true, String: "s_perjanjian_pembayaran"},
 		PathDokumen: pathDokumen,
@@ -449,7 +531,20 @@ func InsertSptjm(sptjmParam SptjmParam) error {
 		pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 	}
 
+
+
+
+
+
+	dataTrxEsign.NomorSurat = tblSptjm.NomorBastSementara
+	dataTrxEsign.JenisSurat.String = "Surat Pernyataan Kesanggupan"
+	dataTrxEsign.PathDokumen = pathDokumen
+	dataTrxEsign.JenisSignature.String = "Berita Acara Serah Terima Sementara"
+	kodeTrxPenandatangan = BikinTransaksiEsign(dataTrxEsign)
+
+
 	trxTte = trxttemodel.TrxTte{
+		KodeTrxPenandatangan: kodeTrxPenandatangan,
 		KodePermintaan: refPermintaan.KodePermintaan,
 		KategoriTte:pgtype.Text{Valid: true, String: "s_pernyataan_kesanggupan"},
 		PathDokumen: pathDokumen,
@@ -468,4 +563,48 @@ func InsertSptjm(sptjmParam SptjmParam) error {
 	trxsptjmmodel.InsertNew(trxSptjm)
 
 	return nil
+}
+
+
+func BikinTransaksiEsign(dataTrx DataTrxEsign) pgtype.Int4{
+
+	tblPaketPl := dataTrx.TblPaketPl
+	tblTerminPl := dataTrx.TblTerminPl
+
+	// Bikin transaksi si Esign
+	// -------------------------------------------------------------
+	trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
+		NamaAplikasi: gAppName,
+		NomorSurat: dataTrx.NomorSurat,
+		JenisSurat: dataTrx.JenisSurat,
+		KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
+		PathDokumen: dataTrx.PathDokumen,
+		PathDokumenSelesai: dataTrx.PathDokumen,
+		// TglSelesai: pgtype.Timestamp(tblBaserahterimaPl.TanggalSt),
+		TglSelesai: dataTrx.TglSelesai,
+	}
+	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
+
+	// jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+	fmt.Println()
+	allSignature := tblsignaturemodel.GetAllSignatureSptjm(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, dataTrx.JenisSignature)
+
+	for _, signature := range allSignature {
+
+		userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+
+		trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
+			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+			StatusJabatanPenandatangan: userPenandatangan.StatusUser,
+			Jabatan: userPenandatangan.Jabatan,
+			StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
+			TglTte: signature.CreatedAt,
+			KodePenandatangan: userPenandatangan.KodePenandatangan,
+		}
+		trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
+
+	}
+	// -------------------------------------------------------------
+
+	return trxPenandatangan.KodeTrxPenandatangan
 }

@@ -171,7 +171,7 @@ func InsertRefPermintaan() {
 			KodeJenisAset:       kodeJenisAset,
 			NamaUnit:            namaUnit,
 			Ucr:                 ucr,
-			Udcr: 							 tblPaketPl.CreateAt,
+			Udcr: 				 tblPaketPl.CreateAt,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
