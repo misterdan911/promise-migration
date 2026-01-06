@@ -15,7 +15,7 @@ func GetAllDocument() ([]TblSignature, error) {
     qData := `
     SELECT
         id_signature,
-        path_final_dok,
+        path_final_dok
     FROM tbl_signature`
 
   results, err := db.MyPromiseSibela.Query(qData)

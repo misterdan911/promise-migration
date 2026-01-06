@@ -11,7 +11,7 @@ import (
 	"net/textproto" // This is the missing import
 	"os"
 	"path/filepath"
-	
+
 	"promise-migration/internal/g"
 )
 
@@ -26,21 +26,20 @@ type ResponseServiceUpload struct {
 }
 
 type ResponseServiceUploadMix struct {
-    Code    int    `json:"code"`
-    Status  string `json:"status"`
-    Message string `json:"message"`
-    Data    struct {
-        Total   int `json:"total"`
-        Images  int `json:"images"`
-        PDFs    int `json:"pdfs"`
-        Files   []struct {
-            FileName string      `json:"file_name"`
-            FileType string      `json:"file_type"`
-            Keypass  interface{} `json:"keypass"` // Use interface{} since it can be null
-        } `json:"files"`
-    } `json:"data"`
+	Code    int    `json:"code"`
+	Status  string `json:"status"`
+	Message string `json:"message"`
+	Data    struct {
+		Total  int `json:"total"`
+		Images int `json:"images"`
+		PDFs   int `json:"pdfs"`
+		Files  []struct {
+			FileName string      `json:"file_name"`
+			FileType string      `json:"file_type"`
+			Keypass  interface{} `json:"keypass"` // Use interface{} since it can be null
+		} `json:"files"`
+	} `json:"data"`
 }
-
 
 // var FilePath string = "D:/Danu/repo/golang/promise-migration/files/tmp/dokumen.pdf"
 
@@ -289,13 +288,11 @@ func UploadFilePdf(appName string, filePath string) (ResponseServiceUpload, erro
 		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
 	}
 
-
 	// Check the response
 	if resp.StatusCode != http.StatusOK {
-    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		// fmt.Println("Upload failed! Response: ", successResp.Message)
 		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
 	}
-
 
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return successResp, nil
@@ -377,13 +374,11 @@ func UploadFileExcel(appName string, filePath string) (ResponseServiceUpload, er
 		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
 	}
 
-
 	// Check the response
 	if resp.StatusCode != http.StatusOK {
-    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		// fmt.Println("Upload failed! Response: ", successResp.Message)
 		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
 	}
-
 
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return successResp, nil
@@ -410,7 +405,7 @@ func UploadFileImage(appName string, filePath string) (ResponseServiceUpload, er
 		return successResp, fmt.Errorf("failed to write nama_aplikasi field: %v", err)
 	}
 
-	var contentType []string 
+	var contentType []string
 
 	switch g.FileExt {
 	case ".jpeg", ".jpg":
@@ -474,13 +469,11 @@ func UploadFileImage(appName string, filePath string) (ResponseServiceUpload, er
 		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
 	}
 
-
 	// Check the response
 	if resp.StatusCode != http.StatusOK {
-    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		// fmt.Println("Upload failed! Response: ", successResp.Message)
 		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
 	}
-
 
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return successResp, nil
@@ -507,7 +500,7 @@ func UploadFileMix(appName string, filePath string) (ResponseServiceUploadMix, e
 		return successResp, fmt.Errorf("failed to write nama_aplikasi field: %v", err)
 	}
 
-	var contentType []string 
+	var contentType []string
 
 	switch g.FileExt {
 	case ".docx", ".doc":
@@ -516,6 +509,12 @@ func UploadFileMix(appName string, filePath string) (ResponseServiceUploadMix, e
 		contentType = []string{"application/zip"}
 	case ".rar":
 		contentType = []string{"application/vnd.rar"}
+	case ".pptx":
+		contentType = []string{"application/vnd.openxmlformats-officedocument.presentationml.presentation"}
+	case ".ppt":
+		contentType = []string{"application/vnd.ms-powerpoint"}
+	case ".rtf":
+		contentType = []string{"application/rtf"}
 	}
 
 	part, err := writer.CreatePart(textproto.MIMEHeader{
@@ -575,18 +574,15 @@ func UploadFileMix(appName string, filePath string) (ResponseServiceUploadMix, e
 		return successResp, fmt.Errorf("Can not unmarshal JSON: " + err.Error())
 	}
 
-
 	// Check the response
 	if resp.StatusCode != http.StatusOK {
-    // fmt.Println("Upload failed! Response: ", successResp.Message)
+		// fmt.Println("Upload failed! Response: ", successResp.Message)
 		return successResp, fmt.Errorf("upload failed with status: %s, %s", resp.Status, successResp.Message)
 	}
-
 
 	// fmt.Printf("Upload successful! Response: %s\n", respBody)
 	return successResp, nil
 }
-
 
 // deleteFile safely removes the specified file
 func DeleteFile(filepath string) error {

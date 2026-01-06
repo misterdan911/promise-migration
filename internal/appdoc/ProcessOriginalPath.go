@@ -19,30 +19,30 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 	// 	return nil
 	// }
 
-	// reset FilePath	
+	// reset FilePath
 	g.FilePath = "D:/Danu/repo/golang/promise-migration/files/tmp"
 
-  // Cek apakah dokumen sudah pernah berhasil di proses
-  helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
+	// Cek apakah dokumen sudah pernah berhasil di proses
+	helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)
 
-  // Kalau dokumen belum pernah berhasil
-  if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+	// Kalau dokumen belum pernah berhasil
+	if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
 
-    // dapatkan url yg akan di download
-    // urlPath := g.BasePath + "/" + originalPath.String
-    urlPath := g.UrlBasePathExisting + "/" + originalPath.String
-    g.LogDoc.OriPath = urlPath
+		// dapatkan url yg akan di download
+		// urlPath := g.BasePath + "/" + originalPath.String
+		urlPath := g.UrlBasePathExisting + "/" + originalPath.String
+		g.LogDoc.OriPath = urlPath
 
-    // download dokumen start
-    // --------------------------------------------------------------------------------------------
-		
+		// download dokumen start
+		// --------------------------------------------------------------------------------------------
+
 		fileName := path.Base(urlPath)
 		g.FileExt = strings.ToLower(filepath.Ext(fileName))
 		fileNameEncoded := url.PathEscape(fileName)
 		urlPath = strings.Replace(urlPath, fileName, fileNameEncoded, 1)
 
 		g.FilePath = g.FilePath + "/" + fileNameEncoded
-	
+
 		// if g.FileExt == ".rar" || g.FileExt == ".zip" {
 		// 	// skip aja proses downloadnya untuk sementara
 		// 	fmt.Println("Skipping... " + urlPath)
@@ -52,37 +52,36 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 		// }
 
 		fmt.Println("Downloading File: " + urlPath)
-    errDl := DownloadFile(urlPath)
-    if errDl != nil {
+		errDl := DownloadFile(urlPath)
+		if errDl != nil {
 
-      // kalau file yg mau didownload tidak ditemukan
-      if errDl.Error() == "bad status: 404 Not Found" {
-        g.LogDoc.DownStat = "Failed - 404 Not Found"
-        // print log ke konsol
-        PrintLog()
-        return nil // Supaya func ProcessOriginalPath berhenti sampai disini
-      }
+			// kalau file yg mau didownload tidak ditemukan
+			if errDl.Error() == "bad status: 404 Not Found" {
+				g.LogDoc.DownStat = "Failed - 404 Not Found"
+				// print log ke konsol
+				PrintLog()
+				return nil // Supaya func ProcessOriginalPath berhenti sampai disini
+			}
 
-      // kalau connection was forcibly closed by the remote host
+			// kalau connection was forcibly closed by the remote host
 			if strings.Contains(errDl.Error(), "closed by the remote host") {
-        g.LogDoc.DownStat = "Failed - Connection was forcibly closed by the remote host"
-        PrintLog()
-        return nil
-      }
-			
-      // untuk error2 download yg lain dibuat fatal error aja supaya programnya stop sampai disini
-      g.LogDoc.DownStat = "Failed"
-      PrintLog()
-      log.Fatal(errDl.Error())
-    } else {
-      g.LogDoc.DownStat = "Success"
-    }
-    // download dokumen end
-    // --------------------------------------------------------------------------------------------
+				g.LogDoc.DownStat = "Failed - Connection was forcibly closed by the remote host"
+				PrintLog()
+				return nil
+			}
 
+			// untuk error2 download yg lain dibuat fatal error aja supaya programnya stop sampai disini
+			g.LogDoc.DownStat = "Failed"
+			PrintLog()
+			log.Fatal(errDl.Error())
+		} else {
+			g.LogDoc.DownStat = "Success"
+		}
+		// download dokumen end
+		// --------------------------------------------------------------------------------------------
 
-    // upload dokumen start
-    // --------------------------------------------------------------------------------------------
+		// upload dokumen start
+		// --------------------------------------------------------------------------------------------
 		fmt.Println("Uploading File...: ", g.FileExt)
 		var SuccessResponse ResponseServiceUpload
 		var SuccessResponseMix ResponseServiceUploadMix
@@ -112,13 +111,13 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 					PrintLog()
 					return nil
 				}
-				
+
 				g.LogDoc.UpStat = "Failed"
 				PrintLog()
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-        DeleteFile(g.FilePath)
+				DeleteFile(g.FilePath)
 			}
 
 		case ".xlsx", ".xls":
@@ -129,7 +128,7 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-        DeleteFile(g.FilePath)
+				DeleteFile(g.FilePath)
 			}
 
 		case ".jpeg", ".jpg", ".png":
@@ -140,18 +139,18 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-        DeleteFile(g.FilePath)
+				DeleteFile(g.FilePath)
 			}
 
-		case ".docx", ".doc", ".rar", ".zip":
-			SuccessResponseMix, errUp = UploadFileMix(g.AppName, g.FilePath)		// nanti masuknya ke folder upload-pdf
+		case ".docx", ".doc", ".pptx", ".ppt", ".rtf", ".rar", ".zip":
+			SuccessResponseMix, errUp = UploadFileMix(g.AppName, g.FilePath) // nanti masuknya ke folder upload-pdf
 			if errUp != nil {
 				g.LogDoc.UpStat = "Failed"
 				PrintLog()
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success Mix"
-        DeleteFile(g.FilePath)
+				DeleteFile(g.FilePath)
 			}
 
 		default:
@@ -160,21 +159,19 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 			return nil // Supaya func ProcessOriginalPath berhenti sampai disini
 		}
 
+		// upload dokumen end
+		// --------------------------------------------------------------------------------------------
 
-    // upload dokumen end
-    // --------------------------------------------------------------------------------------------
+		// defer DeleteFile(g.FilePath)
 
-    // defer DeleteFile(g.FilePath)
-
-
-    // Insert ke table db_sidapet.helper_dokumen
+		// Insert ke table db_sidapet.helper_dokumen
 		if g.LogDoc.UpStat == "Success" {
-			helperDokumen.AppName = pgtype.Text{Valid:true, String:g.AppName}
+			helperDokumen.AppName = pgtype.Text{Valid: true, String: g.AppName}
 			helperDokumen.OriginalPath = originalPath
 			helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].FileName}
 			helperDokumen.EncryptKey = pgtype.Text{Valid: true, String: SuccessResponse.Data[0].Keypass}
 		} else if g.LogDoc.UpStat == "Success Mix" {
-			helperDokumen.AppName = pgtype.Text{Valid:true, String:g.AppName}
+			helperDokumen.AppName = pgtype.Text{Valid: true, String: g.AppName}
 			helperDokumen.OriginalPath = originalPath
 			helperDokumen.Newfilename = pgtype.Text{Valid: true, String: SuccessResponseMix.Data.Files[0].FileName}
 
@@ -191,17 +188,16 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 			helperdokumenmodel.InsertNew(helperDokumen)
 		}
 
-  }
+	}
 
-  /*
-  if g.LogDoc.DownStat == "Success" {
-    PrintLog()
-    log.Fatal("Stop Dulu")
-  }
-  */
+	/*
+	  if g.LogDoc.DownStat == "Success" {
+	    PrintLog()
+	    log.Fatal("Stop Dulu")
+	  }
+	*/
 
-  PrintLog()
+	PrintLog()
 
-  return nil
+	return nil
 }
-

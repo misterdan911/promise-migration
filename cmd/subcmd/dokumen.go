@@ -96,7 +96,6 @@ var DokumenCmd = &cobra.Command{
 		// tbl_komisaris_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()
 
-
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
@@ -126,19 +125,37 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "Si-BeLa"
 
 		// tbl_paket_pl
-		appdoc.MigrateFileFromPromiseSibelaTblPaketPl()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblPaketPl()
 
 		// tbl_paketdpt_pl
-		appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()
 
 		// tbl_signature
 		appdoc.MigrateFileFromPromiseSibelaTblSignature()	// untested
-		
+
 		// tbl_sptb_pl
-		appdoc.MigrateFileFromPromiseSibelaTblSptbPl()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSptbPl()	// untested
+
+		// tbl_sptbdpt_pl
+		// appdoc.MigrateFileFromPromiseSibelaTblSptbDptPl()	// untested
+
+		// appdoc.MigrateFileFromPromiseSibelaTblSptjm()		//untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSptjmDpt()		//untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratBap()		//untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratBapDpt()		//untested
+
 
 		// tbl_surat_pesanan_pl
 		// appdoc.MigrateFileFromPromiseSibelaTblSuratPesananPl()	// untested
+
+
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratPesananPl()		// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblTerminPl()		// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblTerminDptPl()		// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblUndanganPl()		// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()		// untested
+
+
 	},
 }
 

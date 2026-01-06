@@ -1,6 +1,6 @@
 package trxjawabitemmodel
 
-
+/*
 import (
 	"context"
 
@@ -39,3 +39,4 @@ func InsertTrxJawabItem(profilePenyedia structs.TblProfilePenyedia, mapJawabItem
 
   }
 }
+*/
