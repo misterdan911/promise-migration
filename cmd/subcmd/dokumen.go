@@ -131,13 +131,13 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()
 
 		// tbl_signature
-		appdoc.MigrateFileFromPromiseSibelaTblSignature()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSignature()
 
 		// tbl_sptb_pl
-		// appdoc.MigrateFileFromPromiseSibelaTblSptbPl()	// untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSptbPl()
 
 		// tbl_sptbdpt_pl
-		// appdoc.MigrateFileFromPromiseSibelaTblSptbDptPl()	// untested
+		appdoc.MigrateFileFromPromiseSibelaTblSptbDptPl()	// untested
 
 		// appdoc.MigrateFileFromPromiseSibelaTblSptjm()		//untested
 		// appdoc.MigrateFileFromPromiseSibelaTblSptjmDpt()		//untested

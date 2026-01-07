@@ -15,7 +15,7 @@ set commit_message=update %day% %month% %year%
 echo Running Git commands...
 git add .
 git commit -m "%commit_message%"
-git push origin usman_merge
+git push origin migrate_file
 
 echo.
 echo Commit message: %commit_message%
