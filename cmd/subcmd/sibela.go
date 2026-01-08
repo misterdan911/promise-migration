@@ -49,6 +49,8 @@ var SibelaCmd = &cobra.Command{
 		sibela.SetupVendorAccessForSibela()
 		sibela.InsertRefPermintaan()
 
+		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
+
 		// sibelahelper.CreateAllForeignKey()
 	},
 }

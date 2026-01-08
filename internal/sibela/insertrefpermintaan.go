@@ -42,9 +42,9 @@ func InsertRefPermintaan() {
 	for _, tblPaketPl := range allTblPaketPl {
 
 		// quick testing for debug
-		// if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
-		// 	continue
-		// }
+		if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
+			continue
+		}
 
 		gTblPaketPl = tblPaketPl
 

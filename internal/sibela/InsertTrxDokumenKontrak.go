@@ -34,14 +34,16 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSuratPesanan.SuratpesananFile)
 
-	var pathDokumen pgtype.Text
-	pathDokumen.Valid = true
+	// var pathDokumen pgtype.Text
+	// pathDokumen.Valid = true
 
-	if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
-		pathDokumen.String = tblSuratPesanan.SuratpesananFile.String
-		helperDokumen.EncryptKey.Valid = true
-		helperDokumen.EncryptKey.String = "NO ENCRYPT"
-	}
+	// if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+	// 	pathDokumen.String = tblSuratPesanan.SuratpesananFile.String
+	// 	helperDokumen.EncryptKey.Valid = true
+	// 	helperDokumen.EncryptKey.String = "NO ENCRYPT"
+	// }
+
+	
 
 	// Bikin transaksi si Esign
 	// -------------------------------------------------------------
@@ -50,8 +52,8 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 		NomorSurat: tblSuratPesanan.NomorpesananSp,
 		JenisSurat: pgtype.Text{Valid: true, String: "Surat Pesanan"},
 		KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
-		PathDokumen: pathDokumen,
-		PathDokumenSelesai: pathDokumen,
+		PathDokumen: helperDokumen.Newfilename,
+		PathDokumenSelesai: helperDokumen.Newfilename,
 		TglSelesai: pgtype.Timestamp(tblSuratPesanan.TanggalSp),
 	}
 	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
@@ -97,7 +99,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	refDokDetailTransaksi := refdokdetailtransaksimodel.RefDokDetailTransaksi{
 		KodeTransaksi: trxDokumenKontrak.KodeDokumenKontrak, 
-		NamaDokumen: pathDokumen,
+		NamaDokumen: helperDokumen.Newfilename,
 		KeyyDok: helperDokumen.EncryptKey,
 		KeteranganDok: pgtype.Text{Valid: true, String: "Dokumen Kontrak"},
 		KategoriTransaksi: pgtype.Text{Valid: true, String: "dokumen_kontrak"},

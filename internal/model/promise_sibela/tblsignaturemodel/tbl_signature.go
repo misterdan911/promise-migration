@@ -126,7 +126,7 @@ func GetAllSignature(idPaketPl pgtype.Int4, jenisPaket pgtype.Text, idTerminPl p
 
 	args := pgx.NamedArgs{
 		"id_paket_pl": strIdPaketPl,
-		"jenis_signature": jenisSignature,
+		"jenis_signature": jenisSignature,		// Jenis Surat (Berita Acara Negosiasi, Surat Pesanan/SPK, dll)
 		"id_termin_pl": strIdTerminPl,
 	}
 
@@ -206,4 +206,24 @@ func GetAllSignatureSptjm(idPaketPl pgtype.Int4, jenisPaket pgtype.Text, idTermi
   defer rwTblPesanan.Close()
 
 	return allTblSignature
+}
+
+func GetAllSignatureVendor() []TblSignature {
+
+	ctx := context.Background()
+	qTblSignature := `	SELECT * from tbl_signature	WHERE	id_profil_penyedia is not null`
+
+  rwTblSignature, err := db.PromiseSibela.Query(ctx, qTblSignature)
+  if err != nil {
+    log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
+  }
+
+  allTblSignature, err := pgx.CollectRows(rwTblSignature, pgx.RowToStructByName[TblSignature])
+  if err != nil {
+    log.Fatal("failed collecting rwTblSignature, " + err.Error())
+  }
+  defer rwTblSignature.Close()
+
+	return allTblSignature
+
 }
