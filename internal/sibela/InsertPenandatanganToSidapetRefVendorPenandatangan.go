@@ -1,7 +1,12 @@
 package sibela
 
+import(
+	"github.com/jackc/pgx/v5/pgtype"
+	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsidapet/refvendorpenandatanganmodel"
+)
 
-/*
 func InsertPenandatanganToSidapetRefVendorPenandatangan() {
 	// ambil semua vendor yg bertandatangan di sibela
 	allTblSignature := tblsignaturemodel.GetAllSignatureVendor()
@@ -15,10 +20,14 @@ func InsertPenandatanganToSidapetRefVendorPenandatangan() {
 		}
 
 		jabatan := pgtype.Text{Valid:true}
-		if !(tblSignature.IdDireksiPerus{}) {
+		if tblSignature.IdDireksiPerus.Valid {
 			jabatan.String = "direksi"
 		} else {
 			jabatan.String = "perorangan"
+		}
+
+		if userPenandatangan.KodePenandatangan.Valid == false && userPenandatangan.KodeVendor.Valid == false {
+			continue
 		}
 
 		refVendorPenandatangan := refvendorpenandatanganmodel.RefVendorPenandatangan{
@@ -31,4 +40,3 @@ func InsertPenandatanganToSidapetRefVendorPenandatangan() {
 		refvendorpenandatanganmodel.InsertNewIfNotExists(refVendorPenandatangan)
 	}
 }
-*/

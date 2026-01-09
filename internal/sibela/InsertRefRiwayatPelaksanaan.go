@@ -328,11 +328,18 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		// trx_pajak
 		// ------------------------------------------------------------------
 		var tblSptbPl structs.TblSptbPl
+		namaTabelLama := pgtype.Text{Valid:true, String: ""}
+		idSptb := pgtype.Int4{Valid: true, Int32: 0}
+
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luardpt":
 			tblSptbPl = tblsptbplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+			namaTabelLama.String = "tbl_sptb_p"
+			idSptb = tblSptbPl.IDSptbPl
 		case "dpt":
 			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+			namaTabelLama.String = "tbl_sptbdpt_pl"
+			idSptb = tblSptbPl.IDSptbPl
 		}
 
 		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 4 // Pajak
@@ -374,6 +381,8 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			NamaDokEfaktur: pathDokumen,
 			NomorEfaktur: tblSptbPl.NomorFakturPajak,
 			TanggalEfaktur : tglEfaktur,
+			NamaTabelLama : namaTabelLama,
+			IdSptb : idSptb,
 		}
 		trxpajakmodel.InsertNew(trxPajak)
 		// ------------------------------------------------------------------
