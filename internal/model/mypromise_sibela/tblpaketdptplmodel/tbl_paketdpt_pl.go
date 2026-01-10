@@ -30,7 +30,9 @@ func GetAllDocument() ([]TblPaketPlDocument, error) {
         id_paket_dptpl AS id_paket,
         path_sibela_dptpl AS path_sibela,
         path_sibela_penyedia_dptpl AS path_sibela_penyedia
-    FROM tbl_paketdpt_pl`
+    FROM tbl_paketdpt_pl
+    WHERE id_paket_dptpl >= 2368
+    ORDER BY id_paket_dptpl ASC`
 
   results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {

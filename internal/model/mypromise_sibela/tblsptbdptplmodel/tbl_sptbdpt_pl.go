@@ -32,7 +32,10 @@ func GetAllDocument() ([]TblSptdptPl, error) {
         file_scan_rk,
         faktur_pajak_file,
         ssp_file
-    FROM tbl_sptbdpt_pl`
+    FROM tbl_sptbdpt_pl
+    where id_sptb_dptpl >= 0
+    order by id_sptb_dptpl asc
+    `
 
     results, err := db.MyPromiseSibela.Query(qData)
     if err != nil {

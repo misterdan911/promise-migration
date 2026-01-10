@@ -14,8 +14,15 @@ var ExcludedEmails []string
 var ExcludedVmsUserId []int32
 // var BasePath string
 var UrlBasePathExisting string
+
 var FilePath string
+
+var FileNameEncoded string
+
 var FileExt string
+
+var PathPlusFilename string
+
 var AppName string
 
 type LogDocument struct {

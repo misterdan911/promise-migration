@@ -33,6 +33,7 @@ func GetAllDocument() ([]TblSptbPl, error) {
 			faktur_pajak_file,
 			ssp_file
     FROM tbl_sptb_pl
+    where id_sptb_pl >= 0
     ORDER BY id_sptb_pl ASC
     `
 

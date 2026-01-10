@@ -34,7 +34,9 @@ func GetAllDocument() ([]TblTerminPl, error) {
         file_scan_spp,
         path_kwitansi_ppk,
         path_kwitansi_penyedia
-    FROM tbl_termin_pl`
+    FROM tbl_termin_pl
+    where id_termin_pl > 6799
+    order by id_termin_pl asc`
 
 	results, err := db.MyPromiseSibela.Query(qData)
 	if err != nil {

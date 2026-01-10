@@ -450,7 +450,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// dok_non_pkp
 		if row.DokNonPkp.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_non_pkp"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.dok_non_pkp"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.DokNonPkp.String
@@ -459,7 +459,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// dok_ketentuan_khusus
 		if row.DokKetentuanKhusus.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.dok_ketentuan_khusus"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.DokKetentuanKhusus.String
@@ -468,7 +468,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// dok_ketentuan_khusus_jenis
 		if row.DokKetentuanKhususJenis.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.dok_ketentuan_khusus_jenis"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.dok_ketentuan_khusus_jenis"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.DokKetentuanKhususJenis.String
@@ -477,7 +477,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// sptb_file
 		if row.SptbFile.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.sptb_file"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.sptb_file"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.SptbFile.String
@@ -486,7 +486,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// file_scan_sptb
 		if row.FileScanSptb.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_sptb"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.file_scan_sptb"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.FileScanSptb.String
@@ -495,7 +495,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// ringkasankontrak_file
 		if row.RingkasankontrakFile.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ringkasankontrak_file"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.ringkasankontrak_file"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.RingkasankontrakFile.String
@@ -504,7 +504,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// file_scan_rk
 		if row.FileScanRk.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.file_scan_rk"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.file_scan_rk"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.FileScanRk.String
@@ -513,7 +513,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// faktur_pajak_file
 		if row.FakturPajakFile.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.faktur_pajak_file"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.faktur_pajak_file"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.FakturPajakFile.String
@@ -522,7 +522,7 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 
 		// ssp_file
 		if row.SspFile.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_sptb_pl.ssp_file"
+			g.LogDoc.FieldName = "promise_sibela.tbl_sptbdpt_pl.ssp_file"
 			g.LogDoc.PkId = row.IdSptbDptpl.Int32
 
 			originalPath.String = row.SspFile.String

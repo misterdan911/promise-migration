@@ -38,10 +38,11 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
 		fileName := path.Base(urlPath)
 		g.FileExt = strings.ToLower(filepath.Ext(fileName))
-		fileNameEncoded := url.PathEscape(fileName)
-		urlPath = strings.Replace(urlPath, fileName, fileNameEncoded, 1)
 
-		g.FilePath = g.FilePath + "/" + fileNameEncoded
+		g.FileNameEncoded = url.PathEscape(fileName)
+		urlPath = strings.Replace(urlPath, fileName, g.FileNameEncoded, 1)
+
+		// g.PathPlusFilename = g.PathPlusFilename + "/" + g.FileNameEncoded
 
 		// if g.FileExt == ".rar" || g.FileExt == ".zip" {
 		// 	// skip aja proses downloadnya untuk sementara
@@ -70,6 +71,12 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				return nil
 			}
 
+			if strings.Contains(errDl.Error(), "unexpected EOF") {
+				g.LogDoc.DownStat = "Failed - failed to write file: unexpected EOF"
+				PrintLog()
+				return nil
+			}
+
 			// untuk error2 download yg lain dibuat fatal error aja supaya programnya stop sampai disini
 			g.LogDoc.DownStat = "Failed"
 			PrintLog()
@@ -82,14 +89,14 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 
 		// upload dokumen start
 		// --------------------------------------------------------------------------------------------
-		fmt.Println("Uploading File...: ", g.FileExt)
+		fmt.Println("Uploading File...: ", g.PathPlusFilename)
 		var SuccessResponse ResponseServiceUpload
 		var SuccessResponseMix ResponseServiceUploadMix
 		var errUp error
 
 		switch g.FileExt {
 		case ".pdf":
-			SuccessResponse, errUp = UploadFilePdf(g.AppName, g.FilePath)
+			SuccessResponse, errUp = UploadFilePdf(g.AppName, g.PathPlusFilename)
 			if errUp != nil {
 
 				// kalau gagal upload karena error 'invalid pdf header'
@@ -117,40 +124,40 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-				DeleteFile(g.FilePath)
+				DeleteFile(g.PathPlusFilename)
 			}
 
 		case ".xlsx", ".xls":
-			SuccessResponse, errUp = UploadFileExcel(g.AppName, g.FilePath)
+			SuccessResponse, errUp = UploadFileExcel(g.AppName, g.PathPlusFilename)
 			if errUp != nil {
 				g.LogDoc.UpStat = "Failed"
 				PrintLog()
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-				DeleteFile(g.FilePath)
+				DeleteFile(g.PathPlusFilename)
 			}
 
 		case ".jpeg", ".jpg", ".png":
-			SuccessResponse, errUp = UploadFileImage(g.AppName, g.FilePath)
+			SuccessResponse, errUp = UploadFileImage(g.AppName, g.PathPlusFilename)
 			if errUp != nil {
 				g.LogDoc.UpStat = "Failed"
 				PrintLog()
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success"
-				DeleteFile(g.FilePath)
+				DeleteFile(g.PathPlusFilename)
 			}
 
 		case ".docx", ".doc", ".pptx", ".ppt", ".rtf", ".rar", ".zip":
-			SuccessResponseMix, errUp = UploadFileMix(g.AppName, g.FilePath) // nanti masuknya ke folder upload-pdf
+			SuccessResponseMix, errUp = UploadFileMix(g.AppName, g.PathPlusFilename) // nanti masuknya ke folder upload-pdf
 			if errUp != nil {
 				g.LogDoc.UpStat = "Failed"
 				PrintLog()
 				log.Fatal(errUp.Error())
 			} else {
 				g.LogDoc.UpStat = "Success Mix"
-				DeleteFile(g.FilePath)
+				DeleteFile(g.PathPlusFilename)
 			}
 
 		default:
@@ -162,7 +169,7 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 		// upload dokumen end
 		// --------------------------------------------------------------------------------------------
 
-		// defer DeleteFile(g.FilePath)
+		// defer DeleteFile(g.PathPlusFilename)
 
 		// Insert ke table db_sidapet.helper_dokumen
 		if g.LogDoc.UpStat == "Success" {

@@ -26,7 +26,9 @@ func GetAllDocument() ([]TblSptjm, error) {
         sperpem_file,
         sperpem_file_penyedia,
         sptjm_file
-    FROM tbl_sptjm`
+    FROM tbl_sptjm
+    where id_sptjm >= 0
+    order by id_sptjm ASC`
 
     results, err := db.MyPromiseSibela.Query(qData)
     if err != nil {

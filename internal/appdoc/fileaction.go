@@ -11,6 +11,8 @@ import (
 	"net/textproto" // This is the missing import
 	"os"
 	"path/filepath"
+	"strings"
+	// "log"
 
 	"promise-migration/internal/g"
 )
@@ -51,15 +53,35 @@ func DownloadFile(url string) error {
 	}
 
 	// Create the file
-	out, err := os.Create(g.FilePath)
+	g.PathPlusFilename = g.FilePath + g.FileNameEncoded
+	out, err := os.Create(g.PathPlusFilename)
 	if err != nil {
-		return fmt.Errorf("failed to create file: %v", err)
+		// kalau nama filenya kepanjangan
+		if strings.Contains(err.Error(), "The filename, directory name, or volume label syntax is incorrect") {
+
+			fmt.Println("Masuk siniiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+
+			// coba lagi dengan nama file yg lebih pendek
+			g.PathPlusFilename = g.FilePath + "/" + "tmp" + g.FileExt
+			fmt.Println("g.PathPlusFilename: ", g.PathPlusFilename)
+
+			// log.Fatal("Stoppppppppppppp")
+
+			out, err = os.Create(g.PathPlusFilename)
+			if err != nil {
+				return fmt.Errorf("failed to create file: %v", err)			
+			}
+		}
 	}
 	defer out.Close()
 
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
+
+		if strings.Contains(err.Error(), "invalid pdf header") {
+		}
+
 		return fmt.Errorf("failed to download file: %v", err)
 	}
 	defer resp.Body.Close()
