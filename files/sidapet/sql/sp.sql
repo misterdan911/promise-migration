@@ -1,9 +1,5 @@
-CREATE OR REPLACE PROCEDURE copy_ref_to_custom(
-    p_kode_vendor INTEGER,
-    p_kode_penjaringan INTEGER
-)
-LANGUAGE plpgsql
-AS $$
+CREATE OR REPLACE PROCEDURE "public"."copy_ref_to_custom"("p_kode_vendor" int4, "p_kode_penjaringan" int4)
+ AS $BODY$
 DECLARE
     v_kode_tenaga_ahli INTEGER;
     v_kode_tenaga_ahli_custom INTEGER;
@@ -233,6 +229,74 @@ BEGIN
         END LOOP;
         
     END LOOP;
+    
+    
+    
+FOR v_record IN 
+    SELECT * 
+    FROM ref_pengalaman_pero 
+    WHERE kode_vendor = p_kode_vendor
+LOOP
+    -- Insert into ref_pengalaman_pero_custom
+    INSERT INTO ref_pengalaman_pero_custom (
+        kode_vendor,
+        nama_pekerjaan,
+        posisi,
+        tgl_awal_pekerjaan,
+        tgl_akhir_pekerjaan,
+        nilai_pekerjaan,
+        file_bukti,
+        encrypt_key,
+        revisi_ke,
+        kode_penjaringan
+    )
+    VALUES (
+        v_record.kode_vendor,
+        v_record.nama_pekerjaan,
+        v_record.posisi,
+        v_record.tgl_awal_pekerjaan,
+        v_record.tgl_akhir_pekerjaan,
+        v_record.nilai_pekerjaan,
+        v_record.file_bukti,
+        v_record.encrypt_key,
+        v_record.revisi_ke,
+        p_kode_penjaringan  -- Assuming you need to pass this as a parameter
+    );
+END LOOP;
+
+
+-- Loop through all ref_sertif_pero for the given vendor
+FOR v_record IN 
+    SELECT * 
+    FROM ref_sertif_pero 
+    WHERE kode_vendor = p_kode_vendor
+LOOP
+    -- Insert into ref_sertif_pero_custom
+    INSERT INTO ref_sertif_pero_custom (
+        kode_vendor,
+        nm_sertifikat,
+        file_bukti,
+        is_bukti_selamanya,
+        bukti_berlaku_awal,
+        bukti_berlaku_akhir,
+        encrypt_key,
+        revisi_ke,
+        kode_penjaringan
+    )
+    VALUES (
+        v_record.kode_vendor,
+        v_record.nm_sertifikat,
+        v_record.file_bukti,
+        v_record.is_bukti_selamanya,
+        v_record.bukti_berlaku_awal,
+        v_record.bukti_berlaku_akhir,
+        v_record.encrypt_key,
+        v_record.revisi_ke,
+        p_kode_penjaringan  -- Assuming you need to pass this as a parameter
+    );
+END LOOP;
+
+
 
 
 
@@ -240,4 +304,5 @@ BEGIN
     RAISE NOTICE 'Data copied successfully for vendor % and penjaringan %', p_kode_vendor, p_kode_penjaringan;
     
 END;
-$$;
+$BODY$
+  LANGUAGE plpgsql

@@ -31,7 +31,7 @@ type TblUndanganPl struct {
 }
 
 type TblSuratpesananPl struct {
-	IDSuratpesananPl    pgtype.Int8
+	IDSuratpesananPl    pgtype.Int4
 	IDPaketPl           pgtype.Int8
 	NomorpesananSp      pgtype.Text
 	TanggalSp           pgtype.Timestamptz
@@ -142,7 +142,7 @@ type TblSptjm struct {
 }
 
 type TblSptbPl struct {
-	IDSptbPl                 pgtype.Int8
+	IDSptbPl                 pgtype.Int4
 	IDTerminPl               pgtype.Int8
 	NomorSptb                pgtype.Text
 	JenisObjekPajak          pgtype.Text

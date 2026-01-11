@@ -1,6 +1,7 @@
 package sibela
 
 import (
+	"fmt"
 	// "promise-migration/internal/model/dbesign/refpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
@@ -42,6 +43,8 @@ func InsertRefPermintaan() {
 	for _, tblPaketPl := range allTblPaketPl {
 
 		// quick testing for debug
+		// 1041 -> dholy
+		// 2320 -> danu
 		// if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
 		// 	continue
 		// }
@@ -157,6 +160,9 @@ func InsertRefPermintaan() {
 		} else {
 			ucr.String = "-"
 		}
+		
+		fmt.Printf("Id Paket: %d -------------------- \n", tblPaketPl.IdPaket.Int32)
+		// fmt.Println("Nama Paket: ", tblPaketPl.NamaPesanan.String)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeRup:             kodeRup,
@@ -174,10 +180,18 @@ func InsertRefPermintaan() {
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
+		// fmt.Println("InsertTrxDetailPermintaan")
 		InsertTrxDetailPermintaan(refPermintaan.KodePermintaan, tblPaketPl)
+		
+		// fmt.Println("InsertTrxNegosiasiTeknis")
 		InsertTrxNegosiasiTeknis(refPermintaan.KodePermintaan, tblPaketPl)
+		
+		// fmt.Println("InsertBeritaAcaraNego")
 		InsertBeritaAcaraNego(refPermintaan.KodePermintaan, tblPaketPl)
+		
 		// // Berita Acara Hasil Pemilihan belum ada
+		
+		// fmt.Println("InsertRefProsesKontrak")
 		InsertRefProsesKontrak(refPermintaan, tblPaketPl)
 
 		refpermintaanmodel.UpdateKodeStatusPermintaan(refPermintaan.KodePermintaan, gKodeStatusPermintaan)

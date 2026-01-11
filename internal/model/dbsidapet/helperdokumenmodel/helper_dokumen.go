@@ -10,6 +10,7 @@ import (
 )
 
 type HelperDokumen struct {
+  KodeHelper pgtype.Int4
 	AppName pgtype.Text
   OriginalPath pgtype.Text
   Newfilename pgtype.Text
@@ -51,6 +52,7 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
 
   qDokumen := `
   SELECT
+    kode_helper,
     app_name,
     original_path,
     newfilename,

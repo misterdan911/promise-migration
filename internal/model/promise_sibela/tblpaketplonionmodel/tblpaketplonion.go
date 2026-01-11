@@ -100,7 +100,8 @@ func GetAllData() []TblPaketPlOnion {
 		updated_at,
 		deleted_at
 	FROM tbl_paketdpt_pl
-	WHERE deleted_at IS NULL and id_ppk is not null`
+	WHERE deleted_at IS NULL and id_ppk is not null
+	ORDER BY id_paket ASC`
 
 	rwData, err := db.PromiseSibela.Query(ctx, qAllData)
 	if err != nil {

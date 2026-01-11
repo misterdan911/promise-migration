@@ -1,7 +1,7 @@
 package sibela
 
 import (
-	"fmt"
+	// "fmt"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
@@ -32,16 +32,47 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 		return nil
 	}
 
+	var strFileNameAja string
+	var strEncryptAja string
+
 	helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSuratPesanan.SuratpesananFile)
 
-	var pathDokumen pgtype.Text
-	pathDokumen.Valid = true
-
 	if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
-		pathDokumen.String = tblSuratPesanan.SuratpesananFile.String
-		helperDokumen.EncryptKey.Valid = true
-		helperDokumen.EncryptKey.String = "NO ENCRYPT"
+		strFileNameAja = tblSuratPesanan.SuratpesananFile.String
+		strEncryptAja = "NO ENCRYPT"
+	} else {
+		strFileNameAja = helperDokumen.Newfilename.String
+		strEncryptAja = helperDokumen.EncryptKey.String
 	}
+
+	strFileNameGabungEncrypt := strFileNameAja + "|" + strEncryptAja
+
+	// if tblSuratPesanan.SuratpesananFile.String == "" {
+	// 	// helperDokumen.Newfilename.Valid = true
+	// 	// helperDokumen.Newfilename.String = "KOSONG DARI AWAL"
+	// 	// helperDokumen.EncryptKey.Valid = true
+	// 	// helperDokumen.EncryptKey.String = "NO ENCRYPT"
+
+	// 	strFileNameAja = "KOSONG DARI AWAL"
+	// 	strEncryptAja = "NO ENCRYPT"
+	// }
+
+
+	// var strFileNameGabungEncrypt string 
+
+	// if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+	// 	strFileNameAja = "" 
+	// 	strFileNameGabungEncrypt = ""
+	// } else {
+	// 	strFileNameGabungEncrypt = strFileNameAja + "|" + strEncryptAja
+	// }
+
+	fileNameAja := pgtype.Text{Valid: true, String: strFileNameAja}
+	encryptAja := pgtype.Text{Valid: true, String: strEncryptAja}
+	fileNameGabungEncrypt := pgtype.Text{Valid: true, String: strFileNameGabungEncrypt}
+
+
+	
 
 	// Bikin transaksi si Esign
 	// -------------------------------------------------------------
@@ -50,8 +81,8 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 		NomorSurat: tblSuratPesanan.NomorpesananSp,
 		JenisSurat: pgtype.Text{Valid: true, String: "Surat Pesanan"},
 		KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
-		PathDokumen: pathDokumen,
-		PathDokumenSelesai: pathDokumen,
+		PathDokumen: fileNameAja,
+		PathDokumenSelesai: fileNameAja,
 		TglSelesai: pgtype.Timestamp(tblSuratPesanan.TanggalSp),
 	}
 	trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
@@ -60,7 +91,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	for _, signatureSP := range allSignatureSP {
 
-		fmt.Printf("signatureSP.IdUser: %d\n", signatureSP.IdUser.Int32)
+		// fmt.Printf("signatureSP.IdUser: %d\n", signatureSP.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signatureSP.IdUser)
 
@@ -82,7 +113,8 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 		KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
 		KodePermintaan: refPermintaan.KodePermintaan,
 		KategoriTte:    pgtype.Text{Valid: true, String: "surat_pesanan"},
-		PathDokumen:    pathDokumen,
+		PathDokumen:    fileNameGabungEncrypt,
+		PathDokumenSelesai:    fileNameAja,
 	}
 	trxttemodel.InsertNew(trxTte)
 
@@ -95,10 +127,15 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	}
 	trxDokumenKontrak = trxdokumenkontrakmodel.InsertNew(trxDokumenKontrak)
 
+	// fmt.Printf("tblPaket.JenisPenyedia.String: %v\n" , tblPaket.JenisPenyedia.String)
+	// fmt.Printf("tblSuratPesanan.IDSuratpesananPl: %d\n" , tblSuratPesanan.IDSuratpesananPl.Int32)
+	// fmt.Println("tblSuratPesanan.SuratpesananFile: " , tblSuratPesanan.SuratpesananFile.String)
+	// fmt.Printf("helperDokumen.KodeHelper: %d\n", helperDokumen.KodeHelper.Int32)
+
 	refDokDetailTransaksi := refdokdetailtransaksimodel.RefDokDetailTransaksi{
 		KodeTransaksi: trxDokumenKontrak.KodeDokumenKontrak, 
-		NamaDokumen: pathDokumen,
-		KeyyDok: helperDokumen.EncryptKey,
+		NamaDokumen: fileNameAja,
+		KeyyDok: encryptAja,
 		KeteranganDok: pgtype.Text{Valid: true, String: "Dokumen Kontrak"},
 		KategoriTransaksi: pgtype.Text{Valid: true, String: "dokumen_kontrak"},
 	}

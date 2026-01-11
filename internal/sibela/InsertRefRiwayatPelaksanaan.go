@@ -115,7 +115,48 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
+		// Bikin transaksi Esign
+		// -------------------------------------------------------------
+		trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
+			NamaAplikasi: gAppName,
+			NomorSurat: tblSuratBap.NomorBap,
+			JenisSurat: pgtype.Text{Valid: true, String: "Berita Acara Pemeriksaan"},
+			KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
+			PathDokumen: pathDokumen,
+			PathDokumenSelesai: pathDokumen,
+			TglSelesai: pgtype.Timestamp(tblSuratBap.TanggalBap),
+		}
+		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
+
+		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
+
+		for _, signature := range allSignature {
+
+			// fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
+
+			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+			if (userPenandatangan == helperusermodel.HelperUser{}) {
+				// ada id user yg tandatangan, tapi data usernya sudah tidak ada (id_user: 12134, id_profile_penyedia: 981)
+				continue
+			}
+
+			trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
+				KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+				StatusJabatanPenandatangan: userPenandatangan.StatusUser,
+				Jabatan: userPenandatangan.Jabatan,
+				StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
+				TglTte: signature.CreatedAt,
+				KodePenandatangan: userPenandatangan.KodePenandatangan,
+			}
+			trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
+
+		}
+		// -------------------------------------------------------------
+
+
 		trxTte := trxttemodel.TrxTte{
+			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
 			KodePermintaan: refPermintaan.KodePermintaan,
 			KategoriTte:pgtype.Text{Valid: true, String: "ba_pemeriksaan"},
 			PathDokumen: pathDokumen,
@@ -169,7 +210,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		// Bikin transaksi Esign
 		// -------------------------------------------------------------
-		trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
+		trxPenandatangan = trxpenandatanganmodel.TrxPenandatangan{
 			NamaAplikasi: gAppName,
 			NomorSurat: tblBaserahterimaPl.NomorSt,
 			JenisSurat: pgtype.Text{Valid: true, String: "Surat Berita Serah Terima (BAST)"},
@@ -180,12 +221,12 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
-		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
-		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
+		jenisSignature = pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		allSignature = tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
 
 		for _, signature := range allSignature {
 
-			fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
+			// fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
 
 			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 			if (userPenandatangan == helperusermodel.HelperUser{}) {
@@ -287,11 +328,18 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		// trx_pajak
 		// ------------------------------------------------------------------
 		var tblSptbPl structs.TblSptbPl
+		namaTabelLama := pgtype.Text{Valid:true, String: ""}
+		idSptb := pgtype.Int4{Valid: true, Int32: 0}
+
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luardpt":
 			tblSptbPl = tblsptbplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+			namaTabelLama.String = "tbl_sptb_p"
+			idSptb = tblSptbPl.IDSptbPl
 		case "dpt":
 			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
+			namaTabelLama.String = "tbl_sptbdpt_pl"
+			idSptb = tblSptbPl.IDSptbPl
 		}
 
 		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 4 // Pajak
@@ -333,6 +381,8 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			NamaDokEfaktur: pathDokumen,
 			NomorEfaktur: tblSptbPl.NomorFakturPajak,
 			TanggalEfaktur : tglEfaktur,
+			NamaTabelLama : namaTabelLama,
+			IdSptb : idSptb,
 		}
 		trxpajakmodel.InsertNew(trxPajak)
 		// ------------------------------------------------------------------
@@ -600,7 +650,7 @@ func BikinTransaksiEsign(dataTrx DataTrxEsign) pgtype.Int4{
 
 	for _, signature := range allSignature {
 
-		fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
+		// fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 

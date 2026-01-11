@@ -34,6 +34,8 @@ type TrxPajak struct {
 	NamaDokEfaktur               pgtype.Text
 	NomorEfaktur                 pgtype.Text
 	TanggalEfaktur               pgtype.Timestamp
+	NamaTabelLama               pgtype.Text
+	IdSptb               pgtype.Int4
 }
 
 func InsertNew(trxPajak TrxPajak) TrxPajak {
@@ -62,7 +64,9 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		udch,
 		nama_dok_efaktur,
 		nomor_efaktur,
-		tanggal_efaktur
+		tanggal_efaktur,
+		nama_tabel_lama,
+		id_sptb
 	) VALUES (
 		@kode_trx_riwayat_pelaksanaan,
 		@kategori_nilai_transaksi,
@@ -85,7 +89,9 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		@udch,
 		@nama_dok_efaktur,
 		@nomor_efaktur,
-		@tanggal_efaktur
+		@tanggal_efaktur,
+		@nama_tabel_lama,
+		@id_sptb
 	) RETURNING *`
 
 	args := pgx.NamedArgs{
@@ -111,6 +117,8 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		"nama_dok_efaktur":             trxPajak.NamaDokEfaktur,
 		"nomor_efaktur":                trxPajak.NomorEfaktur,
 		"tanggal_efaktur":              trxPajak.TanggalEfaktur,
+		"nama_tabel_lama":              trxPajak.NamaTabelLama,
+		"id_sptb":              trxPajak.IdSptb,
 	}
 
 	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
