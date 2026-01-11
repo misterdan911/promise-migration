@@ -65,7 +65,7 @@ func InsertTrxNilaiakhir(kodeJenisVendor pgtype.Int4, kodeVendorPenjr pgtype.Int
 			nilaiSertifikat.Float64 = vTV.OrgSertifikat.Float64
 		}
 	} else {
-		log.Fatal("Invalid Kode Jenis Vendor: " + strconv.Itoa(int(kodeJenisVendor.Int32)))
+		log.Fatal("Invalid Kode Jenis Vendorrrrrrrr: " + strconv.Itoa(int(kodeJenisVendor.Int32)))
 	}
 
 	qIns := `

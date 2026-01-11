@@ -64,9 +64,9 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		udch,
 		nama_dok_efaktur,
 		nomor_efaktur,
-		nama_tabel_lama,
-		id_sptb,
 		tanggal_efaktur,
+		nama_tabel_lama,
+		id_sptb
 	) VALUES (
 		@kode_trx_riwayat_pelaksanaan,
 		@kategori_nilai_transaksi,

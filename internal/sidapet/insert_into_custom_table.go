@@ -317,4 +317,10 @@ func InsertIntoCustomTable(kodePenjaringan pgtype.Int4, kodeVendor pgtype.Int4) 
 		log.Fatal("unable to call copy_ref_to_custom, " + errIns.Error())
 	}
 
+// ref_kantor_bu_custom 	// skip, kantor tidak ada di DB lama
+// ref_pengalaman_pero_custom
+// ref_sertif_pero_custom
+
+
+
 }

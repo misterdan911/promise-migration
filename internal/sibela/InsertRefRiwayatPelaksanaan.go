@@ -133,7 +133,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		for _, signature := range allSignature {
 
-			fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
+			// fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
 
 			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 			if (userPenandatangan == helperusermodel.HelperUser{}) {
@@ -226,7 +226,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		for _, signature := range allSignature {
 
-			fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
+			// fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
 
 			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 			if (userPenandatangan == helperusermodel.HelperUser{}) {
@@ -650,7 +650,7 @@ func BikinTransaksiEsign(dataTrx DataTrxEsign) pgtype.Int4{
 
 	for _, signature := range allSignature {
 
-		fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
+		// fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
 

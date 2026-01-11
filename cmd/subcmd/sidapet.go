@@ -53,7 +53,7 @@ var SidapetCmd = &cobra.Command{
 			}
 
 			// dipake buat testing InsertIntoCustomTable
-			// if helperUser.KodeVendor.Int32 != 151 {
+			// if helperUser.KodeVendor.Int32 != 31932 {
 			// 	continue
 			// }
 

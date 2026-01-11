@@ -1,7 +1,7 @@
 package sibela
 
 import (
-	"fmt"
+	// "fmt"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refdokdetailtransaksimodel"
@@ -91,7 +91,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	for _, signatureSP := range allSignatureSP {
 
-		fmt.Printf("signatureSP.IdUser: %d\n", signatureSP.IdUser.Int32)
+		// fmt.Printf("signatureSP.IdUser: %d\n", signatureSP.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signatureSP.IdUser)
 
@@ -127,10 +127,10 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 	}
 	trxDokumenKontrak = trxdokumenkontrakmodel.InsertNew(trxDokumenKontrak)
 
-	fmt.Printf("tblPaket.JenisPenyedia.String: %v\n" , tblPaket.JenisPenyedia.String)
-	fmt.Printf("tblSuratPesanan.IDSuratpesananPl: %d\n" , tblSuratPesanan.IDSuratpesananPl.Int32)
-	fmt.Println("tblSuratPesanan.SuratpesananFile: " , tblSuratPesanan.SuratpesananFile.String)
-	fmt.Printf("helperDokumen.KodeHelper: %d\n", helperDokumen.KodeHelper.Int32)
+	// fmt.Printf("tblPaket.JenisPenyedia.String: %v\n" , tblPaket.JenisPenyedia.String)
+	// fmt.Printf("tblSuratPesanan.IDSuratpesananPl: %d\n" , tblSuratPesanan.IDSuratpesananPl.Int32)
+	// fmt.Println("tblSuratPesanan.SuratpesananFile: " , tblSuratPesanan.SuratpesananFile.String)
+	// fmt.Printf("helperDokumen.KodeHelper: %d\n", helperDokumen.KodeHelper.Int32)
 
 	refDokDetailTransaksi := refdokdetailtransaksimodel.RefDokDetailTransaksi{
 		KodeTransaksi: trxDokumenKontrak.KodeDokumenKontrak, 

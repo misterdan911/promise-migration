@@ -1,6 +1,7 @@
 package subcmd
 
 import (
+	"fmt"
 	"promise-migration/db"
 	// "promise-migration/internal/g"
 	// "promise-migration/internal/ghelper"
@@ -45,8 +46,13 @@ var SibelaCmd = &cobra.Command{
 
 		// g.ExcludedEmails = ghelper.GetExcludedEmail2("email.txt")
 
+		fmt.Println("TruncateTableAndLog2")
 		sibelahelper.TruncateTableAndLog2()
+		
+		fmt.Println("SetupVendorAccessForSibela")
 		sibela.SetupVendorAccessForSibela()
+
+		fmt.Println("InsertRefPermintaan")
 		sibela.InsertRefPermintaan()
 
 		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
