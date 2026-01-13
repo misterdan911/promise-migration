@@ -3,11 +3,11 @@ package siplang
 import (
 	"fmt"
 	// "promise-migration/internal/model/dbesign/refpenandatanganmodel"
-	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
+	"promise-migration/internal/model/dbsiplang/refpermintaanmodel"
 	"promise-migration/internal/model/dbsippan/refrupmodel"
-	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_siplang/logpaketmodel"
+	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
@@ -18,7 +18,7 @@ import (
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
-	"promise-migration/internal/sibela/siplanghelper"
+	"promise-migration/internal/siplang/siplanghelper"
 	"promise-migration/internal/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"

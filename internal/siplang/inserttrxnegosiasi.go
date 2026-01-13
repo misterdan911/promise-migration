@@ -2,9 +2,9 @@ package siplang
 
 import (
 	"promise-migration/internal/ghelper"
-	"promise-migration/internal/model/dbsibela/trxnegohargamodel"
-	"promise-migration/internal/model/promise_sibela/logsibelamodel"
-	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
+	"promise-migration/internal/model/dbsiplang/trxnegohargamodel"
+	"promise-migration/internal/model/promise_siplang/logsibelamodel"
+	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
 	"promise-migration/internal/sibela/structs"
 	"strings"
 

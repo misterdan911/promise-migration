@@ -3,13 +3,13 @@ package siplang
 import (
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
-	"promise-migration/internal/model/dbsibela/trxttemodel"
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
-	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
-	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
-	"promise-migration/internal/model/promise_sibela/tblundangandptplmodel"
-	"promise-migration/internal/model/promise_sibela/tblundanganplmodel"
+	"promise-migration/internal/model/dbsiplang/trxttemodel"
+	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
+	"promise-migration/internal/model/promise_siplang/tblsignaturemodel"
+	"promise-migration/internal/model/promise_siplang/tblundangandptplmodel"
+	"promise-migration/internal/model/promise_siplang/tblundanganplmodel"
 	"promise-migration/internal/sibela/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"

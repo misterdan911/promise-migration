@@ -1,9 +1,9 @@
 package siplang
 
 import (
-	"promise-migration/internal/model/dbsibela/trxnegoteknismodel"
-	"promise-migration/internal/model/promise_sibela/logsibelamodel"
-	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
+	"promise-migration/internal/model/dbsiplang/trxnegoteknismodel"
+	"promise-migration/internal/model/promise_siplang/logsibelamodel"
+	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
