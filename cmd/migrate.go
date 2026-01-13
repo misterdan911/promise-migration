@@ -35,5 +35,6 @@ func init() {
 	MigrateCmd.AddCommand(subcmd.SippanCmd)
 	MigrateCmd.AddCommand(subcmd.SidapetCmd)
 	MigrateCmd.AddCommand(subcmd.SibelaCmd)
+	MigrateCmd.AddCommand(subcmd.SiplangCmd)
 
 }

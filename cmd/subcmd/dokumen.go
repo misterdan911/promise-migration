@@ -21,6 +21,9 @@ var DokumenCmd = &cobra.Command{
 		db.ConnectMyPromiseSibela()
 		defer db.MyPromiseSibela.Close()
 
+		db.ConnectMyPromiseSiplang()
+		defer db.MyPromiseSiplang.Close()
+
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
@@ -31,7 +34,7 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblAktaPercusahaan()
 
 		// tbl_direksi_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()
@@ -128,7 +131,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPaketPl()
 
 		// tbl_paketdpt_pl
-		appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()	// skip dulu nama filenya panjang2
+		// appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()	// skip dulu nama filenya panjang2
 
 		// tbl_signature
 		// appdoc.MigrateFileFromPromiseSibelaTblSignature()
@@ -153,6 +156,13 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblTerminDptPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
+
+
+		g.AppName = "Si-PLang"
+		g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
+
+		// tbl_paket_pl
+		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
 
 	},

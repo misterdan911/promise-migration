@@ -10,7 +10,10 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/vmsdb/tblppksubmodel"
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
+
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	vmsdbprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
+	
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
@@ -43,11 +46,21 @@ func InsertRefPermintaan() {
 	for _, tblPaketPl := range allTblPaketPl {
 
 		// quick testing for debug
+		// -----------------------------------------------------------------
 		// 1041 -> dholy
 		// 2320 -> danu
+
 		// if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
 		// 	continue
 		// }
+
+		// if tblPaketPl.IdPaket.Int32 == 390 && tblPaketPl.JenisPenyedia.String == "dpt" {
+			
+		// } else {
+		// 	continue
+		// }
+		// -----------------------------------------------------------------
+
 
 		gTblPaketPl = tblPaketPl
 
@@ -83,13 +96,23 @@ func InsertRefPermintaan() {
 		var helperUser helperusermodel.HelperUser
 		var kodeVendor pgtype.Int4
 
-		if (tblPaketPl.IdProfilPenyedia != pgtype.Int4{}) {
-			profilePenyedia = sibelaprofile.GetPenyediaById(tblPaketPl.IdProfilPenyedia)
+		if tblPaketPl.IdProfilPenyedia.Valid {
+
+			switch tblPaketPl.JenisPenyedia.String {
+			case "luardpt":
+				profilePenyedia = sibelaprofile.GetPenyediaById(tblPaketPl.IdProfilPenyedia)
+			case "dpt":
+				profilePenyedia = vmsdbprofile.GetDataByIdProfile(tblPaketPl.IdProfilPenyedia)
+			}
+
 			vmsUserId := profilePenyedia.IdUser
 			helperUser = helperusermodel.GetByVmsUserId(vmsUserId)
 			gUserVendor = helperUser
 			kodeVendor = helperUser.KodeVendor
 		}
+
+		// fmt.Printf("tblPaketPl.IdProfilPenyedia: %d\n",  tblPaketPl.IdProfilPenyedia.Int32)
+		// fmt.Printf("helperUser.KodeVendor: %d\n",  helperUser.KodeVendor.Int32)
 
 		// dapatkan KodeSkemaPembayaran
 		var kodeSkemaPembayaran pgtype.Int4

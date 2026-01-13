@@ -427,7 +427,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 	if lastIndex < 0 {
 		fmt.Printf("last Index %d\n", lastIndex)
 		return nil
-	}
+	}	
 
 	lastTblTerminPl := allHelperRiwayatPelaksanaan[lastIndex].TblTerminPl
 
