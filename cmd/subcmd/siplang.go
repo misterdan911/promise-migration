@@ -3,17 +3,19 @@ package subcmd
 import (
 	"fmt"
 	"promise-migration/db"
+
 	// "promise-migration/internal/g"
 	// "promise-migration/internal/ghelper"
-	"promise-migration/internal/sibela"
-	"promise-migration/internal/sibela/sibelahelper"
+	"promise-migration/internal/siplang"
+
+	"promise-migration/internal/siplang/siplanghelper"
 
 	"github.com/spf13/cobra"
 )
 
 var SiplangCmd = &cobra.Command{
-	Use:   "sibela",
-	Short: "Migrasi database Si-Plang",
+	Use:   "siplang",
+	Short: "Migrasi database Si-PLang",
 	Long:  `Perintah ini untuk melakukan migrasi database dari promise_siplang ke db_siplang`,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -29,6 +31,9 @@ var SiplangCmd = &cobra.Command{
 		db.ConnectDbSibela()
 		defer db.DbSibela.Close()
 
+		db.ConnectDbSiplang()
+		defer db.DbSiplang.Close()
+
 		db.ConnectDbSippan()
 		defer db.DbSippan.Close()
 
@@ -41,23 +46,17 @@ var SiplangCmd = &cobra.Command{
 		db.ConnectProSippan()
 		defer db.ProSippan.Close()
 
-
-		// sibelahelper.DropAllForeignKey()
-
-		// g.ExcludedEmails = ghelper.GetExcludedEmail2("email.txt")
-
 		fmt.Println("TruncateTableAndLog2")
-		sibelahelper.TruncateTableAndLog2()
-		
-		fmt.Println("SetupVendorAccessForSibela")
-		sibela.SetupVendorAccessForSibela()
+		siplanghelper.TruncateTableAndLog2()
 
-		fmt.Println("InsertRefPermintaan")
-		sibela.InsertRefPermintaan()
+		fmt.Println("SetupVendorAccessForSiplang")
+		siplang.SetupVendorAccessForSiplang()
+
+		// fmt.Println("InsertRefPermintaan")
+		// sibela.InsertRefPermintaan()
 
 		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
 
-		// sibelahelper.CreateAllForeignKey()
 	},
 }
 

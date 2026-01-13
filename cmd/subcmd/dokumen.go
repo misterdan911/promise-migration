@@ -112,13 +112,13 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan() // untested
+		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()
 
 		// tbl_profile_penyedia
-		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia() //untested
+		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan() // untested
+		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()
 
 		// tbl_sertif_perorangan
 		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
@@ -131,7 +131,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPaketPl()
 
 		// tbl_paketdpt_pl
-		// appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()	// skip dulu nama filenya panjang2
+		// appdoc.MigrateFileFromPromiseSibelaTblPaketDptPl()
 
 		// tbl_signature
 		// appdoc.MigrateFileFromPromiseSibelaTblSignature()
@@ -143,27 +143,38 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblSptbDptPl()
 
 		// appdoc.MigrateFileFromPromiseSibelaTblSptjm()
-		// appdoc.MigrateFileFromPromiseSibelaTblSptjmDpt()		//untested
-		// appdoc.MigrateFileFromPromiseSibelaTblSuratBap()		//untested
-		// appdoc.MigrateFileFromPromiseSibelaTblSuratBapDpt()		//untested
-
+		// appdoc.MigrateFileFromPromiseSibelaTblSptjmDpt()
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratBap()
+		// appdoc.MigrateFileFromPromiseSibelaTblSuratBapDpt()
 
 		// tbl_surat_pesanan_pl
 		// appdoc.MigrateFileFromPromiseSibelaTblSuratPesananPl()
-
 
 		// appdoc.MigrateFileFromPromiseSibelaTblTerminPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblTerminDptPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
 
-
 		g.AppName = "Si-PLang"
 		g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
 
 		// tbl_paket_pl
-		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
+		// tbl_signature
+		// appdoc.MigrateFileFromPromiseSiplangTblSignature()
+
+		// tbl_sptb_pl
+		// appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
+
+		appdoc.MigrateFileFromPromiseSiplangTblSptjm()
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
+
+		// tbl_surat_pesanan_pl
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
+
+		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

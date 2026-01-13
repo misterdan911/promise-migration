@@ -12,21 +12,24 @@ import (
 	// "promise-migration/internal/model/mypromise_siplang/tblkomisarisperusahaanmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblpaketdptplmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblpaketmodel"
+	"promise-migration/internal/model/mypromise_sibela/tblundanganplmodel"
 	"promise-migration/internal/model/mypromise_siplang/tblpaketplmodel"
+	"promise-migration/internal/model/mypromise_siplang/tblsptjmmodel"
+	"promise-migration/internal/model/mypromise_siplang/tblsuratbapmodel"
+	"promise-migration/internal/model/mypromise_siplang/tblsuratpesananplmodel"
+	"promise-migration/internal/model/mypromise_siplang/tblterminplmodel"
+
 	// "promise-migration/internal/model/mypromise_siplang/tblpengalaman10model"
 	// "promise-migration/internal/model/mypromise_siplang/tblpengalaman3model"
 	// "promise-migration/internal/model/mypromise_siplang/tblpengalamansekarangmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblpersonaliaperusahaanmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblsahamperusahaanmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblsignaturemodel"
+	"promise-migration/internal/model/mypromise_siplang/tblsignaturemodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblsptbdptplmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblsptbplmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblsptjmmodel"
+	"promise-migration/internal/model/mypromise_siplang/tblsptbplmodel"
+
 	// "promise-migration/internal/model/mypromise_siplang/tblsptjmdptmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblsuratbapmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblsuratbapdptmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblsuratpesananplmodel"
-	// "promise-migration/internal/model/mypromise_siplang/tblterminplmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tbltermindptplmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblundanganplmodel"
 	// "promise-migration/internal/model/mypromise_siplang/tblundangandptplmodel"
@@ -336,8 +339,9 @@ func MigrateFileFromPromiseSibelaTblPaketDptPl() {
 	}
 
 }
+*/
 
-func MigrateFileFromPromiseSibelaTblSignature() {
+func MigrateFileFromPromiseSiplangTblSignature() {
 	allRows, _ := tblsignaturemodel.GetAllDocument()
 	originalPath := pgtype.Text{Valid: true, String: ""}
 
@@ -355,7 +359,7 @@ func MigrateFileFromPromiseSibelaTblSignature() {
 
 }
 
-func MigrateFileFromPromiseSibelaTblSptbPl() {
+func MigrateFileFromPromiseSiplangTblSptbPl() {
 	allRows, _ := tblsptbplmodel.GetAllDocument()
 	originalPath := pgtype.Text{Valid: true, String: ""}
 
@@ -445,6 +449,7 @@ func MigrateFileFromPromiseSibelaTblSptbPl() {
 
 }
 
+/*
 func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 	allRows, _ := tblsptbdptplmodel.GetAllDocument()
 	originalPath := pgtype.Text{Valid: true, String: ""}
@@ -534,8 +539,9 @@ func MigrateFileFromPromiseSibelaTblSptbDptPl() {
 	}
 
 }
+*/
 
-func MigrateFileFromPromiseSibelaTblSptjm() {
+func MigrateFileFromPromiseSiplangTblSptjm() {
 	allRows, _ := tblsptjmmodel.GetAllDocument()
 	originalPath := pgtype.Text{Valid: true, String: ""}
 
@@ -598,6 +604,7 @@ func MigrateFileFromPromiseSibelaTblSptjm() {
 
 }
 
+/*
 func MigrateFileFromPromiseSibelaTblSptjmDpt() {
     allRows, _ := tblsptjmdptmodel.GetAllDocument()
     originalPath := pgtype.Text{Valid: true, String: ""}
@@ -659,24 +666,26 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
         }
     }
 }
+*/
 
-func MigrateFileFromPromiseSibelaTblSuratBap(){
-    allRows, _ := tblsuratbapmodel.GetAllDocument()
-    originalPath := pgtype.Text{Valid: true, String: ""}
+func MigrateFileFromPromiseSiplangTblSuratBap() {
+	allRows, _ := tblsuratbapmodel.GetAllDocument()
+	originalPath := pgtype.Text{Valid: true, String: ""}
 
-    for _, row := range allRows {
+	for _, row := range allRows {
 
-        // path_bap
-        if row.PathBap.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_surat_bap.path_bap"
-            g.LogDoc.PkId = row.IdSuratBap.Int32
+		// path_bap
+		if row.PathBap.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_surat_bap.path_bap"
+			g.LogDoc.PkId = row.IdSuratBap.Int32
 
-            originalPath.String = row.PathBap.String
-            ProcessOriginalPath(originalPath)
-        }
-    }
+			originalPath.String = row.PathBap.String
+			ProcessOriginalPath(originalPath)
+		}
+	}
 }
 
+/*
 func MigrateFileFromPromiseSibelaTblSuratBapDpt(){
     allRows, _ := tblsuratbapdptmodel.GetAllDocument()
     originalPath := pgtype.Text{Valid: true, String: ""}
@@ -693,10 +702,9 @@ func MigrateFileFromPromiseSibelaTblSuratBapDpt(){
         }
     }
 }
+*/
 
-
-
-func MigrateFileFromPromiseSibelaTblSuratPesananPl() {
+func MigrateFileFromPromiseSiplangTblSuratPesananPl() {
 	allRows, _ := tblsuratpesananplmodel.GetAllDocument()
 	originalPath := pgtype.Text{Valid: true, String: ""}
 
@@ -713,104 +721,105 @@ func MigrateFileFromPromiseSibelaTblSuratPesananPl() {
 	}
 }
 
-func MigrateFileFromPromiseSibelaTblTerminPl() {
-    allRows, _ := tblterminplmodel.GetAllDocument()
-    originalPath := pgtype.Text{Valid: true, String: ""}
+func MigrateFileFromPromiseSiplangTblTerminPl() {
+	allRows, _ := tblterminplmodel.GetAllDocument()
+	originalPath := pgtype.Text{Valid: true, String: ""}
 
-    for _, row := range allRows {
+	for _, row := range allRows {
 
-        // path_kwitansi
-        if row.PathKwitansi.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// path_kwitansi
+		if row.PathKwitansi.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.PathKwitansi.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.PathKwitansi.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // path_bast_penyedia
-        if row.PathBastPenyedia.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_bast_penyedia"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// path_bast_penyedia
+		if row.PathBastPenyedia.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_bast_penyedia"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.PathBastPenyedia.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.PathBastPenyedia.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // path_bast_pp
-        if row.PathBastPp.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_bast_pp"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// path_bast_pp
+		if row.PathBastPp.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_bast_pp"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.PathBastPp.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.PathBastPp.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // termin_file
-        if row.TerminFile.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.termin_file"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// termin_file
+		if row.TerminFile.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.termin_file"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.TerminFile.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.TerminFile.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // file_scan_bast
-        if row.FileScanBast.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.file_scan_bast"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// file_scan_bast
+		if row.FileScanBast.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.file_scan_bast"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.FileScanBast.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.FileScanBast.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // kwitansi_file
-        if row.KwitansiFile.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.kwitansi_file"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// kwitansi_file
+		if row.KwitansiFile.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.kwitansi_file"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.KwitansiFile.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.KwitansiFile.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // spp_file
-        if row.SppFile.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.spp_file"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// spp_file
+		if row.SppFile.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.spp_file"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.SppFile.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.SppFile.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // file_scan_spp
-        if row.FileScanSpp.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.file_scan_spp"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// file_scan_spp
+		if row.FileScanSpp.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.file_scan_spp"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.FileScanSpp.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.FileScanSpp.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // path_kwitansi_ppk
-        if row.PathKwitansiPpk.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi_ppk"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// path_kwitansi_ppk
+		if row.PathKwitansiPpk.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi_ppk"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.PathKwitansiPpk.String
-            ProcessOriginalPath(originalPath)
-        }
+			originalPath.String = row.PathKwitansiPpk.String
+			ProcessOriginalPath(originalPath)
+		}
 
-        // path_kwitansi_penyedia
-        if row.PathKwitansiPenyedia.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi_penyedia"
-            g.LogDoc.PkId = row.IdTerminPl.Int32
+		// path_kwitansi_penyedia
+		if row.PathKwitansiPenyedia.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_termin_pl.path_kwitansi_penyedia"
+			g.LogDoc.PkId = row.IdTerminPl.Int32
 
-            originalPath.String = row.PathKwitansiPenyedia.String
-            ProcessOriginalPath(originalPath)
-        }
-    }
+			originalPath.String = row.PathKwitansiPenyedia.String
+			ProcessOriginalPath(originalPath)
+		}
+	}
 }
 
+/*
 func MigrateFileFromPromiseSibelaTblTerminDptPl() {
     allRows, _ := tbltermindptplmodel.GetAllDocument()
     originalPath := pgtype.Text{Valid: true, String: ""}
@@ -908,34 +917,35 @@ func MigrateFileFromPromiseSibelaTblTerminDptPl() {
         }
     }
 }
+*/
 
+func MigrateFileFromPromiseSiplangTblUndanganPl() {
+	allRows, _ := tblundanganplmodel.GetAllDocument()
+	originalPath := pgtype.Text{Valid: true, String: ""}
 
-func MigrateFileFromPromiseSibelaTblUndanganPl() {
-    allRows, _ := tblundanganplmodel.GetAllDocument()
-    originalPath := pgtype.Text{Valid: true, String: ""}
+	for _, row := range allRows {
 
-    for _, row := range allRows {
+		// banego_file
+		if row.BanegoFile.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_undangan_pl.banego_file"
+			g.LogDoc.PkId = row.IdUndanganPl.Int32
 
-        // banego_file
-        if row.BanegoFile.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_undangan_pl.banego_file"
-            g.LogDoc.PkId = row.IdUndanganPl.Int32
+			originalPath.String = row.BanegoFile.String
+			ProcessOriginalPath(originalPath)
+		}
 
-            originalPath.String = row.BanegoFile.String
-            ProcessOriginalPath(originalPath)
-        }
+		// file_scan_banego
+		if row.FileScanBanego.String != "" {
+			g.LogDoc.FieldName = "promise_siplang.tbl_undangan_pl.file_scan_banego"
+			g.LogDoc.PkId = row.IdUndanganPl.Int32
 
-        // file_scan_banego
-        if row.FileScanBanego.String != "" {
-            g.LogDoc.FieldName = "promise_siplang.tbl_undangan_pl.file_scan_banego"
-            g.LogDoc.PkId = row.IdUndanganPl.Int32
-
-            originalPath.String = row.FileScanBanego.String
-            ProcessOriginalPath(originalPath)
-        }
-    }
+			originalPath.String = row.FileScanBanego.String
+			ProcessOriginalPath(originalPath)
+		}
+	}
 }
 
+/*
 func MigrateFileFromPromiseSibelaTblUndanganDptPl() {
     allRows, _ := tblundangandptplmodel.GetAllDocument()
     originalPath := pgtype.Text{Valid: true, String: ""}
