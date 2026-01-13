@@ -52,8 +52,8 @@ var SiplangCmd = &cobra.Command{
 		fmt.Println("SetupVendorAccessForSiplang")
 		siplang.SetupVendorAccessForSiplang()
 
-		// fmt.Println("InsertRefPermintaan")
-		// sibela.InsertRefPermintaan()
+		fmt.Println("InsertRefPermintaan")
+		siplang.InsertRefPermintaan()
 
 		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
 

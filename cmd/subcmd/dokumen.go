@@ -159,22 +159,22 @@ var DokumenCmd = &cobra.Command{
 		g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
 
 		// tbl_paket_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
+		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
 		// tbl_signature
-		// appdoc.MigrateFileFromPromiseSiplangTblSignature()
+		appdoc.MigrateFileFromPromiseSiplangTblSignature()
 
 		// tbl_sptb_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
+		appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
 
 		appdoc.MigrateFileFromPromiseSiplangTblSptjm()
-		// appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
+		appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
 
 		// tbl_surat_pesanan_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
+		appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
-		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
+		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

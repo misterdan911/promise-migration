@@ -21,7 +21,7 @@ func TruncateTableAndLog2() {
 		log.Fatal("Truncate ref_permintaan Failedddd, " + err.Error())
 	}
 
-	// Delete akses penyedia ke siplang
+	// Delete akses penyedia di Usman
 	qDeleteSiplangAccess := "DELETE FROM trx_group_user WHERE kode_group = 'G05.3'"
 	_, err2 := db.DbUsman.Exec(ctx, qDeleteSiplangAccess)
 	if err2 != nil {
@@ -42,6 +42,7 @@ func TruncateTableAndLog2() {
 	}
 
 	UpdatePrimaryKeySequenceFromFile()
+	UpdateUsmanSequence()
 	UpdateEsignSequence()
 }
 
@@ -70,6 +71,28 @@ func UpdateEsignSequence() {
 	), false);
 	`
 	_, err3 := db.DbEsign.Exec(ctx, qResetSeq)
+	if err3 != nil {
+		log.Fatal("qResetSeq Failed, " + err3.Error())
+	}
+
+}
+
+func UpdateUsmanSequence() {
+
+	ctx := context.Background()
+
+	qResetSeq := `
+	select setval('trx_group_user_id_seq', (
+	SELECT 
+			CASE 
+					WHEN MAX(id_group_user) IS NULL THEN 1
+					ELSE MAX(id_group_user) + 1
+			END
+			AS next_id
+	 from trx_group_user
+	), false);
+	`
+	_, err3 := db.DbUsman.Exec(ctx, qResetSeq)
 	if err3 != nil {
 		log.Fatal("qResetSeq Failed, " + err3.Error())
 	}
