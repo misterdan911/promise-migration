@@ -57,7 +57,7 @@ func InsertNewData(refProsesKontrak RefProsesKontrak) RefProsesKontrak {
 		"status_pengisian":            refProsesKontrak.StatusPengisian,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_proses_kontrak, " + errIns.Error())
 	}

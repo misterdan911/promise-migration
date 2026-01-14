@@ -1,4 +1,4 @@
-package logsibelamodel
+package logsiplangmodel
 
 import (
 	"context"
@@ -41,7 +41,7 @@ func GetDataByIdPesanan(idPesanan pgtype.Int4, tblPaketPl tblpaketplonionmodel.T
 
 	qLogSibela := `
 		SELECT 
-			id_log_sibela,
+			id_log_siplang,
 			id_user,
 			role,
 			id_paket,
@@ -55,17 +55,17 @@ func GetDataByIdPesanan(idPesanan pgtype.Int4, tblPaketPl tblpaketplonionmodel.T
 			keterangan_negosiasi_teknis,
 			created_at,
 			updated_at
-		FROM public.log_sibela
+		FROM public.log_siplang
 		WHERE
 			jenis = $1
 			AND
 			(id_pesanan = $2
 			OR
 			(id_paket = $3 and keterangan_negosiasi is not null))
-		ORDER BY id_log_sibela ASC
+		ORDER BY id_log_siplang ASC
 	`
 
-	rwLogSibela, err := db.PromiseSibela.Query(ctx, qLogSibela, jenis, idPesanan, tblPaketPl.IdPaket)
+	rwLogSibela, err := db.PromiseSiplang.Query(ctx, qLogSibela, jenis, idPesanan, tblPaketPl.IdPaket)
 	if err != nil {
 		log.Fatal("qLogSibela Failed, " + err.Error() + " " + qLogSibela)
 	}
@@ -94,7 +94,7 @@ func GetDataNegoTeknis(tblPaket tblpaketplonionmodel.TblPaketPlOnion) []LogSibel
 
 	qLogSibela := `
 		SELECT 
-			id_log_sibela,
+			id_log_siplang,
 			id_user,
 			role,
 			id_paket,
@@ -108,17 +108,17 @@ func GetDataNegoTeknis(tblPaket tblpaketplonionmodel.TblPaketPlOnion) []LogSibel
 			keterangan_negosiasi_teknis,
 			created_at,
 			updated_at
-		FROM public.log_sibela
+		FROM public.log_siplang
 		WHERE
 			jenis = $1
 			AND
 			id_paket = $2
 			AND
 			tahap = 'Negosiasi Teknis'
-		ORDER BY id_log_sibela ASC
+		ORDER BY id_log_siplang ASC
 	`
 
-	rwLogSibela, err := db.PromiseSibela.Query(ctx, qLogSibela, jenis, tblPaket.IdPaket)
+	rwLogSibela, err := db.PromiseSiplang.Query(ctx, qLogSibela, jenis, tblPaket.IdPaket)
 	if err != nil {
 		log.Fatal("qLogSibela Failed (log_sibela.go:GetDataNegoTeknis) " + err.Error() + " " + qLogSibela)
 	}

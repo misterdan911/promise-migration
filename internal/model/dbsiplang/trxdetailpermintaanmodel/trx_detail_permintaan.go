@@ -69,7 +69,7 @@ func InsertNewData(trxDetailPermintaan TrxDetailPermintaan) TrxDetailPermintaan 
 		return trxDetailPermintaan2
 	*/
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qIns, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qIns, args)
 	if errIns != nil {
 		fmt.Println("satuan: " + trxDetailPermintaan.Satuan.String + ghelper.GetLen(trxDetailPermintaan.Satuan.String))
 		log.Fatal("unable to insert trx_detail_permintaan (trx_detail_permintaan.go:InsertNewData), " + errIns.Error())

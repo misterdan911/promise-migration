@@ -53,7 +53,7 @@ func InsertNew(trxSistemPembayaran TrxSistemPembayaran) TrxSistemPembayaran {
 		"udch":                    trxSistemPembayaran.Udch,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert trx_sistem_pembayaran, " + errIns.Error())
 	}

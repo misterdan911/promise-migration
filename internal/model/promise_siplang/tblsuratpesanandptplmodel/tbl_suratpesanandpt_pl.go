@@ -35,7 +35,7 @@ func GetDataByIdPaket(idPaket pgtype.Int4) structs.TblSuratpesananPl {
 	FROM tbl_suratpesanandpt_pl
   WHERE id_paket_dptpl = $1
 	`
-	rwData, err := db.PromiseSibela.Query(ctx, qSelect, idPaket)
+	rwData, err := db.PromiseSiplang.Query(ctx, qSelect, idPaket)
 	if err != nil {
 		log.Fatal("qSelect Failed, " + err.Error() + " " + qSelect)
 	}

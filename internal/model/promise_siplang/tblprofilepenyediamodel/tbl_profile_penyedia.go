@@ -54,7 +54,7 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
 		WHERE id_user = $1
     ORDER BY id_profil_penyedia ASC`
 
-	rwPenyedia, err := db.PromiseSibela.Query(ctx, qTblProfilePenyedia, userId)
+	rwPenyedia, err := db.PromiseSiplang.Query(ctx, qTblProfilePenyedia, userId)
 	if err != nil {
 		log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
 	}
@@ -116,7 +116,7 @@ func GetPenyediaById(idProfilePenyedia pgtype.Int4) structs.TblProfilePenyedia {
 		WHERE id_profil_penyedia = $1
     ORDER BY id_profil_penyedia ASC`
 
-	rwPenyedia, err := db.PromiseSibela.Query(ctx, qTblProfilePenyedia, idProfilePenyedia)
+	rwPenyedia, err := db.PromiseSiplang.Query(ctx, qTblProfilePenyedia, idProfilePenyedia)
 	if err != nil {
 		log.Fatal("qTblProfilePenyedia Failed, " + err.Error() + " " + qTblProfilePenyedia)
 	}

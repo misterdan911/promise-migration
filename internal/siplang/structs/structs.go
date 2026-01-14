@@ -36,7 +36,6 @@ type TblSuratpesananPl struct {
 	NomorpesananSp      pgtype.Text
 	TanggalSp           pgtype.Timestamptz
 	SuratpesananStatus  pgtype.Text
-	SuratpesananBarcode pgtype.Text
 	SuratpesananFile    pgtype.Text
 	HashDokumen         pgtype.Text
 	FileScanSp          pgtype.Text
@@ -97,8 +96,6 @@ type TblSuratBap struct {
     TanggalBap     pgtype.Timestamp
     PathBap        pgtype.Text
     NominalDenda   pgtype.Text
-    BapStatus      pgtype.Text
-    BapBarcode     pgtype.Text
     BapFile        pgtype.Text
     HashDokumen    pgtype.Text
     FileScanBap    pgtype.Text

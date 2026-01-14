@@ -35,7 +35,7 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
 
 	rwSuratBap, err := db.PromiseSiplang.Query(ctx, qSuratBap, idTerminPl)
 	if err != nil {
-		log.Fatal("qSuratBap Failed, " + err.Error() + " " + qSuratBap)
+		log.Fatal("qSuratBap DPT Failed, " + err.Error() + " " + qSuratBap)
 	}
 
 	allSuratBap, err := pgx.CollectRows(rwSuratBap, pgx.RowToStructByName[structs.TblSuratBap])

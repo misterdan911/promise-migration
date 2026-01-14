@@ -2,12 +2,12 @@ package siplang
 
 import (
 	"promise-migration/internal/ghelper"
-	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
-	"promise-migration/internal/model/dbsibela/trxdetailpermintaanmodel"
+	"promise-migration/internal/model/dbsiplang/refpermintaanmodel"
+	"promise-migration/internal/model/dbsiplang/trxdetailpermintaanmodel"
 	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_siplang/tblpesanandptplmodel"
 	"promise-migration/internal/model/promise_siplang/tblpesananplmodel"
-	"promise-migration/internal/sibela/structs"
+	"promise-migration/internal/siplang/structs"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )

@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"promise-migration/db"
-	"promise-migration/internal/sibela/structs"
+	"promise-migration/internal/siplang/structs"
 )
 
 func GetDataByIdPaket(idPaket pgtype.Int4) []structs.TblPesanan {
@@ -29,7 +29,7 @@ func GetDataByIdPaket(idPaket pgtype.Int4) []structs.TblPesanan {
 	FROM tbl_pesanan_pl
 	WHERE id_paket_pl = $1
 	`
-  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblPesanan, idPaket)
+  rwTblPesanan, err := db.PromiseSiplang.Query(ctx, qTblPesanan, idPaket)
   if err != nil {
     log.Fatal("qTblPesanan Failed, " + err.Error() + " " + qTblPesanan)
   }

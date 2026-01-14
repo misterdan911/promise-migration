@@ -61,7 +61,7 @@ func InsertNew(trxDokumenKontrak TrxDokumenKontrak) TrxDokumenKontrak {
 		"nomor_surat_pesanan": trxDokumenKontrak.NomorSuratPesanan,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert trx_dokumen_kontrak, " + errIns.Error())
 	}

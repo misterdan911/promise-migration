@@ -3,9 +3,9 @@ package siplang
 import (
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsiplang/trxnegohargamodel"
-	"promise-migration/internal/model/promise_siplang/logsibelamodel"
+	"promise-migration/internal/model/promise_siplang/logsiplangmodel"
 	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
-	"promise-migration/internal/sibela/structs"
+	"promise-migration/internal/siplang/structs"
 	"strings"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -21,7 +21,7 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 	// 	return nil
 	// }
 
-	allLogSibela := logsibelamodel.GetDataByIdPesanan(tblPesanan.IDPesanan, tblPaketPl)
+	allLogSibela := logsiplangmodel.GetDataByIdPesanan(tblPesanan.IDPesanan, tblPaketPl)
 
 	// dapatkan harga satuan (sebelum di nego)
 	var hargaSatuan pgtype.Int8
@@ -93,7 +93,7 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 	return nil
 }
 
-func InsertTrxNegoHarga(kodeDetailPermintaan pgtype.Int4, tblPesanan structs.TblPesanan, logSibela logsibelamodel.LogSibela) {
+func InsertTrxNegoHarga(kodeDetailPermintaan pgtype.Int4, tblPesanan structs.TblPesanan, logSibela logsiplangmodel.LogSibela) {
 	// fmt.Printf("kodeDetailPermintaan: %d \n", kodeDetailPermintaan.Int32)
 
 	trxNegoHarga := trxnegohargamodel.TrxNegoHarga{

@@ -28,8 +28,8 @@ var SiplangCmd = &cobra.Command{
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
-		db.ConnectDbSibela()
-		defer db.DbSibela.Close()
+		// db.ConnectDbSibela()
+		// defer db.DbSibela.Close()
 
 		db.ConnectDbSiplang()
 		defer db.DbSiplang.Close()
@@ -42,6 +42,9 @@ var SiplangCmd = &cobra.Command{
 
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
+
+		db.ConnectPromiseSiplang()
+		defer db.PromiseSiplang.Close()
 
 		db.ConnectProSippan()
 		defer db.ProSippan.Close()

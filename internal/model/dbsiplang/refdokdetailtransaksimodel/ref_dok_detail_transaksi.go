@@ -46,7 +46,7 @@ func InsertNew(refDokDetailTransaksi RefDokDetailTransaksi) RefDokDetailTransaks
 		"kategori_transaksi": refDokDetailTransaksi.KategoriTransaksi,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_dok_detail_transaksi, " + errIns.Error())
 	}

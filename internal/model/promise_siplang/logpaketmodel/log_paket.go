@@ -34,7 +34,7 @@ func GetByIdPaket(idPaket pgtype.Int4) []LogPaket {
 	FROM log_paket
 	WHERE id_paket = $1`
 
-	rwLogPaket, err := db.PromiseSibela.Query(ctx, qLogPaket, idPaket)
+	rwLogPaket, err := db.PromiseSiplang.Query(ctx, qLogPaket, idPaket)
 	if err != nil {
 		log.Fatal("qLogPaket Failed, " + err.Error() + " " + qLogPaket)
 	}

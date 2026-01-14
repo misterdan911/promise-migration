@@ -141,9 +141,9 @@ func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
 		"tgl_selesai_negosiasi":        refPermintaan.TglSelesaiNegosiasi,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qIns, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qIns, args)
 	if errIns != nil {
-		log.Fatal("unable to insert ref_permintaan, " + errIns.Error())
+		log.Fatal("unable to insert ref_permintaan siplang, " + errIns.Error())
 	}
 
 	defer rwIns.Close()
@@ -151,7 +151,8 @@ func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
 	allRows, errRwIns := pgx.CollectRows(rwIns, pgx.RowToStructByName[RefPermintaan])
 
 	if errRwIns != nil {
-		log.Fatal("failed collecting RefPermintaan (ref_permintaan.go), " + errRwIns.Error())
+		fmt.Printf("refPermintaan.KodeSkemaPembayaran: %d\n", refPermintaan.KodeSkemaPembayaran.Int32)
+		log.Fatal("failed collecting RefPermintaan siplang (ref_permintaan.go), " + errRwIns.Error())
 	}
 
 	return allRows[0]
@@ -196,7 +197,7 @@ func GetAllData() []RefPermintaan {
 	ORDER BY kode_permintaan
 	`
 
-	rwRefPermintaan, errQuery := db.DbSibela.Query(ctx, qAllData)
+	rwRefPermintaan, errQuery := db.DbSiplang.Query(ctx, qAllData)
 	if errQuery != nil {
 		log.Fatal("qAllData Failed, " + errQuery.Error() + " " + qAllData)
 	}
@@ -214,7 +215,7 @@ func DeleteByKodePermintaan(kodePermintaan pgtype.Int4) {
 	ctx := context.Background()
 
 	qDelete := `DELETE FROM ref_permintaan WHERE kode_permintaan = $1`
-	_, err := db.DbSibela.Exec(ctx, qDelete, kodePermintaan)
+	_, err := db.DbSiplang.Exec(ctx, qDelete, kodePermintaan)
 	if err != nil {
 		fmt.Printf(qDelete+" %d\n", kodePermintaan.Int32)
 		log.Fatal("failed deleting RefPermintaan (ref_permintaan.go), " + err.Error())
@@ -225,7 +226,7 @@ func DeleteWhereUcrNull() {
 	ctx := context.Background()
 
 	qDelete := `DELETE FROM ref_permintaan WHERE ucr IS NULL`
-	_, err := db.DbSibela.Exec(ctx, qDelete)
+	_, err := db.DbSiplang.Exec(ctx, qDelete)
 	if err != nil {
 		log.Fatal("failed deleting ref_permintaan (ref_permintaan.go:DeleteWhereUcrNull), " + err.Error())
 	}
@@ -234,7 +235,7 @@ func DeleteWhereUcrNull() {
 func UpdateHps(kodePermintaan pgtype.Int4, nilaiHps pgtype.Int4) {
 	ctx := context.Background()
 	qUpdate := `UPDATE ref_permintaan SET nilai_hps = $1 WHERE kode_permintaan = $2`
-	_, err := db.DbSibela.Exec(ctx, qUpdate, nilaiHps, kodePermintaan)
+	_, err := db.DbSiplang.Exec(ctx, qUpdate, nilaiHps, kodePermintaan)
 	if err != nil {
 		log.Fatal("failed updating RefPermintaan (ref_permintaan.go), " + err.Error())
 	}
@@ -243,7 +244,7 @@ func UpdateHps(kodePermintaan pgtype.Int4, nilaiHps pgtype.Int4) {
 func UpdateKodeStatusPermintaan(kodePermintaan pgtype.Int4, kodeStatusPermintaan pgtype.Int4) {
 	ctx := context.Background()
 	qUpdate := `UPDATE ref_permintaan SET kode_status_permintaan = $1 WHERE kode_permintaan = $2`
-	_, err := db.DbSibela.Exec(ctx, qUpdate, kodeStatusPermintaan, kodePermintaan)
+	_, err := db.DbSiplang.Exec(ctx, qUpdate, kodeStatusPermintaan, kodePermintaan)
 	if err != nil {
 		log.Fatal("failed UpdateKodeStatusPermintaan (ref_permintaan.go), " + err.Error())
 	}

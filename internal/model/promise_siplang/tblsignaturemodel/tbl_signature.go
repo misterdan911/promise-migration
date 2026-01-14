@@ -2,7 +2,7 @@ package tblsignaturemodel
 
 import (
 	"context"
-	// "fmt"
+	"fmt"
 	"log"
 	"strconv"
 	"github.com/jackc/pgx/v5"
@@ -17,11 +17,8 @@ type TblSignature struct {
 	IdProfilPenyedia  pgtype.Text
 	IdDireksiPerus    pgtype.Text
 	JenisPaket        pgtype.Text
-	IdPaketDptpl      pgtype.Text
-	IdTerminDptpl     pgtype.Text
 	IdPaketPl         pgtype.Text
 	IdTerminPl        pgtype.Text
-	IdLangganan       pgtype.Int4
 	JenisSignature    pgtype.Text
 	Tte               pgtype.Text
 	PathFinalBarcode  pgtype.Text
@@ -73,14 +70,14 @@ func GetAllSignatureSP(idPaketPl pgtype.Int4, jenisPaket pgtype.Text) []TblSigna
 		"jenis_paket": jenisPaket,
 	}
 
-  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblSignature, args)
+  rwTblPesanan, err := db.PromiseSiplang.Query(ctx, qTblSignature, args)
   if err != nil {
     log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
   }
 
   allTblSignature, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[TblSignature])
   if err != nil {
-    log.Fatal("failed collecting rwTblPesanan, " + err.Error())
+    log.Fatal("failed collecting rwTblPesanan siplang GetAllSignatureSP, " + err.Error())
   }
   defer rwTblPesanan.Close()
 
@@ -130,14 +127,14 @@ func GetAllSignature(idPaketPl pgtype.Int4, jenisPaket pgtype.Text, idTerminPl p
 		"id_termin_pl": strIdTerminPl,
 	}
 
-  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblSignature, args)
+  rwTblPesanan, err := db.PromiseSiplang.Query(ctx, qTblSignature, args)
   if err != nil {
     log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
   }
 
   allTblSignature, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[TblSignature])
   if err != nil {
-    log.Fatal("failed collecting rwTblPesanan, " + err.Error())
+    log.Fatal("failed collecting rwTblPesanan siplang GetAllSignature, " + err.Error())
   }
   defer rwTblPesanan.Close()
 
@@ -195,14 +192,14 @@ func GetAllSignatureSptjm(idPaketPl pgtype.Int4, jenisPaket pgtype.Text, idTermi
 		"jenis_signature": jenisSignature,
 	}
 
-  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblSignature, args)
+  rwTblPesanan, err := db.PromiseSiplang.Query(ctx, qTblSignature, args)
   if err != nil {
     log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
   }
 
   allTblSignature, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[TblSignature])
   if err != nil {
-    log.Fatal("failed collecting rwTblPesanan, " + err.Error())
+    log.Fatal("failed collecting rwTblPesanan siplang GetAllSignatureSptjm, " + err.Error())
   }
   defer rwTblPesanan.Close()
 
@@ -245,14 +242,15 @@ func GetAllSignatureSekaliSatuPaket(idPaketPl pgtype.Int4, jenisPenyedia pgtype.
 		"jenis_signature": jenisSignature,
 	}
 
-  rwTblPesanan, err := db.PromiseSibela.Query(ctx, qTblSignature, args)
+  rwTblPesanan, err := db.PromiseSiplang.Query(ctx, qTblSignature, args)
   if err != nil {
     log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
   }
 
   allTblSignature, err := pgx.CollectRows(rwTblPesanan, pgx.RowToStructByName[TblSignature])
   if err != nil {
-    log.Fatal("failed collecting rwTblPesanan, " + err.Error())
+  	fmt.Printf("jenisPenyedia.String: %v", jenisPenyedia.String)
+    log.Fatal("failed collecting rwTblPesanan siplang GetAllSignatureSekaliSatuPaket " + err.Error())
   }
   defer rwTblPesanan.Close()
 
@@ -265,7 +263,7 @@ func GetAllSignatureVendor() []TblSignature {
 	ctx := context.Background()
 	qTblSignature := `	SELECT * from tbl_signature	WHERE	id_profil_penyedia is not null`
 
-  rwTblSignature, err := db.PromiseSibela.Query(ctx, qTblSignature)
+  rwTblSignature, err := db.PromiseSiplang.Query(ctx, qTblSignature)
   if err != nil {
     log.Fatal("qTblSignature Failed, " + err.Error() + " " + qTblSignature)
   }

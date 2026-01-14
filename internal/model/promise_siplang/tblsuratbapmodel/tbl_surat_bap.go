@@ -24,8 +24,6 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
 		tanggal_bap,
 		path_bap,
 		nominal_denda,
-		bap_status,
-		bap_barcode,
 		bap_file,
 		hash_dokumen,
 		file_scan_bap,

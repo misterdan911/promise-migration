@@ -22,7 +22,7 @@ func GetLastStatusTerminBast(idPaket pgtype.Int4) pgtype.Int8 {
 	ORDER BY id_termin_dptpl DESC
 	LIMIT 1`
 
-	rwData, err := db.PromiseSibela.Query(ctx, qSelect, idPaket)
+	rwData, err := db.PromiseSiplang.Query(ctx, qSelect, idPaket)
 	if err != nil {
 		log.Fatal("qSelect Failed (tbl_termindpt_pl.go::GetLastStatusTerminBast), " + err.Error() + " " + qSelect)
 	}
@@ -88,7 +88,7 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
 				ORDER BY id_termin_dptpl ASC
 				`
 
-	rwTblTerminPl, err := db.PromiseSibela.Query(ctx, qTblTerminPl, idPaketPl)
+	rwTblTerminPl, err := db.PromiseSiplang.Query(ctx, qTblTerminPl, idPaketPl)
 	if err != nil {
 		log.Fatal("qTblTerminPl Failed, " + err.Error() + " " + qTblTerminPl)
 	}

@@ -61,7 +61,7 @@ func InsertNew(refSptjm RefSptjm) RefSptjm {
 		"status_button_tte":            refSptjm.StatusButtonTte,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert ref_sptjm, " + errIns.Error())
 	}

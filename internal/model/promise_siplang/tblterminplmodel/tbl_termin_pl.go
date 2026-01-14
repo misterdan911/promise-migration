@@ -13,7 +13,7 @@ import (
 func GetLastStatusTerminBast(idPaket pgtype.Int4) pgtype.Int8 {
 	ctx := context.Background()
 	qSelect := `SELECT nama_termin, status_termin_bast FROM tbl_termin_pl where id_paket_pl = $1 order by id_termin_pl desc limit 1`
-	rwData, err := db.PromiseSibela.Query(ctx, qSelect, idPaket)
+	rwData, err := db.PromiseSiplang.Query(ctx, qSelect, idPaket)
 	if err != nil {
 		log.Fatal("qSelect Failed, " + err.Error() + " " + qSelect)
 	}
@@ -78,7 +78,7 @@ func GetByIdPaketPl(idPaketPl pgtype.Int4) []structs.TblTerminPl {
         WHERE id_paket_pl = $1
 				ORDER BY id_termin_pl ASC`
 
-	rwTblTerminPl, err := db.PromiseSibela.Query(ctx, qTblTerminPl, idPaketPl)
+	rwTblTerminPl, err := db.PromiseSiplang.Query(ctx, qTblTerminPl, idPaketPl)
 	if err != nil {
 		log.Fatal("qTblTerminPl Failed, " + err.Error() + " " + qTblTerminPl)
 	}

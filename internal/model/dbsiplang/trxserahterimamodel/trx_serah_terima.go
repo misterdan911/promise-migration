@@ -91,7 +91,7 @@ func InsertNew(trxSerahTerima TrxSerahTerima) TrxSerahTerima {
 		}
 	*/
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 
 	if errIns != nil {
 		log.Fatal("unable to insert trx_serah_terima, " + errIns.Error())

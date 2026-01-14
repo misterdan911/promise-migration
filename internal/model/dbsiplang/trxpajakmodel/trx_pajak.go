@@ -121,15 +121,15 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		"id_sptb":              trxPajak.IdSptb,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
-		fmt.Println("unable to insert trx_pajak, " + errIns.Error())
+		fmt.Println("unable to insert trx_pajak siplang, " + errIns.Error())
 	}
 	defer rwIns.Close()
 
 	allTrxPajak, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxPajak])
 	if err != nil {
-		log.Fatal("failed collecting TrxPajak, " + err.Error())
+		log.Fatal("failed collecting TrxPajak siplang, " + err.Error())
 	}
 
 	return allTrxPajak[0]

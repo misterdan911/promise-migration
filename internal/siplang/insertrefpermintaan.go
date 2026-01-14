@@ -200,6 +200,9 @@ func InsertRefPermintaan() {
 			Udcr:                tblPaketPl.CreateAt,
 		}
 
+		fmt.Printf("tblPaketPl.IdPaket: %d\n", tblPaketPl.IdPaket.Int32)
+		fmt.Printf("tblPaketPl.NamaPaket: %v\n", tblPaketPl.NamaPesanan.String)
+
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
 		// fmt.Println("InsertTrxDetailPermintaan")

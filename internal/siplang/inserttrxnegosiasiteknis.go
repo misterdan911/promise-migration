@@ -2,7 +2,7 @@ package siplang
 
 import (
 	"promise-migration/internal/model/dbsiplang/trxnegoteknismodel"
-	"promise-migration/internal/model/promise_siplang/logsibelamodel"
+	"promise-migration/internal/model/promise_siplang/logsiplangmodel"
 	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -15,7 +15,7 @@ func InsertTrxNegosiasiTeknis(kodePermintaan pgtype.Int4, tblPaket tblpaketploni
 	// 	return nil
 	// }
 
-	allLogSibela := logsibelamodel.GetDataNegoTeknis(tblPaket)
+	allLogSibela := logsiplangmodel.GetDataNegoTeknis(tblPaket)
 
 	count := 0
 	tahapan := pgtype.Int4{

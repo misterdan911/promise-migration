@@ -65,10 +65,10 @@ func GetAllData() []TblPaketPl {
     create_at,
     updated_at,
     deleted_at
-  FROM tbl_paket_pl
+  FROM tbl_paket_plPromiseSiplang
   ORDER BY id_paket_pl ASC`
 
-	rwData, err := db.PromiseSibela.Query(ctx, qAllData)
+	rwData, err := db.PromiseSiplang.Query(ctx, qAllData)
 	if err != nil {
 		log.Fatal("qAllData Failed, " + err.Error() + " " + qAllData)
 	}

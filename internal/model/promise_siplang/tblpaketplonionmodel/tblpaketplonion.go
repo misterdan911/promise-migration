@@ -23,8 +23,8 @@ type TblPaketPlOnion struct {
 	KodeLevelAset      pgtype.Text
 	IdRkaRev           pgtype.Int4
 	IdPembayaran       pgtype.Int4
-	PathSibela         pgtype.Text
-	PathSibelaPenyedia pgtype.Text
+	PathSiplang         pgtype.Text
+	PathSiplangPenyedia pgtype.Text
 	Total              pgtype.Text
 	NegosiasiTeknispp  pgtype.Text
 	NegosiasiTeknisp   pgtype.Text
@@ -56,8 +56,8 @@ func GetAllData() []TblPaketPlOnion {
 		kode_level_aset,
 		id_rka_rev,
 		id_pembayaran,
-		path_sibela_pl as path_sibela,
-		path_sibela_penyedia_pl as path_sibela_penyedia,
+		path_siplang as path_siplang,
+		path_siplang_penyedia as path_siplang_penyedia,
 		total,
 		negosiasi_teknispp_pl as negosiasi_teknispp,
 		negosiasi_teknisp_pl as negosiasi_teknisp,
@@ -72,7 +72,7 @@ func GetAllData() []TblPaketPlOnion {
 	WHERE deleted_at IS NULL and id_ppk is not null
 	ORDER BY id_paket ASC`
 
-	rwData, err := db.PromiseSibela.Query(ctx, qAllData)
+	rwData, err := db.PromiseSiplang.Query(ctx, qAllData)
 	if err != nil {
 		log.Fatal("qAllData Failed, " + err.Error() + " " + qAllData)
 	}

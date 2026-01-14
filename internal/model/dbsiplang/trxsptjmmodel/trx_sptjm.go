@@ -57,7 +57,7 @@ func InsertNew(trxSptjm TrxSptjm) TrxSptjm {
 		"udch":                         trxSptjm.Udch,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert trx_sptjm, " + errIns.Error())
 	}

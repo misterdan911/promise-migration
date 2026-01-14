@@ -61,7 +61,7 @@ func InsertNew(trxJangkaWaktu TrxJangkaWaktu) TrxJangkaWaktu {
 		"satuan_jangka_waktu": trxJangkaWaktu.SatuanJangkaWaktu,
 	}
 
-	rwIns, errIns := db.DbSibela.Query(ctx, qInsert, args)
+	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)
 	if errIns != nil {
 		fmt.Println("unable to insert trx_jangka_waktu, " + errIns.Error())
 	}
