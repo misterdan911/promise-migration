@@ -154,8 +154,21 @@ func PopulateHelperUser() {
 			if vmsUser.EmailReal.String == refPenandatangan.Email.String {
 				kodePenandatangan = refPenandatangan.KodePenandatangan
 				break
+			} else if vmsUser.Email.String == refPenandatangan.Email.String {
+				kodePenandatangan = refPenandatangan.KodePenandatangan
+				break
 			}
 		}
+
+		isTetap := pgtype.Bool{Valid: true}
+		if penyedia.PenyediaTerpilih.Int32 == 99 {
+			isTetap.Bool = false
+		} else if !penyedia.PenyediaTerpilih.Valid {
+			isTetap.Bool = false
+		} else {
+			isTetap.Bool = true
+		}
+
 
 		helperUser := helperusermodel.HelperUser{
 			Id:                vmsUser.Id,
@@ -177,6 +190,7 @@ func PopulateHelperUser() {
 			JenisPenyedia:     jenisPenyedia,
 			UsmanRefUserId:    vmsUser.Id,
 			KodeVendor:        kodeVendor,
+			IsTetap:           isTetap,
 		}
 
 		helperusermodel.InsertNew(helperUser)

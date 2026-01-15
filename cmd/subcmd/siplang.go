@@ -58,7 +58,7 @@ var SiplangCmd = &cobra.Command{
 		fmt.Println("InsertRefPermintaan")
 		siplang.InsertRefPermintaan()
 
-		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
+		siplang.InsertPenandatanganToSidapetRefVendorPenandatangan()
 
 	},
 }

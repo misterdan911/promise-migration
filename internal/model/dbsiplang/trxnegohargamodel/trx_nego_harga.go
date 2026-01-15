@@ -60,7 +60,7 @@ func UpdatePersetujuan(kodeDetailPermintaan pgtype.Int4) {
 
 	qUpdate := `UPDATE trx_nego_harga SET persetujuan = true WHERE kode_detail_permintaan = $1`
 
-	_, errIns := db.DbSibela.Exec(ctx, qUpdate, kodeDetailPermintaan)
+	_, errIns := db.DbSiplang.Exec(ctx, qUpdate, kodeDetailPermintaan)
 	if errIns != nil {
 		log.Fatal("unable to update trx_nego_harga.persetujuan (trx_nego_harga.go:UpdatePersetujuan), " + errIns.Error())
 	}

@@ -132,6 +132,8 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
 		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
 
+		// fmt.Printf("Jml Signature BAP: %d", len(allSignature))
+
 		for _, signature := range allSignature {
 
 			// fmt.Printf("signature.IdUser: %d\n", signature.IdUser.Int32)
@@ -419,7 +421,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 	lastIndex := len(allHelperRiwayatPelaksanaan) - 1
 	if lastIndex < 0 {
-		fmt.Printf("last Index %d\n", lastIndex)
+		fmt.Printf("last Index %d -- kode_permintaan: %d Tidak punya data termin\n", lastIndex, refPermintaan.KodePermintaan.Int32)
 		return nil
 	}
 

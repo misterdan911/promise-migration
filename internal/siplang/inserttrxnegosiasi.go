@@ -28,19 +28,25 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 	hargaSatuan.Valid = true
 	hargaSatuan.Int64 = ghelper.StringToInt64WithDefault(tblPesanan.HargaSatuan.String, 0)
 
+
+
 	tahapan := pgtype.Int4{
 		Valid: true,
 		Int32: 0,
 	}
 
 	var count int = 0
-	var hargaNego pgtype.Int8
 
 	for _, logSibela := range allLogSibela {
 
 		if logSibela.Tahap.String == "Update Negosiasi" {
 			continue
 		}
+
+		var hargaNego pgtype.Int8
+		hargaNego.Valid = true
+		hargaNego.Int64 = ghelper.StringToInt64WithDefault(logSibela.Negosiasi.String, 0)
+
 
 		switch strings.ToLower(logSibela.KeteranganNegosiasi.String) {
 		case "tolak":
@@ -65,8 +71,6 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 
 			if !logSibela.Negosiasi.Valid {
 				hargaNego = hargaSatuan
-			} else {
-				hargaNego = logSibela.Negosiasi
 			}
 
 			if count > 0 {
@@ -96,10 +100,16 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 func InsertTrxNegoHarga(kodeDetailPermintaan pgtype.Int4, tblPesanan structs.TblPesanan, logSibela logsiplangmodel.LogSibela) {
 	// fmt.Printf("kodeDetailPermintaan: %d \n", kodeDetailPermintaan.Int32)
 
+	var hargaSatuan pgtype.Int8
+	var hargaNego pgtype.Int8
+	hargaSatuan.Int64 = ghelper.StringToInt64WithDefault(logSibela.HargaSatuan.String, 0)
+	hargaNego.Int64 = ghelper.StringToInt64WithDefault(logSibela.Negosiasi.String, 0)
+
+
 	trxNegoHarga := trxnegohargamodel.TrxNegoHarga{
 		KodeDetailPermintaan: kodeDetailPermintaan,
-		HargaAwal:            logSibela.HargaSatuan,
-		HargaNego:            logSibela.Negosiasi,
+		HargaAwal:            hargaSatuan,
+		HargaNego:            hargaNego,
 		Negotiator:           logSibela.Role,
 		TglNego:              logSibela.CreatedAt,
 	}

@@ -3,13 +3,13 @@ package siplang
 import (
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendorpenandatanganmodel"
-	"promise-migration/internal/model/promise_sibela/tblsignaturemodel"
+	"promise-migration/internal/model/promise_siplang/tblsignaturemodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func InsertPenandatanganToSidapetRefVendorPenandatangan() {
-	// ambil semua vendor yg bertandatangan di sibela
+	// ambil semua vendor yg bertandatangan di siplang
 	allTblSignature := tblsignaturemodel.GetAllSignatureVendor()
 
 	for _, tblSignature := range allTblSignature {

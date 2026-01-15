@@ -29,6 +29,8 @@ var TesKoneksi = &cobra.Command{
 		db.ConnectDbSibela()
 		defer db.DbSibela.Close()
 
+		db.ConnectDbSiplang()
+		defer db.DbSiplang.Close()
 
 	},
 }

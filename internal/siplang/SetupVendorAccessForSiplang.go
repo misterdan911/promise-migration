@@ -1,8 +1,8 @@
 package siplang
 
 import (
-	"promise-migration/internal/model/dbusman/refusermodel"
 	"promise-migration/internal/model/dbusman/trxgroupusermodel"
+	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -10,13 +10,13 @@ import (
 
 func SetupVendorAccessForSiplang() {
 
-	allIdUserEksternal := refusermodel.GetAllIdUserEksternal()
+	allUserDpt := helperusermodel.GetAllUserDpt()
 
-	for _, idUser := range allIdUserEksternal {
+	for _, userDpt := range allUserDpt {
 		currentTime := time.Now().UTC()
 		trxGroupUser := trxgroupusermodel.TrxGroupUser{
 			KodeGroup: pgtype.Text{Valid: true, String: "G05.3"},
-			IdUser:    idUser.Id,
+			IdUser:    userDpt.UsmanRefUserId,
 			Status:    pgtype.Text{Valid: true, String: "1"},
 			Udcr:      pgtype.Text{Valid: true, String: currentTime.String()},
 		}

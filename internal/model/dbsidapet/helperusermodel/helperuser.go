@@ -32,6 +32,8 @@ type HelperUser struct {
 	JenisPenyedia  pgtype.Text
 	UsmanRefUserId pgtype.Int4
 	KodeVendor     pgtype.Int4
+
+	IsTetap        pgtype.Bool
 }
 
 func InsertNew(helperUser HelperUser) {
@@ -58,7 +60,8 @@ func InsertNew(helperUser HelperUser) {
     nama_penyedia,
     jenis_penyedia,
     usman_ref_user_id,
-    kode_vendor
+    kode_vendor,
+    is_tetap
   ) VALUES (
     @id,
     @vms_user_id,
@@ -78,7 +81,8 @@ func InsertNew(helperUser HelperUser) {
     @nama_penyedia,
     @jenis_penyedia,
     @usman_ref_user_id,
-    @kode_vendor
+    @kode_vendor,
+    @is_tetap
   )`
 
 	args := pgx.NamedArgs{
@@ -101,6 +105,7 @@ func InsertNew(helperUser HelperUser) {
 		"jenis_penyedia":      helperUser.JenisPenyedia,
 		"usman_ref_user_id":   helperUser.UsmanRefUserId,
 		"kode_vendor":         helperUser.KodeVendor,
+		"is_tetap":            helperUser.IsTetap,
 	}
 
 	_, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
@@ -212,3 +217,26 @@ func GetByVmsUserEmail(vmsUserEmail pgtype.Text) HelperUser {
 	return helperUser
 
 }
+
+func GetAllUserDpt() []HelperUser {
+
+	var allUser []HelperUser
+	ctx := context.Background()
+
+	qHUser := `SELECT * FROM helper_user WHERE is_tetap = true`
+
+	rwHUser, err := db.DbSidapet.Query(ctx, qHUser)
+	if err != nil {
+		log.Fatal("qHUser Failed, " + err.Error() + " " + qHUser)
+	}
+
+	allUser, err = pgx.CollectRows(rwHUser, pgx.RowToStructByName[HelperUser])
+	if err != nil {
+		log.Fatal("failed collecting rwHUser (helperuser.go:GetAllUser), " + err.Error())
+	}
+	defer rwHUser.Close()
+
+	return allUser
+}
+
+

@@ -12,7 +12,7 @@ import (
 
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
 
-	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
+	// sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsdbprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
@@ -42,25 +42,24 @@ func InsertRefPermintaan() {
 	// reset gUserPP
 	// gUserPP = UserPP{}
 
-	// allTblPaketPl := tblpaketplmodel.GetAllData()
 	allTblPaketPl := tblpaketplonionmodel.GetAllData()
 
 	for _, tblPaketPl := range allTblPaketPl {
 
 		// quick testing for debug siplang
 		// -----------------------------------------------------------------
-		// 1041 -> dholy
-		// 2320 -> danu
+		// 769 -> "???"
 
-		// if tblPaketPl.IdProfilPenyedia.Int32 != 2320 {
+		// if tblPaketPl.IdProfilPenyedia.Int32 != 769 {
 		// 	continue
 		// }
 
-		// if tblPaketPl.IdPaket.Int32 == 390 && tblPaketPl.JenisPenyedia.String == "dpt" {
+		// 2572 -> "Pengadaan Bahan Pendukung Pengiriman BA (Box Buku Universitas Terbuka_Tinggi 30 cm) Bulan Agustus 2025 - PT. Multikemas Kencana Cemerlang"
+		// 2457 -> "???"
+		if tblPaketPl.IdPaket.Int32 != 2572 {
+			continue
+		}
 
-		// } else {
-		// 	continue
-		// }
 		// -----------------------------------------------------------------
 
 		gTblPaketPl = tblPaketPl
@@ -100,7 +99,7 @@ func InsertRefPermintaan() {
 
 			switch tblPaketPl.JenisPenyedia.String {
 			case "luardpt":
-				profilePenyedia = sibelaprofile.GetPenyediaById(tblPaketPl.IdProfilPenyedia)
+				profilePenyedia = vmsdbprofile.GetDataByIdProfile(tblPaketPl.IdProfilPenyedia)
 			case "dpt":
 				profilePenyedia = vmsdbprofile.GetDataByIdProfile(tblPaketPl.IdProfilPenyedia)
 			}
@@ -183,13 +182,13 @@ func InsertRefPermintaan() {
 			ucr.String = "-"
 		}
 
-		fmt.Printf("Id Paket: %d -------------------- \n", tblPaketPl.IdPaket.Int32)
+		// fmt.Printf("Id Paket: %d -------------------- \n", tblPaketPl.IdPaket.Int32)
 		// fmt.Println("Nama Paket: ", tblPaketPl.NamaPesanan.String)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
 			KodeRup:             kodeRup,
 			KodeUnit:            kodeUnit,
-			JenisPenyedia:       tblPaketPl.JenisPenyedia,
+			JenisPenyedia:       pgtype.Text{Valid: true, String: "dpt"},
 			KodeVendor:          kodeVendor,
 			NamaPaket:           tblPaketPl.NamaPesanan,
 			KodeSkemaPembayaran: kodeSkemaPembayaran,
@@ -201,7 +200,7 @@ func InsertRefPermintaan() {
 		}
 
 		fmt.Printf("tblPaketPl.IdPaket: %d\n", tblPaketPl.IdPaket.Int32)
-		fmt.Printf("tblPaketPl.NamaPaket: %v\n", tblPaketPl.NamaPesanan.String)
+		// fmt.Printf("tblPaketPl.NamaPaket: %v\n", tblPaketPl.NamaPesanan.String)
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)
 
