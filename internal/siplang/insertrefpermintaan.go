@@ -56,9 +56,9 @@ func InsertRefPermintaan() {
 
 		// 2572 -> "Pengadaan Bahan Pendukung Pengiriman BA (Box Buku Universitas Terbuka_Tinggi 30 cm) Bulan Agustus 2025 - PT. Multikemas Kencana Cemerlang"
 		// 2457 -> "???"
-		if tblPaketPl.IdPaket.Int32 != 2572 {
-			continue
-		}
+		// if tblPaketPl.IdPaket.Int32 != 2572 {
+		// 	continue
+		// }
 
 		// -----------------------------------------------------------------
 

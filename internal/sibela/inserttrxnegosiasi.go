@@ -13,6 +13,74 @@ import (
 
 func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion, tblPesanan structs.TblPesanan) error {
 
+	var hargaAwal pgtype.Int8
+	hargaAwal.Valid = true
+	hargaAwal.Int64 = ghelper.StringToInt64WithDefault(tblPesanan.HargaSatuan.String, 0)
+
+	var hargaNego pgtype.Int8
+	hargaNego.Valid = true
+	hargaNego.Int64 = ghelper.StringToInt64WithDefault(tblPesanan.Negosiasi.String, 0)
+
+	// tahap 0
+	trxNegoHarga := trxnegohargamodel.TrxNegoHarga{
+		KodeDetailPermintaan: kodeDetailPermintaan,
+		HargaAwal:            hargaAwal,
+		HargaNego:            hargaAwal,
+		Negotiator:           pgtype.Text{Valid: true, String: "penyedia"},
+		TglNego:              tblPaketPl.CreateAt,
+		Tahapan:              pgtype.Int4{Valid: true, Int32: 0},
+	}
+
+	trxnegohargamodel.InsertNewData(trxNegoHarga)
+
+	trxNegoHarga = trxnegohargamodel.TrxNegoHarga{
+		KodeDetailPermintaan: kodeDetailPermintaan,
+		HargaAwal:            hargaAwal,
+		HargaNego:            hargaNego,
+		Negotiator:           pgtype.Text{Valid: true, String: "pp"},
+		TglNego:              tblPaketPl.CreateAt,
+		Tahapan:              pgtype.Int4{Valid: true, Int32: 0},
+	}
+
+	trxnegohargamodel.InsertNewData(trxNegoHarga)
+
+	// tahap 1
+	trxNegoHarga = trxnegohargamodel.TrxNegoHarga{
+		KodeDetailPermintaan: kodeDetailPermintaan,
+		HargaAwal:            hargaAwal,
+		HargaNego:            hargaNego,
+		Negotiator:           pgtype.Text{Valid: true, String: "penyedia"},
+		TglNego:              tblPaketPl.CreateAt,
+		Tahapan:              pgtype.Int4{Valid: true, Int32: 1},
+	}
+
+	trxnegohargamodel.InsertNewData(trxNegoHarga)
+
+	trxNegoHarga = trxnegohargamodel.TrxNegoHarga{
+		KodeDetailPermintaan: kodeDetailPermintaan,
+		HargaAwal:            hargaAwal,
+		HargaNego:            hargaNego,
+		Negotiator:           pgtype.Text{Valid: true, String: "pp"},
+		TglNego:              tblPaketPl.CreateAt,
+		Tahapan:              pgtype.Int4{Valid: true, Int32: 1},
+	}
+
+	trxnegohargamodel.InsertNewData(trxNegoHarga)
+
+	allLogSibela := logsibelamodel.GetDataByIdPesanan(tblPesanan.IDPesanan, tblPaketPl)
+
+	for _, logSibela := range allLogSibela {
+		if strings.ToLower(logSibela.KeteranganNegosiasi.String) == "terima" {
+			trxnegohargamodel.UpdatePersetujuan(kodeDetailPermintaan)
+		}
+	}
+
+	return nil
+}
+
+/*
+func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion, tblPesanan structs.TblPesanan) error {
+
 	// // buat testing
 	// if tblPesanan.IDPesanan.Int32 != 31283 {
 	// 	return nil
@@ -92,6 +160,7 @@ func InsertNegosiasiHarga(kodeDetailPermintaan pgtype.Int4, tblPaketPl tblpaketp
 
 	return nil
 }
+*/
 
 func InsertTrxNegoHarga(kodeDetailPermintaan pgtype.Int4, tblPesanan structs.TblPesanan, logSibela logsibelamodel.LogSibela) {
 	// fmt.Printf("kodeDetailPermintaan: %d \n", kodeDetailPermintaan.Int32)
