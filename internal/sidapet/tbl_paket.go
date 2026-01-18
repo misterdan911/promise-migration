@@ -12,6 +12,8 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/trxvendorpenjrmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxverifikatorpenjrmodel"
 
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"	
+
 	"promise-migration/internal/sidapet/sidapethelper"
 	"strings"
 	"time"
@@ -25,6 +27,13 @@ func MigrateTblPaket() {
 
 	// loop semua data vms_db.tbl_paket
 	for _, vmsPaket := range allVmsPaket {
+
+		// quick testing for debug
+		// -----------------------------------------------------------------
+		// if vmsPaket.IdPaket.Int32 != 78 {
+		// 	continue
+		// }
+
 
 		var statusPersetujuan pgtype.Text
 		if vmsPaket.Status.Int32 == 1 {
@@ -53,10 +62,16 @@ func MigrateTblPaket() {
 
 		metode := pgtype.Text{Valid: true, String: strings.ToLower(vmsPaket.Metode.String)}
 
+	  helperDokumen := helperdokumenmodel.GetByOriginalPath(vmsPaket.PathPaket)
+	  // filePersyaratan := helperDokumen.Newfilename
+	  // encryptKeySkb := helperDokumen.EncryptKey
+
+
 		trxPenjaringan := trxpenjaringanmodel.TrxPenjaringan{
 			NamaPenjaringan:     vmsPaket.NamaPaket,
 			Metode:              metode,
-			FilePersyaratan:     vmsPaket.PathPaket,
+			FilePersyaratan:     helperDokumen.Newfilename,
+			KeypassFilePersyaratan:     helperDokumen.EncryptKey,
 			KodeStatusPengajuan: pgtype.Int4{Valid: true, Int32: 5},
 			StatusPersetujuan:   statusPersetujuan,
 			StatusPengajuanPjr:  pgtype.Text{Valid: true, String: "selesai"},

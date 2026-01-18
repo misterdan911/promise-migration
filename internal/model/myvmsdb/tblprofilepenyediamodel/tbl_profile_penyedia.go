@@ -43,7 +43,9 @@ func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
         path_skb,
         path_skpp23,
         path_pph_dibebaskan
-    FROM tbl_profile_penyedia`
+    FROM tbl_profile_penyedia
+    WHERE id_profil_penyedia >= 0
+    ORDER BY id_profil_penyedia ASC`
 
     results, err := db.MyVmsDb.Query(qData)
     if err != nil {

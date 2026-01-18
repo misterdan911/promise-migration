@@ -18,6 +18,8 @@ func MigrateFileFromVmsDbTblProfilePenyedia() {
   allTblProfilePenyedia, _ := tblprofilepenyediamodel.GetAllDocument()
   originalPath := pgtype.Text{Valid: true, String: ""}
 
+  fmt.Printf("total: %d", len(allTblProfilePenyedia))
+
   for _, tblProfilePenyedia := range allTblProfilePenyedia {
 
     // if tblProfilePenyedia.IdProfilPenyedia.Int32 != 437 {

@@ -1,6 +1,7 @@
 package appdoc
 
 import (
+    "fmt"
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/myvmsdb/tblaktaperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tbldireksiperusahaanmodel"
@@ -104,6 +105,7 @@ func MigrateFileFromVmsDbTblDireksiPerusahaan() {
 // tbl_fasilitas_perusahaan
 func MigrateFileFromVmsDbTblFasilitasPerusahaan() {
     allTblFasilitasPerusahaan, _ := tblfasilitasperusahaanmodel.GetAllDocument()
+    fmt.Printf("jml: %d\n", len(allTblFasilitasPerusahaan))
     originalPath := pgtype.Text{Valid: true, String: ""}
 
     for _, tblFasilitasPerusahaan := range allTblFasilitasPerusahaan {
@@ -111,7 +113,7 @@ func MigrateFileFromVmsDbTblFasilitasPerusahaan() {
         // Process path_fasilitas field
         if tblFasilitasPerusahaan.PathFasilitas.String != "" {
             g.LogDoc.FieldName = "vms_db.tbl_fasilitas_perusahaan.path_fasilitas"
-            g.LogDoc.PkId = tblFasilitasPerusahaan.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblFasilitasPerusahaan.IdPeralatan.Int32
 
             originalPath.String = tblFasilitasPerusahaan.PathFasilitas.String
             ProcessOriginalPath(originalPath)
@@ -129,7 +131,7 @@ func MigrateFileFromVmsDbTblIjinUsahaPerusahaan() {
         // Process path_file_ijin_usaha field
         if tblIjinUsahaPerusahaan.PathIzin.String != "" {
             g.LogDoc.FieldName = "vms_db.tbl_ijin_usaha_perusahaan.path_izin"
-            g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdIjinUsaha.Int32
 
             originalPath.String = tblIjinUsahaPerusahaan.PathIzin.String
             ProcessOriginalPath(originalPath)

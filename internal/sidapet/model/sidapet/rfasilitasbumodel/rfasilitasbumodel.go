@@ -85,8 +85,17 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		}
 
 		helperDokumen := helperdokumenmodel.GetByOriginalPath(vTFP.PathFasilitas)
-		fileFoto := helperDokumen.Newfilename
-		encryptKeyFoto := helperDokumen.EncryptKey
+
+		var fileFoto pgtype.Text
+		var encryptKeyFoto pgtype.Text
+
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			fileFoto = helperDokumen.Newfilename
+			encryptKeyFoto = helperDokumen.EncryptKey
+		} else {
+			fileFoto = helperDokumen.Newfilename
+			encryptKeyFoto = helperDokumen.EncryptKey
+		}
 
 		qIns := `
 		INSERT INTO ref_fasilitas_bu (

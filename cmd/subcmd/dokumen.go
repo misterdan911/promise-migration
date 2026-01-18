@@ -34,7 +34,7 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblAktaPercusahaan()
+		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
 
 		// tbl_direksi_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()
@@ -43,39 +43,39 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan()	// banyak yang 404
 
 		// tbl_ijin_usaha_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
+		appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
+		appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
 
 		// // tbl_paket
-		// appdoc.MigrateFileFromVmsDbTblPaket()
+		appdoc.MigrateFileFromVmsDbTblPaket()
 
 		// tbl_pengalaman_perorangan
-		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
+		appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
-		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()
+		appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromVmsDbTblPengalaman3()
+		appdoc.MigrateFileFromVmsDbTblPengalaman3()
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromVmsDbTblPengalaman10()
+		appdoc.MigrateFileFromVmsDbTblPengalaman10()
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()
+		appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()
 
 		// tbl_profile_penyedia
-		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
+		appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()
+		appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()
 
 		// tbl_sertif_perorangan
-		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan()
+		appdoc.MigrateFileFromVmsDbTblSertifPerorangan()
 
 		// tbl_surat_keputusan
 
@@ -83,45 +83,45 @@ var DokumenCmd = &cobra.Command{
 		g.UrlBasePathExisting = "https://sibela-promiseterbuka.ut.ac.id"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()
 
 		// tbl_direksi_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
 
 		// tbl_fasilitas_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan()
 
 		// tbl_ijin_usaha_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblKomisarisPerusahaan()
 
 		// tbl_pengalaman_perorangan
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
+		appdoc.MigrateFileFromPromiseSibelaTblPengalamanPerorangan()
 
 		// tbl_pengalaman_sekarang
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalamanSekarang()
+		appdoc.MigrateFileFromPromiseSibelaTblPengalamanSekarang()
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman3()
+		appdoc.MigrateFileFromPromiseSibelaTblPengalaman3()
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()
+		appdoc.MigrateFileFromPromiseSibelaTblPengalaman10()
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()
 
 		// tbl_profile_penyedia
-		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia()
+		appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia()
 
 		// tbl_saham_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()
 
 		// tbl_sertif_perorangan
-		// appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
+		appdoc.MigrateFileFromPromiseSibelaTblSertifPerorangan()
 
 		// tbl_surat_keputusan
 
@@ -159,22 +159,22 @@ var DokumenCmd = &cobra.Command{
 		g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
 
 		// tbl_paket_pl
-		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
 		// tbl_signature
-		appdoc.MigrateFileFromPromiseSiplangTblSignature()
+		// appdoc.MigrateFileFromPromiseSiplangTblSignature()
 
 		// tbl_sptb_pl
-		appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
 
-		appdoc.MigrateFileFromPromiseSiplangTblSptjm()
-		appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
+		// appdoc.MigrateFileFromPromiseSiplangTblSptjm()
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
 
 		// tbl_surat_pesanan_pl
-		appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
-		appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

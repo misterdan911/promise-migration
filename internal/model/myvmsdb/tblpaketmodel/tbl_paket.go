@@ -18,7 +18,10 @@ func GetAllDocument() ([]TblPaketDocument, error) {
   SELECT
 		id_paket,
 		path_paket
-  FROM tbl_paket`
+  FROM tbl_paket
+  WHERE id_paket >= 0
+  ORDER BY id_paket ASC
+  `
 
   results, err := db.MyVmsDb.Query(qData)
   if err != nil {

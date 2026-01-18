@@ -24,7 +24,7 @@ func TruncatedbSidapetHelperUser() {
 	qTruncate := "TRUNCATE TABLE helper_user RESTART IDENTITY"
 	_, err := db.DbSidapet.Exec(context.Background(), qTruncate)
 	if err != nil {
-		log.Fatal("Truncate helper_user Failed, " + err.Error())
+		log.Fatal("Truncate db_sidapet.helper_user Failed, " + err.Error())
 	}
 
 	fmt.Println(qTruncate)
