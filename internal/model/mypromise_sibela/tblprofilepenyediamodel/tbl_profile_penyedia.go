@@ -38,7 +38,9 @@ func GetAllDocument() ([]TblProfilePenyediaDocument, error) {
         path_lap_perus,
         path_ikut_serta,
         path_kuasa
-    FROM tbl_profile_penyedia`
+    FROM tbl_profile_penyedia
+    WHERE id_profil_penyedia >= 0
+    ORDER BY id_profil_penyedia`
 
   results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {

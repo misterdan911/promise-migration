@@ -17,7 +17,9 @@ func GetAllDocument() ([]TblSahamPerusahaanDocument, error) {
   SELECT
 		id_saham,
 		path_saham
-  FROM tbl_saham_perusahaan`
+  FROM tbl_saham_perusahaan
+  WHERE id_saham >= 0
+  ORDER BY id_saham ASC`
 
   results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {

@@ -19,7 +19,7 @@ func GetAllDocument() ([]TblIjinUsahaPerusahaanDocument, error) {
     id_profil_penyedia,
 		path_izin
   FROM tbl_ijin_usaha_perusahaan
-  WHERE id_ijin_usaha >= 4496
+  WHERE id_ijin_usaha >= 0
   ORDER BY id_ijin_usaha ASC`
 
   results, err := db.MyVmsDb.Query(qData)

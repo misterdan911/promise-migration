@@ -22,16 +22,16 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
     // vms_db.tbl_profile_penyedia.path_ktp
     if tblProfilePenyedia.PathKtp.String != "" {
-      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_ktp"
+      g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_ktp"
       g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
       originalPath.String = tblProfilePenyedia.PathKtp.String
       ProcessOriginalPath(originalPath)
     }
 
-    // vms_db.path_domisili
+    // promise_sibela.path_domisili
     if tblProfilePenyedia.PathDomisili.String != "" {
-      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_domisili"
+      g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_domisili"
       g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
       originalPath.String = tblProfilePenyedia.PathDomisili.String
@@ -40,7 +40,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
     // path_rek,
     if tblProfilePenyedia.PathRek.String != "" {
-      g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_rek"
+      g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_rek"
       g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
       originalPath.String = tblProfilePenyedia.PathRek.String
@@ -49,7 +49,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_npwp,
 		if tblProfilePenyedia.PathNpwp.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_npwp"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_npwp"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathNpwp.String
@@ -58,7 +58,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_lap_perus,
 		if tblProfilePenyedia.PathLapPerus.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_lap_perus"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_lap_perus"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathLapPerus.String
@@ -67,7 +67,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_ikut_serta,
 		if tblProfilePenyedia.PathIkutSerta.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_ikut_serta"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_ikut_serta"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathIkutSerta.String
@@ -76,7 +76,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_kuasa,
 		if tblProfilePenyedia.PathKuasa.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_kuasa"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_kuasa"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathKuasa.String
@@ -86,7 +86,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 		/*
 		// path_skb,
 		if tblProfilePenyedia.PathSkb.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_skb"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_skb"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathSkb.String
@@ -95,7 +95,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_skpp23,
 		if tblProfilePenyedia.PathSkpp23.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_skpp23"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_skpp23"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathSkpp23.String
@@ -104,7 +104,7 @@ func MigrateFileFromPromiseSibelaTblProfilePenyedia() {
 
 		// path_pph_dibebaskan
 		if tblProfilePenyedia.PathPphDibebaskan.String != "" {
-			g.LogDoc.FieldName = "vms_db.tbl_profile_penyedia.path_pph_dibebaskan"
+			g.LogDoc.FieldName = "promise_sibela.tbl_profile_penyedia.path_pph_dibebaskan"
 			g.LogDoc.PkId = tblProfilePenyedia.IdProfilPenyedia.Int32
 
 			originalPath.String = tblProfilePenyedia.PathPphDibebaskan.String

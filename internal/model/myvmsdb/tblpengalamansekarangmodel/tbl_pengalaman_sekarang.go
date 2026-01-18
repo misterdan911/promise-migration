@@ -6,7 +6,8 @@ import (
 )
 
 type TblPengalamanSekarangDocument struct {
-	IdProfilPenyedia sql.NullInt32
+	IdPengalamanSekarang sql.NullInt32
+  IdProfilPenyedia sql.NullInt32
 	PathPnglmnSkrg   sql.NullString
 }
 
@@ -14,9 +15,12 @@ func GetAllDocument() ([]TblPengalamanSekarangDocument, error) {
 
   qData := `
   SELECT
-		id_profil_penyedia,
+		id_pengalaman_sekarang,
+    id_profil_penyedia,
 		path_pnglmn_skrg
-  FROM tbl_pengalaman_sekarang`
+  FROM tbl_pengalaman_sekarang
+  WHERE id_pengalaman_sekarang >= 0
+  ORDER BY id_pengalaman_sekarang ASC`
 
   results, err := db.MyVmsDb.Query(qData)
   if err != nil {
@@ -29,6 +33,7 @@ func GetAllDocument() ([]TblPengalamanSekarangDocument, error) {
   for results.Next() {
       var doc TblPengalamanSekarangDocument
       err := results.Scan(
+          &doc.IdPengalamanSekarang,
           &doc.IdProfilPenyedia,
           &doc.PathPnglmnSkrg,
       )
