@@ -174,7 +174,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
 		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

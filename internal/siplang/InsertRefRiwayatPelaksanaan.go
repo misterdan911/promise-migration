@@ -333,7 +333,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		switch tblPaketPl.JenisPenyedia.String {
 		case "luardpt":
 			tblSptbPl = tblsptbplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)
-			namaTabelLama.String = "tbl_sptb_p"
+			namaTabelLama.String = "tbl_sptb_pl"
 			idSptb = tblSptbPl.IDSptbPl
 		case "dpt":
 			tblSptbPl = tblsptbdptplmodel.GetByIdTerminPl(tblTerminPl.IdTerminPl)

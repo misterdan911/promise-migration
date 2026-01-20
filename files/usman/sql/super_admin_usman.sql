@@ -103,6 +103,14 @@ update ref_user set password = '$2b$12$K4DoerR.bOMqWyPPAhUGo.JQvzb1jz4L28HgY7.RU
 
 update ref_user set password = '$2b$12$K4DoerR.bOMqWyPPAhUGo.JQvzb1jz4L28HgY7.RUxt8EcOlo5E8i' where email = 'franciskapuspadewi@gmail.com';
 
+-- franciskapuspadewi@gmail.com ke siplang
+insert into trx_group_user
+(  kode_group,  id_user,  status)
+values
+(  'G05.3',  32070,  '1');
+
+
+
 $2b$12$K4DoerR.bOMqWyPPAhUGo.JQvzb1jz4L28HgY7.RUxt8EcOlo5E8i
 
 

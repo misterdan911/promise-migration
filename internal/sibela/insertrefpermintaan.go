@@ -8,12 +8,14 @@ import (
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
-	"promise-migration/internal/model/vmsdb/tblppksubmodel"
+	"promise-migration/internal/model/vmsdb/tblppkmodel"
+	// "promise-migration/internal/model/vmsdb/tblppksubmodel"
+
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
 
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsdbprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
-	
+
 	"promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
@@ -77,8 +79,11 @@ func InsertRefPermintaan() {
 			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
 		}
 
-		// dapatkan kodeUnit
+		// dapatkan kodeUnit & nama_unit
 		var kodeUnit pgtype.Text
+		var namaUnit pgtype.Text
+
+		/*
 		userIdPpk := tblppksubmodel.GetUserIdUserPpkActive(tblPaketPl.IdPpk)
 		userPPK = helperusermodel.GetByVmsUserId(userIdPpk)
 		kodeUnit = userPPK.KodeUnit
@@ -89,6 +94,13 @@ func InsertRefPermintaan() {
 			userPp := helperusermodel.GetByVmsUserId(idUserPp)
 			kodeUnit = userPp.KodeUnit
 		}
+		*/
+
+		unitPpk := tblppkmodel.GetUnitByIdPpk(tblPaketPl.IdPpk)
+		kodeUnit = unitPpk.KodeUnit
+		namaUnit = unitPpk.NamaUnit
+
+		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
 
 
 		// dapatkan kodeVendor
@@ -164,8 +176,6 @@ func InsertRefPermintaan() {
 		// dapatkan kode_status_permintaan
 
 
-		// dapatkan nama_unit
-		namaUnit := GetNamaUnit(kodeUnit)
 
 		// dapatkan Ucr
 		var ucr pgtype.Text

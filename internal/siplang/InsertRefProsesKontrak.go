@@ -122,11 +122,14 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	jenisPembayaran := pgtype.Text{Valid: true}
 	totalTermin := len(allTblTermin)
 
-	if totalTermin > 0 {
-		gKodeStatusPermintaan.Int32 = 8
+	// fmt.Printf("totalTermin: %d", totalTermin)
 
+	if totalTermin > 0 {
+		gKodeStatusPermintaan.Int32 = 9
+
+		// fmt.Printf("allTblTermin[totalTermin-1].StatusTerminBast.Int32", allTblTermin[totalTermin-1].StatusTerminBast.Int32)
 		if allTblTermin[totalTermin-1].StatusTerminBast.Int32 == 3 {
-			gKodeStatusPermintaan.Int32 = 9
+			gKodeStatusPermintaan.Int32 = 10
 		}
 	}
 

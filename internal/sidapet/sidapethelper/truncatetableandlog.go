@@ -63,7 +63,7 @@ func TruncateTableAndLog2() {
 	}
 
 
-	qTruncate = "TRUNCATE TABLE trx_penjaringan CASCADE"
+	qTruncate = "DELETE FROM trx_penjaringan"
 	_, err = db.DbSidapet.Exec(ctx, qTruncate)
 	if err != nil {
 		log.Fatal("Truncate trx_penjaringan Failed, " + err.Error())

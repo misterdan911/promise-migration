@@ -8,7 +8,7 @@ import (
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/promise_siplang/logpaketmodel"
 	"promise-migration/internal/model/promise_siplang/tblpaketplonionmodel"
-	"promise-migration/internal/model/vmsdb/tblppksubmodel"
+	"promise-migration/internal/model/vmsdb/tblppkmodel"
 
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
 
@@ -54,9 +54,8 @@ func InsertRefPermintaan() {
 		// 	continue
 		// }
 
-		// 2572 -> "Pengadaan Bahan Pendukung Pengiriman BA (Box Buku Universitas Terbuka_Tinggi 30 cm) Bulan Agustus 2025 - PT. Multikemas Kencana Cemerlang"
-		// 2457 -> "???"
-		// if tblPaketPl.IdPaket.Int32 != 2572 {
+		// 2618 -> "Pengadaan Bahan Pendukung Pengiriman BA (Box Buku Universitas Terbuka_Tinggi 30 cm) Bulan September 2025 - PT. Multikemas Kencana Cemerlang"
+		// if tblPaketPl.IdPaket.Int32 != 2618 {
 		// 	continue
 		// }
 
@@ -77,8 +76,11 @@ func InsertRefPermintaan() {
 			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
 		}
 
-		// dapatkan kodeUnit
+		// dapatkan kodeUnit & nama_unit
 		var kodeUnit pgtype.Text
+		var namaUnit pgtype.Text
+
+		/*
 		userIdPpk := tblppksubmodel.GetUserIdUserPpkActive(tblPaketPl.IdPpk)
 		userPPK = helperusermodel.GetByVmsUserId(userIdPpk)
 		kodeUnit = userPPK.KodeUnit
@@ -89,6 +91,14 @@ func InsertRefPermintaan() {
 			userPp := helperusermodel.GetByVmsUserId(idUserPp)
 			kodeUnit = userPp.KodeUnit
 		}
+		*/
+
+		unitPpk := tblppkmodel.GetUnitByIdPpk(tblPaketPl.IdPpk)
+		kodeUnit = unitPpk.KodeUnit
+		namaUnit = unitPpk.NamaUnit
+
+		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
+		
 
 		// dapatkan kodeVendor
 		var profilePenyedia structs.TblProfilePenyedia
@@ -160,10 +170,6 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
-		// dapatkan kode_status_permintaan
-
-		// dapatkan nama_unit
-		namaUnit := GetNamaUnit(kodeUnit)
 
 		// dapatkan Ucr
 		var ucr pgtype.Text

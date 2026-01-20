@@ -36,6 +36,7 @@ type TrxPajak struct {
 	TanggalEfaktur               pgtype.Timestamp
 	NamaTabelLama               pgtype.Text
 	IdSptb               pgtype.Int4
+	BiayaTakKenaPajak      		 pgtype.Int4
 }
 
 func InsertNew(trxPajak TrxPajak) TrxPajak {
