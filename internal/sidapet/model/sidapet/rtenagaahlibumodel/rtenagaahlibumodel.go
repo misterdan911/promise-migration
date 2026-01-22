@@ -126,43 +126,49 @@ func InsertRefTenagaAhliBu(vTPP structs.VmsTblPersonaliaPerush) {
     kode_vendor,
     nama,
     no_ktp,
-    file_ktp,
     tempat_lahir,
     tgl_lahir,
     posisi,
     kode_jenjang_pendidikan,
     program_studi,
+    file_ktp,
+    encrypt_key_ktp,
     file_ijazah,
     encrypt_key_ijazah,
-    file_cv
+    file_cv,
+    encrypt_key_cv
   ) VALUES (
     @kode_vendor,
     @nama,
     @no_ktp,
-    @file_ktp,
     @tempat_lahir,
     @tgl_lahir,
     @posisi,
     @kode_jenjang_pendidikan,
     @program_studi,
+    @file_ktp,
+    @encrypt_key_ktp,
     @file_ijazah,
     @encrypt_key_ijazah,
-    @file_cv
+    @file_cv,
+    @encrypt_key_cv
   ) RETURNING kode_tenaga_ahli`
 
 	args := pgx.NamedArgs{
 		"kode_vendor":             helperUser.KodeVendor,
 		"nama":                    vTPP.NmPersonal,
 		"no_ktp":                  sql.NullString{},
-		"file_ktp":                sql.NullString{},
 		"tempat_lahir":            sql.NullString{},
 		"tgl_lahir":               tglLahir,
 		"posisi":                  vTPP.JbtnPersonal,
 		"kode_jenjang_pendidikan": kodeJenjangPendidikan,
 		"program_studi":           sql.NullString{},
+    "file_ktp": 							 fileIjazah,
+    "encrypt_key_ktp":				 encryptKeyIjazah,
     "file_ijazah":             fileIjazah,
 		"encrypt_key_ijazah":      encryptKeyIjazah,
-		"file_cv":                 sql.NullString{},
+		"file_cv":                 fileIjazah,
+    "encrypt_key_cv":					 encryptKeyIjazah,
 	}
 
 	rwIns, errIns := db.DbSidapet.Query(ctx, qIns, args)

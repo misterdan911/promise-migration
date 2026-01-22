@@ -52,8 +52,9 @@ var SidapetCmd = &cobra.Command{
 				Name: helperUser.VmsUserName,
 			}
 
+			// mode: quicktest
 			// dipake buat testing InsertIntoCustomTable
-			// if helperUser.KodeVendor.Int32 != 31932 {
+			// if helperUser.KodeVendor.Int32 != 32347 {
 			// 	continue
 			// }
 

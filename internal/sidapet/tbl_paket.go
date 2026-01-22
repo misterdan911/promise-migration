@@ -2,6 +2,7 @@ package sidapet
 
 import (
 	"fmt"
+	// "promise-migration/internal/structs"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/model/dbsidapet/refvendormodel"
 	"promise-migration/internal/model/vmsdb/tblpaketmodel"
@@ -11,6 +12,7 @@ import (
 	"promise-migration/internal/sidapet/model/sidapet/trxnilaiakhirmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxvendorpenjrmodel"
 	"promise-migration/internal/sidapet/model/sidapet/trxverifikatorpenjrmodel"
+
 
 	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"	
 
@@ -101,6 +103,12 @@ func MigrateTblPaket() {
     for _, tblVerif := range allTblVerif {
       // dapatkan id_user
       tblProfilePenyedia := tblprofilepenyediamodel.GetDataByIdProfile(tblVerif.IdProfil)
+
+      // // kalo data profilenya kosong, kemungkinan sudah dihapus, jadi skip aja
+      // if (tblProfilePenyedia == structs.TblProfilePenyedia{}) {
+      // 	continue
+      // }
+
       // dapatkan kode_vendor
       helperUser := helperusermodel.GetByVmsUserId(tblProfilePenyedia.IdUser)
 
@@ -110,8 +118,10 @@ func MigrateTblPaket() {
       }
 
       // dapatkan kodeJenisVendor
+      fmt.Printf("helperUser.KodeVendor: %d\n", helperUser.KodeVendor.Int32)
       refVendor := refvendormodel.GetDataByKodeVendor(helperUser.KodeVendor)
 
+			// mode: quicktest
 			// ini dipake pas testing InsertIntoCustomTable
       // if (refVendor.KodeVendor == pgtype.Int4{}) {
       // 	continue

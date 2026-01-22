@@ -55,7 +55,7 @@ var SibelaCmd = &cobra.Command{
 		fmt.Println("InsertRefPermintaan")
 		sibela.InsertRefPermintaan()
 
-		sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
+		// sibela.InsertPenandatanganToSidapetRefVendorPenandatangan()
 
 		// sibelahelper.CreateAllForeignKey()
 	},
