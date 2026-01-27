@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"promise-migration/db"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
 	"promise-migration/internal/sidapet/sidapethelper"
 	"promise-migration/internal/structs"
@@ -68,17 +69,28 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 	defer rVTS.Close()
 
 	for _, vTS := range allVTS {
+
+
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(vTS.PathSaham)
+		pathSaham := helperDokumen.Newfilename
+		encryptKey := helperDokumen.EncryptKey
+
+
 		qIns := `
 		INSERT INTO ref_saham_bu (
 		  kode_vendor,
 		  nm_saham,
 		  no_ktp_saham,
-		  persentase_saham
+		  persentase_saham,
+			path_saham,
+			encrypt_key
 		) VALUES (
 		  @kode_vendor,
 		  @nm_saham,
 		  @no_ktp_saham,
-		  @persentase_saham
+		  @persentase_saham,
+		  @path_saham,
+			@encrypt_key
 		)`
 
 		args := pgx.NamedArgs{
@@ -86,6 +98,8 @@ func InsertrefSahamBu(profilePenyedia structs.TblProfilePenyedia, helperUser hel
 			"nm_saham":         vTS.NmSaham,
 			"no_ktp_saham":     vTS.NoKtpSaham,
 			"persentase_saham": vTS.PersentaseSaham,
+			"path_saham": pathSaham,
+			"encrypt_key": encryptKey,
 		}
 
 		_, errIns := db.DbSidapet.Exec(ctx, qIns, args)

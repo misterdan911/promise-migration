@@ -181,6 +181,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 
 	rtenagaahlibumodel.InsertPersonalia(profilePenyedia, helperUser)
 	rfasilitasbumodel.InsertRefFasilitasBu(profilePenyedia, helperUser)
+
 	// data kantor tidak ada
 
 	rpengalamanbumodel.InsertPengalaman(profilePenyedia, helperUser)

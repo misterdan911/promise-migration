@@ -85,17 +85,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		}
 
 		helperDokumen := helperdokumenmodel.GetByOriginalPath(vTFP.PathFasilitas)
-
-		var fileFoto pgtype.Text
-		var encryptKeyFoto pgtype.Text
-
-		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
-			fileFoto = helperDokumen.Newfilename
-			encryptKeyFoto = helperDokumen.EncryptKey
-		} else {
-			fileFoto = helperDokumen.Newfilename
-			encryptKeyFoto = helperDokumen.EncryptKey
-		}
+		fileFoto := helperDokumen.Newfilename
+		encryptKeyFoto := helperDokumen.EncryptKey
 
 		qIns := `
 		INSERT INTO ref_fasilitas_bu (
@@ -105,6 +96,7 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  kode_kondisi,
 		  kode_kepemilikan,
 		  file_kepemilikan,
+			encrypt_key_kepemilikan,
 		  file_foto,
 			encrypt_key_foto
 		) VALUES (
@@ -114,6 +106,7 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 		  @kode_kondisi,
 		  @kode_kepemilikan,
 		  @file_kepemilikan,
+			@encrypt_key_kepemilikan,
 		  @file_foto,
 			@encrypt_key_foto
 		)`
@@ -124,7 +117,8 @@ func InsertRefFasilitasBu(profilePenyedia structs.TblProfilePenyedia, helperUser
 			"jumlah":           vTFP.JumlahFasilitas,
 			"kode_kondisi":     kodeKondisi,
 			"kode_kepemilikan": sql.NullInt32{},
-			"file_kepemilikan": sql.NullString{},
+			"file_kepemilikan": fileFoto,
+			"encrypt_key_kepemilikan": encryptKeyFoto,
 			"file_foto":        fileFoto,
 			"encrypt_key_foto": encryptKeyFoto,
 		}

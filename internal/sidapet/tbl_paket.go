@@ -30,9 +30,9 @@ func MigrateTblPaket() {
 	// loop semua data vms_db.tbl_paket
 	for _, vmsPaket := range allVmsPaket {
 
-		// quick testing for debug
+		// mode: quicktest
 		// -----------------------------------------------------------------
-		// if vmsPaket.IdPaket.Int32 != 78 {
+		// if vmsPaket.IdPaket.Int32 != 9 {
 		// 	continue
 		// }
 
