@@ -32,23 +32,26 @@ var UsmanCmd = &cobra.Command{
 		db.ConnectPromiseSibela()
 		defer db.PromiseSibela.Close()
 
-		// g.ExcludedEmails = ghelper.GetExcludedEmail()
 
-		// usmanhelper.DropAllForeignKey()
-
-		// usmanhelper.TruncateTableAndLog()
+    /*
+     * Kosongkan tabel berikut ini:
+     * - ref_user
+     * - ref_user_internal
+     * - ref_user_external
+     * - trx_user_tampung
+     * - trx_group_user
+     * - db_sidapet.helper_user
+    */	
 		usmanhelper.TruncateTableAndLog2()
 
 		usman.MigrateUserInternal()
 		usman.MigrateUserExternal()
-		usman.PopulateTrxGroupUser()
 
-		// // usman.PopulateHelperUserNip() ----
+    usman.SetupVendorAccessForSidapet()
+    usman.SetupAccessForInternalUser()
+
 		usman.PopulateHelperUser()
-		// usman.MigrateUserToUsman()
-		// usman.UpdateUsmanRefUserIdOnHelperUser()
 
-		// // usmanhelper.CreateAllForeignKey()
 
 		usmanhelper.UpdatePkSequenceFromFile()
 
@@ -58,3 +61,20 @@ var UsmanCmd = &cobra.Command{
 func init() {
 	// Emang Kosongz
 }
+
+
+// gak dipake
+// g.ExcludedEmails = ghelper.GetExcludedEmail()
+
+// usmanhelper.DropAllForeignKey()
+
+// usmanhelper.TruncateTableAndLog()
+
+// usman.PopulateTrxGroupUser()
+
+
+// // usman.PopulateHelperUserNip() ----
+// usman.MigrateUserToUsman()
+// usman.UpdateUsmanRefUserIdOnHelperUser()
+// // usmanhelper.CreateAllForeignKey()
+

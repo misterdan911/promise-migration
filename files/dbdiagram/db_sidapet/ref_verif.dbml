@@ -1,0 +1,642 @@
+
+
+Table ref_verif_datadiri {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_datadiri int4
+
+  is_tempat_lahir_sesuai bool
+  komentar_tempat_lahir varchar(255)
+
+  is_tgl_lahir_sesuai bool
+  komentar_tgl_lahir varchar(255)
+
+  is_file_ktp_sesuai bool
+  komentar_file_ktp varchar(255)
+
+  is_kode_kab_kota_ktp_sesuai bool
+  komentar_kode_kab_kota_ktp varchar(255)
+
+  is_alamat_ktp_sesuai bool
+  komentar_alamat_ktp varchar(255)
+
+  is_kode_kab_kota_domisili_sesuai bool
+  komentar_kode_kab_kota_domisili varchar(255)
+
+  is_alamat_domisili_sesuai bool
+  komentar_alamat_domisili varchar(255)
+
+  is_file_skd_sesuai bool
+  komentar_file_skd varchar(255)
+}
+
+/*
+Table ref_verif_administrasi_pero_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_adm int4
+
+  is_file_skd_sesuai bool
+  komentar_file_skd varchar(255)
+  custom_adm jsonb
+
+  is_npwp_sesuai bool
+  komentar_npwp varchar(255)
+  is_file_npwp_sesuai text
+  komentar_file_npwp varchar(255)
+  is_bukti_spt_sesuai text
+  komentar_bukti_spt varchar(255)
+  is_file_skb_pph23_sesuai text
+  komentar_file_skb_pph23 varchar(255)
+  is_file_sk_pp23_sesuai text
+  komentar_file_sk_pp23 varchar(255)
+  custom_npwp jsonb
+}
+*/
+Table ref_verif_administrasi_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_adm int4
+
+  is_file_skd_sesuai bool
+  komentar_file_skd varchar(255)
+
+  is_file_bukti_spt_sesuai text
+  komentar_bukti_spt varchar(255)
+
+  is_file_skb_pph23_sesuai text
+  komentar_file_skb_pph23 varchar(255)
+
+  is_file_sk_pp23_sesuai text
+  komentar_file_sk_pp23 varchar(255)
+
+  is_file_non_pkp_sesuai text
+  komentar_file_non_pkp varchar(255)
+}
+
+/*
+Table ref_verif_personalia_pero_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_personalia int4
+
+  is_nama_sesuai bool
+  komentar_nama varchar(255)
+  is_nik_sesuai bool
+  komentar_nik varchar(255)
+  is_tempat_lahir_sesuai bool
+  komentar_tempat_lahir varchar(255)
+  is_tgl_lahir_sesuai bool
+  komentar_tgl_lahir varchar(255)
+  is_bidang_keahlian_sesuai bool
+  komentar_bidang_keahlian varchar(255)
+  is_program_studi_sesuai bool
+  komentar_program_studi varchar(255)
+  is_file_ktp_sesuai bool
+  komentar_file_ktp varchar(255)
+  is_file_ijazah_sesuai bool
+  komentar_file_ijazah varchar(255)
+  is_file_cv_sesuai bool
+  komentar_file_cv varchar(255)
+
+  custom_teknis jsonb
+}
+*/
+Table ref_verif_personalia_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_personalia int4
+
+  is_bidang_keahlian_sesuai bool
+  komentar_bidang_keahlian varchar(255)
+
+  is_kode_jenjang_pendidikan_sesuai bool
+  komentar_kode_jenjang_pendidikan varchar(255)
+
+  is_program_studi_sesuai bool
+  komentar_program_studi varchar(255)
+
+  is_file_ijazah_sesuai bool
+  komentar_file_ijazah varchar(255)
+  
+  is_file_cv_sesuai bool
+  komentar_file_cv varchar(255)
+
+  is_tgl_cv_sesuai bool
+  komentar_tgl_cv varchar(255)
+}
+
+/*
+Table ref_verif_pengalaman_pero_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_pengalaman int4
+
+  is_nama_pekerjaan_sesuai bool
+  komentar_nama_pekerjaan varchar(255)
+  is_posisi_sesuai bool
+  komentar_posisi varchar(255)
+  is_jangka_waktu_sesuai bool
+  komentar_jangka_waktu varchar(255)
+  is_nilai_pekerjaan_sesuai bool
+  komentar_nilai_pekerjaan varchar(255)
+  is_file_bukti_sesuai bool
+  komentar_file_bukti varchar(255)
+
+  custom jsonb
+
+  nilai int4
+}
+*/
+Table ref_verif_pengalaman_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_pengalaman int4
+
+  is_nama_pekerjaan_sesuai bool
+  komentar_nama_pekerjaan varchar(255)
+
+  is_posisi_sesuai bool
+  komentar_posisi varchar(255)
+  
+  is_jangka_waktu_sesuai bool
+  komentar_jangka_waktu varchar(255)
+
+  is_nilai_pekerjaan_sesuai bool
+  komentar_nilai_pekerjaan varchar(255)
+  
+  is_file_bukti_sesuai bool
+  komentar_file_bukti varchar(255)
+
+  nilai int4
+}
+
+/*
+Table ref_verif_sertif_pero_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_sertif int4
+
+  is_nm_sertifikat_sesuai bool
+  komentar_nm_sertifikat varchar(255)
+  is_file_bukti_sesuai bool
+  komentar_file_bukti varchar(255)
+
+  custom jsonb
+
+  nilai int4
+}
+*/
+Table ref_verif_sertif_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_sertif int4
+
+  is_nm_sertifikat_sesuai bool
+  komentar_nm_sertifikat varchar(255)
+
+  is_file_bukti_sesuai bool
+  komentar_file_bukti varchar(255)
+
+  nilai int4
+}
+
+Table ref_verif_umum {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_umum int4
+
+  is_nomor_telp_sesuai bool
+  komentar_nomor_telp varchar(255)
+
+  is_kode_kualifikasi_usaha_sesuai bool
+  komentar_kode_kualifikasi_usaha varchar(255)
+
+  is_alamat_badan_usaha_sesuai bool
+  komentar_alamat_badan_usaha varchar(255)
+
+  is_file_dok_domisili_sesuai bool
+  komentar_file_dok_domisili varchar(255)
+}
+Ref: ref_verif_umum.kode_umum > ref_umum.kode_umum [delete: cascade]
+Ref: ref_verif_umum.kode_vendor_penjr > trx_vendor_penjr.kode_vendor_penjr [delete: cascade]
+
+/*
+Table ref_verif_keuangan_bu_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_keuangan int4
+
+  is_nm_pemilik_rek_sesuai bool
+  komentar_nm_pemilik_rek varchar(255)
+  is_no_rek_sesuai bool
+  komentar_no_rek varchar(255)
+  is_sandi_bank_sesuai bool
+  komentar_sandi_bank varchar(255)
+  is_file_buku_rek_sesuai bool
+  komentar_file_buku_rek varchar(255)
+
+  custom_bank jsonb
+
+  is_file_lap_keu_sesuai bool
+  komentar_file_lap_keu varchar(255)
+  is_file_lap_keu_audited_sesuai bool
+  komentar_file_lap_keu_audited varchar(255)
+
+  custom_lap_keu jsonb
+}
+*/
+Table ref_verif_keuangan_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_keuangan int4
+
+  is_nm_pemilik_rek_sesuai bool
+  komentar_nm_pemilik_rek varchar(255)
+
+  is_no_rek_sesuai bool
+  komentar_no_rek varchar(255)
+
+  is_sandi_bank_sesuai bool
+  komentar_sandi_bank varchar(255)
+
+  is_file_buku_rek_sesuai bool
+  komentar_file_buku_rek varchar(255)
+
+  is_file_lap_keu_sesuai bool
+  komentar_file_lap_keu varchar(255)
+
+  is_file_lap_keu_audited_sesuai bool
+  komentar_file_lap_keu_audited varchar(255)
+}
+
+/*
+Table ref_verif_keuangan_pero_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_keuangan int4
+
+  is_nm_pemilik_rek_sesuai bool
+  komentar_nm_pemilik_rek varchar(255)
+  is_no_rek_sesuai bool
+  komentar_no_rek varchar(255)
+  is_sandi_bank_sesuai bool
+  komentar_sandi_bank varchar(255)
+  is_file_buku_rek_sesuai bool
+  komentar_file_buku_rek varchar(255)
+
+  custom jsonb
+}
+*/
+Table ref_verif_keuangan_pero {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_keuangan int4
+
+  is_nm_pemilik_rek_sesuai bool
+  komentar_nm_pemilik_rek varchar(255)
+
+  is_no_rek_sesuai bool
+  komentar_no_rek varchar(255)
+
+  is_sandi_bank_sesuai bool
+  komentar_sandi_bank varchar(255)
+
+  is_file_buku_rek_sesuai bool
+  komentar_file_buku_rek varchar(255)
+}
+
+/*
+Table ref_verif_adm_bu_old {
+  kode_verif serial [pk]
+
+  kode_vendor_penjr int4
+  kode_adm_bu int4
+
+  is_file_fis_sesuai bool
+  komentar_file_fis varchar(255)
+  is_file_s_kuasa_sesuai bool
+  komentar_file_s_kuasa varchar(255)
+  is_file_spkd_sesuai bool
+  komentar_file_spkd varchar(255)
+
+  custom jsonb
+}
+*/
+Table ref_verif_adm_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_adm_bu int4
+
+  is_file_fis_sesuai bool
+  komentar_file_fis varchar(255)
+
+  is_file_s_kuasa_sesuai bool
+  komentar_file_s_kuasa varchar(255)
+
+  is_file_spkd_sesuai bool
+  komentar_file_spkd varchar(255)
+}
+
+/*
+Table ref_verif_lan_hukum_bu_old {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_lan_hukum int4
+
+  is_no_akta_awal_sesuai bool
+  komentar_no_akta_awal varchar(255)
+  is_tgl_akta_awal_sesuai bool
+  komentar_tgl_akta_awal varchar(255)
+  is_notaris_awal_sesuai bool
+  komentar_notaris_awal varchar(255)
+  is_no_sah_awal_sesuai bool
+  komentar_no_sah_awal varchar(255)
+  is_file_akta_awal_sesuai bool
+  komentar_file_akta_awal varchar(255)
+  is_no_akta_rubah_sesuai bool
+  komentar_no_akta_rubah varchar(255)
+  is_tgl_akta_rubah_sesuai bool
+  komentar_tgl_akta_rubah varchar(255)
+  is_notaris_rubah_sesuai bool
+  komentar_notaris_rubah varchar(255)
+  is_no_sah_rubah_sesuai bool
+  komentar_no_sah_rubah varchar(255)
+  is_file_akta_rubah_sesuai bool
+  komentar_file_akta_rubah varchar(255)
+
+  custom jsonb
+}
+*/
+Table ref_verif_lan_hukum_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_lan_hukum int4
+
+  is_no_akta_awal_sesuai bool
+  komentar_no_akta_awal varchar(255)
+
+  is_tgl_akta_awal_sesuai bool
+  komentar_tgl_akta_awal varchar(255)
+
+  is_notaris_awal_sesuai bool
+  komentar_notaris_awal varchar(255)
+
+  is_no_sah_awal_sesuai bool
+  komentar_no_sah_awal varchar(255)
+
+  is_tgl_sah_awal_sesuai bool
+  komentar_tgl_sah_awal varchar(255)
+
+  is_file_akta_awal_sesuai bool
+  komentar_file_akta_awal varchar(255)
+
+  is_no_akta_rubah_sesuai bool
+  komentar_no_akta_rubah varchar(255)
+
+  is_tgl_akta_rubah_sesuai bool
+  komentar_tgl_akta_rubah varchar(255)
+
+  is_notaris_rubah_sesuai bool
+  komentar_notaris_rubah varchar(255)
+
+  is_no_sah_rubah_sesuai bool
+  komentar_no_sah_rubah varchar(255)
+
+  is_tgl_sah_rubah_sesuai bool
+  komentar_tgl_sah_rubah varchar(255)
+
+  is_file_akta_rubah_sesuai bool
+  komentar_file_akta_rubah varchar(255)
+}
+
+/*
+Table ref_verif_data_pajak_bu_old {
+  kode_verif serial [pk]
+  kode_data_pajak int4
+  kode_vendor_penjr int4
+
+  npwp varchar(20) [note: "Nomor NPWP"]
+  is_npwp_sesuai bool
+  komentar_npwp varchar(255)
+
+  file_npwp text
+  is_file_npwp_sesuai bool
+  komentar_file_npwp varchar(255)
+
+  file_kswp text
+  is_file_kswp_sesuai bool
+  komentar_file_kswp varchar(255)
+
+  file_bukti_spt text [note: "NPWP"]
+  is_file_bukti_spt_sesuai bool
+  komentar_file_bukti_spt varchar(255)
+
+  file_skb_pph23 text [note: "NPWP"]
+  is_file_skb_pph23_sesuai bool
+  komentar_file_skb_pph23 varchar(255)
+
+  file_sk_pp23 text [note: "NPWP"]
+  is_file_sk_pp23_sesuai bool
+  komentar_file_sk_pp23 varchar(255)
+
+  custom jsonb
+}
+*/
+Table ref_verif_data_pajak_bu {
+  kode_verif serial [pk]
+  kode_data_pajak int4
+  kode_vendor_penjr int4
+
+  file_kswp text
+  is_file_kswp_sesuai bool
+  komentar_file_kswp varchar(255)
+
+  file_bukti_spt text [note: "NPWP"]
+  is_file_bukti_spt_sesuai bool
+  komentar_file_bukti_spt varchar(255)
+
+  file_skb_pph23 text [note: "NPWP"]
+  is_file_skb_pph23_sesuai bool
+  komentar_file_skb_pph23 varchar(255)
+
+  file_sk_pp23 text [note: "NPWP"]
+  is_file_sk_pp23_sesuai bool
+  komentar_file_sk_pp23 varchar(255)
+
+  file_bukti_non_pkp text [note: "Bukti Non PKP"]
+  is_file_bukti_non_pkp_sesuai bool
+}
+
+Table ref_verif_komisaris {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_komisaris int4
+  is_sesuai bool
+  komentar varchar(255)
+}
+
+Table ref_verif_direksi {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_direksi int4
+  is_sesuai bool
+  komentar varchar(255)
+}
+
+Table ref_verif_izin_usaha_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_izin_usaha int4
+  is_sesuai bool
+  komentar varchar(255)
+}
+
+Table ref_verif_sertifikat_usaha_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_sertifikat_usaha int4
+  is_sesuai bool
+  komentar varchar(255)
+}
+
+Table ref_verif_saham_bu {
+  kode_verif serial [pk]
+  kode_vendor_penjr int4
+  kode_saham int4
+  is_sesuai bool
+  komentar varchar(255)
+}
+
+Table ref_verif_tenaga_ahli_bu {
+  kode_verif serial [pk]
+  kode_tenaga_ahli int4
+  kode_vendor_penjr int4
+
+  is_sesuai bool
+  komentar varchar(255)
+  nilai int4
+}
+
+Table ref_verif_tenaga_pendukung_bu {
+  kode_verif serial [pk]
+  kode_tenaga_pendukung int4
+  kode_vendor_penjr int4
+
+  is_sesuai bool
+  komentar varchar(255)
+  nilai int4
+}
+
+Table ref_verif_kantor_bu {
+  kode_verif serial [pk]
+  kode_kantor int4
+  kode_vendor_penjr int4
+
+  is_sesuai bool
+  komentar varchar(255)
+  nilai int4
+}
+
+Table ref_verif_fasilitas_bu {
+  kode_verif serial [pk]
+  kode_fasilitas int4
+  kode_vendor_penjr int4
+
+  is_sesuai bool
+  komentar varchar(255)
+  nilai int4
+}
+
+Table ref_verif_pengalaman_bu {
+  kode_verif serial [pk]
+  kode_pengalaman_bu int4
+  kode_vendor_penjr int4
+
+  is_sesuai bool
+  komentar varchar(255)
+  nilai int4
+
+  // Gak Perlu ada field custom karena diverifikasinya per row
+}
+
+
+Ref: ref_verif_datadiri.kode_datadiri > ref_datadiri.kode_datadiri [delete: cascade]
+
+Ref: ref_verif_datadiri.kode_vendor_penjr > trx_vendor_penjr.kode_vendor_penjr [delete: cascade]
+
+Ref: "ref_verif_administrasi_pero"."kode_vendor_penjr" > "trx_vendor_penjr"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_verif_administrasi_pero"."kode_adm" > "ref_administrasi_pero"."kode_adm" [delete: cascade]
+
+Ref: ref_verif_personalia_pero.kode_vendor_penjr - trx_vendor_penjr.kode_vendor_penjr
+
+Ref: ref_verif_personalia_pero.kode_personalia > ref_personalia_pero.kode_personalia
+
+Ref: "ref_komisaris_bu"."kode_komisaris" < "ref_verif_komisaris"."kode_komisaris" [delete: cascade]
+
+Ref: "ref_direksi_bu"."kode_direksi" < "ref_verif_direksi"."kode_direksi" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_pero"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_pengalaman_pero"."kode_pengalaman" < "ref_verif_pengalaman_pero"."kode_pengalaman" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertif_pero"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_sertif_pero"."kode_sertif" < "ref_verif_sertif_pero"."kode_sertif" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_pero"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_keuangan_pero"."kode_keuangan" < "ref_verif_keuangan_pero"."kode_keuangan" [delete: cascade]
+
+Ref: "ref_adm_bu"."kode_adm_bu" < "ref_verif_adm_bu"."kode_adm_bu" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_adm_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_lan_hukum_bu"."kode_lan_hukum" < "ref_verif_lan_hukum_bu"."kode_lan_hukum" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_lan_hukum_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_komisaris"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_direksi"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_izin_usaha_bu"."kode_izin_usaha" < "ref_verif_izin_usaha_bu"."kode_izin_usaha" [delete: cascade]
+
+Ref: "ref_sertifikat_usaha_bu"."kode_sertifikat_usaha" < "ref_verif_sertifikat_usaha_bu"."kode_sertifikat_usaha" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_izin_usaha_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_sertifikat_usaha_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_saham_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_saham_bu"."kode_saham" < "ref_verif_saham_bu"."kode_saham" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_data_pajak_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_data_pajak_bu"."kode_data_pajak" < "ref_verif_data_pajak_bu"."kode_data_pajak" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_ahli_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_tenaga_ahli_bu"."kode_tenaga_ahli" < "ref_verif_tenaga_ahli_bu"."kode_tenaga_ahli" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_tenaga_pendukung_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_tenaga_pendukung_bu"."kode_tenaga_pendukung" < "ref_verif_tenaga_pendukung_bu"."kode_tenaga_pendukung" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_kantor_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_kantor_bu"."kode_kantor" < "ref_verif_kantor_bu"."kode_kantor" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_fasilitas_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_fasilitas_bu"."kode_fasilitas" < "ref_verif_fasilitas_bu"."kode_fasilitas" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_pengalaman_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_pengalaman_bu"."kode_pengalaman_bu" < "ref_verif_pengalaman_bu"."kode_pengalaman_bu" [delete: cascade]
+
+Ref: "trx_vendor_penjr"."kode_vendor_penjr" < "ref_verif_keuangan_bu"."kode_vendor_penjr" [delete: cascade]
+
+Ref: "ref_keuangan_bu"."kode_keuangan" < "ref_verif_keuangan_bu"."kode_keuangan" [delete: cascade]

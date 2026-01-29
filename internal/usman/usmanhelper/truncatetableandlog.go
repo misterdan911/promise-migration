@@ -53,18 +53,22 @@ func TruncateTableAndLog2() {
 	}
 	ResetSequence("ref_user_id_seq")
 
+	/*
 	qTruncate = "TRUNCATE TABLE ref_user_internal"
 	_, err = db.DbUsman.Exec(ctx, qTruncate)
 	if err != nil {
 		log.Fatal("Truncate ref_user_internal Failed, " + err.Error())
 	}
+	*/
 	ResetSequence("ref_user_internal_id_seq")
 
+	/*
 	qTruncate = "TRUNCATE TABLE ref_user_external"
 	_, err = db.DbUsman.Exec(ctx, qTruncate)
 	if err != nil {
 		log.Fatal("Truncate ref_user_external Failed, " + err.Error())
 	}
+	*/
 
 	qTruncate = "TRUNCATE TABLE trx_user_tampung"
 	_, err = db.DbUsman.Exec(ctx, qTruncate)
