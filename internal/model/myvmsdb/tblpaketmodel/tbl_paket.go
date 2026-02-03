@@ -19,7 +19,7 @@ func GetAllDocument() ([]TblPaketDocument, error) {
 		id_paket,
 		path_paket
   FROM tbl_paket
-  WHERE id_paket >= 202
+  WHERE id_paket = 410
   ORDER BY id_paket ASC
   `
 

@@ -136,7 +136,7 @@ func SetupAccessForInternalUser() {
       tut.email is NOT NULL AND
       rg.kode_group is NOT NULL AND
       ru.id IS NOT NULL AND
-      ra.kode_aplikasi in ('01','02','03','04','05')
+      ra.kode_aplikasi in ('01','03','04','05')
     ORDER BY ra.kode_aplikasi, rj.nama_jabatan asc;
     `
 
@@ -153,6 +153,8 @@ func SetupAccessForInternalUser() {
 
     for _, userData := range allUserData {
 
+    	// cek apakah di tabel trx_group_user datanya sudah pernah di input sebelumnya
+    	// ---------------------------------------------------------------------------
       qCheckDuplicate := `SELECT kode_group, id_user FROM trx_group_user WHERE kode_group = $1 AND id_user = $2`
       rows2, err2 := db.DbUsman.Query(ctx, qCheckDuplicate, userData.KodeGroup, userData.IdUser)
       if err2 != nil {
@@ -166,6 +168,9 @@ func SetupAccessForInternalUser() {
 
       // kalau data sudah ada, skip
       if len(allDuplicateData) > 0 { continue }
+    	// ---------------------------------------------------------------------------
+
+    	if !IsKodeGroupValid(userData.KodeGroup) {continue}
 
       qGrantAccess := `INSERT INTO trx_group_user (kode_group, id_user, status) VALUES ($1, $2, '1')`
       _, err3 := db.DbUsman.Exec(ctx, qGrantAccess, userData.KodeGroup, userData.IdUser)
@@ -178,4 +183,19 @@ func SetupAccessForInternalUser() {
 
     }
 
+}
+
+
+
+func IsKodeGroupValid(kodeGroup pgtype.Text) bool {
+
+	allInvalidKodeGroup := []string{"G01.7", "G01.5", "G02.4", "G02.3", "G02.5", "G02.6"}
+
+	for _, invalidKodeGroup := range allInvalidKodeGroup {
+		if kodeGroup.String == invalidKodeGroup {
+			return false
+		}
+	}
+
+	return true
 }

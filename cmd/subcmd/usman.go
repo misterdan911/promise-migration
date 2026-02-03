@@ -1,6 +1,7 @@
 package subcmd
 
 import (
+	"fmt"
 	"promise-migration/db"
 	"promise-migration/internal/usman"
 	"promise-migration/internal/usman/usmanhelper"
@@ -42,18 +43,19 @@ var UsmanCmd = &cobra.Command{
      * - trx_group_user
      * - db_sidapet.helper_user
     */	
-		usmanhelper.TruncateTableAndLog2()
+	usmanhelper.TruncateTableAndLog2()
 
-		usman.MigrateUserInternal()
-		usman.MigrateUserExternal()
+	usman.MigrateUserInternal()
+	usman.MigrateUserExternal()
 
     usman.SetupVendorAccessForSidapet()
     usman.SetupAccessForInternalUser()
 
-		usman.PopulateHelperUser()
+	usman.PopulateHelperUser()
 
+	usmanhelper.UpdatePkSequenceFromFile()
 
-		usmanhelper.UpdatePkSequenceFromFile()
+	fmt.Println("WARNING: Cek lagi tabel ref_aplikasi, karena path file2 nya berbeda antara devel dan production");
 
 	},
 }

@@ -51,7 +51,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
 
 		// // tbl_paket
-		// appdoc.MigrateFileFromVmsDbTblPaket()
+		appdoc.MigrateFileFromVmsDbTblPaket()
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()

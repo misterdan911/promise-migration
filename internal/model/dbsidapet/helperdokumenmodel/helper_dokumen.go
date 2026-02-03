@@ -73,9 +73,6 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
 
   if len(allDokumen) > 0 {
     helperDokumen = allDokumen[0]
-  } else {
-    helperDokumen.Newfilename.Valid = true
-    helperDokumen.Newfilename = originalPath
   }
 
   return helperDokumen
