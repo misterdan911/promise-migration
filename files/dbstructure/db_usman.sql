@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : promis-prod-dbmodul
+ Source Server         : promis-devel
  Source Server Type    : PostgreSQL
- Source Server Version : 160011 (160011)
- Source Host           : 172.30.10.24:5432
- Source Catalog        : db_usman
+ Source Server Version : 160002 (160002)
+ Source Host           : 172.30.15.52:5432
+ Source Catalog        : db_usman_mig
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 160011 (160011)
+ Target Server Version : 160002 (160002)
  File Encoding         : 65001
 
- Date: 03/02/2026 18:10:02
+ Date: 03/02/2026 18:11:30
 */
 
 
@@ -792,7 +792,7 @@ $BODY$
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_jabatan_kode_jabatan_seq"
 OWNED BY "public"."ref_jabatan"."kode_jabatan";
-SELECT setval('"public"."ref_jabatan_kode_jabatan_seq"', 39, true);
+SELECT setval('"public"."ref_jabatan_kode_jabatan_seq"', 40, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -839,19 +839,19 @@ SELECT setval('"public"."ref_unit_pbj_kode_unit_pbj_seq"', 70, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."ref_user_external_id_seq"', 32516, true);
+SELECT setval('"public"."ref_user_external_id_seq"', 32433, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_user_id_seq"
 OWNED BY "public"."ref_user"."id";
-SELECT setval('"public"."ref_user_id_seq"', 32531, true);
+SELECT setval('"public"."ref_user_id_seq"', 32522, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."ref_user_internal_id_seq"', 2082, true);
+SELECT setval('"public"."ref_user_internal_id_seq"', 2089, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -861,14 +861,14 @@ SELECT setval('"public"."trx_group_menu_id_seq"', 193, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-SELECT setval('"public"."trx_group_user_id_seq"', 12547, true);
+SELECT setval('"public"."trx_group_user_id_seq"', 283915, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_user_tampung_kode_user_tampung_seq"
 OWNED BY "public"."trx_user_tampung"."kode_user_tampung";
-SELECT setval('"public"."trx_user_tampung_kode_user_tampung_seq"', 2570, true);
+SELECT setval('"public"."trx_user_tampung_kode_user_tampung_seq"', 2613, true);
 
 -- ----------------------------
 -- Primary Key structure for table bridging_vmsdb_user_id
