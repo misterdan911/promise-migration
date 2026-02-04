@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : promis-prod-dbmodul
+ Source Server         : promis-devel
  Source Server Type    : PostgreSQL
- Source Server Version : 160011 (160011)
- Source Host           : 172.30.10.24:5432
- Source Catalog        : db_sidapet
+ Source Server Version : 160002 (160002)
+ Source Host           : 172.30.15.52:5432
+ Source Catalog        : db_sidapet_mig
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 160011 (160011)
+ Target Server Version : 160002 (160002)
  File Encoding         : 65001
 
- Date: 04/02/2026 14:19:34
+ Date: 04/02/2026 14:08:08
 */
 
 
@@ -390,6 +390,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for newtable_kode_pengalaman_tp_history_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."newtable_kode_pengalaman_tp_history_seq";
+CREATE SEQUENCE "public"."newtable_kode_pengalaman_tp_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_adm_bu_kode_adm_bu_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_adm_bu_kode_adm_bu_seq";
@@ -522,10 +533,10 @@ START 1
 CACHE 1;
 
 -- ----------------------------
--- Sequence structure for ref_file_saham_kode_file_saham_seq
+-- Sequence structure for ref_file_saham_kode_saham_file_seq
 -- ----------------------------
-DROP SEQUENCE IF EXISTS "public"."ref_file_saham_kode_file_saham_seq";
-CREATE SEQUENCE "public"."ref_file_saham_kode_file_saham_seq" 
+DROP SEQUENCE IF EXISTS "public"."ref_file_saham_kode_saham_file_seq";
+CREATE SEQUENCE "public"."ref_file_saham_kode_saham_file_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -537,6 +548,17 @@ CACHE 1;
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_adm_bu_kode_adm_bu_history_seq";
 CREATE SEQUENCE "public"."ref_history_adm_bu_kode_adm_bu_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_adm_bu_kode_adm_bu_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_adm_bu_kode_adm_bu_seq";
+CREATE SEQUENCE "public"."ref_history_adm_bu_kode_adm_bu_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -566,6 +588,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_data_pajak_bu_kode_data_pajak_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_data_pajak_bu_kode_data_pajak_seq";
+CREATE SEQUENCE "public"."ref_history_data_pajak_bu_kode_data_pajak_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_datadiri_umum_kode_datadiri_umum_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_datadiri_umum_kode_datadiri_umum_seq";
@@ -588,10 +621,32 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_direksi_bu_kode_direksi_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_direksi_bu_kode_direksi_seq";
+CREATE SEQUENCE "public"."ref_history_direksi_bu_kode_direksi_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_fasilitas_bu_kode_fasilitas_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_fasilitas_bu_kode_fasilitas_history_seq";
 CREATE SEQUENCE "public"."ref_history_fasilitas_bu_kode_fasilitas_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_fasilitas_bu_kode_fasilitas_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_fasilitas_bu_kode_fasilitas_seq";
+CREATE SEQUENCE "public"."ref_history_fasilitas_bu_kode_fasilitas_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -621,10 +676,32 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_kantor_bu_kode_kantor_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_kantor_bu_kode_kantor_seq";
+CREATE SEQUENCE "public"."ref_history_kantor_bu_kode_kantor_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_keuangan_bu_kode_keuangan_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_keuangan_bu_kode_keuangan_history_seq";
 CREATE SEQUENCE "public"."ref_history_keuangan_bu_kode_keuangan_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_keuangan_bu_kode_keuangan_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_keuangan_bu_kode_keuangan_seq";
+CREATE SEQUENCE "public"."ref_history_keuangan_bu_kode_keuangan_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -643,6 +720,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_keuangan_pero_kode_keuangan_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_keuangan_pero_kode_keuangan_seq";
+CREATE SEQUENCE "public"."ref_history_keuangan_pero_kode_keuangan_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_komisaris_bu_kode_komisaris_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_komisaris_bu_kode_komisaris_history_seq";
@@ -654,10 +742,32 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_komisaris_bu_kode_komisaris_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_komisaris_bu_kode_komisaris_seq";
+CREATE SEQUENCE "public"."ref_history_komisaris_bu_kode_komisaris_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_lan_hukum_bu_kode_lan_hukum_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_lan_hukum_bu_kode_lan_hukum_history_seq";
 CREATE SEQUENCE "public"."ref_history_lan_hukum_bu_kode_lan_hukum_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_lan_hukum_bu_kode_lan_hukum_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_lan_hukum_bu_kode_lan_hukum_seq";
+CREATE SEQUENCE "public"."ref_history_lan_hukum_bu_kode_lan_hukum_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -698,10 +808,10 @@ START 1
 CACHE 1;
 
 -- ----------------------------
--- Sequence structure for ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq
+-- Sequence structure for ref_history_pengalaman_ta_kode_pengalaman_ta_seq
 -- ----------------------------
-DROP SEQUENCE IF EXISTS "public"."ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq";
-CREATE SEQUENCE "public"."ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq" 
+DROP SEQUENCE IF EXISTS "public"."ref_history_pengalaman_ta_kode_pengalaman_ta_seq";
+CREATE SEQUENCE "public"."ref_history_pengalaman_ta_kode_pengalaman_ta_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -742,6 +852,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_saham_bu_kode_saham_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_saham_bu_kode_saham_seq";
+CREATE SEQUENCE "public"."ref_history_saham_bu_kode_saham_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_sertif_pero_kode_sertif_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_sertif_pero_kode_sertif_seq";
@@ -764,10 +885,32 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_sertif_ta_kode_sertif_ta_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_sertif_ta_kode_sertif_ta_seq";
+CREATE SEQUENCE "public"."ref_history_sertif_ta_kode_sertif_ta_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_sertif_tp_kode_sertif_tp_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_sertif_tp_kode_sertif_tp_history_seq";
 CREATE SEQUENCE "public"."ref_history_sertif_tp_kode_sertif_tp_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_sertif_tp_kode_sertif_tp_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_sertif_tp_kode_sertif_tp_seq";
+CREATE SEQUENCE "public"."ref_history_sertif_tp_kode_sertif_tp_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -786,6 +929,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_history_sertifikat_usaha_bu_kode_sertifikat_usaha_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_sertifikat_usaha_bu_kode_sertifikat_usaha_seq";
+CREATE SEQUENCE "public"."ref_history_sertifikat_usaha_bu_kode_sertifikat_usaha_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq";
@@ -797,10 +951,21 @@ START 1
 CACHE 1;
 
 -- ----------------------------
--- Sequence structure for ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq
+-- Sequence structure for ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq
 -- ----------------------------
-DROP SEQUENCE IF EXISTS "public"."ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq";
-CREATE SEQUENCE "public"."ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq" 
+DROP SEQUENCE IF EXISTS "public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq";
+CREATE SEQUENCE "public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq";
+CREATE SEQUENCE "public"."ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -1677,6 +1842,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq";
+CREATE SEQUENCE "public"."trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for trx_izin_kbli_sbu_kode_trx_kbli_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."trx_izin_kbli_sbu_kode_trx_kbli_seq";
@@ -1970,7 +2146,8 @@ CREATE TABLE "public"."helper_user" (
   "nama_penyedia" varchar(255) COLLATE "pg_catalog"."default",
   "jenis_penyedia" varchar(255) COLLATE "pg_catalog"."default",
   "usman_ref_user_id" int4,
-  "kode_vendor" int4
+  "kode_vendor" int4,
+  "is_tetap" bool
 )
 ;
 
@@ -2288,10 +2465,10 @@ CREATE TABLE "public"."ref_fasilitas_bu_custom" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_file_saham";
 CREATE TABLE "public"."ref_file_saham" (
-  "kode_file_saham" int4 NOT NULL DEFAULT nextval('ref_file_saham_kode_file_saham_seq'::regclass),
-  "kode_vendor" int4,
+  "kode_vendor" int4 NOT NULL,
   "path_saham" varchar COLLATE "pg_catalog"."default",
-  "encrypt_key" varchar COLLATE "pg_catalog"."default"
+  "encrypt_key" varchar COLLATE "pg_catalog"."default",
+  "kode_file_saham" int4 NOT NULL DEFAULT nextval('ref_file_saham_kode_saham_file_seq'::regclass)
 )
 ;
 
@@ -2413,6 +2590,24 @@ CREATE TABLE "public"."ref_history_data_pajak_bu" (
   "kode_data_pajak_history" int4 NOT NULL DEFAULT nextval('ref_history_data_pajak_bu_kode_data_pajak_history_seq'::regclass)
 )
 ;
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_bukti_kswp_old" IS 'Bukti KSWP';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_bukti_kswp_selamanya_old" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_bukti_spt_old" IS 'Bukti Penyampaian SPT';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_bukti_spt_selamanya_old" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_skb_pph23_old" IS 'Surat Keterangan Bebas PPh 23';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_skb_pph23_selamanya_old" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_sk_pp23_old" IS 'Surat Keterangan PP 23';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_sk_pp23_selamanya_old" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_non_pkp_old" IS 'Bukti Non PKP';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_bukti_kswp_new" IS 'Bukti KSWP';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_bukti_kswp_selamanya_new" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_bukti_spt_new" IS 'Bukti Penyampaian SPT';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_bukti_spt_selamanya_new" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_skb_pph23_new" IS 'Surat Keterangan Bebas PPh 23';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_skb_pph23_selamanya_new" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_sk_pp23_new" IS 'Surat Keterangan PP 23';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."is_sk_pp23_selamanya_new" IS 'Apakah berlaku selamanya?';
+COMMENT ON COLUMN "public"."ref_history_data_pajak_bu"."file_non_pkp_new" IS 'Bukti Non PKP';
 
 -- ----------------------------
 -- Table structure for ref_history_datadiri_umum
@@ -2466,7 +2661,8 @@ CREATE TABLE "public"."ref_history_direksi_bu" (
   "path_ktp_direksi_new" varchar(200) COLLATE "pg_catalog"."default",
   "encrypt_key_new" varchar(255) COLLATE "pg_catalog"."default",
   "is_deleted" bool DEFAULT false,
-  "is_changes" bool DEFAULT false
+  "is_changes" bool DEFAULT false,
+  "is_created" bool
 )
 ;
 
@@ -2677,7 +2873,7 @@ CREATE TABLE "public"."ref_history_keuangan_pero" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_history_komisaris_bu";
 CREATE TABLE "public"."ref_history_komisaris_bu" (
-  "kode_komisaris" int4 NOT NULL,
+  "kode_komisaris" int4,
   "kode_vendor" int4,
   "nm_komisaris_old" varchar(100) COLLATE "pg_catalog"."default",
   "jbtn_komisaris_old" varchar(100) COLLATE "pg_catalog"."default",
@@ -2694,7 +2890,8 @@ CREATE TABLE "public"."ref_history_komisaris_bu" (
   "path_ktp_komisaris_new" varchar(200) COLLATE "pg_catalog"."default",
   "encrypt_key_new" varchar(255) COLLATE "pg_catalog"."default",
   "is_delete" bool NOT NULL DEFAULT false,
-  "is_changes" bool NOT NULL DEFAULT false
+  "is_changes" bool NOT NULL DEFAULT false,
+  "is_created" bool
 )
 ;
 
@@ -2834,7 +3031,7 @@ CREATE TABLE "public"."ref_history_pengalaman_tp" (
   "is_changes" bool,
   "is_deleted" bool,
   "kode_pengalaman_tp" int4,
-  "kode_pengalaman_tp_history" int4 NOT NULL DEFAULT nextval('ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq'::regclass),
+  "kode_pengalaman_tp_history" int4 NOT NULL DEFAULT nextval('newtable_kode_pengalaman_tp_history_seq'::regclass),
   "kode_tenaga_pendukung" int4,
   "kode_tenaga_pendukung_history" int4,
   "pengalaman_new" varchar(255) COLLATE "pg_catalog"."default",
@@ -3001,7 +3198,8 @@ CREATE TABLE "public"."ref_history_sertifikat_usaha_bu" (
   "sertif_berlaku_akhir_new" date,
   "encrypt_key_new" varchar(255) COLLATE "pg_catalog"."default",
   "is_changes" bool,
-  "is_deleted" bool
+  "is_deleted" bool,
+  "is_created" bool
 )
 ;
 COMMENT ON COLUMN "public"."ref_history_sertifikat_usaha_bu"."is_sertif_selamanya_old" IS 'Apakah sertifikat berlaku selamanya?';
@@ -3056,7 +3254,7 @@ COMMENT ON COLUMN "public"."ref_history_tenaga_ahli_bu"."tgl_cv_new" IS 'Tgl Pem
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_history_tenaga_pendukung_bu";
 CREATE TABLE "public"."ref_history_tenaga_pendukung_bu" (
-  "kode_tenaga_pendukung_history" int4 NOT NULL DEFAULT nextval('ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq'::regclass),
+  "kode_tenaga_pendukung_history" int4 NOT NULL DEFAULT nextval('ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq'::regclass),
   "kode_tenaga_pendukung" int4,
   "kode_vendor" int4,
   "nama_old" varchar(100) COLLATE "pg_catalog"."default",
@@ -3556,7 +3754,7 @@ CREATE TABLE "public"."ref_pengalaman_bu" (
   "tgl_akhir_pekerjaan" date,
   "pemberi_kerja" varchar(255) COLLATE "pg_catalog"."default",
   "nilai_pekerjaan" int8,
-  "no_kontrak" varchar(50) COLLATE "pg_catalog"."default",
+  "no_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "file_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "encrypt_key_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "revisi_ke" int2 NOT NULL DEFAULT 0
@@ -3578,7 +3776,7 @@ CREATE TABLE "public"."ref_pengalaman_bu_custom" (
   "nilai_pekerjaan" int8,
   "tgl_awal_pekerjaan" date,
   "tgl_akhir_pekerjaan" date,
-  "no_kontrak" varchar(50) COLLATE "pg_catalog"."default",
+  "no_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "file_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "encrypt_key_kontrak" varchar(255) COLLATE "pg_catalog"."default",
   "revisi_ke" int2 NOT NULL DEFAULT 0,
@@ -3910,7 +4108,7 @@ CREATE TABLE "public"."ref_sertif_ta_custom" (
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_sertif_tp";
 CREATE TABLE "public"."ref_sertif_tp" (
-  "kode_sertif_tp" int4 NOT NULL DEFAULT nextval('ref_sertif_tp_kode_sertif_tp_seq'::regclass),
+  "kode_sertif_tp" int4 NOT NULL DEFAULT nextval('ref_sertif_tp_custom_kode_sertif_tp_custom_seq'::regclass),
   "kode_tenaga_pendukung" int4,
   "sertifikat" varchar(255) COLLATE "pg_catalog"."default",
   "file_bukti" varchar(100) COLLATE "pg_catalog"."default",
@@ -4763,6 +4961,21 @@ CREATE TABLE "public"."trx_izin_kbli_sbu_custom" (
   "kode_trx_iks_custom" int4 NOT NULL DEFAULT nextval('trx_izin_kbli_sbu_custom_kode_trx_iks_custom_seq'::regclass),
   "kode_izin_usaha_custom" int4,
   "kode_kbli_sbu" int4
+)
+;
+
+-- ----------------------------
+-- Table structure for trx_izin_kbli_sbu_history
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."trx_izin_kbli_sbu_history";
+CREATE TABLE "public"."trx_izin_kbli_sbu_history" (
+  "kode_trx_kbli_history" int4 NOT NULL DEFAULT nextval('trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq'::regclass),
+  "kode_izin_usaha_old" int4,
+  "kode_kbli_sbu_old" int4,
+  "kode_izin_usaha_new" int4,
+  "kode_kbli_sbu_new" int4,
+  "revisi_ke" int4,
+  "kode_trx_kbli_sbu" int4
 )
 ;
 
@@ -6125,6 +6338,143 @@ $BODY$
   COST 100;
 
 -- ----------------------------
+-- Function structure for func_merge_tenaga_ahli_and_related
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_tenaga_ahli_and_related"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_tenaga_ahli_and_related"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_ta_record RECORD;
+    v_pengalaman_record RECORD;
+    v_sertif_record RECORD;
+    v_kode_tenaga_ahli INTEGER;
+    v_kode_pengalaman_ta INTEGER;
+    v_kode_sertif_ta INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through tenaga ahli custom records
+    FOR v_ta_record IN 
+        SELECT * 
+        FROM ref_tenaga_ahli_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_tenaga_ahli IS NULL
+    LOOP
+        -- Copy main tenaga ahli record
+        INSERT INTO ref_tenaga_ahli_bu (
+            kode_vendor,
+            nama,
+            no_ktp,
+            file_ktp,
+            encrypt_key_ktp,
+            tempat_lahir,
+            tgl_lahir,
+            posisi,
+            kode_jenjang_pendidikan,
+            program_studi,
+            file_ijazah,
+            encrypt_key_ijazah,
+            file_cv,
+            encrypt_key_cv,
+            tgl_cv,
+            revisi_ke
+        ) VALUES (
+            v_ta_record.kode_vendor,
+            v_ta_record.nama,
+            v_ta_record.no_ktp,
+            v_ta_record.file_ktp,
+            v_ta_record.encrypt_key_ktp,
+            v_ta_record.tempat_lahir,
+            v_ta_record.tgl_lahir,
+            v_ta_record.posisi,
+            v_ta_record.kode_jenjang_pendidikan,
+            v_ta_record.program_studi,
+            v_ta_record.file_ijazah,
+            v_ta_record.encrypt_key_ijazah,
+            v_ta_record.file_cv,
+            v_ta_record.encrypt_key_cv,
+            v_ta_record.tgl_cv,
+            v_ta_record.revisi_ke
+        ) 
+        RETURNING kode_tenaga_ahli INTO v_kode_tenaga_ahli;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_tenaga_ahli_bu_custom
+        SET kode_tenaga_ahli = v_kode_tenaga_ahli
+        WHERE kode_tenaga_ahli_custom = v_ta_record.kode_tenaga_ahli_custom;
+
+        -- Copy pengalaman_ta records (embedded logic)
+        FOR v_pengalaman_record IN 
+            SELECT * 
+            FROM ref_pengalaman_ta_custom
+            WHERE kode_tenaga_ahli_custom = v_ta_record.kode_tenaga_ahli_custom
+        LOOP
+            INSERT INTO ref_pengalaman_ta (
+                kode_tenaga_ahli,
+                pengalaman,
+                file_bukti,
+                encrypt_key,
+                revisi_ke
+            ) VALUES (
+                v_kode_tenaga_ahli,
+                v_pengalaman_record.pengalaman,
+                v_pengalaman_record.file_bukti,
+                v_pengalaman_record.encrypt_key,
+                v_pengalaman_record.revisi_ke
+            )
+            RETURNING kode_pengalaman_ta INTO v_kode_pengalaman_ta;
+
+            -- Update custom table with reference to main table
+            UPDATE ref_pengalaman_ta_custom
+            SET kode_pengalaman_ta = v_kode_pengalaman_ta
+            WHERE kode_pengalaman_ta_custom = v_pengalaman_record.kode_pengalaman_ta_custom;
+        END LOOP;
+
+        -- Copy sertif_ta records (embedded logic)
+        FOR v_sertif_record IN 
+            SELECT * 
+            FROM ref_sertif_ta_custom
+            WHERE kode_tenaga_ahli_custom = v_ta_record.kode_tenaga_ahli_custom
+        LOOP
+            INSERT INTO ref_sertif_ta (
+                kode_tenaga_ahli,
+                sertifikat,
+                file_bukti,
+                encrypt_key,
+                revisi_ke
+            ) VALUES (
+                v_kode_tenaga_ahli,
+                v_sertif_record.sertifikat,
+                v_sertif_record.file_bukti,
+                v_sertif_record.encrypt_key,
+                v_sertif_record.revisi_ke
+            )
+            RETURNING kode_sertif_ta INTO v_kode_sertif_ta;
+
+            -- Update custom table with reference to main table
+            UPDATE ref_sertif_ta_custom
+            SET kode_sertif_ta = v_kode_sertif_ta
+            WHERE kode_sertif_ta_custom = v_sertif_record.kode_sertif_ta_custom;
+        END LOOP;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
 -- Function structure for func_merge_tenaga_pendukung_and_related
 -- ----------------------------
 DROP FUNCTION IF EXISTS "public"."func_merge_tenaga_pendukung_and_related"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
@@ -6413,7 +6763,7 @@ CREATE VIEW "public"."pg_stat_statements" AS  SELECT userid,
 -- ----------------------------
 ALTER SEQUENCE "public"."bridging_id_direksi_kode_bridging_seq"
 OWNED BY "public"."bridging_id_direksi"."kode_bridging";
-SELECT setval('"public"."bridging_id_direksi_kode_bridging_seq"', 4137, true);
+SELECT setval('"public"."bridging_id_direksi_kode_bridging_seq"', 4324, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6427,7 +6777,7 @@ SELECT setval('"public"."helper_bank_kw_id_seq"', 36, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."helper_dokumen_kode_helper_seq"
 OWNED BY "public"."helper_dokumen"."kode_helper";
-SELECT setval('"public"."helper_dokumen_kode_helper_seq"', 139729, true);
+SELECT setval('"public"."helper_dokumen_kode_helper_seq"', 156478, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6467,16 +6817,23 @@ SELECT setval('"public"."helper_user_nip_id_seq"', 2975, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."newtable_kode_pengalaman_tp_history_seq"
+OWNED BY "public"."ref_history_pengalaman_tp"."kode_pengalaman_tp_history";
+SELECT setval('"public"."newtable_kode_pengalaman_tp_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."ref_adm_bu_kode_adm_bu_seq"
 OWNED BY "public"."ref_adm_bu"."kode_adm_bu";
-SELECT setval('"public"."ref_adm_bu_kode_adm_bu_seq"', 2466, true);
+SELECT setval('"public"."ref_adm_bu_kode_adm_bu_seq"', 2585, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_administrasi_pero_kode_adm_seq"
 OWNED BY "public"."ref_administrasi_pero"."kode_adm";
-SELECT setval('"public"."ref_administrasi_pero_kode_adm_seq"', 221, true);
+SELECT setval('"public"."ref_administrasi_pero_kode_adm_seq"', 252, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6497,14 +6854,14 @@ SELECT setval('"public"."ref_bank_kode_bank_seq"', 108, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_data_pajak_bu_kode_data_pajak_seq"
 OWNED BY "public"."ref_data_pajak_bu"."kode_data_pajak";
-SELECT setval('"public"."ref_data_pajak_bu_kode_data_pajak_seq"', 2465, true);
+SELECT setval('"public"."ref_data_pajak_bu_kode_data_pajak_seq"', 2582, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_datadiri_kode_datadiri_seq"
 OWNED BY "public"."ref_datadiri"."kode_datadiri";
-SELECT setval('"public"."ref_datadiri_kode_datadiri_seq"', 221, true);
+SELECT setval('"public"."ref_datadiri_kode_datadiri_seq"', 252, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6525,42 +6882,49 @@ SELECT setval('"public"."ref_default_master_kode_default_master_seq"', 76, true)
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_direksi_bu_custom_kode_direksi_custom_seq"
 OWNED BY "public"."ref_direksi_bu_custom"."kode_direksi_custom";
-SELECT setval('"public"."ref_direksi_bu_custom_kode_direksi_custom_seq"', 1782, true);
+SELECT setval('"public"."ref_direksi_bu_custom_kode_direksi_custom_seq"', 1806, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_direksi_bu_kode_direksi_seq"
 OWNED BY "public"."ref_direksi_bu"."kode_direksi";
-SELECT setval('"public"."ref_direksi_bu_kode_direksi_seq"', 4144, true);
+SELECT setval('"public"."ref_direksi_bu_kode_direksi_seq"', 4340, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_fasilitas_bu_custom_kode_fasilitas_custom_seq"
 OWNED BY "public"."ref_fasilitas_bu_custom"."kode_fasilitas_custom";
-SELECT setval('"public"."ref_fasilitas_bu_custom_kode_fasilitas_custom_seq"', 4664, true);
+SELECT setval('"public"."ref_fasilitas_bu_custom_kode_fasilitas_custom_seq"', 4679, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_fasilitas_bu_kode_fasilitas_seq"
 OWNED BY "public"."ref_fasilitas_bu"."kode_fasilitas";
-SELECT setval('"public"."ref_fasilitas_bu_kode_fasilitas_seq"', 7771, true);
+SELECT setval('"public"."ref_fasilitas_bu_kode_fasilitas_seq"', 8052, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-ALTER SEQUENCE "public"."ref_file_saham_kode_file_saham_seq"
+ALTER SEQUENCE "public"."ref_file_saham_kode_saham_file_seq"
 OWNED BY "public"."ref_file_saham"."kode_file_saham";
-SELECT setval('"public"."ref_file_saham_kode_file_saham_seq"', 1, false);
+SELECT setval('"public"."ref_file_saham_kode_saham_file_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_adm_bu_kode_adm_bu_history_seq"
 OWNED BY "public"."ref_history_adm_bu"."kode_adm_bu_history";
-SELECT setval('"public"."ref_history_adm_bu_kode_adm_bu_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_adm_bu_kode_adm_bu_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_adm_bu_kode_adm_bu_seq"
+OWNED BY "public"."ref_history_adm_bu"."kode_adm_bu";
+SELECT setval('"public"."ref_history_adm_bu_kode_adm_bu_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6574,7 +6938,14 @@ SELECT setval('"public"."ref_history_administrasi_pero_kode_adm_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_data_pajak_bu_kode_data_pajak_history_seq"
 OWNED BY "public"."ref_history_data_pajak_bu"."kode_data_pajak_history";
-SELECT setval('"public"."ref_history_data_pajak_bu_kode_data_pajak_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_data_pajak_bu_kode_data_pajak_history_seq"', 2, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_data_pajak_bu_kode_data_pajak_seq"
+OWNED BY "public"."ref_history_data_pajak_bu"."kode_data_pajak";
+SELECT setval('"public"."ref_history_data_pajak_bu_kode_data_pajak_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6588,14 +6959,28 @@ SELECT setval('"public"."ref_history_datadiri_umum_kode_datadiri_umum_seq"', 1, 
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_direksi_bu_kode_direksi_history_seq"
 OWNED BY "public"."ref_history_direksi_bu"."kode_direksi_history";
-SELECT setval('"public"."ref_history_direksi_bu_kode_direksi_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_direksi_bu_kode_direksi_history_seq"', 6, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_direksi_bu_kode_direksi_seq"
+OWNED BY "public"."ref_history_direksi_bu"."kode_direksi";
+SELECT setval('"public"."ref_history_direksi_bu_kode_direksi_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_fasilitas_bu_kode_fasilitas_history_seq"
 OWNED BY "public"."ref_history_fasilitas_bu"."kode_fasilitas_history";
-SELECT setval('"public"."ref_history_fasilitas_bu_kode_fasilitas_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_fasilitas_bu_kode_fasilitas_history_seq"', 3, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_fasilitas_bu_kode_fasilitas_seq"
+OWNED BY "public"."ref_history_fasilitas_bu"."kode_fasilitas";
+SELECT setval('"public"."ref_history_fasilitas_bu_kode_fasilitas_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6609,14 +6994,28 @@ SELECT setval('"public"."ref_history_izin_usaha_bu_kode_izin_usaha_history_seq"'
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_kantor_bu_kode_kantor_history_seq"
 OWNED BY "public"."ref_history_kantor_bu"."kode_kantor_history";
-SELECT setval('"public"."ref_history_kantor_bu_kode_kantor_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_kantor_bu_kode_kantor_history_seq"', 12, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_kantor_bu_kode_kantor_seq"
+OWNED BY "public"."ref_history_kantor_bu"."kode_kantor";
+SELECT setval('"public"."ref_history_kantor_bu_kode_kantor_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_keuangan_bu_kode_keuangan_history_seq"
 OWNED BY "public"."ref_history_keuangan_bu"."kode_keuangan_history";
-SELECT setval('"public"."ref_history_keuangan_bu_kode_keuangan_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_keuangan_bu_kode_keuangan_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_keuangan_bu_kode_keuangan_seq"
+OWNED BY "public"."ref_history_keuangan_bu"."kode_keuangan";
+SELECT setval('"public"."ref_history_keuangan_bu_kode_keuangan_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6628,16 +7027,37 @@ SELECT setval('"public"."ref_history_keuangan_pero_kode_keuangan_history_seq"', 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."ref_history_keuangan_pero_kode_keuangan_seq"
+OWNED BY "public"."ref_history_keuangan_pero"."kode_keuangan";
+SELECT setval('"public"."ref_history_keuangan_pero_kode_keuangan_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."ref_history_komisaris_bu_kode_komisaris_history_seq"
 OWNED BY "public"."ref_history_komisaris_bu"."kode_komisaris_history";
-SELECT setval('"public"."ref_history_komisaris_bu_kode_komisaris_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_komisaris_bu_kode_komisaris_history_seq"', 7, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_komisaris_bu_kode_komisaris_seq"
+OWNED BY "public"."ref_history_komisaris_bu"."kode_komisaris";
+SELECT setval('"public"."ref_history_komisaris_bu_kode_komisaris_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_lan_hukum_bu_kode_lan_hukum_history_seq"
 OWNED BY "public"."ref_history_lan_hukum_bu"."kode_lan_hukum_history";
-SELECT setval('"public"."ref_history_lan_hukum_bu_kode_lan_hukum_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_lan_hukum_bu_kode_lan_hukum_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_lan_hukum_bu_kode_lan_hukum_seq"
+OWNED BY "public"."ref_history_lan_hukum_bu"."kode_lan_hukum";
+SELECT setval('"public"."ref_history_lan_hukum_bu_kode_lan_hukum_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6658,14 +7078,14 @@ SELECT setval('"public"."ref_history_pengalaman_pero_kode_pengalaman_seq"', 1, t
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_pengalaman_ta_kode_pengalaman_ta_history_seq"
 OWNED BY "public"."ref_history_pengalaman_ta"."kode_pengalaman_ta_history";
-SELECT setval('"public"."ref_history_pengalaman_ta_kode_pengalaman_ta_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_pengalaman_ta_kode_pengalaman_ta_history_seq"', 2, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-ALTER SEQUENCE "public"."ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq"
-OWNED BY "public"."ref_history_pengalaman_tp"."kode_pengalaman_tp_history";
-SELECT setval('"public"."ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq"', 1, false);
+ALTER SEQUENCE "public"."ref_history_pengalaman_ta_kode_pengalaman_ta_seq"
+OWNED BY "public"."ref_history_pengalaman_ta"."kode_pengalaman_ta";
+SELECT setval('"public"."ref_history_pengalaman_ta_kode_pengalaman_ta_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6691,6 +7111,13 @@ SELECT setval('"public"."ref_history_saham_bu_kode_saham_history_seq"', 1, false
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."ref_history_saham_bu_kode_saham_seq"
+OWNED BY "public"."ref_history_saham_bu"."kode_saham";
+SELECT setval('"public"."ref_history_saham_bu_kode_saham_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."ref_history_sertif_pero_kode_sertif_seq"
 OWNED BY "public"."ref_history_sertif_pero"."kode_sertif";
 SELECT setval('"public"."ref_history_sertif_pero_kode_sertif_seq"', 1, true);
@@ -6700,91 +7127,119 @@ SELECT setval('"public"."ref_history_sertif_pero_kode_sertif_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_sertif_ta_kode_sertif_ta_history_seq"
 OWNED BY "public"."ref_history_sertif_ta"."kode_sertif_ta_history";
-SELECT setval('"public"."ref_history_sertif_ta_kode_sertif_ta_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_sertif_ta_kode_sertif_ta_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_sertif_ta_kode_sertif_ta_seq"
+OWNED BY "public"."ref_history_sertif_ta"."kode_sertif_ta";
+SELECT setval('"public"."ref_history_sertif_ta_kode_sertif_ta_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_sertif_tp_kode_sertif_tp_history_seq"
 OWNED BY "public"."ref_history_sertif_tp"."kode_sertif_tp_history";
-SELECT setval('"public"."ref_history_sertif_tp_kode_sertif_tp_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_sertif_tp_kode_sertif_tp_history_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_sertif_tp_kode_sertif_tp_seq"
+OWNED BY "public"."ref_history_sertif_tp"."kode_sertif_tp";
+SELECT setval('"public"."ref_history_sertif_tp_kode_sertif_tp_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_sertifikat_usaha__kode_sertifikat_usaha_history_seq"
 OWNED BY "public"."ref_history_sertifikat_usaha_bu"."kode_sertifikat_usaha_history";
-SELECT setval('"public"."ref_history_sertifikat_usaha__kode_sertifikat_usaha_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_sertifikat_usaha__kode_sertifikat_usaha_history_seq"', 2, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_sertifikat_usaha_bu_kode_sertifikat_usaha_seq"
+OWNED BY "public"."ref_history_sertifikat_usaha_bu"."kode_sertifikat_usaha";
+SELECT setval('"public"."ref_history_sertifikat_usaha_bu_kode_sertifikat_usaha_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq"
 OWNED BY "public"."ref_history_tenaga_ahli_bu"."kode_tenaga_ahli_history";
-SELECT setval('"public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq"', 4, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-ALTER SEQUENCE "public"."ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq"
+ALTER SEQUENCE "public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq"
+OWNED BY "public"."ref_history_tenaga_ahli_bu"."kode_tenaga_ahli";
+SELECT setval('"public"."ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq"', 1, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq"
 OWNED BY "public"."ref_history_tenaga_pendukung_bu"."kode_tenaga_pendukung_history";
-SELECT setval('"public"."ref_history_tenaga_pendukung__kode_tenaga_pendukung_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_umum_kode_umum_history_seq"
 OWNED BY "public"."ref_history_umum"."kode_umum_history";
-SELECT setval('"public"."ref_history_umum_kode_umum_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_umum_kode_umum_history_seq"', 3, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_history_vendor_kode_vendor_history_seq"
 OWNED BY "public"."ref_history_vendor"."kode_vendor_history";
-SELECT setval('"public"."ref_history_vendor_kode_vendor_history_seq"', 1, false);
+SELECT setval('"public"."ref_history_vendor_kode_vendor_history_seq"', 7, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_item_tanya_kode_item_seq"
 OWNED BY "public"."ref_item_tanya"."kode_item";
-SELECT setval('"public"."ref_item_tanya_kode_item_seq"', 254, true);
+SELECT setval('"public"."ref_item_tanya_kode_item_seq"', 654, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_item_tanya_tpl_kode_tpl_seq"
 OWNED BY "public"."ref_item_tanya_tpl"."kode_tpl";
-SELECT setval('"public"."ref_item_tanya_tpl_kode_tpl_seq"', 87, true);
+SELECT setval('"public"."ref_item_tanya_tpl_kode_tpl_seq"', 88, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_izin_usaha_bu_custom_kode_izin_usaha_custom_seq"
 OWNED BY "public"."ref_izin_usaha_bu_custom"."kode_izin_usaha_custom";
-SELECT setval('"public"."ref_izin_usaha_bu_custom_kode_izin_usaha_custom_seq"', 3705, true);
+SELECT setval('"public"."ref_izin_usaha_bu_custom_kode_izin_usaha_custom_seq"', 3742, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_izin_usaha_bu_kode_izin_usaha_seq"
 OWNED BY "public"."ref_izin_usaha_bu"."kode_izin_usaha";
-SELECT setval('"public"."ref_izin_usaha_bu_kode_izin_usaha_seq"', 5698, true);
+SELECT setval('"public"."ref_izin_usaha_bu_kode_izin_usaha_seq"', 5834, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_kantor_bu_custom_kode_kantor_custom_seq"
 OWNED BY "public"."ref_kantor_bu_custom"."kode_kantor_custom";
-SELECT setval('"public"."ref_kantor_bu_custom_kode_kantor_custom_seq"', 3, true);
+SELECT setval('"public"."ref_kantor_bu_custom_kode_kantor_custom_seq"', 23, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_kantor_bu_kode_kantor_seq"
 OWNED BY "public"."ref_kantor_bu"."kode_kantor";
-SELECT setval('"public"."ref_kantor_bu_kode_kantor_seq"', 4, true);
+SELECT setval('"public"."ref_kantor_bu_kode_kantor_seq"', 15, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6805,7 +7260,7 @@ SELECT setval('"public"."ref_kat_persyaratan_kode_kat_persyaratan_seq"', 5, true
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_kategori_kode_kategori_seq"
 OWNED BY "public"."ref_kategori"."kode_kategori";
-SELECT setval('"public"."ref_kategori_kode_kategori_seq"', 112, true);
+SELECT setval('"public"."ref_kategori_kode_kategori_seq"', 107, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6819,42 +7274,42 @@ SELECT setval('"public"."ref_kbli_sbu_kode_kbli_sbu_seq"', 2650, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_keuangan_bu_kode_keuangan_seq"
 OWNED BY "public"."ref_keuangan_bu"."kode_keuangan";
-SELECT setval('"public"."ref_keuangan_bu_kode_keuangan_seq"', 2465, true);
+SELECT setval('"public"."ref_keuangan_bu_kode_keuangan_seq"', 2582, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_keuangan_pero_kode_keuangan_seq"
 OWNED BY "public"."ref_keuangan_pero"."kode_keuangan";
-SELECT setval('"public"."ref_keuangan_pero_kode_keuangan_seq"', 221, true);
+SELECT setval('"public"."ref_keuangan_pero_kode_keuangan_seq"', 251, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_komisaris_bu_custom_kode_komisaris_custom_seq"
 OWNED BY "public"."ref_komisaris_bu_custom"."kode_komisaris_custom";
-SELECT setval('"public"."ref_komisaris_bu_custom_kode_komisaris_custom_seq"', 1387, true);
+SELECT setval('"public"."ref_komisaris_bu_custom_kode_komisaris_custom_seq"', 1405, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_komisaris_bu_kode_komisaris_seq"
 OWNED BY "public"."ref_komisaris_bu"."kode_komisaris";
-SELECT setval('"public"."ref_komisaris_bu_kode_komisaris_seq"', 3363, true);
+SELECT setval('"public"."ref_komisaris_bu_kode_komisaris_seq"', 3501, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_lan_hukum_bu_kode_lan_hukum_seq"
 OWNED BY "public"."ref_lan_hukum_bu"."kode_lan_hukum";
-SELECT setval('"public"."ref_lan_hukum_bu_kode_lan_hukum_seq"', 2466, true);
+SELECT setval('"public"."ref_lan_hukum_bu_kode_lan_hukum_seq"', 2585, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pakta_integritas_kode_pakta_integritas_seq"
 OWNED BY "public"."ref_pakta_integritas"."kode_pakta_integritas";
-SELECT setval('"public"."ref_pakta_integritas_kode_pakta_integritas_seq"', 7, true);
+SELECT setval('"public"."ref_pakta_integritas_kode_pakta_integritas_seq"', 26, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6868,49 +7323,49 @@ SELECT setval('"public"."ref_penanggung_jwb_kode_penanggung_jwb_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_bu_custom_kode_pengalaman_bu_custom_seq"
 OWNED BY "public"."ref_pengalaman_bu_custom"."kode_pengalaman_bu_custom";
-SELECT setval('"public"."ref_pengalaman_bu_custom_kode_pengalaman_bu_custom_seq"', 6140, true);
+SELECT setval('"public"."ref_pengalaman_bu_custom_kode_pengalaman_bu_custom_seq"', 6153, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_bu_kode_pengalaman_bu_seq"
 OWNED BY "public"."ref_pengalaman_bu"."kode_pengalaman_bu";
-SELECT setval('"public"."ref_pengalaman_bu_kode_pengalaman_bu_seq"', 11794, true);
+SELECT setval('"public"."ref_pengalaman_bu_kode_pengalaman_bu_seq"', 12066, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_pero_custom_kode_pengalaman_custom_seq"
 OWNED BY "public"."ref_pengalaman_pero_custom"."kode_pengalaman_custom";
-SELECT setval('"public"."ref_pengalaman_pero_custom_kode_pengalaman_custom_seq"', 28, true);
+SELECT setval('"public"."ref_pengalaman_pero_custom_kode_pengalaman_custom_seq"', 36, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_pero_kode_pengalaman_seq"
 OWNED BY "public"."ref_pengalaman_pero"."kode_pengalaman";
-SELECT setval('"public"."ref_pengalaman_pero_kode_pengalaman_seq"', 265, true);
+SELECT setval('"public"."ref_pengalaman_pero_kode_pengalaman_seq"', 300, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_ta_custom_kode_pengalaman_ta_custom_seq"
 OWNED BY "public"."ref_pengalaman_ta_custom"."kode_pengalaman_ta_custom";
-SELECT setval('"public"."ref_pengalaman_ta_custom_kode_pengalaman_ta_custom_seq"', 5286, true);
+SELECT setval('"public"."ref_pengalaman_ta_custom_kode_pengalaman_ta_custom_seq"', 5314, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_ta_kode_pengalaman_ta_seq"
 OWNED BY "public"."ref_pengalaman_ta"."kode_pengalaman_ta";
-SELECT setval('"public"."ref_pengalaman_ta_kode_pengalaman_ta_seq"', 7985, true);
+SELECT setval('"public"."ref_pengalaman_ta_kode_pengalaman_ta_seq"', 8255, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengalaman_tp_custom_kode_pengalaman_tp_custom_seq"
 OWNED BY "public"."ref_pengalaman_tp_custom"."kode_pengalaman_tp_custom";
-SELECT setval('"public"."ref_pengalaman_tp_custom_kode_pengalaman_tp_custom_seq"', 14, true);
+SELECT setval('"public"."ref_pengalaman_tp_custom_kode_pengalaman_tp_custom_seq"', 22, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6924,14 +7379,14 @@ SELECT setval('"public"."ref_pengalaman_tp_kode_pengalaman_tp_seq"', 17, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengurus_bu_kode_pengurus_bu_seq"
 OWNED BY "public"."ref_pengurus_bu"."kode_pengurus_bu";
-SELECT setval('"public"."ref_pengurus_bu_kode_pengurus_bu_seq"', 2303, true);
+SELECT setval('"public"."ref_pengurus_bu_kode_pengurus_bu_seq"', 2411, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_pengurus_bu_verif_kode_verif_seq"
 OWNED BY "public"."ref_pengurus_bu_verif"."kode_verif";
-SELECT setval('"public"."ref_pengurus_bu_verif_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_pengurus_bu_verif_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6952,77 +7407,77 @@ SELECT setval('"public"."ref_persentasi_evaluasi_kode_persentase_seq"', 7, true)
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_personalia_pero_kode_personalia_seq"
 OWNED BY "public"."ref_personalia_pero"."kode_personalia";
-SELECT setval('"public"."ref_personalia_pero_kode_personalia_seq"', 221, true);
+SELECT setval('"public"."ref_personalia_pero_kode_personalia_seq"', 251, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_saham_bu_custom_kode_saham_custom_seq"
 OWNED BY "public"."ref_saham_bu_custom"."kode_saham_custom";
-SELECT setval('"public"."ref_saham_bu_custom_kode_saham_custom_seq"', 2306, true);
+SELECT setval('"public"."ref_saham_bu_custom_kode_saham_custom_seq"', 2318, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_saham_bu_kode_saham_seq"
 OWNED BY "public"."ref_saham_bu"."kode_saham";
-SELECT setval('"public"."ref_saham_bu_kode_saham_seq"', 5208, true);
+SELECT setval('"public"."ref_saham_bu_kode_saham_seq"', 5436, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_pero_custom_kode_sertif_pero_custom_seq"
 OWNED BY "public"."ref_sertif_pero_custom"."kode_sertif_pero_custom";
-SELECT setval('"public"."ref_sertif_pero_custom_kode_sertif_pero_custom_seq"', 34, true);
+SELECT setval('"public"."ref_sertif_pero_custom_kode_sertif_pero_custom_seq"', 46, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_pero_kode_sertif_seq"
 OWNED BY "public"."ref_sertif_pero"."kode_sertif";
-SELECT setval('"public"."ref_sertif_pero_kode_sertif_seq"', 306, true);
+SELECT setval('"public"."ref_sertif_pero_kode_sertif_seq"', 343, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_ta_custom_kode_sertif_ta_custom_seq"
 OWNED BY "public"."ref_sertif_ta_custom"."kode_sertif_ta_custom";
-SELECT setval('"public"."ref_sertif_ta_custom_kode_sertif_ta_custom_seq"', 5286, true);
+SELECT setval('"public"."ref_sertif_ta_custom_kode_sertif_ta_custom_seq"', 5312, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_ta_kode_sertif_ta_seq"
 OWNED BY "public"."ref_sertif_ta"."kode_sertif_ta";
-SELECT setval('"public"."ref_sertif_ta_kode_sertif_ta_seq"', 7985, true);
+SELECT setval('"public"."ref_sertif_ta_kode_sertif_ta_seq"', 8273, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_tp_custom_kode_sertif_tp_custom_seq"
 OWNED BY "public"."ref_sertif_tp_custom"."kode_sertif_tp_custom";
-SELECT setval('"public"."ref_sertif_tp_custom_kode_sertif_tp_custom_seq"', 14, true);
+SELECT setval('"public"."ref_sertif_tp_custom_kode_sertif_tp_custom_seq"', 21, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertif_tp_kode_sertif_tp_seq"
 OWNED BY "public"."ref_sertif_tp"."kode_sertif_tp";
-SELECT setval('"public"."ref_sertif_tp_kode_sertif_tp_seq"', 17, true);
+SELECT setval('"public"."ref_sertif_tp_kode_sertif_tp_seq"', 15, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertifikat_usaha_bu_custom_kode_sertifikat_usaha_custom_seq"
 OWNED BY "public"."ref_sertifikat_usaha_bu_custom"."kode_sertifikat_usaha_custom";
-SELECT setval('"public"."ref_sertifikat_usaha_bu_custom_kode_sertifikat_usaha_custom_seq"', 19, true);
+SELECT setval('"public"."ref_sertifikat_usaha_bu_custom_kode_sertifikat_usaha_custom_seq"', 33, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_sertifikat_usaha_bu_kode_sertifikat_usaha_seq"
 OWNED BY "public"."ref_sertifikat_usaha_bu"."kode_sertifikat_usaha";
-SELECT setval('"public"."ref_sertifikat_usaha_bu_kode_sertifikat_usaha_seq"', 27, true);
+SELECT setval('"public"."ref_sertifikat_usaha_bu_kode_sertifikat_usaha_seq"', 31, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7043,35 +7498,35 @@ SELECT setval('"public"."ref_subkat_persyaratan_kode_subkat_seq"', 16, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_tenaga_ahli_bu_custom_kode_tenaga_ahli_custom_seq"
 OWNED BY "public"."ref_tenaga_ahli_bu_custom"."kode_tenaga_ahli_custom";
-SELECT setval('"public"."ref_tenaga_ahli_bu_custom_kode_tenaga_ahli_custom_seq"', 5286, true);
+SELECT setval('"public"."ref_tenaga_ahli_bu_custom_kode_tenaga_ahli_custom_seq"', 5321, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_tenaga_ahli_bu_kode_tenaga_ahli_seq"
 OWNED BY "public"."ref_tenaga_ahli_bu"."kode_tenaga_ahli";
-SELECT setval('"public"."ref_tenaga_ahli_bu_kode_tenaga_ahli_seq"', 7985, true);
+SELECT setval('"public"."ref_tenaga_ahli_bu_kode_tenaga_ahli_seq"', 8260, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_tenaga_pendukung_bu_custom_kode_tenaga_pendukung_custom_seq"
 OWNED BY "public"."ref_tenaga_pendukung_bu_custom"."kode_tenaga_pendukung_custom";
-SELECT setval('"public"."ref_tenaga_pendukung_bu_custom_kode_tenaga_pendukung_custom_seq"', 14, true);
+SELECT setval('"public"."ref_tenaga_pendukung_bu_custom_kode_tenaga_pendukung_custom_seq"', 27, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_tenaga_pendukung_bu_kode_tenaga_pendukung_seq"
 OWNED BY "public"."ref_tenaga_pendukung_bu"."kode_tenaga_pendukung";
-SELECT setval('"public"."ref_tenaga_pendukung_bu_kode_tenaga_pendukung_seq"', 17, true);
+SELECT setval('"public"."ref_tenaga_pendukung_bu_kode_tenaga_pendukung_seq"', 22, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_umum_kode_umum_seq"
 OWNED BY "public"."ref_umum"."kode_umum";
-SELECT setval('"public"."ref_umum_kode_umum_seq"', 2466, true);
+SELECT setval('"public"."ref_umum_kode_umum_seq"', 2585, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7085,56 +7540,56 @@ SELECT setval('"public"."ref_v_keluar_dpt_kode_v_keluar_dpt_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_kode_vendor_seq"
 OWNED BY "public"."ref_vendor"."kode_vendor";
-SELECT setval('"public"."ref_vendor_kode_vendor_seq"', 32531, true);
+SELECT setval('"public"."ref_vendor_kode_vendor_seq"', 32552, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_penandatangan_kode_vp_seq"
 OWNED BY "public"."ref_vendor_penandatangan"."kode_vp";
-SELECT setval('"public"."ref_vendor_penandatangan_kode_vp_seq"', 13729, true);
+SELECT setval('"public"."ref_vendor_penandatangan_kode_vp_seq"', 53108, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_reg_history_kode_register_seq"
 OWNED BY "public"."ref_vendor_reg_history"."kode_register";
-SELECT setval('"public"."ref_vendor_reg_history_kode_register_seq"', 2682, true);
+SELECT setval('"public"."ref_vendor_reg_history_kode_register_seq"', 2811, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_register_kode_register_seq"
 OWNED BY "public"."ref_vendor_register"."kode_register";
-SELECT setval('"public"."ref_vendor_register_kode_register_seq"', 32581, true);
+SELECT setval('"public"."ref_vendor_register_kode_register_seq"', 32564, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_adm_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_adm_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_adm_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_adm_bu_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_administrasi_pero_kode_verif_seq"
 OWNED BY "public"."ref_verif_administrasi_pero"."kode_verif";
-SELECT setval('"public"."ref_verif_administrasi_pero_kode_verif_seq"', 1, true);
+SELECT setval('"public"."ref_verif_administrasi_pero_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_data_pajak_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_data_pajak_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_data_pajak_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_data_pajak_bu_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_datadiri_kode_verif_seq"
 OWNED BY "public"."ref_verif_datadiri"."kode_verif";
-SELECT setval('"public"."ref_verif_datadiri_kode_verif_seq"', 10, true);
+SELECT setval('"public"."ref_verif_datadiri_kode_verif_seq"', 17, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7148,147 +7603,154 @@ SELECT setval('"public"."ref_verif_datadiri_umum_kode_verif_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_direksi_kode_verif_seq"
 OWNED BY "public"."ref_verif_direksi"."kode_verif";
-SELECT setval('"public"."ref_verif_direksi_kode_verif_seq"', 3, true);
+SELECT setval('"public"."ref_verif_direksi_kode_verif_seq"', 12, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_fasilitas_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_fasilitas_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_fasilitas_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_fasilitas_bu_kode_verif_seq"', 11, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_izin_usaha_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_izin_usaha_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_izin_usaha_bu_kode_verif_seq"', 4, true);
+SELECT setval('"public"."ref_verif_izin_usaha_bu_kode_verif_seq"', 19, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_kantor_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_kantor_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_kantor_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_kantor_bu_kode_verif_seq"', 9, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_keuangan_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_keuangan_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_keuangan_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_keuangan_bu_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_keuangan_pero_kode_verif_seq"
 OWNED BY "public"."ref_verif_keuangan_pero"."kode_verif";
-SELECT setval('"public"."ref_verif_keuangan_pero_kode_verif_seq"', 1, true);
+SELECT setval('"public"."ref_verif_keuangan_pero_kode_verif_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_komisaris_kode_verif_seq"
 OWNED BY "public"."ref_verif_komisaris"."kode_verif";
-SELECT setval('"public"."ref_verif_komisaris_kode_verif_seq"', 1, true);
+SELECT setval('"public"."ref_verif_komisaris_kode_verif_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_lan_hukum_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_lan_hukum_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_lan_hukum_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_lan_hukum_bu_kode_verif_seq"', 8, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_pengalaman_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_pengalaman_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_pengalaman_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_pengalaman_bu_kode_verif_seq"', 11, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_pengalaman_pero_kode_verif_seq"
 OWNED BY "public"."ref_verif_pengalaman_pero"."kode_verif";
-SELECT setval('"public"."ref_verif_pengalaman_pero_kode_verif_seq"', 1, true);
+SELECT setval('"public"."ref_verif_pengalaman_pero_kode_verif_seq"', 12, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_personalia_pero_kode_verif_seq"
 OWNED BY "public"."ref_verif_personalia_pero"."kode_verif";
-SELECT setval('"public"."ref_verif_personalia_pero_kode_verif_seq"', 14, true);
+SELECT setval('"public"."ref_verif_personalia_pero_kode_verif_seq"', 21, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_saham_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_saham_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_saham_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_saham_bu_kode_verif_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_sertif_pero_kode_verif_seq"
 OWNED BY "public"."ref_verif_sertif_pero"."kode_verif";
-SELECT setval('"public"."ref_verif_sertif_pero_kode_verif_seq"', 1, true);
+SELECT setval('"public"."ref_verif_sertif_pero_kode_verif_seq"', 11, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_sertifikat_usaha_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_sertifikat_usaha_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_sertifikat_usaha_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_sertifikat_usaha_bu_kode_verif_seq"', 9, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_tenaga_ahli_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_tenaga_ahli_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_tenaga_ahli_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_tenaga_ahli_bu_kode_verif_seq"', 16, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_tenaga_pendukung_bu_kode_verif_seq"
 OWNED BY "public"."ref_verif_tenaga_pendukung_bu"."kode_verif";
-SELECT setval('"public"."ref_verif_tenaga_pendukung_bu_kode_verif_seq"', 2, true);
+SELECT setval('"public"."ref_verif_tenaga_pendukung_bu_kode_verif_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_verif_umum_kode_verif_seq"
 OWNED BY "public"."ref_verif_umum"."kode_verif";
-SELECT setval('"public"."ref_verif_umum_kode_verif_seq"', 6, true);
+SELECT setval('"public"."ref_verif_umum_kode_verif_seq"', 12, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_custom_item_kode_ci_seq"
 OWNED BY "public"."trx_custom_item"."kode_ci";
-SELECT setval('"public"."trx_custom_item_kode_ci_seq"', 66, true);
+SELECT setval('"public"."trx_custom_item_kode_ci_seq"', 441, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_custom_table_kode_custom_table_seq"
 OWNED BY "public"."trx_custom_table"."kode_custom_table";
-SELECT setval('"public"."trx_custom_table_kode_custom_table_seq"', 529, true);
+SELECT setval('"public"."trx_custom_table_kode_custom_table_seq"', 775, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_izin_kbli_sbu_custom_kode_trx_iks_custom_seq"
 OWNED BY "public"."trx_izin_kbli_sbu_custom"."kode_trx_iks_custom";
-SELECT setval('"public"."trx_izin_kbli_sbu_custom_kode_trx_iks_custom_seq"', 151, true);
+SELECT setval('"public"."trx_izin_kbli_sbu_custom_kode_trx_iks_custom_seq"', 192, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq"
+OWNED BY "public"."trx_izin_kbli_sbu_history"."kode_trx_kbli_history";
+SELECT setval('"public"."trx_izin_kbli_sbu_history_kode_trx_kbli_history_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_izin_kbli_sbu_kode_trx_kbli_seq"
 OWNED BY "public"."trx_izin_kbli_sbu"."kode_trx_kbli";
-SELECT setval('"public"."trx_izin_kbli_sbu_kode_trx_kbli_seq"', 51, true);
+SELECT setval('"public"."trx_izin_kbli_sbu_kode_trx_kbli_seq"', 72, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7302,7 +7764,7 @@ SELECT setval('"public"."trx_kat_j_vendor_kode_kat_j_vendor_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_kategori_kode_trx_kategori_seq"
 OWNED BY "public"."trx_kategori"."kode_trx_kategori";
-SELECT setval('"public"."trx_kategori_kode_trx_kategori_seq"', 114, true);
+SELECT setval('"public"."trx_kategori_kode_trx_kategori_seq"', 111, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7323,42 +7785,42 @@ SELECT setval('"public"."trx_kehadiran_verif_kode_kehadiran_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_ketentuan_umum_khusus_kode_kuk_seq"
 OWNED BY "public"."trx_ketentuan_umum_khusus"."kode_kuk";
-SELECT setval('"public"."trx_ketentuan_umum_khusus_kode_kuk_seq"', 103, true);
+SELECT setval('"public"."trx_ketentuan_umum_khusus_kode_kuk_seq"', 17, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_konfirmasi_data_sesuai_kode_complete_seq"
 OWNED BY "public"."trx_konfirmasi_data_sesuai"."kode_complete";
-SELECT setval('"public"."trx_konfirmasi_data_sesuai_kode_complete_seq"', 22, true);
+SELECT setval('"public"."trx_konfirmasi_data_sesuai_kode_complete_seq"', 40, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"
 OWNED BY "public"."trx_kualifikasi_usaha_penjr"."kode_trx";
-SELECT setval('"public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"', 53, true);
+SELECT setval('"public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"', 35, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_nilai_akhir_kode_penilaian_seq"
 OWNED BY "public"."trx_nilai_akhir"."kode_penilaian";
-SELECT setval('"public"."trx_nilai_akhir_kode_penilaian_seq"', 822, true);
+SELECT setval('"public"."trx_nilai_akhir_kode_penilaian_seq"', 835, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_penjaringan_kode_penjaringan_seq"
 OWNED BY "public"."trx_penjaringan"."kode_penjaringan";
-SELECT setval('"public"."trx_penjaringan_kode_penjaringan_seq"', 360, true);
+SELECT setval('"public"."trx_penjaringan_kode_penjaringan_seq"', 367, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_tim_teknis_pendukung_kode_tim_teknis_pendukung_seq"
 OWNED BY "public"."trx_tim_teknis_pendukung"."kode_tim_teknis_pendukung";
-SELECT setval('"public"."trx_tim_teknis_pendukung_kode_tim_teknis_pendukung_seq"', 4, true);
+SELECT setval('"public"."trx_tim_teknis_pendukung_kode_tim_teknis_pendukung_seq"', 3, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -7372,35 +7834,35 @@ SELECT setval('"public"."trx_undangan_pemeriksaan_keluar_dpt_kode_undangan_seq"'
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_undangan_penjr_kode_und_penjr_seq"
 OWNED BY "public"."trx_undangan_penjr"."kode_und_penjr";
-SELECT setval('"public"."trx_undangan_penjr_kode_und_penjr_seq"', 725, true);
+SELECT setval('"public"."trx_undangan_penjr_kode_und_penjr_seq"', 729, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_undangan_verif_kode_undangan_verif_seq"
 OWNED BY "public"."trx_undangan_verif"."kode_undangan_verif";
-SELECT setval('"public"."trx_undangan_verif_kode_undangan_verif_seq"', 3, true);
+SELECT setval('"public"."trx_undangan_verif_kode_undangan_verif_seq"', 10, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_vendor_penjr_kode_vendor_penjr_seq"
 OWNED BY "public"."trx_vendor_penjr"."kode_vendor_penjr";
-SELECT setval('"public"."trx_vendor_penjr_kode_vendor_penjr_seq"', 826, true);
+SELECT setval('"public"."trx_vendor_penjr_kode_vendor_penjr_seq"', 838, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_verif_luar_dpt_kode_verif_luar_dpt_seq"
 OWNED BY "public"."trx_verif_luar_dpt"."kode_verif_luar_dpt";
-SELECT setval('"public"."trx_verif_luar_dpt_kode_verif_luar_dpt_seq"', 21, true);
+SELECT setval('"public"."trx_verif_luar_dpt_kode_verif_luar_dpt_seq"', 38, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_verifikator_penjr_kode_verifikator_penjr_seq"
 OWNED BY "public"."trx_verifikator_penjr"."kode_verifikator_penjr";
-SELECT setval('"public"."trx_verifikator_penjr_kode_verifikator_penjr_seq"', 2143, true);
+SELECT setval('"public"."trx_verifikator_penjr_kode_verifikator_penjr_seq"', 2172, true);
 
 -- ----------------------------
 -- Primary Key structure for table bridging_id_direksi
@@ -7532,7 +7994,7 @@ ALTER TABLE "public"."ref_file_saham" ADD CONSTRAINT "ref_file_saham_pk" PRIMARY
 -- ----------------------------
 -- Primary Key structure for table ref_history_adm_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_adm_bu" ADD CONSTRAINT "ref_history_adm_bu_pkey" PRIMARY KEY ("kode_adm_bu_history");
+ALTER TABLE "public"."ref_history_adm_bu" ADD CONSTRAINT "ref_history_adm_bu_pk" PRIMARY KEY ("kode_adm_bu_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_administrasi_pero
@@ -7542,7 +8004,7 @@ ALTER TABLE "public"."ref_history_administrasi_pero" ADD CONSTRAINT "ref_history
 -- ----------------------------
 -- Primary Key structure for table ref_history_data_pajak_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_data_pajak_bu" ADD CONSTRAINT "ref_history_data_pajak_bu_pkey" PRIMARY KEY ("kode_data_pajak_history");
+ALTER TABLE "public"."ref_history_data_pajak_bu" ADD CONSTRAINT "ref_history_data_pajak_bu_pk" PRIMARY KEY ("kode_data_pajak_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_datadiri_umum
@@ -7552,47 +8014,37 @@ ALTER TABLE "public"."ref_history_datadiri_umum" ADD CONSTRAINT "ref_history_dat
 -- ----------------------------
 -- Primary Key structure for table ref_history_direksi_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_direksi_bu" ADD CONSTRAINT "ref_history_direksi_bu_pkey" PRIMARY KEY ("kode_direksi_history");
-
--- ----------------------------
--- Primary Key structure for table ref_history_fasilitas_bu
--- ----------------------------
-ALTER TABLE "public"."ref_history_fasilitas_bu" ADD CONSTRAINT "ref_history_fasilitas_bu_pkey" PRIMARY KEY ("kode_fasilitas_history");
+ALTER TABLE "public"."ref_history_direksi_bu" ADD CONSTRAINT "ref_history_direksi_bu_pk" PRIMARY KEY ("kode_direksi_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_izin_usaha_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_izin_usaha_bu" ADD CONSTRAINT "ref_history_izin_usaha_bu_pkey" PRIMARY KEY ("kode_izin_usaha_history");
+ALTER TABLE "public"."ref_history_izin_usaha_bu" ADD CONSTRAINT "ref_history_izin_usaha_bu_pk" PRIMARY KEY ("kode_izin_usaha_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_kantor_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_kantor_bu" ADD CONSTRAINT "ref_history_kantor_bu_pkey" PRIMARY KEY ("kode_kantor_history");
+ALTER TABLE "public"."ref_history_kantor_bu" ADD CONSTRAINT "ref_history_kantor_bu_pk" PRIMARY KEY ("kode_kantor_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_keuangan_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_keuangan_bu" ADD CONSTRAINT "ref_history_keuangan_bu_pkey" PRIMARY KEY ("kode_keuangan_history");
+ALTER TABLE "public"."ref_history_keuangan_bu" ADD CONSTRAINT "ref_history_keuangan_bu_pk" PRIMARY KEY ("kode_keuangan_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_keuangan_pero
 -- ----------------------------
-ALTER TABLE "public"."ref_history_keuangan_pero" ADD CONSTRAINT "ref_history_keuangan_pero_pkey" PRIMARY KEY ("kode_keuangan_history");
+ALTER TABLE "public"."ref_history_keuangan_pero" ADD CONSTRAINT "ref_history_keuangan_pero_pk" PRIMARY KEY ("kode_keuangan_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_komisaris_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_komisaris_bu" ADD CONSTRAINT "ref_history_komisaris_bu_pkey" PRIMARY KEY ("kode_komisaris_history");
-
--- ----------------------------
--- Primary Key structure for table ref_history_lan_hukum_bu
--- ----------------------------
-ALTER TABLE "public"."ref_history_lan_hukum_bu" ADD CONSTRAINT "ref_history_lan_hukum_bu_pkey" PRIMARY KEY ("kode_lan_hukum_history");
+ALTER TABLE "public"."ref_history_komisaris_bu" ADD CONSTRAINT "ref_history_komisaris_bu_pk" PRIMARY KEY ("kode_komisaris_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_pengalaman_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_bu" ADD CONSTRAINT "ref_history_pengalaman_bu_pkey" PRIMARY KEY ("kode_pengalaman_bu_history");
+ALTER TABLE "public"."ref_history_pengalaman_bu" ADD CONSTRAINT "ref_history_pengalaman_bu_pk" PRIMARY KEY ("kode_pengalaman_bu_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_pengalaman_pero
@@ -7602,12 +8054,7 @@ ALTER TABLE "public"."ref_history_pengalaman_pero" ADD CONSTRAINT "ref_history_p
 -- ----------------------------
 -- Primary Key structure for table ref_history_pengalaman_ta
 -- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_ta" ADD CONSTRAINT "ref_history_pengalaman_ta_pkey" PRIMARY KEY ("kode_pengalaman_ta_history");
-
--- ----------------------------
--- Primary Key structure for table ref_history_pengalaman_tp
--- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_tp" ADD CONSTRAINT "ref_history_pengalaman_tp_pkey" PRIMARY KEY ("kode_pengalaman_tp_history");
+ALTER TABLE "public"."ref_history_pengalaman_ta" ADD CONSTRAINT "ref_history_pengalaman_ta_pk" PRIMARY KEY ("kode_pengalaman_ta_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_pengurus_bu
@@ -7622,7 +8069,7 @@ ALTER TABLE "public"."ref_history_personalia_pero" ADD CONSTRAINT "ref_history_p
 -- ----------------------------
 -- Primary Key structure for table ref_history_saham_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_saham_bu" ADD CONSTRAINT "ref_history_saham_bu_pkey" PRIMARY KEY ("kode_saham_history");
+ALTER TABLE "public"."ref_history_saham_bu" ADD CONSTRAINT "ref_history_saham_bu_pk" PRIMARY KEY ("kode_saham_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_sertif_pero
@@ -7632,37 +8079,37 @@ ALTER TABLE "public"."ref_history_sertif_pero" ADD CONSTRAINT "ref_history_serti
 -- ----------------------------
 -- Primary Key structure for table ref_history_sertif_ta
 -- ----------------------------
-ALTER TABLE "public"."ref_history_sertif_ta" ADD CONSTRAINT "ref_history_sertif_ta_pkey" PRIMARY KEY ("kode_sertif_ta_history");
+ALTER TABLE "public"."ref_history_sertif_ta" ADD CONSTRAINT "ref_history_sertif_ta_pk" PRIMARY KEY ("kode_sertif_ta_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_sertif_tp
 -- ----------------------------
-ALTER TABLE "public"."ref_history_sertif_tp" ADD CONSTRAINT "ref_history_sertif_tp_pkey" PRIMARY KEY ("kode_sertif_tp_history");
+ALTER TABLE "public"."ref_history_sertif_tp" ADD CONSTRAINT "ref_history_sertif_tp_pk" PRIMARY KEY ("kode_sertif_tp_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_sertifikat_usaha_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_sertifikat_usaha_bu" ADD CONSTRAINT "ref_history_sertifikat_usaha_bu_pkey" PRIMARY KEY ("kode_sertifikat_usaha_history");
+ALTER TABLE "public"."ref_history_sertifikat_usaha_bu" ADD CONSTRAINT "ref_history_sertifikat_usaha_bu_pk" PRIMARY KEY ("kode_sertifikat_usaha_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_tenaga_ahli_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_tenaga_ahli_bu" ADD CONSTRAINT "ref_history_tenaga_ahli_bu_pkey" PRIMARY KEY ("kode_tenaga_ahli_history");
+ALTER TABLE "public"."ref_history_tenaga_ahli_bu" ADD CONSTRAINT "ref_history_tenaga_ahli_bu_pk" PRIMARY KEY ("kode_tenaga_ahli_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_tenaga_pendukung_bu
 -- ----------------------------
-ALTER TABLE "public"."ref_history_tenaga_pendukung_bu" ADD CONSTRAINT "ref_history_tenaga_pendukung_bu_pkey" PRIMARY KEY ("kode_tenaga_pendukung_history");
+ALTER TABLE "public"."ref_history_tenaga_pendukung_bu" ADD CONSTRAINT "ref_history_tenaga_pendukung_bu_pk" PRIMARY KEY ("kode_tenaga_pendukung_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_umum
 -- ----------------------------
-ALTER TABLE "public"."ref_history_umum" ADD CONSTRAINT "ref_history_umum_pkey" PRIMARY KEY ("kode_umum_history");
+ALTER TABLE "public"."ref_history_umum" ADD CONSTRAINT "ref_history_umum_pk" PRIMARY KEY ("kode_umum_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_history_vendor
 -- ----------------------------
-ALTER TABLE "public"."ref_history_vendor" ADD CONSTRAINT "ref_history_vendor_pkey" PRIMARY KEY ("kode_vendor_history");
+ALTER TABLE "public"."ref_history_vendor" ADD CONSTRAINT "ref_history_vendor_pk" PRIMARY KEY ("kode_vendor_history");
 
 -- ----------------------------
 -- Primary Key structure for table ref_item_tanya
@@ -7892,7 +8339,7 @@ ALTER TABLE "public"."ref_sertif_ta_custom" ADD CONSTRAINT "ref_sertif_ta_custom
 -- ----------------------------
 -- Primary Key structure for table ref_sertif_tp
 -- ----------------------------
-ALTER TABLE "public"."ref_sertif_tp" ADD CONSTRAINT "ref_sertif_tp_pkey" PRIMARY KEY ("kode_sertif_tp");
+ALTER TABLE "public"."ref_sertif_tp" ADD CONSTRAINT "ref_sertif_tp_pk" PRIMARY KEY ("kode_sertif_tp");
 
 -- ----------------------------
 -- Primary Key structure for table ref_sertif_tp_custom
@@ -7980,11 +8427,6 @@ ALTER TABLE "public"."ref_v_keluar_dpt" ADD CONSTRAINT "ref_v_keluar_dpt_pkey" P
 -- Primary Key structure for table ref_vendor
 -- ----------------------------
 ALTER TABLE "public"."ref_vendor" ADD CONSTRAINT "ref_vendor_pkey" PRIMARY KEY ("kode_vendor");
-
--- ----------------------------
--- Uniques structure for table ref_vendor_penandatangan
--- ----------------------------
-ALTER TABLE "public"."ref_vendor_penandatangan" ADD CONSTRAINT "kode_vendor_unique" UNIQUE ("kode_vendor");
 
 -- ----------------------------
 -- Primary Key structure for table ref_vendor_penandatangan
@@ -8132,6 +8574,11 @@ ALTER TABLE "public"."trx_izin_kbli_sbu" ADD CONSTRAINT "trx_izin_kbli_sbu_pkey"
 ALTER TABLE "public"."trx_izin_kbli_sbu_custom" ADD CONSTRAINT "trx_izin_kbli_sbu_custom_pkey" PRIMARY KEY ("kode_trx_iks_custom");
 
 -- ----------------------------
+-- Primary Key structure for table trx_izin_kbli_sbu_history
+-- ----------------------------
+ALTER TABLE "public"."trx_izin_kbli_sbu_history" ADD CONSTRAINT "trx_izin_kbli_sbu_history_pk" PRIMARY KEY ("kode_trx_kbli_history");
+
+-- ----------------------------
 -- Primary Key structure for table trx_kat_j_vendor
 -- ----------------------------
 ALTER TABLE "public"."trx_kat_j_vendor" ADD CONSTRAINT "trx_kat_j_vendor_pkey" PRIMARY KEY ("kode_kat_j_vendor");
@@ -8257,7 +8704,7 @@ ALTER TABLE "public"."ref_direksi_bu" ADD CONSTRAINT "ref_direksi_bu_kode_vendor
 -- ----------------------------
 -- Foreign Keys structure for table ref_direksi_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_direksi_bu_custom" ADD CONSTRAINT "ref_direksi_bu_custom_kode_direksi_fkey" FOREIGN KEY ("kode_direksi") REFERENCES "public"."ref_direksi_bu" ("kode_direksi") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_direksi_bu_custom" ADD CONSTRAINT "ref_direksi_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_fasilitas_bu
@@ -8268,7 +8715,7 @@ ALTER TABLE "public"."ref_fasilitas_bu" ADD CONSTRAINT "ref_fasilitas_bu_kode_ve
 -- ----------------------------
 -- Foreign Keys structure for table ref_fasilitas_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_fasilitas_bu_custom" ADD CONSTRAINT "ref_fasilitas_bu_custom_kode_fasilitas_fkey" FOREIGN KEY ("kode_fasilitas") REFERENCES "public"."ref_fasilitas_bu" ("kode_fasilitas") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_fasilitas_bu_custom" ADD CONSTRAINT "ref_fasilitas_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_adm_bu
@@ -8331,11 +8778,6 @@ ALTER TABLE "public"."ref_history_komisaris_bu" ADD CONSTRAINT "ref_history_komi
 ALTER TABLE "public"."ref_history_lan_hukum_bu" ADD CONSTRAINT "ref_history_lan_hukum_bu_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
--- Foreign Keys structure for table ref_history_pengalaman_bu
--- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_bu" ADD CONSTRAINT "ref_history_pengalaman_bu_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- ----------------------------
 -- Foreign Keys structure for table ref_history_pengalaman_pero
 -- ----------------------------
 ALTER TABLE "public"."ref_history_pengalaman_pero" ADD CONSTRAINT "ref_history_pengalaman_pero_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
@@ -8343,12 +8785,7 @@ ALTER TABLE "public"."ref_history_pengalaman_pero" ADD CONSTRAINT "ref_history_p
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_pengalaman_ta
 -- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_ta" ADD CONSTRAINT "ref_history_pengalaman_ta_kode_tenaga_ahli_fkey" FOREIGN KEY ("kode_tenaga_ahli") REFERENCES "public"."ref_tenaga_ahli_bu" ("kode_tenaga_ahli") ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- ----------------------------
--- Foreign Keys structure for table ref_history_pengalaman_tp
--- ----------------------------
-ALTER TABLE "public"."ref_history_pengalaman_tp" ADD CONSTRAINT "ref_history_pengalaman_tp_kode_tenaga_pendukung_fkey" FOREIGN KEY ("kode_tenaga_pendukung") REFERENCES "public"."ref_tenaga_pendukung_bu" ("kode_tenaga_pendukung") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_history_pengalaman_ta" ADD CONSTRAINT "ref_history_pengalaman_ta_kode_tenaga_ahli_fkey" FOREIGN KEY ("kode_tenaga_ahli_history") REFERENCES "public"."ref_tenaga_ahli_bu" ("kode_tenaga_ahli") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_pengurus_bu
@@ -8373,7 +8810,7 @@ ALTER TABLE "public"."ref_history_sertif_pero" ADD CONSTRAINT "ref_history_serti
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_sertif_ta
 -- ----------------------------
-ALTER TABLE "public"."ref_history_sertif_ta" ADD CONSTRAINT "ref_history_sertif_ta_kode_tenaga_ahli_fkey" FOREIGN KEY ("kode_tenaga_ahli") REFERENCES "public"."ref_tenaga_ahli_bu" ("kode_tenaga_ahli") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_history_sertif_ta" ADD CONSTRAINT "ref_history_sertif_ta_kode_tenaga_ahli_fkey" FOREIGN KEY ("kode_tenaga_ahli_history") REFERENCES "public"."ref_tenaga_ahli_bu" ("kode_tenaga_ahli") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_sertif_tp
@@ -8389,11 +8826,6 @@ ALTER TABLE "public"."ref_history_sertifikat_usaha_bu" ADD CONSTRAINT "ref_histo
 -- Foreign Keys structure for table ref_history_tenaga_ahli_bu
 -- ----------------------------
 ALTER TABLE "public"."ref_history_tenaga_ahli_bu" ADD CONSTRAINT "ref_history_tenaga_ahli_bu_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- ----------------------------
--- Foreign Keys structure for table ref_history_tenaga_pendukung_bu
--- ----------------------------
-ALTER TABLE "public"."ref_history_tenaga_pendukung_bu" ADD CONSTRAINT "ref_history_tenaga_pendukung_bu_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_history_umum
@@ -8426,7 +8858,7 @@ ALTER TABLE "public"."ref_izin_usaha_bu" ADD CONSTRAINT "ref_izin_usaha_bu_kode_
 -- ----------------------------
 -- Foreign Keys structure for table ref_izin_usaha_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_izin_usaha_bu_custom" ADD CONSTRAINT "ref_izin_usaha_bu_custom_kode_izin_usaha_fkey" FOREIGN KEY ("kode_izin_usaha") REFERENCES "public"."ref_izin_usaha_bu" ("kode_izin_usaha") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_izin_usaha_bu_custom" ADD CONSTRAINT "ref_izin_usaha_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_kantor_bu
@@ -8438,7 +8870,7 @@ ALTER TABLE "public"."ref_kantor_bu" ADD CONSTRAINT "ref_kantor_bu_kode_vendor_f
 -- ----------------------------
 -- Foreign Keys structure for table ref_kantor_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_kantor_bu_custom" ADD CONSTRAINT "ref_kantor_bu_custom_kode_kantor_fkey" FOREIGN KEY ("kode_kantor") REFERENCES "public"."ref_kantor_bu" ("kode_kantor") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_kantor_bu_custom" ADD CONSTRAINT "ref_kantor_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_kat_item_tanya
@@ -8463,7 +8895,7 @@ ALTER TABLE "public"."ref_komisaris_bu" ADD CONSTRAINT "ref_komisaris_bu_kode_ve
 -- ----------------------------
 -- Foreign Keys structure for table ref_komisaris_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_komisaris_bu_custom" ADD CONSTRAINT "ref_komisaris_bu_custom_kode_komisaris_fkey" FOREIGN KEY ("kode_komisaris") REFERENCES "public"."ref_komisaris_bu" ("kode_komisaris") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_komisaris_bu_custom" ADD CONSTRAINT "ref_komisaris_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_lan_hukum_bu
@@ -8488,7 +8920,7 @@ ALTER TABLE "public"."ref_pengalaman_bu" ADD CONSTRAINT "ref_pengalaman_bu_kode_
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_pengalaman_bu_custom" ADD CONSTRAINT "ref_pengalaman_bu_custom_kode_pengalaman_bu_fkey" FOREIGN KEY ("kode_pengalaman_bu") REFERENCES "public"."ref_pengalaman_bu" ("kode_pengalaman_bu") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_pengalaman_bu_custom" ADD CONSTRAINT "ref_pengalaman_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_pero
@@ -8498,9 +8930,9 @@ ALTER TABLE "public"."ref_pengalaman_pero" ADD CONSTRAINT "ref_pengalaman_pero_k
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_pero_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_pengalaman_pero_custom" ADD CONSTRAINT "ref_pengalaman_pero_custom_kode_pengalaman_fkey" FOREIGN KEY ("kode_pengalaman") REFERENCES "public"."ref_pengalaman_pero" ("kode_pengalaman") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "public"."ref_pengalaman_pero_custom" ADD CONSTRAINT "ref_pengalaman_pero_custom_kode_penjaringan_fkey" FOREIGN KEY ("kode_penjaringan") REFERENCES "public"."trx_penjaringan" ("kode_penjaringan") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "public"."ref_pengalaman_pero_custom" ADD CONSTRAINT "ref_pengalaman_pero_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_pengalaman_pero_custom" ADD CONSTRAINT "ref_pengalaman_pero_custom_kode_vendor_fkey1" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_ta
@@ -8510,7 +8942,7 @@ ALTER TABLE "public"."ref_pengalaman_ta" ADD CONSTRAINT "ref_pengalaman_ta_kode_
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_ta_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_pengalaman_ta_custom" ADD CONSTRAINT "ref_pengalaman_ta_custom_kode_pengalaman_ta_fkey" FOREIGN KEY ("kode_pengalaman_ta") REFERENCES "public"."ref_pengalaman_ta" ("kode_pengalaman_ta") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_pengalaman_ta_custom" ADD CONSTRAINT "ref_pengalaman_ta_custom_kode_tenaga_ahli_custom_fkey" FOREIGN KEY ("kode_tenaga_ahli_custom") REFERENCES "public"."ref_tenaga_ahli_bu_custom" ("kode_tenaga_ahli_custom") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_tp
@@ -8520,7 +8952,7 @@ ALTER TABLE "public"."ref_pengalaman_tp" ADD CONSTRAINT "ref_pengalaman_tp_kode_
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengalaman_tp_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_pengalaman_tp_custom" ADD CONSTRAINT "ref_pengalaman_tp_custom_kode_pengalaman_tp_fkey" FOREIGN KEY ("kode_pengalaman_tp") REFERENCES "public"."ref_pengalaman_tp" ("kode_pengalaman_tp") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_pengalaman_tp_custom" ADD CONSTRAINT "ref_pengalaman_tp_custom_kode_tenaga_pendukung_custom_fkey" FOREIGN KEY ("kode_tenaga_pendukung_custom") REFERENCES "public"."ref_tenaga_pendukung_bu_custom" ("kode_tenaga_pendukung_custom") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_pengurus_bu
@@ -8557,7 +8989,7 @@ ALTER TABLE "public"."ref_saham_bu" ADD CONSTRAINT "ref_saham_bu_kode_vendor_fke
 -- ----------------------------
 -- Foreign Keys structure for table ref_saham_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_saham_bu_custom" ADD CONSTRAINT "ref_saham_bu_custom_kode_saham_fkey" FOREIGN KEY ("kode_saham") REFERENCES "public"."ref_saham_bu" ("kode_saham") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_saham_bu_custom" ADD CONSTRAINT "ref_saham_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_sertif_pero
@@ -8568,7 +9000,6 @@ ALTER TABLE "public"."ref_sertif_pero" ADD CONSTRAINT "ref_sertif_pero_kode_vend
 -- Foreign Keys structure for table ref_sertif_pero_custom
 -- ----------------------------
 ALTER TABLE "public"."ref_sertif_pero_custom" ADD CONSTRAINT "ref_sertif_pero_custom_kode_penjaringan_fkey" FOREIGN KEY ("kode_penjaringan") REFERENCES "public"."trx_penjaringan" ("kode_penjaringan") ON DELETE CASCADE ON UPDATE NO ACTION;
-ALTER TABLE "public"."ref_sertif_pero_custom" ADD CONSTRAINT "ref_sertif_pero_custom_kode_sertif_fkey" FOREIGN KEY ("kode_sertif") REFERENCES "public"."ref_sertif_pero" ("kode_sertif") ON DELETE CASCADE ON UPDATE NO ACTION;
 ALTER TABLE "public"."ref_sertif_pero_custom" ADD CONSTRAINT "ref_sertif_pero_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
@@ -8579,7 +9010,7 @@ ALTER TABLE "public"."ref_sertif_ta" ADD CONSTRAINT "ref_sertif_ta_kode_tenaga_a
 -- ----------------------------
 -- Foreign Keys structure for table ref_sertif_ta_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_sertif_ta_custom" ADD CONSTRAINT "ref_sertif_ta_custom_kode_sertif_ta_fkey" FOREIGN KEY ("kode_sertif_ta") REFERENCES "public"."ref_sertif_ta" ("kode_sertif_ta") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_sertif_ta_custom" ADD CONSTRAINT "ref_sertif_ta_custom_kode_tenaga_ahli_custom_fkey" FOREIGN KEY ("kode_tenaga_ahli_custom") REFERENCES "public"."ref_tenaga_ahli_bu_custom" ("kode_tenaga_ahli_custom") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_sertif_tp
@@ -8589,12 +9020,12 @@ ALTER TABLE "public"."ref_sertif_tp" ADD CONSTRAINT "ref_sertif_tp_kode_tenaga_p
 -- ----------------------------
 -- Foreign Keys structure for table ref_sertif_tp_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_sertif_tp_custom" ADD CONSTRAINT "ref_sertif_tp_custom_kode_sertif_tp_fkey" FOREIGN KEY ("kode_sertif_tp") REFERENCES "public"."ref_sertif_tp" ("kode_sertif_tp") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_sertif_tp_custom" ADD CONSTRAINT "ref_sertif_tp_custom_kode_tenaga_pendukung_custom_fkey" FOREIGN KEY ("kode_tenaga_pendukung_custom") REFERENCES "public"."ref_tenaga_pendukung_bu_custom" ("kode_tenaga_pendukung_custom") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_sertifikat_usaha_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_sertifikat_usaha_bu_custom" ADD CONSTRAINT "ref_sertifikat_usaha_bu_custom_kode_sertifikat_usaha_fkey" FOREIGN KEY ("kode_sertifikat_usaha") REFERENCES "public"."ref_sertifikat_usaha_bu" ("kode_sertifikat_usaha") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_sertifikat_usaha_bu_custom" ADD CONSTRAINT "ref_sertifikat_usaha_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_subkat_persyaratan
@@ -8610,7 +9041,7 @@ ALTER TABLE "public"."ref_tenaga_ahli_bu" ADD CONSTRAINT "ref_tenaga_ahli_bu_kod
 -- ----------------------------
 -- Foreign Keys structure for table ref_tenaga_ahli_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_tenaga_ahli_bu_custom" ADD CONSTRAINT "ref_tenaga_ahli_bu_custom_kode_tenaga_ahli_fkey" FOREIGN KEY ("kode_tenaga_ahli") REFERENCES "public"."ref_tenaga_ahli_bu" ("kode_tenaga_ahli") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_tenaga_ahli_bu_custom" ADD CONSTRAINT "ref_tenaga_ahli_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_tenaga_pendukung_bu
@@ -8620,7 +9051,7 @@ ALTER TABLE "public"."ref_tenaga_pendukung_bu" ADD CONSTRAINT "ref_tenaga_penduk
 -- ----------------------------
 -- Foreign Keys structure for table ref_tenaga_pendukung_bu_custom
 -- ----------------------------
-ALTER TABLE "public"."ref_tenaga_pendukung_bu_custom" ADD CONSTRAINT "ref_tenaga_pendukung_bu_custom_kode_tenaga_pendukung_fkey" FOREIGN KEY ("kode_tenaga_pendukung") REFERENCES "public"."ref_tenaga_pendukung_bu" ("kode_tenaga_pendukung") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "public"."ref_tenaga_pendukung_bu_custom" ADD CONSTRAINT "ref_tenaga_pendukung_bu_custom_kode_vendor_fkey" FOREIGN KEY ("kode_vendor") REFERENCES "public"."ref_vendor" ("kode_vendor") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table ref_umum
