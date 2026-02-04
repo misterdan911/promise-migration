@@ -12,7 +12,7 @@
  Target Server Version : 160011 (160011)
  File Encoding         : 65001
 
- Date: 04/02/2026 13:51:52
+ Date: 04/02/2026 14:19:34
 */
 
 
@@ -5436,6 +5436,832 @@ $BODY$
   COST 100;
 
 -- ----------------------------
+-- Function structure for func_merge_direksi
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_direksi"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_direksi"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_direksi_record RECORD;
+    v_kode_direksi INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through direksi custom records
+    FOR v_direksi_record IN 
+        SELECT * 
+        FROM ref_direksi_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_direksi IS NULL
+    LOOP
+        -- Copy main direksi record
+        INSERT INTO ref_direksi_bu (
+            kode_vendor,
+            nm_direksi,
+            jbtn_direksi,
+            hp_direksi,
+            no_ktp_direksi,
+            path_ktp_direksi,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_direksi_record.kode_vendor,
+            v_direksi_record.nm_direksi,
+            v_direksi_record.jbtn_direksi,
+            v_direksi_record.hp_direksi,
+            v_direksi_record.no_ktp_direksi,
+            v_direksi_record.path_ktp_direksi,
+            v_direksi_record.encrypt_key,
+            v_direksi_record.revisi_ke
+        ) 
+        RETURNING kode_direksi INTO v_kode_direksi;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_direksi_bu_custom
+        SET kode_direksi = v_kode_direksi
+        WHERE kode_direksi_custom = v_direksi_record.kode_direksi_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_fasilitas
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_fasilitas"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_fasilitas"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_fasilitas_record RECORD;
+    v_kode_fasilitas INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through fasilitas custom records
+    FOR v_fasilitas_record IN 
+        SELECT * 
+        FROM ref_fasilitas_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_fasilitas IS NULL
+    LOOP
+        -- Copy main fasilitas record
+        INSERT INTO ref_fasilitas_bu (
+            kode_vendor,
+            nama,
+            jumlah,
+            kode_kondisi,
+            kode_kepemilikan,
+            file_kepemilikan,
+            is_kepemilikan_selamanya,
+            kepemilikan_berlaku_awal,
+            kepemilikan_berlaku_akhir,
+            encrypt_key_kepemilikan,
+            file_foto,
+            encrypt_key_foto,
+            revisi_ke
+        ) VALUES (
+            v_fasilitas_record.kode_vendor,
+            v_fasilitas_record.nama,
+            v_fasilitas_record.jumlah,
+            v_fasilitas_record.kode_kondisi,
+            v_fasilitas_record.kode_kepemilikan,
+            v_fasilitas_record.file_kepemilikan,
+            v_fasilitas_record.is_kepemilikan_selamanya,
+            v_fasilitas_record.kepemilikan_berlaku_awal,
+            v_fasilitas_record.kepemilikan_berlaku_akhir,
+            v_fasilitas_record.encrypt_key_kepemilikan,
+            v_fasilitas_record.file_foto,
+            v_fasilitas_record.encrypt_key_foto,
+            v_fasilitas_record.revisi_ke
+        ) 
+        RETURNING kode_fasilitas INTO v_kode_fasilitas;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_fasilitas_bu_custom
+        SET kode_fasilitas = v_kode_fasilitas
+        WHERE kode_fasilitas_custom = v_fasilitas_record.kode_fasilitas_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_izin_usaha_and_related
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_izin_usaha_and_related"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_izin_usaha_and_related"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_izin_record RECORD;
+    v_kbli_record RECORD;
+    v_kode_izin_usaha INTEGER;
+    v_kode_trx_kbli INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through izin usaha custom records
+    FOR v_izin_record IN 
+        SELECT * 
+        FROM ref_izin_usaha_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_izin_usaha IS NULL
+    LOOP
+        -- Copy main izin usaha record
+        INSERT INTO ref_izin_usaha_bu (
+            kode_vendor,
+            jenis_izin_usaha,
+            nama,
+            nomor_izin,
+            file_izin,
+            is_izin_selamanya,
+            izin_berlaku_awal,
+            izin_berlaku_akhir,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_izin_record.kode_vendor,
+            v_izin_record.jenis_izin_usaha,
+            v_izin_record.nama,
+            v_izin_record.nomor_izin,
+            v_izin_record.file_izin,
+            v_izin_record.is_izin_selamanya,
+            v_izin_record.izin_berlaku_awal,
+            v_izin_record.izin_berlaku_akhir,
+            v_izin_record.encrypt_key,
+            v_izin_record.revisi_ke
+        ) 
+        RETURNING kode_izin_usaha INTO v_kode_izin_usaha;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_izin_usaha_bu_custom
+        SET kode_izin_usaha = v_kode_izin_usaha
+        WHERE kode_izin_usaha_custom = v_izin_record.kode_izin_usaha_custom;
+
+        -- Copy KBLI/SBU records (embedded logic)
+        FOR v_kbli_record IN 
+            SELECT * 
+            FROM trx_izin_kbli_sbu_custom
+            WHERE kode_izin_usaha_custom = v_izin_record.kode_izin_usaha_custom
+        LOOP
+            INSERT INTO trx_izin_kbli_sbu (
+                kode_izin_usaha,
+                kode_kbli_sbu
+            ) VALUES (
+                v_kode_izin_usaha,
+                v_kbli_record.kode_kbli_sbu
+            )
+            RETURNING kode_trx_kbli INTO v_kode_trx_kbli;
+
+            -- Update custom table with reference to main table
+            -- Note: Since trx_izin_kbli_sbu_custom doesn't have a reference column,
+            -- we'll update it with the main transaction ID if needed
+            -- If you need to track the relationship, consider adding a column like:
+            -- kode_trx_kbli int4 NULL in trx_izin_kbli_sbu_custom
+            -- UPDATE trx_izin_kbli_sbu_custom
+            -- SET kode_trx_kbli = v_kode_trx_kbli
+            -- WHERE kode_trx_iks_custom = v_kbli_record.kode_trx_iks_custom;
+        END LOOP;
+
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_kantor
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_kantor"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_kantor"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_kantor_record RECORD;
+    v_kode_kantor INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through kantor custom records
+    FOR v_kantor_record IN 
+        SELECT * 
+        FROM ref_kantor_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_kantor IS NULL
+    LOOP
+        -- Copy main kantor record
+        INSERT INTO ref_kantor_bu (
+            kode_vendor,
+            nama_kantor,
+            alamat,
+            kode_kondisi,
+            kode_kepemilikan,
+            file_bukti,
+            is_bukti_selamanya,
+            bukti_berlaku_awal,
+            bukti_berlaku_akhir,
+            encrypt_key_bukti,
+            file_foto,
+            encrypt_key_foto,
+            revisi_ke
+        ) VALUES (
+            v_kantor_record.kode_vendor,
+            v_kantor_record.nama_kantor,
+            v_kantor_record.alamat,
+            v_kantor_record.kode_kondisi,
+            v_kantor_record.kode_kepemilikan,
+            v_kantor_record.file_bukti,
+            v_kantor_record.is_bukti_selamanya,
+            v_kantor_record.bukti_berlaku_awal,
+            v_kantor_record.bukti_berlaku_akhir,
+            v_kantor_record.encrypt_key_bukti,
+            v_kantor_record.file_foto,
+            v_kantor_record.encrypt_key_foto,
+            v_kantor_record.revisi_ke
+        ) 
+        RETURNING kode_kantor INTO v_kode_kantor;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_kantor_bu_custom
+        SET kode_kantor = v_kode_kantor
+        WHERE kode_kantor_custom = v_kantor_record.kode_kantor_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_komisaris
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_komisaris"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_komisaris"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_komisaris_record RECORD;
+    v_kode_komisaris INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through komisaris custom records
+    FOR v_komisaris_record IN 
+        SELECT * 
+        FROM ref_komisaris_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_komisaris IS NULL
+    LOOP
+        -- Copy main komisaris record
+        INSERT INTO ref_komisaris_bu (
+            kode_vendor,
+            nm_komisaris,
+            jbtn_komisaris,
+            hp_komisaris,
+            no_ktp_komisaris,
+            path_ktp_komisaris,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_komisaris_record.kode_vendor,
+            v_komisaris_record.nm_komisaris,
+            v_komisaris_record.jbtn_komisaris,
+            v_komisaris_record.hp_komisaris,
+            v_komisaris_record.no_ktp_komisaris,
+            v_komisaris_record.path_ktp_komisaris,
+            v_komisaris_record.encrypt_key,
+            v_komisaris_record.revisi_ke
+        ) 
+        RETURNING kode_komisaris INTO v_kode_komisaris;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_komisaris_bu_custom
+        SET kode_komisaris = v_kode_komisaris
+        WHERE kode_komisaris_custom = v_komisaris_record.kode_komisaris_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_pengalaman_bu
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_pengalaman_bu"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_pengalaman_bu"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_pengalaman_record RECORD;
+    v_kode_pengalaman_bu INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through pengalaman_bu custom records
+    FOR v_pengalaman_record IN 
+        SELECT * 
+        FROM ref_pengalaman_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_pengalaman_bu IS NULL
+    LOOP
+        -- Copy main pengalaman_bu record
+        INSERT INTO ref_pengalaman_bu (
+            kode_vendor,
+            nama_pekerjaan,
+            pemberi_kerja,
+            nilai_pekerjaan,
+            tgl_awal_pekerjaan,
+            tgl_akhir_pekerjaan,
+            no_kontrak,
+            file_kontrak,
+            encrypt_key_kontrak,
+            revisi_ke
+        ) VALUES (
+            v_pengalaman_record.kode_vendor,
+            v_pengalaman_record.nama_pekerjaan,
+            v_pengalaman_record.pemberi_kerja,
+            v_pengalaman_record.nilai_pekerjaan,
+            v_pengalaman_record.tgl_awal_pekerjaan,
+            v_pengalaman_record.tgl_akhir_pekerjaan,
+            v_pengalaman_record.no_kontrak,
+            v_pengalaman_record.file_kontrak,
+            v_pengalaman_record.encrypt_key_kontrak,
+            v_pengalaman_record.revisi_ke
+        ) 
+        RETURNING kode_pengalaman_bu INTO v_kode_pengalaman_bu;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_pengalaman_bu_custom
+        SET kode_pengalaman_bu = v_kode_pengalaman_bu
+        WHERE kode_pengalaman_bu_custom = v_pengalaman_record.kode_pengalaman_bu_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_pengalaman_pero
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_pengalaman_pero"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_pengalaman_pero"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_pengalaman_record RECORD;
+    v_kode_pengalaman INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through pengalaman_pero custom records
+    FOR v_pengalaman_record IN 
+        SELECT * 
+        FROM ref_pengalaman_pero_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_pengalaman IS NULL
+    LOOP
+        -- Copy main pengalaman_pero record
+        INSERT INTO ref_pengalaman_pero (
+            kode_vendor,
+            nama_pekerjaan,
+            posisi,
+            tgl_awal_pekerjaan,
+            tgl_akhir_pekerjaan,
+            nilai_pekerjaan,
+            file_bukti,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_pengalaman_record.kode_vendor,
+            v_pengalaman_record.nama_pekerjaan,
+            v_pengalaman_record.posisi,
+            v_pengalaman_record.tgl_awal_pekerjaan,
+            v_pengalaman_record.tgl_akhir_pekerjaan,
+            v_pengalaman_record.nilai_pekerjaan,
+            v_pengalaman_record.file_bukti,
+            v_pengalaman_record.encrypt_key,
+            v_pengalaman_record.revisi_ke
+        ) 
+        RETURNING kode_pengalaman INTO v_kode_pengalaman;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_pengalaman_pero_custom
+        SET kode_pengalaman = v_kode_pengalaman
+        WHERE kode_pengalaman_custom = v_pengalaman_record.kode_pengalaman_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_saham
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_saham"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_saham"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_saham_record RECORD;
+    v_kode_saham INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through saham custom records
+    FOR v_saham_record IN 
+        SELECT * 
+        FROM ref_saham_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_saham IS NULL
+    LOOP
+        -- Copy main saham record
+        INSERT INTO ref_saham_bu (
+            kode_vendor,
+            nm_saham,
+            no_ktp_saham,
+            persentase_saham,
+            revisi_ke,
+            posisi
+        ) VALUES (
+            v_saham_record.kode_vendor,
+            v_saham_record.nm_saham,
+            v_saham_record.no_ktp_saham,
+            v_saham_record.persentase_saham,
+            v_saham_record.revisi_ke,
+            v_saham_record.posisi
+        ) 
+        RETURNING kode_saham INTO v_kode_saham;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_saham_bu_custom
+        SET kode_saham = v_kode_saham
+        WHERE kode_saham_custom = v_saham_record.kode_saham_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_sertif_pero
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_sertif_pero"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_sertif_pero"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_sertif_record RECORD;
+    v_kode_sertif INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through sertif_pero custom records
+    FOR v_sertif_record IN 
+        SELECT * 
+        FROM ref_sertif_pero_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_sertif IS NULL
+    LOOP
+        -- Copy main sertif_pero record
+        INSERT INTO ref_sertif_pero (
+            kode_vendor,
+            nm_sertifikat,
+            file_bukti,
+            is_bukti_selamanya,
+            bukti_berlaku_awal,
+            bukti_berlaku_akhir,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_sertif_record.kode_vendor,
+            v_sertif_record.nm_sertifikat,
+            v_sertif_record.file_bukti,
+            v_sertif_record.is_bukti_selamanya,
+            v_sertif_record.bukti_berlaku_awal,
+            v_sertif_record.bukti_berlaku_akhir,
+            v_sertif_record.encrypt_key,
+            v_sertif_record.revisi_ke
+        ) 
+        RETURNING kode_sertif INTO v_kode_sertif;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_sertif_pero_custom
+        SET kode_sertif = v_kode_sertif
+        WHERE kode_sertif_pero_custom = v_sertif_record.kode_sertif_pero_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_sertifikat_usaha
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_sertifikat_usaha"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_sertifikat_usaha"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_sertifikat_record RECORD;
+    v_kode_sertifikat_usaha INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through sertifikat_usaha custom records
+    FOR v_sertifikat_record IN 
+        SELECT * 
+        FROM ref_sertifikat_usaha_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_sertifikat_usaha IS NULL
+    LOOP
+        -- Copy main sertifikat_usaha record
+        INSERT INTO ref_sertifikat_usaha_bu (
+            kode_vendor,
+            nama_judul,
+            nomor,
+            penerbit,
+            tanggal,
+            file_sertif,
+            is_sertif_selamanya,
+            sertif_berlaku_awal,
+            sertif_berlaku_akhir,
+            encrypt_key,
+            revisi_ke
+        ) VALUES (
+            v_sertifikat_record.kode_vendor,
+            v_sertifikat_record.nama_judul,
+            v_sertifikat_record.nomor,
+            v_sertifikat_record.penerbit,
+            v_sertifikat_record.tanggal,
+            v_sertifikat_record.file_sertif,
+            v_sertifikat_record.is_sertif_selamanya,
+            v_sertifikat_record.sertif_berlaku_awal,
+            v_sertifikat_record.sertif_berlaku_akhir,
+            v_sertifikat_record.encrypt_key,
+            v_sertifikat_record.revisi_ke
+        ) 
+        RETURNING kode_sertifikat_usaha INTO v_kode_sertifikat_usaha;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_sertifikat_usaha_bu_custom
+        SET kode_sertifikat_usaha = v_kode_sertifikat_usaha
+        WHERE kode_sertifikat_usaha_custom = v_sertifikat_record.kode_sertifikat_usaha_custom;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
+-- Function structure for func_merge_tenaga_pendukung_and_related
+-- ----------------------------
+DROP FUNCTION IF EXISTS "public"."func_merge_tenaga_pendukung_and_related"("p_kode_vendor" int4, OUT "v_rows_processed" int4);
+CREATE OR REPLACE FUNCTION "public"."func_merge_tenaga_pendukung_and_related"(IN "p_kode_vendor" int4, OUT "v_rows_processed" int4)
+  RETURNS "pg_catalog"."int4" AS $BODY$
+DECLARE
+    v_tp_record RECORD;
+    v_pengalaman_record RECORD;
+    v_sertif_record RECORD;
+    v_kode_tenaga_pendukung INTEGER;
+    v_kode_pengalaman_tp INTEGER;
+    v_kode_sertif_tp INTEGER;
+    v_row_count INTEGER := 0;
+BEGIN
+    -- Initialize output parameter
+    v_rows_processed := 0;
+    
+    -- Loop through tenaga pendukung custom records
+    FOR v_tp_record IN 
+        SELECT * 
+        FROM ref_tenaga_pendukung_bu_custom
+        WHERE
+            kode_vendor = p_kode_vendor AND
+            kode_tenaga_pendukung IS NULL
+    LOOP
+        -- Copy main tenaga pendukung record
+        INSERT INTO ref_tenaga_pendukung_bu (
+            kode_vendor,
+            nama,
+            no_ktp,
+            file_ktp,
+            encrypt_key_ktp,
+            tempat_lahir,
+            tgl_lahir,
+            posisi,
+            kode_jenjang_pendidikan,
+            program_studi,
+            file_ijazah,
+            encrypt_key_ijazah,
+            file_cv,
+            encrypt_key_cv,
+            tgl_cv,
+            revisi_ke
+        ) VALUES (
+            v_tp_record.kode_vendor,
+            v_tp_record.nama,
+            v_tp_record.no_ktp,
+            v_tp_record.file_ktp,
+            v_tp_record.encrypt_key_ktp,
+            v_tp_record.tempat_lahir,
+            v_tp_record.tgl_lahir,
+            v_tp_record.posisi,
+            v_tp_record.kode_jenjang_pendidikan,
+            v_tp_record.program_studi,
+            v_tp_record.file_ijazah,
+            v_tp_record.encrypt_key_ijazah,
+            v_tp_record.file_cv,
+            v_tp_record.encrypt_key_cv,
+            v_tp_record.tgl_cv,
+            v_tp_record.revisi_ke
+        ) 
+        RETURNING kode_tenaga_pendukung INTO v_kode_tenaga_pendukung;
+
+        -- Update custom table with reference to main table
+        UPDATE ref_tenaga_pendukung_bu_custom
+        SET kode_tenaga_pendukung = v_kode_tenaga_pendukung
+        WHERE kode_tenaga_pendukung_custom = v_tp_record.kode_tenaga_pendukung_custom;
+
+        -- Copy pengalaman_tp records (embedded logic)
+        FOR v_pengalaman_record IN 
+            SELECT * 
+            FROM ref_pengalaman_tp_custom
+            WHERE kode_tenaga_pendukung_custom = v_tp_record.kode_tenaga_pendukung_custom
+        LOOP
+            INSERT INTO ref_pengalaman_tp (
+                kode_tenaga_pendukung,
+                pengalaman,
+                file_bukti,
+                encrypt_key,
+                revisi_ke
+            ) VALUES (
+                v_kode_tenaga_pendukung,
+                v_pengalaman_record.pengalaman,
+                v_pengalaman_record.file_bukti,
+                v_pengalaman_record.encrypt_key,
+                v_pengalaman_record.revisi_ke
+            )
+            RETURNING kode_pengalaman_tp INTO v_kode_pengalaman_tp;
+
+            -- Update custom table with reference to main table
+            UPDATE ref_pengalaman_tp_custom
+            SET kode_pengalaman_tp = v_kode_pengalaman_tp
+            WHERE kode_pengalaman_tp_custom = v_pengalaman_record.kode_pengalaman_tp_custom;
+        END LOOP;
+
+        -- Copy sertif_tp records (embedded logic)
+        FOR v_sertif_record IN 
+            SELECT * 
+            FROM ref_sertif_tp_custom
+            WHERE kode_tenaga_pendukung_custom = v_tp_record.kode_tenaga_pendukung_custom
+        LOOP
+            INSERT INTO ref_sertif_tp (
+                kode_tenaga_pendukung,
+                sertifikat,
+                file_bukti,
+                encrypt_key,
+                revisi_ke
+            ) VALUES (
+                v_kode_tenaga_pendukung,
+                v_sertif_record.sertifikat,
+                v_sertif_record.file_bukti,
+                v_sertif_record.encrypt_key,
+                v_sertif_record.revisi_ke
+            )
+            RETURNING kode_sertif_tp INTO v_kode_sertif_tp;
+
+            -- Update custom table with reference to main table
+            UPDATE ref_sertif_tp_custom
+            SET kode_sertif_tp = v_kode_sertif_tp
+            WHERE kode_sertif_tp_custom = v_sertif_record.kode_sertif_tp_custom;
+        END LOOP;
+        
+        -- Increment counter
+        v_row_count := v_row_count + 1;
+        
+    END LOOP;
+    
+    -- Set output parameter
+    v_rows_processed := v_row_count;
+    
+    RETURN;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+-- ----------------------------
 -- Function structure for pg_stat_statements
 -- ----------------------------
 DROP FUNCTION IF EXISTS "public"."pg_stat_statements"("showtext" bool, OUT "userid" oid, OUT "dbid" oid, OUT "toplevel" bool, OUT "queryid" int8, OUT "query" text, OUT "plans" int8, OUT "total_plan_time" float8, OUT "min_plan_time" float8, OUT "max_plan_time" float8, OUT "mean_plan_time" float8, OUT "stddev_plan_time" float8, OUT "calls" int8, OUT "total_exec_time" float8, OUT "min_exec_time" float8, OUT "max_exec_time" float8, OUT "mean_exec_time" float8, OUT "stddev_exec_time" float8, OUT "rows" int8, OUT "shared_blks_hit" int8, OUT "shared_blks_read" int8, OUT "shared_blks_dirtied" int8, OUT "shared_blks_written" int8, OUT "local_blks_hit" int8, OUT "local_blks_read" int8, OUT "local_blks_dirtied" int8, OUT "local_blks_written" int8, OUT "temp_blks_read" int8, OUT "temp_blks_written" int8, OUT "blk_read_time" float8, OUT "blk_write_time" float8, OUT "temp_blk_read_time" float8, OUT "temp_blk_write_time" float8, OUT "wal_records" int8, OUT "wal_fpi" int8, OUT "wal_bytes" numeric, OUT "jit_functions" int8, OUT "jit_generation_time" float8, OUT "jit_inlining_count" int8, OUT "jit_inlining_time" float8, OUT "jit_optimization_count" int8, OUT "jit_optimization_time" float8, OUT "jit_emission_count" int8, OUT "jit_emission_time" float8);
@@ -5462,6 +6288,68 @@ CREATE OR REPLACE FUNCTION "public"."pg_stat_statements_reset"("userid" oid=0, "
   RETURNS "pg_catalog"."void" AS '$libdir/pg_stat_statements', 'pg_stat_statements_reset_1_7'
   LANGUAGE c VOLATILE STRICT
   COST 1;
+
+-- ----------------------------
+-- Procedure structure for sp_merge_custom_to_ref
+-- ----------------------------
+DROP PROCEDURE IF EXISTS "public"."sp_merge_custom_to_ref"("p_kode_vendor" int4);
+CREATE OR REPLACE PROCEDURE "public"."sp_merge_custom_to_ref"("p_kode_vendor" int4)
+ AS $BODY$
+DECLARE
+    v_rows_processed INTEGER;
+BEGIN
+    -- Call function func_merge_tenaga_ahli_and_related
+    SELECT func_merge_tenaga_ahli_and_related(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % tenaga ahli records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_tenaga_pendukung_and_related
+    SELECT func_merge_tenaga_pendukung_and_related(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % tenaga pendukung records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_izin_usaha_and_related
+    SELECT func_merge_izin_usaha_and_related(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % izin usaha records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_direksi
+    SELECT func_merge_direksi(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % direksi records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_komisaris
+    SELECT func_merge_komisaris(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % komisaris records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_fasilitas
+    SELECT func_merge_fasilitas(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % fasilitas records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_kantor
+    SELECT func_merge_kantor(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % kantor records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_pengalaman_bu
+    SELECT func_merge_pengalaman_bu(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % pengalaman_bu records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_saham
+    SELECT func_merge_saham(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % saham records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_sertifikat_usaha
+    SELECT func_merge_sertifikat_usaha(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % sertifikat usaha records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_pengalaman_pero
+    SELECT func_merge_pengalaman_pero(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % pengalaman pero records processed', p_kode_vendor, v_rows_processed;
+
+    -- Call function func_merge_sertif_pero
+    SELECT func_merge_sertif_pero(p_kode_vendor) INTO v_rows_processed;
+    RAISE NOTICE 'Rows copied successfully for vendor %: % sertif pero records processed', p_kode_vendor, v_rows_processed;
+
+    
+END;
+$BODY$
+  LANGUAGE plpgsql;
 
 -- ----------------------------
 -- View structure for pg_stat_statements_info
@@ -6197,7 +7085,7 @@ SELECT setval('"public"."ref_v_keluar_dpt_kode_v_keluar_dpt_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_kode_vendor_seq"
 OWNED BY "public"."ref_vendor"."kode_vendor";
-SELECT setval('"public"."ref_vendor_kode_vendor_seq"', 32530, true);
+SELECT setval('"public"."ref_vendor_kode_vendor_seq"', 32531, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6218,7 +7106,7 @@ SELECT setval('"public"."ref_vendor_reg_history_kode_register_seq"', 2682, true)
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_vendor_register_kode_register_seq"
 OWNED BY "public"."ref_vendor_register"."kode_register";
-SELECT setval('"public"."ref_vendor_register_kode_register_seq"', 32580, true);
+SELECT setval('"public"."ref_vendor_register_kode_register_seq"', 32581, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6449,7 +7337,7 @@ SELECT setval('"public"."trx_konfirmasi_data_sesuai_kode_complete_seq"', 22, tru
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"
 OWNED BY "public"."trx_kualifikasi_usaha_penjr"."kode_trx";
-SELECT setval('"public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"', 51, true);
+SELECT setval('"public"."trx_kualifikasi_usaha_penjr_kode_trx_seq"', 53, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -6463,7 +7351,7 @@ SELECT setval('"public"."trx_nilai_akhir_kode_penilaian_seq"', 822, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_penjaringan_kode_penjaringan_seq"
 OWNED BY "public"."trx_penjaringan"."kode_penjaringan";
-SELECT setval('"public"."trx_penjaringan_kode_penjaringan_seq"', 359, true);
+SELECT setval('"public"."trx_penjaringan_kode_penjaringan_seq"', 360, true);
 
 -- ----------------------------
 -- Alter sequences owned by
