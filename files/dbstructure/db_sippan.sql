@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : promis-prod-dbmodul
+ Source Server         : promis-devel
  Source Server Type    : PostgreSQL
- Source Server Version : 160011 (160011)
- Source Host           : 172.30.10.24:5432
- Source Catalog        : db_sippan
+ Source Server Version : 160002 (160002)
+ Source Host           : 172.30.15.52:5432
+ Source Catalog        : db_sippan_mig
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 160011 (160011)
+ Target Server Version : 160002 (160002)
  File Encoding         : 65001
 
- Date: 03/02/2026 18:17:05
+ Date: 03/02/2026 18:18:11
 */
 
 
@@ -44,7 +44,8 @@ CREATE TYPE "public"."ket_penggunaan" AS ENUM (
   'rencana_penggunaan',
   'batal_digunakan',
   'proses_pencairan',
-  'sudah_cair'
+  'sudah_cair',
+  'batal_pencairan'
 );
 ALTER TYPE "public"."ket_penggunaan" OWNER TO "postgres";
 
@@ -248,7 +249,7 @@ CREATE TABLE "public"."trx_permintaan_pencairan" (
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_det_penggunaan_pagu_kode_detail_pp_seq"
 OWNED BY "public"."ref_det_penggunaan_pagu"."kode_detail_pp";
-SELECT setval('"public"."ref_det_penggunaan_pagu_kode_detail_pp_seq"', 8, true);
+SELECT setval('"public"."ref_det_penggunaan_pagu_kode_detail_pp_seq"', 86, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -262,14 +263,14 @@ SELECT setval('"public"."ref_keyword_id_seq"', 1, false);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_rup_kode_rup_seq"
 OWNED BY "public"."ref_rup"."kode_rup";
-SELECT setval('"public"."ref_rup_kode_rup_seq"', 9446, true);
+SELECT setval('"public"."ref_rup_kode_rup_seq"', 9474, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_permintaan_pencairan_kode_permintaan_pencairan_seq"
 OWNED BY "public"."trx_permintaan_pencairan"."kode_permintaan_pencairan";
-SELECT setval('"public"."trx_permintaan_pencairan_kode_permintaan_pencairan_seq"', 27, true);
+SELECT setval('"public"."trx_permintaan_pencairan_kode_permintaan_pencairan_seq"', 33, true);
 
 -- ----------------------------
 -- Primary Key structure for table ref_det_penggunaan_pagu
