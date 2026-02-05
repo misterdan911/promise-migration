@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : promis-devel
+ Source Server         : promis-prod-dbmodul
  Source Server Type    : PostgreSQL
- Source Server Version : 160002 (160002)
- Source Host           : 172.30.15.52:5432
- Source Catalog        : db_sibela_mig
+ Source Server Version : 160011 (160011)
+ Source Host           : 172.30.10.24:5432
+ Source Catalog        : db_sibela
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 160002 (160002)
+ Target Server Version : 160011 (160011)
  File Encoding         : 65001
 
- Date: 04/02/2026 15:28:06
+ Date: 05/02/2026 10:01:53
 */
 
 
@@ -179,17 +179,6 @@ START 1
 CACHE 1;
 
 -- ----------------------------
--- Sequence structure for ref_default_keluaran_kode_default_keluaran_seq
--- ----------------------------
-DROP SEQUENCE IF EXISTS "public"."ref_default_keluaran_kode_default_keluaran_seq";
-CREATE SEQUENCE "public"."ref_default_keluaran_kode_default_keluaran_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
--- ----------------------------
 -- Sequence structure for ref_detail_aspek_kode_detail_aspek_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_detail_aspek_kode_detail_aspek_seq";
@@ -216,17 +205,6 @@ CACHE 1;
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_jenis_laporan_kode_jenis_laporan_seq";
 CREATE SEQUENCE "public"."ref_jenis_laporan_kode_jenis_laporan_seq" 
-INCREMENT 1
-MINVALUE  1
-MAXVALUE 2147483647
-START 1
-CACHE 1;
-
--- ----------------------------
--- Sequence structure for ref_jenis_layanan_kode_jenis_layanan_seq
--- ----------------------------
-DROP SEQUENCE IF EXISTS "public"."ref_jenis_layanan_kode_jenis_layanan_seq";
-CREATE SEQUENCE "public"."ref_jenis_layanan_kode_jenis_layanan_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -816,16 +794,6 @@ CREATE TABLE "public"."ref_bentuk_kontrak" (
 ;
 
 -- ----------------------------
--- Table structure for ref_default_keluaran
--- ----------------------------
-DROP TABLE IF EXISTS "public"."ref_default_keluaran";
-CREATE TABLE "public"."ref_default_keluaran" (
-  "kode_default_keluaran" int4 NOT NULL DEFAULT nextval('ref_default_keluaran_kode_default_keluaran_seq'::regclass),
-  "nama_default_keluaran" varchar COLLATE "pg_catalog"."default" NOT NULL
-)
-;
-
--- ----------------------------
 -- Table structure for ref_detail_aspek
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_detail_aspek";
@@ -874,16 +842,6 @@ CREATE TABLE "public"."ref_jenis_laporan" (
   "nama_laporan" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "udcr" timestamp(6) DEFAULT CURRENT_TIMESTAMP
-)
-;
-
--- ----------------------------
--- Table structure for ref_jenis_layanan
--- ----------------------------
-DROP TABLE IF EXISTS "public"."ref_jenis_layanan";
-CREATE TABLE "public"."ref_jenis_layanan" (
-  "kode_jenis_layanan" int4 NOT NULL DEFAULT nextval('ref_jenis_layanan_kode_jenis_layanan_seq'::regclass),
-  "jenis_layanan" varchar COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 
@@ -1622,9 +1580,7 @@ CREATE TABLE "public"."trx_pajak" (
   "nomor_efaktur" varchar COLLATE "pg_catalog"."default",
   "tanggal_efaktur" timestamp(6),
   "nama_tabel_lama" varchar(20) COLLATE "pg_catalog"."default",
-  "id_sptb" int4,
-  "biaya_tak_kena_pajak" numeric,
-  "kode_jenis_layanan" int4
+  "id_sptb" int4
 )
 ;
 
@@ -1865,14 +1821,14 @@ $BODY$
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_addendum_kode_addendum_seq"
 OWNED BY "public"."ref_addendum"."kode_addendum";
-SELECT setval('"public"."ref_addendum_kode_addendum_seq"', 20, true);
+SELECT setval('"public"."ref_addendum_kode_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq"
 OWNED BY "public"."ref_ba_pemeriksaan"."kode_ba_pemerikasaan";
-SELECT setval('"public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq"', 8919, true);
+SELECT setval('"public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1891,13 +1847,6 @@ SELECT setval('"public"."ref_bentuk_kontrak_kode_bentuk_kontrak_seq"', 5, true);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
-ALTER SEQUENCE "public"."ref_default_keluaran_kode_default_keluaran_seq"
-OWNED BY "public"."ref_default_keluaran"."kode_default_keluaran";
-SELECT setval('"public"."ref_default_keluaran_kode_default_keluaran_seq"', 1, false);
-
--- ----------------------------
--- Alter sequences owned by
--- ----------------------------
 ALTER SEQUENCE "public"."ref_detail_aspek_kode_detail_aspek_seq"
 OWNED BY "public"."ref_detail_aspek"."kode_detail_aspek";
 SELECT setval('"public"."ref_detail_aspek_kode_detail_aspek_seq"', 39, true);
@@ -1907,7 +1856,7 @@ SELECT setval('"public"."ref_detail_aspek_kode_detail_aspek_seq"', 39, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_dok_detail_transaksi_kode_dok_detail_transaksi_seq"
 OWNED BY "public"."ref_dok_detail_transaksi"."kode_dok_detail_transaksi";
-SELECT setval('"public"."ref_dok_detail_transaksi_kode_dok_detail_transaksi_seq"', 7666, true);
+SELECT setval('"public"."ref_dok_detail_transaksi_kode_dok_detail_transaksi_seq"', 7640, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1915,13 +1864,6 @@ SELECT setval('"public"."ref_dok_detail_transaksi_kode_dok_detail_transaksi_seq"
 ALTER SEQUENCE "public"."ref_jenis_laporan_kode_jenis_laporan_seq"
 OWNED BY "public"."ref_jenis_laporan"."kode_jenis_laporan";
 SELECT setval('"public"."ref_jenis_laporan_kode_jenis_laporan_seq"', 7, true);
-
--- ----------------------------
--- Alter sequences owned by
--- ----------------------------
-ALTER SEQUENCE "public"."ref_jenis_layanan_kode_jenis_layanan_seq"
-OWNED BY "public"."ref_jenis_layanan"."kode_jenis_layanan";
-SELECT setval('"public"."ref_jenis_layanan_kode_jenis_layanan_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1935,35 +1877,35 @@ SELECT setval('"public"."ref_kategori_addendum_kode_kategori_addendum_seq"', 3, 
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_keluaran_proses_kontrak_kode_keluaran_seq"
 OWNED BY "public"."ref_keluaran_proses_kontrak"."kode_keluaran";
-SELECT setval('"public"."ref_keluaran_proses_kontrak_kode_keluaran_seq"', 7568, true);
+SELECT setval('"public"."ref_keluaran_proses_kontrak_kode_keluaran_seq"', 7479, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_permintaan_addendum_kode_permintaan_addendum_seq"
 OWNED BY "public"."ref_permintaan_addendum"."kode_permintaan_addendum";
-SELECT setval('"public"."ref_permintaan_addendum_kode_permintaan_addendum_seq"', 7, true);
+SELECT setval('"public"."ref_permintaan_addendum_kode_permintaan_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_permintaan_kode_permintaan_seq"
 OWNED BY "public"."ref_permintaan"."kode_permintaan";
-SELECT setval('"public"."ref_permintaan_kode_permintaan_seq"', 7663, true);
+SELECT setval('"public"."ref_permintaan_kode_permintaan_seq"', 7646, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_proses_kontrak_kode_proses_kontrak_seq"
 OWNED BY "public"."ref_proses_kontrak"."kode_proses_kontrak";
-SELECT setval('"public"."ref_proses_kontrak_kode_proses_kontrak_seq"', 22944, true);
+SELECT setval('"public"."ref_proses_kontrak_kode_proses_kontrak_seq"', 22918, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_riwayat_pelaksanaan_kode_riwayat_pelaksanaan_seq"
 OWNED BY "public"."ref_riwayat_pelaksanaan"."kode_riwayat_pelaksanaan";
-SELECT setval('"public"."ref_riwayat_pelaksanaan_kode_riwayat_pelaksanaan_seq"', 8919, true);
+SELECT setval('"public"."ref_riwayat_pelaksanaan_kode_riwayat_pelaksanaan_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2012,35 +1954,35 @@ SELECT setval('"public"."tbl_sptbdpt_pl_id_sptb_dptpl_seq"', 1, false);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_addendum_biaya_kode_trx_addendum_biaya_seq"
 OWNED BY "public"."trx_addendum_biaya"."kode_trx_addendum_biaya";
-SELECT setval('"public"."trx_addendum_biaya_kode_trx_addendum_biaya_seq"', 64, true);
+SELECT setval('"public"."trx_addendum_biaya_kode_trx_addendum_biaya_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_addendum_jangka_waktu_kode_trx_addendum_jangka_waktu_seq"
 OWNED BY "public"."trx_addendum_jangka_waktu"."kode_trx_addendum_jangka_waktu";
-SELECT setval('"public"."trx_addendum_jangka_waktu_kode_trx_addendum_jangka_waktu_seq"', 13, true);
+SELECT setval('"public"."trx_addendum_jangka_waktu_kode_trx_addendum_jangka_waktu_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_addendum_kode_trx_addendum_seq"
 OWNED BY "public"."trx_addendum"."kode_trx_addendum";
-SELECT setval('"public"."trx_addendum_kode_trx_addendum_seq"', 59, true);
+SELECT setval('"public"."trx_addendum_kode_trx_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_addendum_spek_teknis_kode_trx_addendum_st_seq"
 OWNED BY "public"."trx_addendum_spek_teknis"."kode_trx_addendum_st";
-SELECT setval('"public"."trx_addendum_spek_teknis_kode_trx_addendum_st_seq"', 13, true);
+SELECT setval('"public"."trx_addendum_spek_teknis_kode_trx_addendum_st_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_ba_pemeriksaan_kode_trx_ba_pemeriksaan_seq"
 OWNED BY "public"."trx_ba_pemeriksaan"."kode_trx_ba_pemeriksaan";
-SELECT setval('"public"."trx_ba_pemeriksaan_kode_trx_ba_pemeriksaan_seq"', 10, true);
+SELECT setval('"public"."trx_ba_pemeriksaan_kode_trx_ba_pemeriksaan_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2054,7 +1996,7 @@ SELECT setval('"public"."trx_ba_pemeriksaan_st_kode_trx_bap_st_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_bast_kode_bast_seq"
 OWNED BY "public"."trx_bast"."kode_bast";
-SELECT setval('"public"."trx_bast_kode_bast_seq"', 8914, true);
+SELECT setval('"public"."trx_bast_kode_bast_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2068,42 +2010,42 @@ SELECT setval('"public"."trx_bast_st_kode_bast_st_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_detail_permintaan_kode_detail_permintaan_seq"
 OWNED BY "public"."trx_detail_permintaan"."kode_detail_permintaan";
-SELECT setval('"public"."trx_detail_permintaan_kode_detail_permintaan_seq"', 27574, true);
+SELECT setval('"public"."trx_detail_permintaan_kode_detail_permintaan_seq"', 27514, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_dokumen_kontrak_kode_dokumen_kontrak_seq"
 OWNED BY "public"."trx_dokumen_kontrak"."kode_dokumen_kontrak";
-SELECT setval('"public"."trx_dokumen_kontrak_kode_dokumen_kontrak_seq"', 7651, true);
+SELECT setval('"public"."trx_dokumen_kontrak_kode_dokumen_kontrak_seq"', 7640, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_hasil_pajak_id_hasil_pajak_seq"
 OWNED BY "public"."trx_hasil_pajak"."id_hasil_pajak";
-SELECT setval('"public"."trx_hasil_pajak_id_hasil_pajak_seq"', 36969, true);
+SELECT setval('"public"."trx_hasil_pajak_id_hasil_pajak_seq"', 30016, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_jangka_waktu_kode_jangka_waktu_seq"
 OWNED BY "public"."trx_jangka_waktu"."kode_jangka_waktu";
-SELECT setval('"public"."trx_jangka_waktu_kode_jangka_waktu_seq"', 7487, true);
+SELECT setval('"public"."trx_jangka_waktu_kode_jangka_waktu_seq"', 7479, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_jenis_laporan_kode_trx_jenis_laporan_seq"
 OWNED BY "public"."trx_jenis_laporan"."kode_trx_jenis_laporan";
-SELECT setval('"public"."trx_jenis_laporan_kode_trx_jenis_laporan_seq"', 7651, true);
+SELECT setval('"public"."trx_jenis_laporan_kode_trx_jenis_laporan_seq"', 7640, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_jenis_sispembayaran_kode_trx_jenis_sispembayaran_seq"
 OWNED BY "public"."trx_jenis_sispembayaran"."kode_trx_jenis_sispembayaran";
-SELECT setval('"public"."trx_jenis_sispembayaran_kode_trx_jenis_sispembayaran_seq"', 8935, true);
+SELECT setval('"public"."trx_jenis_sispembayaran_kode_trx_jenis_sispembayaran_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2117,14 +2059,14 @@ SELECT setval('"public"."trx_keluaran_output_kode_keluaran_output_seq"', 1, true
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_keluaran_output_new_kode_keluaran_output_new_seq"
 OWNED BY "public"."trx_keluaran_output_new"."kode_keluaran_output_new";
-SELECT setval('"public"."trx_keluaran_output_new_kode_keluaran_output_new_seq"', 8, true);
+SELECT setval('"public"."trx_keluaran_output_new_kode_keluaran_output_new_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_kwitansi_kode_kwitansi_seq"
 OWNED BY "public"."trx_kwitansi"."kode_kwitansi";
-SELECT setval('"public"."trx_kwitansi_kode_kwitansi_seq"', 17827, true);
+SELECT setval('"public"."trx_kwitansi_kode_kwitansi_seq"', 17819, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2138,42 +2080,42 @@ SELECT setval('"public"."trx_monitoring_kode_monitoring_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_monitoring_new_kode_trx_monitoring_seq"
 OWNED BY "public"."trx_monitoring_new"."kode_trx_monitoring";
-SELECT setval('"public"."trx_monitoring_new_kode_trx_monitoring_seq"', 7, true);
+SELECT setval('"public"."trx_monitoring_new_kode_trx_monitoring_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_nego_harga_kode_nego_harga_seq"
 OWNED BY "public"."trx_nego_harga"."kode_nego_harga";
-SELECT setval('"public"."trx_nego_harga_kode_nego_harga_seq"', 110126, true);
+SELECT setval('"public"."trx_nego_harga_kode_nego_harga_seq"', 93805, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_nego_teknis_kode_nego_teknis_seq"
 OWNED BY "public"."trx_nego_teknis"."kode_nego_teknis";
-SELECT setval('"public"."trx_nego_teknis_kode_nego_teknis_seq"', 19687, true);
+SELECT setval('"public"."trx_nego_teknis_kode_nego_teknis_seq"', 19653, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_nilai_addendum_kode_nilai_addendum_seq"
 OWNED BY "public"."trx_nilai_addendum"."kode_nilai_addendum";
-SELECT setval('"public"."trx_nilai_addendum_kode_nilai_addendum_seq"', 10, true);
+SELECT setval('"public"."trx_nilai_addendum_kode_nilai_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_pajak_kode_pajak_seq"
 OWNED BY "public"."trx_pajak"."kode_pajak";
-SELECT setval('"public"."trx_pajak_kode_pajak_seq"', 8916, true);
+SELECT setval('"public"."trx_pajak_kode_pajak_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_pembayaran_kode_trx_pencarian_seq"
 OWNED BY "public"."trx_pembayaran"."kode_trx_pencarian";
-SELECT setval('"public"."trx_pembayaran_kode_trx_pencarian_seq"', 8915, true);
+SELECT setval('"public"."trx_pembayaran_kode_trx_pencarian_seq"', 8910, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2187,14 +2129,14 @@ SELECT setval('"public"."trx_penambahan_jangka_waktu_kode_trx_penambahan_jw_seq"
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_penilaian_pembayaran_kode_penilaian_pembayaran_seq"
 OWNED BY "public"."trx_penilaian_pembayaran"."kode_penilaian_pembayaran";
-SELECT setval('"public"."trx_penilaian_pembayaran_kode_penilaian_pembayaran_seq"', 40, true);
+SELECT setval('"public"."trx_penilaian_pembayaran_kode_penilaian_pembayaran_seq"', 1, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq"
 OWNED BY "public"."trx_pesanan_addendum"."kode_trx_pesanan_addendum";
-SELECT setval('"public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq"', 355, true);
+SELECT setval('"public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2208,21 +2150,21 @@ SELECT setval('"public"."trx_proses_pajak_kode_proses_pajak_seq"', 1, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_riwayat_pelaksanaan_kode_trx_riwayat_pelaksanaan_seq"
 OWNED BY "public"."trx_riwayat_pelaksanaan"."kode_trx_riwayat_pelaksanaan";
-SELECT setval('"public"."trx_riwayat_pelaksanaan_kode_trx_riwayat_pelaksanaan_seq"', 43144, true);
+SELECT setval('"public"."trx_riwayat_pelaksanaan_kode_trx_riwayat_pelaksanaan_seq"', 43115, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_serah_terima_kode_serah_terima_seq"
 OWNED BY "public"."trx_serah_terima"."kode_serah_terima";
-SELECT setval('"public"."trx_serah_terima_kode_serah_terima_seq"', 7489, true);
+SELECT setval('"public"."trx_serah_terima_kode_serah_terima_seq"', 7479, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_sistem_pembayaran_kode_sistem_pembayaran_seq"
 OWNED BY "public"."trx_sistem_pembayaran"."kode_sistem_pembayaran";
-SELECT setval('"public"."trx_sistem_pembayaran_kode_sistem_pembayaran_seq"', 7487, true);
+SELECT setval('"public"."trx_sistem_pembayaran_kode_sistem_pembayaran_seq"', 7479, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -2236,7 +2178,7 @@ SELECT setval('"public"."trx_sptjm_kode_trx_sptjm_seq"', 1629, true);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_tte_kode_tte_seq"
 OWNED BY "public"."trx_tte"."kode_tte";
-SELECT setval('"public"."trx_tte_kode_tte_seq"', 43701, true);
+SELECT setval('"public"."trx_tte_kode_tte_seq"', 43635, true);
 
 -- ----------------------------
 -- Primary Key structure for table m_aspek
@@ -2264,11 +2206,6 @@ ALTER TABLE "public"."ref_ba_pemeriksaan_st" ADD CONSTRAINT "ref_ba_pemeriksaan_
 ALTER TABLE "public"."ref_bentuk_kontrak" ADD CONSTRAINT "ref_bentuk_kontrak_pkey" PRIMARY KEY ("kode_bentuk_kontrak");
 
 -- ----------------------------
--- Primary Key structure for table ref_default_keluaran
--- ----------------------------
-ALTER TABLE "public"."ref_default_keluaran" ADD CONSTRAINT "ref_default_keluaran_pkey" PRIMARY KEY ("kode_default_keluaran");
-
--- ----------------------------
 -- Primary Key structure for table ref_detail_aspek
 -- ----------------------------
 ALTER TABLE "public"."ref_detail_aspek" ADD CONSTRAINT "ref_detail_aspek_pkey" PRIMARY KEY ("kode_detail_aspek");
@@ -2287,11 +2224,6 @@ ALTER TABLE "public"."ref_jenis_kontrak" ADD CONSTRAINT "ref_jenis_kontrak_pkey"
 -- Primary Key structure for table ref_jenis_laporan
 -- ----------------------------
 ALTER TABLE "public"."ref_jenis_laporan" ADD CONSTRAINT "ref_jenis_laporan_pkey" PRIMARY KEY ("kode_jenis_laporan");
-
--- ----------------------------
--- Primary Key structure for table ref_jenis_layanan
--- ----------------------------
-ALTER TABLE "public"."ref_jenis_layanan" ADD CONSTRAINT "ref_jenis_layanan_pkey" PRIMARY KEY ("kode_jenis_layanan");
 
 -- ----------------------------
 -- Primary Key structure for table ref_kategori_addendum
