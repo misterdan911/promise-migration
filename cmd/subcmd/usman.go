@@ -48,8 +48,8 @@ var UsmanCmd = &cobra.Command{
 	usman.MigrateUserInternal()
 	usman.MigrateUserExternal()
 
-    usman.SetupVendorAccessForSidapet()
-    usman.SetupAccessForInternalUser()
+	usman.SetupVendorAccessForSidapet()
+	usman.SetupAccessForInternalUser()
 
 	usman.PopulateHelperUser()
 

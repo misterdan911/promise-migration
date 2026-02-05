@@ -1,18 +1,18 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : promis-prod-dbmodul
+ Source Server         : promis-devel
  Source Server Type    : PostgreSQL
- Source Server Version : 160011 (160011)
- Source Host           : 172.30.10.24:5432
- Source Catalog        : db_esign
+ Source Server Version : 160002 (160002)
+ Source Host           : 172.30.15.52:5432
+ Source Catalog        : db_esign_mig
  Source Schema         : public
 
  Target Server Type    : PostgreSQL
- Target Server Version : 160011 (160011)
+ Target Server Version : 160002 (160002)
  File Encoding         : 65001
 
- Date: 05/02/2026 13:31:00
+ Date: 05/02/2026 13:32:24
 */
 
 
@@ -295,10 +295,10 @@ CREATE TABLE "public"."trx_otp" (
 DROP TABLE IF EXISTS "public"."trx_penandatangan";
 CREATE TABLE "public"."trx_penandatangan" (
   "kode_trx_penandatangan" int4 NOT NULL DEFAULT nextval('trx_penandatangan_kode_trx_penandatangan_seq'::regclass),
-  "nama_aplikasi" varchar COLLATE "pg_catalog"."default" NOT NULL,
+  "nama_aplikasi" varchar COLLATE "pg_catalog"."default",
   "nomor_surat" varchar COLLATE "pg_catalog"."default",
-  "jenis_surat" varchar COLLATE "pg_catalog"."default" NOT NULL,
-  "keterangan_surat" varchar COLLATE "pg_catalog"."default" NOT NULL,
+  "jenis_surat" varchar COLLATE "pg_catalog"."default",
+  "keterangan_surat" varchar COLLATE "pg_catalog"."default",
   "path_dokumen" varchar COLLATE "pg_catalog"."default",
   "path_dokumen_selesai" varchar COLLATE "pg_catalog"."default",
   "tgl_selesai" timestamp(6)
@@ -331,7 +331,8 @@ CREATE TABLE "public"."trx_virtual_paraf" (
   "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "uch" varchar COLLATE "pg_catalog"."default",
   "udcr" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
-  "udch" timestamp(6) DEFAULT CURRENT_TIMESTAMP
+  "udch" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
+  "path_dokumen" varchar COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -420,66 +421,39 @@ $BODY$
   COST 100;
 
 -- ----------------------------
--- View structure for view_penandatangan
--- ----------------------------
-DROP VIEW IF EXISTS "public"."view_penandatangan";
-CREATE VIEW "public"."view_penandatangan" AS  SELECT a.kode_trx_penandatangan,
-    a.nama_aplikasi,
-    a.nomor_surat,
-    a.jenis_surat,
-    a.keterangan_surat,
-    a.path_dokumen,
-    a.path_dokumen_selesai,
-    a.tgl_selesai,
-    b.kode_detail_penandatangan,
-    b.status_jabatan_penandatangan,
-    b.jabatan,
-    b.status_penandatangan,
-    b.tgl_tte,
-    b.otp,
-    d.kode_penandatangan,
-    d.nama,
-    d.email,
-    d.nip,
-    d.nik
-   FROM trx_penandatangan a
-     JOIN trx_detail_penandatangan b ON a.kode_trx_penandatangan = b.kode_trx_penandatangan
-     JOIN ref_penandatangan d ON b.kode_penandatangan = d.kode_penandatangan;
-
--- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."ref_penandatangan_kode_penandatangan_seq"
 OWNED BY "public"."ref_penandatangan"."kode_penandatangan";
-SELECT setval('"public"."ref_penandatangan_kode_penandatangan_seq"', 38138, true);
+SELECT setval('"public"."ref_penandatangan_kode_penandatangan_seq"', 38148, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_detail_halaman_penandatangan_id_detail_halaman_seq"
 OWNED BY "public"."trx_detail_halaman_penandatangan"."id_detail_halaman";
-SELECT setval('"public"."trx_detail_halaman_penandatangan_id_detail_halaman_seq"', 13, true);
+SELECT setval('"public"."trx_detail_halaman_penandatangan_id_detail_halaman_seq"', 305, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_detail_penandatangan_kode_detail_penandatangan_seq"
 OWNED BY "public"."trx_detail_penandatangan"."kode_detail_penandatangan";
-SELECT setval('"public"."trx_detail_penandatangan_kode_detail_penandatangan_seq"', 49747, true);
+SELECT setval('"public"."trx_detail_penandatangan_kode_detail_penandatangan_seq"', 228195, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_detail_virtual_paraf_kode_trx_detail_virtual_paraf_seq"
 OWNED BY "public"."trx_detail_virtual_paraf"."kode_trx_detail_virtual_paraf";
-SELECT setval('"public"."trx_detail_virtual_paraf_kode_trx_detail_virtual_paraf_seq"', 30, true);
+SELECT setval('"public"."trx_detail_virtual_paraf_kode_trx_detail_virtual_paraf_seq"', 47, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_log_aktifitas_user_kode_log_aktifitas_user_seq"
 OWNED BY "public"."trx_log_aktifitas_user"."kode_log_aktifitas_user";
-SELECT setval('"public"."trx_log_aktifitas_user_kode_log_aktifitas_user_seq"', 29, true);
+SELECT setval('"public"."trx_log_aktifitas_user_kode_log_aktifitas_user_seq"', 32, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -493,7 +467,7 @@ SELECT setval('"public"."trx_otp_kode_otp_seq"', 1, false);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_penandatangan_kode_trx_penandatangan_seq"
 OWNED BY "public"."trx_penandatangan"."kode_trx_penandatangan";
-SELECT setval('"public"."trx_penandatangan_kode_trx_penandatangan_seq"', 35954, true);
+SELECT setval('"public"."trx_penandatangan_kode_trx_penandatangan_seq"', 158470, true);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -507,7 +481,7 @@ SELECT setval('"public"."trx_tte_kode_tte_seq"', 1, false);
 -- ----------------------------
 ALTER SEQUENCE "public"."trx_vitual_paraf_kode_trx_vitual_paraf_seq"
 OWNED BY "public"."trx_virtual_paraf"."kode_trx_vitual_paraf";
-SELECT setval('"public"."trx_vitual_paraf_kode_trx_vitual_paraf_seq"', 12, true);
+SELECT setval('"public"."trx_vitual_paraf_kode_trx_vitual_paraf_seq"', 29, true);
 
 -- ----------------------------
 -- Primary Key structure for table ref_akses_aplikasi_eksternal
@@ -583,7 +557,6 @@ ALTER TABLE "public"."trx_detail_halaman_penandatangan" ADD CONSTRAINT "trx_deta
 -- Foreign Keys structure for table trx_detail_penandatangan
 -- ----------------------------
 ALTER TABLE "public"."trx_detail_penandatangan" ADD CONSTRAINT "FK_trx_detail_penandatangan_ref_penandatangan" FOREIGN KEY ("kode_penandatangan") REFERENCES "public"."ref_penandatangan" ("kode_penandatangan") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."trx_detail_penandatangan" ADD CONSTRAINT "trx_detail_penandatangan_kode_trx_penandatangan_fkey" FOREIGN KEY ("kode_trx_penandatangan") REFERENCES "public"."trx_penandatangan" ("kode_trx_penandatangan") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_detail_virtual_paraf
