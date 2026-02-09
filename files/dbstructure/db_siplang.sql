@@ -12,7 +12,7 @@
  Target Server Version : 160011 (160011)
  File Encoding         : 65001
 
- Date: 09/02/2026 16:29:00
+ Date: 09/02/2026 16:49:21
 */
 
 
@@ -94,7 +94,10 @@ CREATE TYPE "public"."kategori_tte" AS ENUM (
   's_pernyataan_kesanggupan',
   's_pembayaran',
   'ba_pemeriksaan_akhir',
-  'ba_serah_terima_akhir'
+  'ba_serah_terima_akhir',
+  'ba_addendum',
+  'sp_history',
+  's_permohonan_add'
 );
 ALTER TYPE "public"."kategori_tte" OWNER TO "postgres";
 
@@ -132,6 +135,17 @@ CREATE TYPE "public"."skema_pembayaran" AS ENUM (
 ALTER TYPE "public"."skema_pembayaran" OWNER TO "postgres";
 
 -- ----------------------------
+-- Sequence structure for ref_addendum_kode_addendum_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_addendum_kode_addendum_seq";
+CREATE SEQUENCE "public"."ref_addendum_kode_addendum_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq";
@@ -158,6 +172,17 @@ CACHE 1;
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_bentuk_kontrak_kode_bentuk_kontrak_seq";
 CREATE SEQUENCE "public"."ref_bentuk_kontrak_kode_bentuk_kontrak_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_default_keluaran_kode_default_keluaran_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_default_keluaran_kode_default_keluaran_seq";
+CREATE SEQUENCE "public"."ref_default_keluaran_kode_default_keluaran_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -198,6 +223,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for ref_jenis_layanan_kode_jenis_layanan_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_jenis_layanan_kode_jenis_layanan_seq";
+CREATE SEQUENCE "public"."ref_jenis_layanan_kode_jenis_layanan_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for ref_kategori_addendum_kode_kategori_addendum_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_kategori_addendum_kode_kategori_addendum_seq";
@@ -213,6 +249,17 @@ CACHE 1;
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."ref_keluaran_proses_kontrak_kode_keluaran_seq";
 CREATE SEQUENCE "public"."ref_keluaran_proses_kontrak_kode_keluaran_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
+-- Sequence structure for ref_permintaan_addendum_kode_permintaan_addendum_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."ref_permintaan_addendum_kode_permintaan_addendum_seq";
+CREATE SEQUENCE "public"."ref_permintaan_addendum_kode_permintaan_addendum_seq" 
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 2147483647
@@ -583,6 +630,17 @@ START 1
 CACHE 1;
 
 -- ----------------------------
+-- Sequence structure for trx_pesanan_addendum_kode_trx_pesanan_addendum_seq
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq";
+CREATE SEQUENCE "public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq" 
+INCREMENT 1
+MINVALUE  1
+MAXVALUE 2147483647
+START 1
+CACHE 1;
+
+-- ----------------------------
 -- Sequence structure for trx_proses_pajak_kode_proses_pajak_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."trx_proses_pajak_kode_proses_pajak_seq";
@@ -663,6 +721,27 @@ CREATE TABLE "public"."m_aspek" (
 ;
 
 -- ----------------------------
+-- Table structure for ref_addendum
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."ref_addendum";
+CREATE TABLE "public"."ref_addendum" (
+  "kode_addendum" int4 NOT NULL DEFAULT nextval('ref_addendum_kode_addendum_seq'::regclass),
+  "kode_permintaan" int4 NOT NULL,
+  "tgl_trx_addendum" timestamp(6),
+  "kode_tte_ba_addendum" int4,
+  "kode_tte_sp_eks" int4,
+  "kode_tte_sp_new" int4,
+  "status_proses" varchar COLLATE "pg_catalog"."default" DEFAULT 'proses'::character varying,
+  "addendum_ke" int2 NOT NULL,
+  "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
+  "uch" varchar COLLATE "pg_catalog"."default",
+  "udcr" timestamp(6),
+  "udch" timestamp(6),
+  "tgl_sp_addendum" timestamp(6)
+)
+;
+
+-- ----------------------------
 -- Table structure for ref_ba_pemeriksaan
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_ba_pemeriksaan";
@@ -715,6 +794,16 @@ CREATE TABLE "public"."ref_bentuk_kontrak" (
 ;
 
 -- ----------------------------
+-- Table structure for ref_default_keluaran
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."ref_default_keluaran";
+CREATE TABLE "public"."ref_default_keluaran" (
+  "kode_default_keluaran" int4 NOT NULL DEFAULT nextval('ref_default_keluaran_kode_default_keluaran_seq'::regclass),
+  "nama_default_keluaran" varchar COLLATE "pg_catalog"."default" NOT NULL
+)
+;
+
+-- ----------------------------
 -- Table structure for ref_detail_aspek
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."ref_detail_aspek";
@@ -763,6 +852,16 @@ CREATE TABLE "public"."ref_jenis_laporan" (
   "nama_laporan" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "udcr" timestamp(6) DEFAULT CURRENT_TIMESTAMP
+)
+;
+
+-- ----------------------------
+-- Table structure for ref_jenis_layanan
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."ref_jenis_layanan";
+CREATE TABLE "public"."ref_jenis_layanan" (
+  "kode_jenis_layanan" int4 NOT NULL DEFAULT nextval('ref_jenis_layanan_kode_jenis_layanan_seq'::regclass),
+  "jenis_layanan" varchar COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 
@@ -839,6 +938,24 @@ COMMENT ON COLUMN "public"."ref_permintaan"."kode_uraian_klmpk" IS 'Ambil dari E
 COMMENT ON COLUMN "public"."ref_permintaan"."file_kerangka_ak" IS 'Kerangka Acuan Kerja';
 COMMENT ON COLUMN "public"."ref_permintaan"."nilai_hps" IS 'Harga Pokok Satuan';
 COMMENT ON COLUMN "public"."ref_permintaan"."kode_rup" IS 'ambil dari sippan';
+
+-- ----------------------------
+-- Table structure for ref_permintaan_addendum
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."ref_permintaan_addendum";
+CREATE TABLE "public"."ref_permintaan_addendum" (
+  "kode_permintaan_addendum" int4 NOT NULL DEFAULT nextval('ref_permintaan_addendum_kode_permintaan_addendum_seq'::regclass),
+  "kode_permintaan" int4 NOT NULL,
+  "permintaan_addentum" text COLLATE "pg_catalog"."default" NOT NULL,
+  "kode_addendum" int4,
+  "status_permintaan" varchar COLLATE "pg_catalog"."default" DEFAULT 'tte permohonan'::character varying,
+  "kode_tte" int4,
+  "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
+  "uch" varchar COLLATE "pg_catalog"."default",
+  "udcr" timestamp(6),
+  "udch" timestamp(6)
+)
+;
 
 -- ----------------------------
 -- Table structure for ref_proses_kontrak
@@ -985,12 +1102,9 @@ CREATE TABLE "public"."ref_step_serah_terima" (
 DROP TABLE IF EXISTS "public"."trx_addendum";
 CREATE TABLE "public"."trx_addendum" (
   "kode_trx_addendum" int4 NOT NULL DEFAULT nextval('trx_addendum_kode_trx_addendum_seq'::regclass),
+  "kode_addendum" int4 NOT NULL,
   "kode_kategori_addendum" int4 NOT NULL,
-  "kode_permintaan" int4 NOT NULL,
-  "tgl_addendum" timestamp(6),
-  "kode_tte" int4,
-  "status_proses" varchar COLLATE "pg_catalog"."default" DEFAULT 'proses'::character varying,
-  "addendum_ke" int2 NOT NULL,
+  "tgl_trx_addendum" timestamp(6),
   "ucr" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "uch" varchar COLLATE "pg_catalog"."default",
   "udcr" timestamp(6),
@@ -1008,9 +1122,13 @@ CREATE TABLE "public"."trx_addendum_biaya" (
   "nama_pembayaran_eks" varchar COLLATE "pg_catalog"."default" NOT NULL,
   "persentase_eks" numeric NOT NULL,
   "nilai_rupiah_eks" numeric NOT NULL,
-  "nama_pembayaran_new" varchar COLLATE "pg_catalog"."default" NOT NULL,
-  "persentase_new" numeric NOT NULL,
-  "nilai_rupiah_new" numeric NOT NULL
+  "nama_pembayaran_new" varchar COLLATE "pg_catalog"."default",
+  "persentase_new" numeric,
+  "nilai_rupiah_new" numeric,
+  "kode_trx_jenis_sispembayaran_eks" int4,
+  "status_termin" bool,
+  "penambahan" numeric DEFAULT '0'::numeric,
+  "pengurangan" numeric DEFAULT '0'::numeric
 )
 ;
 
@@ -1036,7 +1154,7 @@ CREATE TABLE "public"."trx_addendum_spek_teknis" (
   "kode_trx_addendum_st" int4 NOT NULL DEFAULT nextval('trx_addendum_spek_teknis_kode_trx_addendum_st_seq'::regclass),
   "kode_trx_addendum" int4 NOT NULL,
   "spek_teknis_eks" text COLLATE "pg_catalog"."default" NOT NULL,
-  "spek_teknis_new" text COLLATE "pg_catalog"."default" NOT NULL
+  "spek_teknis_new" text COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -1359,7 +1477,8 @@ CREATE TABLE "public"."trx_nilai_addendum" (
   "kode_trx_addendum" int4 NOT NULL,
   "nilai_eks" numeric NOT NULL,
   "nilai_perubahan" numeric,
-  "nilai_new" numeric
+  "nilai_new" numeric,
+  "operator" varchar COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -1446,6 +1565,31 @@ CREATE TABLE "public"."trx_penilaian_pembayaran" (
   "uch" varchar COLLATE "pg_catalog"."default",
   "udcr" timestamp(6) DEFAULT CURRENT_TIMESTAMP,
   "udch" timestamp(6) DEFAULT CURRENT_TIMESTAMP
+)
+;
+
+-- ----------------------------
+-- Table structure for trx_pesanan_addendum
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."trx_pesanan_addendum";
+CREATE TABLE "public"."trx_pesanan_addendum" (
+  "kode_trx_pesanan_addendum" int4 NOT NULL DEFAULT nextval('trx_pesanan_addendum_kode_trx_pesanan_addendum_seq'::regclass),
+  "kode_trx_addendum" int4 NOT NULL,
+  "kode_detail_permintaan_eks" int4,
+  "kode_bmut_eks" varchar COLLATE "pg_catalog"."default",
+  "deskripsi_eks" text COLLATE "pg_catalog"."default",
+  "kuantitas_eks" int4,
+  "satuan_eks" varchar COLLATE "pg_catalog"."default",
+  "harga_satuan_eks" numeric,
+  "total_harga_eks" numeric,
+  "kode_bmut_new" varchar COLLATE "pg_catalog"."default",
+  "deskripsi_new" text COLLATE "pg_catalog"."default",
+  "kuantitas_new" int4,
+  "satuan_new" varchar COLLATE "pg_catalog"."default",
+  "harga_satuan_new" numeric,
+  "total_harga_new" numeric,
+  "kode_ruang_eks" varchar COLLATE "pg_catalog"."default",
+  "kode_ruang_new" varchar COLLATE "pg_catalog"."default"
 )
 ;
 
@@ -1608,6 +1752,13 @@ $BODY$
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."ref_addendum_kode_addendum_seq"
+OWNED BY "public"."ref_addendum"."kode_addendum";
+SELECT setval('"public"."ref_addendum_kode_addendum_seq"', 1, false);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq"
 OWNED BY "public"."ref_ba_pemeriksaan"."kode_ba_pemerikasaan";
 SELECT setval('"public"."ref_ba_pemeriksaan_kode_ba_pemerikasaan_seq"', 1630, true);
@@ -1625,6 +1776,13 @@ SELECT setval('"public"."ref_ba_pemeriksaan_st_kode_bap_st_seq"', 1, false);
 ALTER SEQUENCE "public"."ref_bentuk_kontrak_kode_bentuk_kontrak_seq"
 OWNED BY "public"."ref_bentuk_kontrak"."kode_bentuk_kontrak";
 SELECT setval('"public"."ref_bentuk_kontrak_kode_bentuk_kontrak_seq"', 6, false);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_default_keluaran_kode_default_keluaran_seq"
+OWNED BY "public"."ref_default_keluaran"."kode_default_keluaran";
+SELECT setval('"public"."ref_default_keluaran_kode_default_keluaran_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1650,6 +1808,13 @@ SELECT setval('"public"."ref_jenis_laporan_kode_jenis_laporan_seq"', 7, false);
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."ref_jenis_layanan_kode_jenis_layanan_seq"
+OWNED BY "public"."ref_jenis_layanan"."kode_jenis_layanan";
+SELECT setval('"public"."ref_jenis_layanan_kode_jenis_layanan_seq"', 1, false);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."ref_kategori_addendum_kode_kategori_addendum_seq"
 OWNED BY "public"."ref_kategori_addendum"."kode_kategori_addendum";
 SELECT setval('"public"."ref_kategori_addendum_kode_kategori_addendum_seq"', 3, true);
@@ -1660,6 +1825,13 @@ SELECT setval('"public"."ref_kategori_addendum_kode_kategori_addendum_seq"', 3, 
 ALTER SEQUENCE "public"."ref_keluaran_proses_kontrak_kode_keluaran_seq"
 OWNED BY "public"."ref_keluaran_proses_kontrak"."kode_keluaran";
 SELECT setval('"public"."ref_keluaran_proses_kontrak_kode_keluaran_seq"', 1244, true);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
+ALTER SEQUENCE "public"."ref_permintaan_addendum_kode_permintaan_addendum_seq"
+OWNED BY "public"."ref_permintaan_addendum"."kode_permintaan_addendum";
+SELECT setval('"public"."ref_permintaan_addendum_kode_permintaan_addendum_seq"', 1, false);
 
 -- ----------------------------
 -- Alter sequences owned by
@@ -1895,6 +2067,13 @@ SELECT setval('"public"."trx_penilaian_pembayaran_kode_penilaian_pembayaran_seq"
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
+ALTER SEQUENCE "public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq"
+OWNED BY "public"."trx_pesanan_addendum"."kode_trx_pesanan_addendum";
+SELECT setval('"public"."trx_pesanan_addendum_kode_trx_pesanan_addendum_seq"', 1, false);
+
+-- ----------------------------
+-- Alter sequences owned by
+-- ----------------------------
 ALTER SEQUENCE "public"."trx_proses_pajak_kode_proses_pajak_seq"
 OWNED BY "public"."trx_proses_pajak"."kode_proses_pajak";
 SELECT setval('"public"."trx_proses_pajak_kode_proses_pajak_seq"', 1, false);
@@ -1940,6 +2119,11 @@ SELECT setval('"public"."trx_tte_kode_tte_seq"', 7704, true);
 ALTER TABLE "public"."m_aspek" ADD CONSTRAINT "m_aspek_pkey" PRIMARY KEY ("kode_aspek");
 
 -- ----------------------------
+-- Primary Key structure for table ref_addendum
+-- ----------------------------
+ALTER TABLE "public"."ref_addendum" ADD CONSTRAINT "ref_addendum_pkey" PRIMARY KEY ("kode_addendum");
+
+-- ----------------------------
 -- Primary Key structure for table ref_ba_pemeriksaan
 -- ----------------------------
 ALTER TABLE "public"."ref_ba_pemeriksaan" ADD CONSTRAINT "ref_ba_pemeriksaan_pkey" PRIMARY KEY ("kode_ba_pemerikasaan");
@@ -1953,6 +2137,11 @@ ALTER TABLE "public"."ref_ba_pemeriksaan_st" ADD CONSTRAINT "ref_ba_pemeriksaan_
 -- Primary Key structure for table ref_bentuk_kontrak
 -- ----------------------------
 ALTER TABLE "public"."ref_bentuk_kontrak" ADD CONSTRAINT "ref_bentuk_kontrak_pkey" PRIMARY KEY ("kode_bentuk_kontrak");
+
+-- ----------------------------
+-- Primary Key structure for table ref_default_keluaran
+-- ----------------------------
+ALTER TABLE "public"."ref_default_keluaran" ADD CONSTRAINT "ref_default_keluaran_pkey" PRIMARY KEY ("kode_default_keluaran");
 
 -- ----------------------------
 -- Primary Key structure for table ref_detail_aspek
@@ -1975,6 +2164,11 @@ ALTER TABLE "public"."ref_jenis_kontrak" ADD CONSTRAINT "ref_jenis_kontrak_pkey"
 ALTER TABLE "public"."ref_jenis_laporan" ADD CONSTRAINT "ref_jenis_laporan_pkey" PRIMARY KEY ("kode_jenis_laporan");
 
 -- ----------------------------
+-- Primary Key structure for table ref_jenis_layanan
+-- ----------------------------
+ALTER TABLE "public"."ref_jenis_layanan" ADD CONSTRAINT "ref_jenis_layanan_pkey" PRIMARY KEY ("kode_jenis_layanan");
+
+-- ----------------------------
 -- Primary Key structure for table ref_kategori_addendum
 -- ----------------------------
 ALTER TABLE "public"."ref_kategori_addendum" ADD CONSTRAINT "ref_kategori_addendum_pkey" PRIMARY KEY ("kode_kategori_addendum");
@@ -1988,6 +2182,11 @@ ALTER TABLE "public"."ref_keluaran_proses_kontrak" ADD CONSTRAINT "ref_keluaran_
 -- Primary Key structure for table ref_permintaan
 -- ----------------------------
 ALTER TABLE "public"."ref_permintaan" ADD CONSTRAINT "ref_permintaan_pkey" PRIMARY KEY ("kode_permintaan");
+
+-- ----------------------------
+-- Primary Key structure for table ref_permintaan_addendum
+-- ----------------------------
+ALTER TABLE "public"."ref_permintaan_addendum" ADD CONSTRAINT "ref_permintaan_addendum_pkey" PRIMARY KEY ("kode_permintaan_addendum");
 
 -- ----------------------------
 -- Primary Key structure for table ref_proses_kontrak
@@ -2170,6 +2369,11 @@ ALTER TABLE "public"."trx_penambahan_jangka_waktu" ADD CONSTRAINT "trx_penambaha
 ALTER TABLE "public"."trx_penilaian_pembayaran" ADD CONSTRAINT "trx_penilaian_pembayaran_pkey" PRIMARY KEY ("kode_penilaian_pembayaran");
 
 -- ----------------------------
+-- Primary Key structure for table trx_pesanan_addendum
+-- ----------------------------
+ALTER TABLE "public"."trx_pesanan_addendum" ADD CONSTRAINT "trx_pesanan_addendum_pkey" PRIMARY KEY ("kode_trx_pesanan_addendum");
+
+-- ----------------------------
 -- Primary Key structure for table trx_proses_pajak
 -- ----------------------------
 ALTER TABLE "public"."trx_proses_pajak" ADD CONSTRAINT "trx_proses_pajak_pkey" PRIMARY KEY ("kode_proses_pajak");
@@ -2229,6 +2433,11 @@ ALTER TABLE "public"."ref_permintaan" ADD CONSTRAINT "ref_permintaan_kode_skema_
 ALTER TABLE "public"."ref_permintaan" ADD CONSTRAINT "ref_permintaan_kode_status_permintaan_fkey" FOREIGN KEY ("kode_status_permintaan") REFERENCES "public"."ref_status_permintaan" ("kode_status_permintaan") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
+-- Foreign Keys structure for table ref_permintaan_addendum
+-- ----------------------------
+ALTER TABLE "public"."ref_permintaan_addendum" ADD CONSTRAINT "fk_ref_permintaan_addendum_addendum" FOREIGN KEY ("kode_addendum") REFERENCES "public"."ref_addendum" ("kode_addendum") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- ----------------------------
 -- Foreign Keys structure for table ref_proses_kontrak
 -- ----------------------------
 ALTER TABLE "public"."ref_proses_kontrak" ADD CONSTRAINT "FK_ref_proses_kontrak_ref_permintaan" FOREIGN KEY ("kode_permintaan") REFERENCES "public"."ref_permintaan" ("kode_permintaan") ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -2255,22 +2464,23 @@ ALTER TABLE "public"."ref_sptjm" ADD CONSTRAINT "ref_sptjm_kode_trx_riwayat_pela
 -- ----------------------------
 -- Foreign Keys structure for table trx_addendum
 -- ----------------------------
+ALTER TABLE "public"."trx_addendum" ADD CONSTRAINT "fk_trx_addendum_addendum" FOREIGN KEY ("kode_addendum") REFERENCES "public"."ref_addendum" ("kode_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."trx_addendum" ADD CONSTRAINT "fk_trx_addendum_kategori" FOREIGN KEY ("kode_kategori_addendum") REFERENCES "public"."ref_kategori_addendum" ("kode_kategori_addendum") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_addendum_biaya
 -- ----------------------------
-ALTER TABLE "public"."trx_addendum_biaya" ADD CONSTRAINT "fk_addendum_biaya_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."trx_addendum_biaya" ADD CONSTRAINT "fk_addendum_biaya_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_addendum_jangka_waktu
 -- ----------------------------
-ALTER TABLE "public"."trx_addendum_jangka_waktu" ADD CONSTRAINT "fk_addendum_jw_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."trx_addendum_jangka_waktu" ADD CONSTRAINT "fk_addendum_jw_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_addendum_spek_teknis
 -- ----------------------------
-ALTER TABLE "public"."trx_addendum_spek_teknis" ADD CONSTRAINT "fk_addendum_st_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."trx_addendum_spek_teknis" ADD CONSTRAINT "fk_addendum_st_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_ba_pemeriksaan
@@ -2365,7 +2575,7 @@ ALTER TABLE "public"."trx_nego_teknis" ADD CONSTRAINT "trx_nego_teknis_kode_perm
 -- ----------------------------
 -- Foreign Keys structure for table trx_nilai_addendum
 -- ----------------------------
-ALTER TABLE "public"."trx_nilai_addendum" ADD CONSTRAINT "fk_nilai_addendum_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."trx_nilai_addendum" ADD CONSTRAINT "fk_nilai_addendum_trx" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_pajak
@@ -2382,6 +2592,11 @@ ALTER TABLE "public"."trx_pembayaran" ADD CONSTRAINT "trx_pembayaran_kode_trx_ri
 -- ----------------------------
 ALTER TABLE "public"."trx_penilaian_pembayaran" ADD CONSTRAINT "trx_penilaian_pembayaran_kode_detail_aspek_fkey" FOREIGN KEY ("kode_detail_aspek") REFERENCES "public"."ref_detail_aspek" ("kode_detail_aspek") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."trx_penilaian_pembayaran" ADD CONSTRAINT "trx_penilaian_pembayaran_kode_trx_riwayat_pelaksanaan_fkey" FOREIGN KEY ("kode_trx_riwayat_pelaksanaan") REFERENCES "public"."trx_riwayat_pelaksanaan" ("kode_trx_riwayat_pelaksanaan") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ----------------------------
+-- Foreign Keys structure for table trx_pesanan_addendum
+-- ----------------------------
+ALTER TABLE "public"."trx_pesanan_addendum" ADD CONSTRAINT "fk_trx_pesanan_addendum_trx_addendum" FOREIGN KEY ("kode_trx_addendum") REFERENCES "public"."trx_addendum" ("kode_trx_addendum") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- ----------------------------
 -- Foreign Keys structure for table trx_proses_pajak
