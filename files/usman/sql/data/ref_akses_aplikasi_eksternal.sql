@@ -1,0 +1,11 @@
+-- devel
+INSERT INTO public.ref_akses_aplikasi_eksternal (email, "password", akses_token, aplikasi) VALUES('promise@ecampus.ut.ac.id', 'pa55word#$#!~', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoicHJvbWlzZUBlY2FtcHVzLnV0LmFjLmlkIiwidmVyc2lvbiI6IjA4NmVmMDk2LWU5OGYtNDAxOS05YTQ0LTE0YWI4NTA4M2RjNSIsImlhdCI6MTc3MDY4NzUzMCwiZXhwIjoxNzcwNzE2MzMwfQ.oRn3mrOPgka9JhzXVY-mrDaTCpq9ZKoGNJPmxIZCZ1Q', 'Sisma');
+
+UPDATE ref_akses_aplikasi_eksternal SET akses_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoicHJvbWlzZUBlY2FtcHVzLnV0LmFjLmlkIiwidmVyc2lvbiI6IjA4NmVmMDk2LWU5OGYtNDAxOS05YTQ0LTE0YWI4NTA4M2RjNSIsImlhdCI6MTc3MDY4NzUzMCwiZXhwIjoxNzcwNzE2MzMwfQ.oRn3mrOPgka9JhzXVY-mrDaTCpq9ZKoGNJPmxIZCZ1Q' WHERE aplikasi = 'Sisma';
+
+
+-- production
+INSERT INTO public.ref_akses_aplikasi_eksternal (email, "password", akses_token, aplikasi) VALUES('promise@ecampus.ut.ac.id', 'pa55word#$#!~', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoicHJvbWlzZUBlY2FtcHVzLnV0LmFjLmlkIiwidmVyc2lvbiI6IjJjYWU2ODQyLWJhZDktNDliZS1hYWM1LTU4ZTRkYzYyYjc1OCIsImlhdCI6MTc3MDY4NjYwNiwiZXhwIjoxNzcwNzE1NDA2fQ.NcFglQM06UIDqe3IIkxcFj0T2CUlh-hM7bBy8ZQoeNE', 'Sisma');
+
+UPDATE ref_akses_aplikasi_eksternal SET akses_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoicHJvbWlzZUBlY2FtcHVzLnV0LmFjLmlkIiwidmVyc2lvbiI6IjJjYWU2ODQyLWJhZDktNDliZS1hYWM1LTU4ZTRkYzYyYjc1OCIsImlhdCI6MTc3MDY4NjYwNiwiZXhwIjoxNzcwNzE1NDA2fQ.NcFglQM06UIDqe3IIkxcFj0T2CUlh-hM7bBy8ZQoeNE' WHERE aplikasi = 'Sisma';
+
