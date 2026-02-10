@@ -12,7 +12,7 @@
  Target Server Version : 160011 (160011)
  File Encoding         : 65001
 
- Date: 10/02/2026 15:23:25
+ Date: 10/02/2026 15:24:05
 */
 
 
@@ -29,6 +29,38 @@ CREATE TABLE "public"."ref_threeshold" (
   "penanggung_jawab" varchar COLLATE "pg_catalog"."default"
 )
 ;
+
+-- ----------------------------
+-- Records of ref_threeshold
+-- ----------------------------
+INSERT INTO "public"."ref_threeshold" VALUES (5, 200000000, 500000000, 1, 2, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (6, 200000000, 1000000000, 2, 2, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (7, 200000000, 500000000, 3, 2, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (8, 200000000, 500000000, 4, 2, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (9, 500000000, 2000000000, 1, 4, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (10, 1000000000, 2000000000, 2, 4, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (11, 500000000, 2000000000, 3, 4, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (12, 500000000, 2000000000, 4, 4, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (13, 2000000000, 50000000000, 1, 5, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (14, 10000000000, 50000000000, 2, 5, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (15, 2000000000, 50000000000, 3, 5, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (16, 2000000000, 50000000000, 4, 5, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (17, 50000000000, 999000000000, 1, 5, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (18, 50000000000, 999000000000, 2, 5, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (19, 50000000000, 999000000000, 3, 5, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (20, 50000000000, 999000000000, 4, 5, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (21, 2000000000, 50000000000, 1, 3, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (22, 10000000000, 50000000000, 2, 3, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (23, 2000000000, 50000000000, 3, 3, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (24, 2000000000, 50000000000, 4, 3, 'PPK');
+INSERT INTO "public"."ref_threeshold" VALUES (25, 50000000000, 999000000000, 1, 3, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (26, 50000000000, 999000000000, 2, 3, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (27, 50000000000, 999000000000, 3, 3, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (28, 50000000000, 999000000000, 4, 3, 'KPA');
+INSERT INTO "public"."ref_threeshold" VALUES (1, 0, 200000000, 1, 1, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (2, 0, 200000000, 2, 1, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (3, 0, 200000000, 3, 1, 'PP');
+INSERT INTO "public"."ref_threeshold" VALUES (4, 0, 200000000, 4, 1, 'PP');
 
 -- ----------------------------
 -- Indexes structure for table ref_threeshold
