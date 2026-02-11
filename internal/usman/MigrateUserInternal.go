@@ -43,6 +43,8 @@ func MigrateUserInternal() {
 			}
 		}
 
+		kodeUnit = ReplaceWithNewKodeUnit(kodeUnit)
+
 		if kodeUnit.Valid {
 			refUnitPbj := refunitpbjmodel.GetByKodePbj(kodeUnit)
 			kodeUnitPbj = refUnitPbj.KodeUnitPbj
@@ -101,3 +103,34 @@ func MigrateUserInternal() {
 		trxusertampungmodel.InsertNew(trxUserTampung)
 	}
 }
+
+func ReplaceWithNewKodeUnit(kodeUnit pgtype.Text) pgtype.Text {
+	
+	kodeUnit.String = strings.TrimSpace(kodeUnit.String)
+
+	switch kodeUnit.String {
+	case "UN31.DSI":
+			kodeUnit.String = "UN31.DTD"
+	case "UN31.SRUH":
+			kodeUnit.String = "UN31.SEKUN"
+	case "UN31.PPBI":
+			kodeUnit.String = "UN31.PBI"
+	case "UN31.LLOP1":
+			kodeUnit.String = "UN31.LPPJJ1"
+	case "UN31.LLOP2":
+			kodeUnit.String = "UN31.LPPJJ2"
+	case "UN31.LLOP3":
+			kodeUnit.String = "UN31.LPPJJ3"
+	case "UN31.LLOP4":
+			kodeUnit.String = "UN31.LPPJJ4"
+	case "UN31.PSDM":
+			kodeUnit.String = "UN31.DSDM"
+	case "UN31.DPK":
+			kodeUnit.String = "UN31.PKPK"
+	case "UN31.LLOP":
+			kodeUnit.String = "UN31.LPPJJ"
+	}
+
+	return kodeUnit
+}
+	
