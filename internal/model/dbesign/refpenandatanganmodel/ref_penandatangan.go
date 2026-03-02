@@ -33,6 +33,7 @@ type RefPenandatangan struct {
 	AlasanPenonaktifan        pgtype.Text
 	Udcr                      pgtype.Timestamptz
 	Udch                      pgtype.Timestamptz
+	KeyPenandatangan		  pgtype.Text
 }
 
 func GetAllData() []RefPenandatangan {
@@ -48,7 +49,7 @@ func GetAllData() []RefPenandatangan {
 
 	allRefPenandatangan, err = pgx.CollectRows(rwRefPenandatangan, pgx.RowToStructByName[RefPenandatangan])
 	if err != nil {
-		log.Fatal("failed collecting rwRefPenandatangan (refpenandatangan.go:GetByEmail), " + err.Error())
+		log.Fatal("failed collecting rwRefPenandatangan (refpenandatangan.go:GetAllData), " + err.Error())
 	}
 	defer rwRefPenandatangan.Close()
 

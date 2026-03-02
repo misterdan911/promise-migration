@@ -61,6 +61,11 @@ func InsertRefPermintaan() {
 		// } else {
 		// 	continue
 		// }
+
+		// if tblPaketPl.IdPaket.Int32 != 2319 {
+		// 	continue
+		// }
+
 		// -----------------------------------------------------------------
 
 

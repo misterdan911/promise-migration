@@ -395,27 +395,69 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			pathDokumen.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
 		}
 
+
+		// Bikin transaksi Esign
+		// -------------------------------------------------------------
+		trxPenandatangan = trxpenandatanganmodel.TrxPenandatangan{
+			NamaAplikasi: gAppName,
+			NomorSurat: tblTerminPl.NomorSpp,
+			JenisSurat: pgtype.Text{Valid: true, String: "Surat Permintaan Pembayaran"},
+			KeteranganSurat: pgtype.Text{Valid: true, String: "-"},
+			PathDokumen: pathDokumen,
+			PathDokumenSelesai: pathDokumen,
+			TglSelesai: pgtype.Timestamp(tblSuratBap.TanggalBap),
+		}
+		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
+
+		jenisSignature = pgtype.Text{Valid: true, String: "Surat Permintaan Pembayaran"}
+		allSignature = tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
+
+		for _, signature := range allSignature {
+
+			userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+			if (userPenandatangan == helperusermodel.HelperUser{}) {
+				// ada id user yg tandatangan, tapi data usernya sudah tidak ada (id_user: 12134, id_profile_penyedia: 981)
+				continue
+			}
+
+			trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
+				KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
+				StatusJabatanPenandatangan: userPenandatangan.StatusUser,
+				Jabatan: userPenandatangan.Jabatan,
+				StatusPenandatangan: pgtype.Text{Valid: true, String: "sudah"},
+				TglTte: signature.CreatedAt,
+				KodePenandatangan: userPenandatangan.KodePenandatangan,
+			}
+			trxdetailpenandatanganmodel.InsertNew(trxDetailPenandatangan)
+
+		}
+		// -------------------------------------------------------------
+
+
 		trxTte = trxttemodel.TrxTte{
+			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
 			KodePermintaan: refPermintaan.KodePermintaan,
-			KategoriTte:    pgtype.Text{Valid: true, String: "s_pembayaran"},
-			PathDokumen:    pathDokumen,
-			TglSelesai:     tblTerminPl.TanggalSpp,
-			NomorSurat:     tblTerminPl.NomorSpp,
+			KategoriTte:pgtype.Text{Valid: true, String: "s_pembayaran"},
+			PathDokumen: pathDokumen,
+			TglSelesai: tblTerminPl.TanggalSpp,
+			NomorSurat: tblTerminPl.NomorSpp,
 		}
 		trxTte = trxttemodel.InsertNew(trxTte)
 
 		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
-			KodeTte:                   trxTte.KodeTte,
-			TglSuratSpp:               tblTerminPl.TanggalSpp,
-			NoSuratSpp:                tblTerminPl.NomorSpp,                  // Surat Permintaan Pembayaran / Surat Pembayaran
-			NoSuratSptjb:              pgtype.Text{Valid: true, String: "-"}, // Surat Pernyataan Tanggung Jawab Belanja
-			NoSuratSrk:                pgtype.Text{Valid: true, String: "-"},
-			Ucr:                       refPermintaan.Ucr,
+			KodeTte: trxTte.KodeTte,
+			TglSuratSpp: tblTerminPl.TanggalSpp,
+			NoSuratSpp: tblTerminPl.NomorSpp,			// Surat Permintaan Pembayaran / Surat Pembayaran
+			NoSuratSptjb: pgtype.Text{Valid: true, String: "-"},		// Surat Pernyataan Tanggung Jawab Belanja
+			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
+			Ucr: refPermintaan.Ucr,
 		}
-
+		
 		trxpembayaranmodel.InsertNew(trxPembayaran)
 		// -------------------------------------------------------------------------
+
+
 
 	}
 
