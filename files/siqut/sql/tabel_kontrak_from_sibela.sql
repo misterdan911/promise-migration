@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS trx_sistem_pembayaran;
-DROP TABLE IF EXISTS trx_jenis_sispembayaran;
 DROP TABLE IF EXISTS trx_serah_terima;
 DROP TABLE IF EXISTS trx_proses_pajak;
 DROP TABLE IF EXISTS trx_monitoring_new;
@@ -7,7 +5,6 @@ DROP TABLE IF EXISTS trx_jenis_laporan;
 DROP TABLE IF EXISTS trx_jangka_waktu;
 DROP TABLE IF EXISTS trx_keluaran_output_new;
 DROP TABLE IF EXISTS trx_keluaran_output;
-DROP TABLE IF EXISTS ref_keluaran_proses_kontrak;
 DROP TABLE IF EXISTS trx_dokumen_kontrak;
 DROP TABLE IF EXISTS ref_bentuk_kontrak;
 DROP TABLE IF EXISTS trx_bast_st;
@@ -24,7 +21,6 @@ DROP TABLE IF EXISTS trx_hasil_pajak;
 DROP TABLE IF EXISTS trx_pajak;
 DROP TABLE IF EXISTS trx_monitoring;
 DROP TABLE IF EXISTS trx_kwitansi;
-DROP TABLE IF EXISTS trx_keluaran_output;
 DROP TABLE IF EXISTS ref_keluaran_proses_kontrak;
 DROP TABLE IF EXISTS trx_bast;
 DROP TABLE IF EXISTS trx_ba_pemeriksaan;
@@ -45,6 +41,7 @@ DROP TABLE IF EXISTS ref_step_persiapan_kontrak;
 DROP TABLE IF EXISTS ref_status_kontrak;
 DROP TABLE IF EXISTS trx_tte;
 DROP TYPE IF EXISTS kategori_tte;
+
 
 DROP TYPE IF EXISTS kategori_tte;
 CREATE TYPE kategori_tte AS ENUM (
@@ -402,8 +399,8 @@ CREATE TABLE trx_monitoring (
 CREATE INDEX idx_trx_monitoring_kode_trx_riwayat_pelaksanaan ON trx_monitoring USING btree (kode_trx_riwayat_pelaksanaan);
 
 
-DROP TYPE IF EXISTS public.kategori_nilai_transaksi;
-CREATE TYPE public.kategori_nilai_transaksi AS ENUM (
+DROP TYPE IF EXISTS kategori_nilai_transaksi;
+CREATE TYPE kategori_nilai_transaksi AS ENUM (
 	'nilai_kontrak',
 	'management_fee'
 );
@@ -614,6 +611,9 @@ VALUES
 (2, 'BAST', 'BA Serah Terima', 'penyedia|pp|ppk', 2);
 
 
+-- sampai sini 2
+
+
 DROP TABLE IF EXISTS ref_serah_terima;
 CREATE TABLE ref_serah_terima (
 	kode_serah_terima serial PRIMARY KEY,
@@ -689,6 +689,12 @@ CREATE INDEX idx_trx_bast_st_kode_serah_terima ON trx_bast_st USING btree (kode_
 CREATE INDEX idx_trx_bast_st_kode_tte ON trx_bast_st USING btree (kode_tte);
 
 
+DROP TYPE IF EXISTS kategori_bentuk_kontrak;
+CREATE TYPE kategori_bentuk_kontrak AS ENUM (
+	'upload',
+	'tamplate',
+	'template'
+);
 
 DROP TABLE IF EXISTS ref_bentuk_kontrak;
 CREATE TABLE ref_bentuk_kontrak (
@@ -723,23 +729,6 @@ CREATE TABLE trx_dokumen_kontrak (
 CREATE INDEX idx_trx_dokumen_kontrak_kode_bentuk_kontrak ON trx_dokumen_kontrak USING btree (kode_bentuk_kontrak);
 CREATE INDEX idx_trx_dokumen_kontrak_kode_proses_kontrak ON trx_dokumen_kontrak USING btree (kode_proses_kontrak);
 CREATE INDEX idx_trx_dokumen_kontrak_kode_tte ON trx_dokumen_kontrak USING btree (kode_tte);
-
-
-
-
-DROP TABLE IF EXISTS ref_keluaran_proses_kontrak;
-CREATE TABLE ref_keluaran_proses_kontrak (
-	kode_keluaran serial PRIMARY KEY,
-	kode_proses_kontrak int4 NOT NULL,
-	keluaran varchar NOT NULL,
-	ucr varchar NOT NULL,
-	uch varchar NULL,
-	udcr timestamp(6) DEFAULT CURRENT_TIMESTAMP NULL,
-	udch timestamp(6) DEFAULT CURRENT_TIMESTAMP NULL,
-	status_aktif int2 DEFAULT '1'::smallint NOT NULL,
-	CONSTRAINT ref_keluaran_proses_kontrak_kode_proses_kontrak_fkey FOREIGN KEY (kode_proses_kontrak) REFERENCES ref_proses_kontrak(kode_proses_kontrak)
-);
-CREATE INDEX idx_ref_keluaran_proses_kontrak_kode_proses_kontrak ON ref_keluaran_proses_kontrak USING btree (kode_proses_kontrak);
 
 
 
@@ -781,6 +770,8 @@ CREATE TABLE trx_keluaran_output_new (
 CREATE INDEX idx_trx_keluaran_output_new_kode_keluaran ON trx_keluaran_output_new USING btree (kode_keluaran);
 CREATE INDEX idx_trx_keluaran_output_new_kode_proses_kontrak ON trx_keluaran_output_new USING btree (kode_proses_kontrak);
 
+
+-- sampai sini 3
 
 
 DROP TABLE IF EXISTS trx_jangka_waktu;
@@ -861,7 +852,11 @@ CREATE INDEX idx_trx_proses_pajak_kode_proses_kontrak ON trx_proses_pajak USING 
 
 
 
-
+DROP TYPE IF EXISTS public.kategori_serah_terima;
+CREATE TYPE public.kategori_serah_terima AS ENUM (
+	'sekaligus',
+	'sebagian'
+);
 
 DROP TABLE IF EXISTS trx_serah_terima;
 CREATE TABLE trx_serah_terima (
@@ -879,50 +874,4 @@ CREATE TABLE trx_serah_terima (
 	CONSTRAINT trx_serah_terima_kode_proses_kontrak_fkey FOREIGN KEY (kode_proses_kontrak) REFERENCES ref_proses_kontrak(kode_proses_kontrak)
 );
 CREATE INDEX idx_trx_serah_terima_kode_proses_kontrak ON trx_serah_terima USING btree (kode_proses_kontrak);
-
-
-
-DROP TABLE IF EXISTS trx_jenis_sispembayaran;
-CREATE TABLE trx_jenis_sispembayaran (
-	kode_trx_jenis_sispembayaran serial PRIMARY KEY,
-	kode_sistem_pembayaran int4 NOT NULL,
-	nama_sispembayaran varchar NOT NULL,
-	persentase numeric NOT NULL,
-	nilai_rupiah numeric NOT NULL,
-	status_sispembayaran int2 DEFAULT 1 NULL,
-	CONSTRAINT trx_jenis_sispembayaran_kode_sistem_pembayaran_fkey FOREIGN KEY (kode_sistem_pembayaran) REFERENCES trx_sistem_pembayaran(kode_sistem_pembayaran) ON DELETE CASCADE ON UPDATE CASCADE
-);
-CREATE INDEX idx_trx_jenis_sispembayaran_kode_sistem_pembayaran ON trx_jenis_sispembayaran USING btree (kode_sistem_pembayaran);
-
-
-DROP TABLE IF EXISTS trx_sistem_pembayaran;
-CREATE TABLE trx_sistem_pembayaran (
-	kode_sistem_pembayaran serial PRIMARY KEY,
-	kode_proses_kontrak int4 NOT NULL,
-	jenis_pembayaran varchar NOT NULL,
-	kategori_sispembayaran kategori_sispembayaran NULL,
-	ucr varchar NOT NULL,
-	uch varchar NULL,
-	udcr timestamp(6) DEFAULT CURRENT_TIMESTAMP NULL,
-	udch timestamp(6) DEFAULT CURRENT_TIMESTAMP NULL,
-	CONSTRAINT trx_sistem_pembayaran_kode_proses_kontrak_fkey FOREIGN KEY (kode_proses_kontrak) REFERENCES ref_proses_kontrak(kode_proses_kontrak)
-);
-CREATE INDEX idx_trx_sistem_pembayaran_kode_proses_kontrak ON trx_sistem_pembayaran USING btree (kode_proses_kontrak);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

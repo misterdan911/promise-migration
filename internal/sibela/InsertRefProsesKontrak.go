@@ -1,7 +1,7 @@
 package sibela
 
 import (
-	// "fmt"
+	"strings"
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsibela/refkeluaranproseskontrakmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
@@ -149,8 +149,21 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		}
 		trxSistemPembayaran = trxsistempembayaranmodel.InsertNew(trxSistemPembayaran)
 
+		// dapatkan nilai pembayaran tiap termin -- start
+		tblPaketPl.Total.String = strings.TrimSpace(tblPaketPl.Total.String)
+		totalFloat, _ := strconv.ParseFloat(tblPaketPl.Total.String, 64)
+		totalTerminFloat := float64(totalTermin)
+		nilaiRupiahFloat := totalFloat / totalTerminFloat
+
+		nilaiRupiah := pgtype.Float8{
+			Float64: nilaiRupiahFloat,
+			Valid:   true,
+		}
+		// dapatkan nilai pembayaran tiap termin -- end
+
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
+			// fmt.Printf("persenTermin: %f\n", persenTermin)
 			// fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
 			// fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
@@ -158,11 +171,13 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 				Valid:   true,
 			}
 
+			/*
 			sppIni, _ := strconv.ParseFloat(tblTermin.SppIni.String, 64)
 			nilaiRupiah := pgtype.Float8{
 				Float64: sppIni,
 				Valid:   true,
 			}
+			*/
 
 			trxJenisSispembayaran := trxjenissispembayaranmodel.TrxJenisSispembayaran{
 				KodeSistemPembayaran: trxSistemPembayaran.KodeSistemPembayaran,

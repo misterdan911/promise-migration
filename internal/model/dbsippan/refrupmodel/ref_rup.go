@@ -55,3 +55,16 @@ func GetKodeRupByNoRup(noRup pgtype.Text) pgtype.Int4 {
 	return kodeNoRup.KodeRup
 }
 
+
+func UpdateNoDrauk(kodeRup pgtype.Int4, noDrauk pgtype.Int4) {
+
+	ctx := context.Background()
+
+	qUpdate := `UPDATE ref_rup SET no_drauk = $1 WHERE kode_rup = $2`
+  _, err := db.DbSippan.Exec(ctx, qUpdate, noDrauk, kodeRup)
+
+  if err != nil {
+    log.Fatal("failed updating RefRup (ref_rup.go), " + err.Error())
+  }
+}
+

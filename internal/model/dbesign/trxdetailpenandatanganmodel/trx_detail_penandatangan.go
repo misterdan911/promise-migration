@@ -65,6 +65,7 @@ func InsertNew(trxDetailPenandatangan TrxDetailPenandatangan) TrxDetailPenandata
 
 	allTrxDetailPenandatangan, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxDetailPenandatangan])
 	if err != nil {
+		fmt.Printf("KodeTrxPenandatangan: %d\n", trxDetailPenandatangan.KodeTrxPenandatangan.Int32)
 		log.Fatal("failed collecting TrxDetailPenandatangan, " + err.Error())
 	}
 

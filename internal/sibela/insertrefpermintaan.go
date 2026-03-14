@@ -62,7 +62,7 @@ func InsertRefPermintaan() {
 		// 	continue
 		// }
 
-		// if tblPaketPl.IdPaket.Int32 != 2319 {
+		// if tblPaketPl.IdPaket.Int32 != 9645 {
 		// 	continue
 		// }
 
@@ -233,6 +233,9 @@ func InsertRefPermintaan() {
 		InsertRefProsesKontrak(refPermintaan, tblPaketPl)
 
 		refpermintaanmodel.UpdateKodeStatusPermintaan(refPermintaan.KodePermintaan, gKodeStatusPermintaan)
+
+		// Update no_drauk di tabel ref_rup di database db_sippan
+		refrupmodel.UpdateNoDrauk(kodeRup, tblPaketPl.IdRkaRev)
 	}
 
 	sibelahelper.UpdatePkSequence("ref_permintaan", "kode_permintaan")

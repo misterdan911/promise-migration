@@ -36,7 +36,8 @@ type TrxPajak struct {
 	TanggalEfaktur               pgtype.Timestamp
 	NamaTabelLama                pgtype.Text
 	IdSptb               		 pgtype.Int4
-	BiayaTakKenaPajak      		 pgtype.Int4
+	BiayaTakKenaPajak      		 pgtype.Numeric
+	KodeJenisLayanan      		 pgtype.Int4
 }
 
 func InsertNew(trxPajak TrxPajak) TrxPajak {
@@ -120,6 +121,8 @@ func InsertNew(trxPajak TrxPajak) TrxPajak {
 		"tanggal_efaktur":              trxPajak.TanggalEfaktur,
 		"nama_tabel_lama":              trxPajak.NamaTabelLama,
 		"id_sptb":              trxPajak.IdSptb,
+		"biaya_tak_kena_pajak":  trxPajak.BiayaTakKenaPajak,
+		"kode_jenis_layanan":  trxPajak.KodeJenisLayanan,
 	}
 
 	rwIns, errIns := db.DbSiplang.Query(ctx, qInsert, args)

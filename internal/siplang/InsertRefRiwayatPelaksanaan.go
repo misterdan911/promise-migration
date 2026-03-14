@@ -69,11 +69,15 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		var statusRiwayatPelaksanaan pgtype.Text
 		statusRiwayatPelaksanaan.Valid = true
 
-		if tblTerminPl.StatusTerminBast.Int32 == 3 {
+		if (tblTerminPl.StatusTerminBast == pgtype.Int4{}) {
+			continue
+		} else if tblTerminPl.StatusTerminBast.Int32 == 3 {
 			statusRiwayatPelaksanaan.String = "selesai"
-		} else {
+		}	else {
 			statusRiwayatPelaksanaan.String = "proses"
 		}
+
+
 
 		refRiwayatPelaksanaan = refriwayatpelaksanaanmodel.RefRiwayatPelaksanaan{
 			KodeProsesKontrak:         refProsesKontrak3.KodeProsesKontrak,
@@ -683,6 +687,11 @@ func BikinTransaksiEsign(dataTrx DataTrxEsign) pgtype.Int4 {
 		// fmt.Printf("signatureSptjm.IdUser: %d\n", signature.IdUser.Int32)
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signature.IdUser)
+
+		if (userPenandatangan == helperusermodel.HelperUser{}) {
+			// ada id user yg tandatangan, tapi data usernya sudah tidak ada (id_user: 12134, id_profile_penyedia: 981)
+			continue
+		}
 
 		trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
 			KodeTrxPenandatangan:       trxPenandatangan.KodeTrxPenandatangan,

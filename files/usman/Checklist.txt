@@ -1,0 +1,3 @@
+Check List:
+- Pastikan semua PPK, PP, dan PK sudah masuk dan memiliki hak akses ke aplikasi
+- Pastikan semua pegawai UT bisa masuk ke E-Sign

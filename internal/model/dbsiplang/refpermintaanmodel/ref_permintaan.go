@@ -40,6 +40,7 @@ type RefPermintaan struct {
 	DeskripsiPendukungPenyedia pgtype.Text
 	KodeRup                    pgtype.Int4
 	TglSelesaiNegosiasi        pgtype.Timestamptz
+	CatatanRevisi        pgtype.Text
 }
 
 func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
@@ -139,6 +140,7 @@ func InsertNew(refPermintaan RefPermintaan) RefPermintaan {
 		"deskripsi_pendukung_penyedia": refPermintaan.DeskripsiPendukungPenyedia,
 		"kode_rup":                     refPermintaan.KodeRup,
 		"tgl_selesai_negosiasi":        refPermintaan.TglSelesaiNegosiasi,
+		"catatan_revisi":        refPermintaan.CatatanRevisi,
 	}
 
 	rwIns, errIns := db.DbSiplang.Query(ctx, qIns, args)

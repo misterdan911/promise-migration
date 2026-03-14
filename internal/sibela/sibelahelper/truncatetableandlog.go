@@ -52,17 +52,27 @@ func TruncateTableAndLog2() {
 	}
 
 	// Delete data di E-Sign
-	qDeleteEsign := "DELETE FROM trx_penandatangan WHERE nama_aplikasi = 'Si-BeLa'"
-	_, err3 := db.DbEsign.Exec(ctx, qDeleteEsign)
-	if err3 != nil {
-		log.Fatal("qDeleteEsign Failed, " + err3.Error())
+	// qDeleteEsign := "DELETE FROM trx_penandatangan WHERE nama_aplikasi = 'Si-BeLa'"
+	// _, err3 := db.DbEsign.Exec(ctx, qDeleteEsign)
+	// if err3 != nil {
+	// 	log.Fatal("qDeleteEsign Failed, " + err3.Error())
+	// }
+
+	// Delete data di E-Sign
+	qTruncate = "TRUNCATE TABLE trx_penandatangan restart identity CASCADE"
+	_, err = db.DbEsign.Exec(ctx, qTruncate)
+	if err != nil {
+		log.Fatal("Truncate trx_penandatangan Failed, " + err.Error())
 	}
+	
 
 	qTruncate = "TRUNCATE TABLE ref_dok_detail_transaksi CASCADE"
 	_, err = db.DbSibela.Exec(ctx, qTruncate)
 	if err != nil {
 		log.Fatal("Truncate ref_dok_detail_transaksi Failedddd, " + err.Error())
 	}
+
+
 
 	
 	UpdatePrimaryKeySequenceFromFile()

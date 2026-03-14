@@ -29,6 +29,7 @@ func TruncateTableAndLog2() {
 	}
 
 	// Delete data di E-Sign
+	/*
 	qDeleteEsign := "DELETE FROM trx_penandatangan WHERE nama_aplikasi = 'Si-PLang'"
 	_, err3 := db.DbEsign.Exec(ctx, qDeleteEsign)
 	if err3 != nil {
@@ -40,10 +41,11 @@ func TruncateTableAndLog2() {
 	if err != nil {
 		log.Fatal("Truncate ref_dok_detail_transaksi Failedddd, " + err.Error())
 	}
+	*/
 
 	UpdatePrimaryKeySequenceFromFile()
 	UpdateUsmanSequence()
-	UpdateEsignSequence()
+	// UpdateEsignSequence()
 }
 
 func UpdateEsignSequence() {

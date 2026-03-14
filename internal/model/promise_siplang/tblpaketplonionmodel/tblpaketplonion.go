@@ -43,7 +43,7 @@ func GetAllData() []TblPaketPlOnion {
 
 	qAllData := `
 	SELECT 
-		id_paket_pl as id_paket,
+		tpp.id_paket_pl as id_paket,
 		id_ppk,
 		id_userpp,
 		id_direksi_perus,
@@ -54,7 +54,7 @@ func GetAllData() []TblPaketPlOnion {
 		id_kriteria,
 		jenis_aset,
 		kode_level_aset,
-		id_rka_rev,
+		tr.id_rka_rev,
 		id_pembayaran,
 		path_siplang as path_siplang,
 		path_siplang_penyedia as path_siplang_penyedia,
@@ -66,11 +66,12 @@ func GetAllData() []TblPaketPlOnion {
 		CAST(status_termin_pl AS VARCHAR(255)) as status_termin,
 		keterangan,
 		create_at,
-		updated_at,
+		tpp.updated_at,
 		deleted_at
-	FROM tbl_paket_pl
+	FROM tbl_paket_pl tpp
+	left join tbl_rka_pl tr on tr.id_paket_pl = tpp.id_paket_pl
 	WHERE deleted_at IS NULL and id_ppk is not null
-	ORDER BY id_paket ASC`
+	ORDER BY id_paket asc`
 
 	rwData, err := db.PromiseSiplang.Query(ctx, qAllData)
 	if err != nil {

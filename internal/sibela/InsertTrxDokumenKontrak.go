@@ -95,6 +95,11 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 		userPenandatangan := helperusermodel.GetByVmsUserId(signatureSP.IdUser)
 
+		if (userPenandatangan == helperusermodel.HelperUser{}) {
+			// ada id user yg tandatangan, tapi data usernya sudah tidak ada (id_user: 12134, id_profile_penyedia: 981)
+			continue
+		}
+
 		trxDetailPenandatangan := trxdetailpenandatanganmodel.TrxDetailPenandatangan{
 			KodeTrxPenandatangan: trxPenandatangan.KodeTrxPenandatangan,
 			StatusJabatanPenandatangan: userPenandatangan.StatusUser,
