@@ -35,13 +35,13 @@ func TruncateTableAndLog2() {
 	if err3 != nil {
 		log.Fatal("qDeleteEsign Failed, " + err3.Error())
 	}
+	*/
 
-	qTruncate = "TRUNCATE TABLE ref_dok_detail_transaksi CASCADE"
+	qTruncate = "TRUNCATE TABLE ref_dok_detail_transaksi"
 	_, err = db.DbSiplang.Exec(ctx, qTruncate)
 	if err != nil {
-		log.Fatal("Truncate ref_dok_detail_transaksi Failedddd, " + err.Error())
+		log.Fatal("Truncate ref_dok_detail_transaksi Failed, " + err.Error())
 	}
-	*/
 
 	UpdatePrimaryKeySequenceFromFile()
 	UpdateUsmanSequence()

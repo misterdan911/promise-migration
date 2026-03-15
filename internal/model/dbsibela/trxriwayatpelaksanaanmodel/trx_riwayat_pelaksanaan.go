@@ -61,6 +61,7 @@ func InsertNew(trxRiwayatPelaksanaan TrxRiwayatPelaksanaan) TrxRiwayatPelaksanaa
 
 	allTrxRiwayatPelaksanaan, err := pgx.CollectRows(rwIns, pgx.RowToStructByName[TrxRiwayatPelaksanaan])
 	if err != nil {
+		fmt.Printf("KodeStepRiwayatPelaksanaan: %d\n", trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32)
 		log.Fatal("failed collecting TrxRiwayatPelaksanaan, " + err.Error())
 	}
 

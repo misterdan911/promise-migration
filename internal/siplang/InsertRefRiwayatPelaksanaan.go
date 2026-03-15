@@ -483,6 +483,16 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		tblSptjm = tblsptjmdptmodel.GetByIdPaket(tblPaketPl.IdPaket)
 	}
 
+	// Kalau tidak ada sptjm, skip
+	if (tblSptjm == structs.TblSptjm{}) {
+		return nil
+	}
+
+	// kalau belum ada riwayat pelaksanaan, skip
+	if (trxRiwayatPelaksanaan == trxriwayatpelaksanaanmodel.TrxRiwayatPelaksanaan{}) {
+		return nil
+	}
+
 	trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 5 // SPTJM
 	trxRiwayatPelaksanaan.Udcr = tblSptjm.TanggalSptjm
 	trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
