@@ -133,6 +133,11 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		if allTblTermin[totalTermin-1].StatusTerminBast.Int32 == 3 {
 			gKodeStatusPermintaan.Int32 = 10
 		}
+
+		if refPermintaan.Udcr.Time.Year() < 2024 {
+			gKodeStatusPermintaan.Int32 = 10
+		}
+
 	}
 
 	if totalTermin > 1 {
