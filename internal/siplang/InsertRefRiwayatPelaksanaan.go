@@ -133,7 +133,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
-		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Pemeriksaan"}
 		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
 
 		// fmt.Printf("Jml Signature BAP: %d", len(allSignature))
@@ -612,7 +612,7 @@ func InsertSptjm(sptjmParam SptjmParam, tblPaketPl tblpaketplonionmodel.TblPaket
 	dataTrxEsign.NomorSurat = tblSptjm.NomorBastSementara
 	dataTrxEsign.JenisSurat.String = "Surat Perjanjian Pembayaran"
 	dataTrxEsign.PathDokumen = pathDokumen
-	dataTrxEsign.JenisSignature.String = "Berita Acara Serah Terima Sementara"
+	dataTrxEsign.JenisSignature.String = "Surat Permintaan Pembayaran"
 	kodeTrxPenandatangan = BikinTransaksiEsign(dataTrxEsign)
 
 	trxTte = trxttemodel.TrxTte{
@@ -645,7 +645,7 @@ func InsertSptjm(sptjmParam SptjmParam, tblPaketPl tblpaketplonionmodel.TblPaket
 	dataTrxEsign.NomorSurat = tblSptjm.NomorBastSementara
 	dataTrxEsign.JenisSurat.String = "Surat Pernyataan Kesanggupan"
 	dataTrxEsign.PathDokumen = pathDokumen
-	dataTrxEsign.JenisSignature.String = "Berita Acara Serah Terima Sementara"
+	dataTrxEsign.JenisSignature.String = "Surat Pernyataan Kesanggupan"
 	kodeTrxPenandatangan = BikinTransaksiEsign(dataTrxEsign)
 
 	trxTte = trxttemodel.TrxTte{
