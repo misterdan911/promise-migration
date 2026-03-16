@@ -2,6 +2,7 @@ package siplang
 
 import (
 	// "fmt"
+	"math"
 	"strings"
 	"promise-migration/internal/ghelper"
 	"promise-migration/internal/model/dbsiplang/refkeluaranproseskontrakmodel"
@@ -152,21 +153,20 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		}
 		trxSistemPembayaran = trxsistempembayaranmodel.InsertNew(trxSistemPembayaran)
 
-		// dapatkan nilai pembayaran tiap termin -- start
+		// total kontrak
 		tblPaketPl.Total.String = strings.TrimSpace(tblPaketPl.Total.String)
 		totalFloat, _ := strconv.ParseFloat(tblPaketPl.Total.String, 64)
-		totalTerminFloat := float64(totalTermin)
-		nilaiRupiahFloat := totalFloat / totalTerminFloat
 
-		nilaiRupiah := pgtype.Float8{
-			Float64: nilaiRupiahFloat,
-			Valid:   true,
-		}
-		// dapatkan nilai pembayaran tiap termin -- end
 
+
+		// nilaiRupiah := pgtype.Float8{
+		// 	Float64: nilaiRupiahFloat,
+		// 	Valid:   true,
+		// }
 
 		for _, tblTermin := range allTblTermin {
 			persenTermin, _ := strconv.ParseFloat(tblTermin.PersenTermin.String, 64)
+			// fmt.Printf("persenTermin: %f\n", persenTermin)
 			// fmt.Printf("idTerminPl: %d\n", tblTermin.IdTerminPl.Int32)
 			// fmt.Println("persen_termin: ", persenTermin)
 			persentase := pgtype.Float8{
@@ -182,6 +182,19 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			}
 			*/
 
+			// tblPaketPl.PersenTermin.String = strings.TrimSpace(tblPaketPl.PersenTermin.String)
+			// persenTermin, _ := strconv.ParseFloat(tblPaketPl.PersenTermin.String, 64)
+
+
+			// totalTerminFloat := float64(totalTermin)
+			nilaiRupiahFloat := totalFloat * (persenTermin/100)
+			nilaiRupiahFloat = math.Round(nilaiRupiahFloat)
+			nilaiRupiah := pgtype.Float8{
+				Float64: nilaiRupiahFloat,
+				Valid:   true,
+			}
+
+
 			trxJenisSispembayaran := trxjenissispembayaranmodel.TrxJenisSispembayaran{
 				KodeSistemPembayaran: trxSistemPembayaran.KodeSistemPembayaran,
 				NamaSispembayaran:    tblTermin.NamaTermin,
@@ -192,7 +205,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 
 			allHelperRiwayatPelaksanaan = append(allHelperRiwayatPelaksanaan, HelperRiwayatPelaksanaan{
 				TrxJenisSispembayaran: trxJenisSispembayaran,
-				TblTerminPl:           tblTermin,
+				TblTerminPl: tblTermin,
 			})
 
 		}
@@ -272,6 +285,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		trxserahterimamodel.InsertNew(trxSerahTerima)
 
 	}
+
 
 	return nil
 }

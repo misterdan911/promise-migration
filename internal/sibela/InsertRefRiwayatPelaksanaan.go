@@ -130,7 +130,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
-		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		jenisSignature := pgtype.Text{Valid: true, String: "Berita Acara Pemeriksaan"}
 		allSignature := tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
 
 		for _, signature := range allSignature {
@@ -223,7 +223,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxPenandatangan = trxpenandatanganmodel.InsertNew(trxPenandatangan)
 
-		jenisSignature = pgtype.Text{Valid: true, String: "Berita Acara Serah Terima"}
+		jenisSignature = pgtype.Text{Valid: true, String: "Surat Berita Serah Terima (BAST)"}
 		allSignature = tblsignaturemodel.GetAllSignature(tblPaketPl.IdPaket, tblPaketPl.JenisPenyedia, tblTerminPl.IdTerminPl, jenisSignature)
 
 		for _, signature := range allSignature {
