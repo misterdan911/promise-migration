@@ -1,0 +1,9 @@
+Kode Permintaan/Kode surat
+Siakun&Expenditure
+
+< 2025
+Sibela = $id_paket."-sibela-".$jenis
+Siplang = $id_paket."-siplang-".$jenis
+>2026
+Sibela = $id_paket."-".$id_termin."-sibela-".$jenis
+Siplang = $id_paket."-".$id_termin."-siplang-".$jenis

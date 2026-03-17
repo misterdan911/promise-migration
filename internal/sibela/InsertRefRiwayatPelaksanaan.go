@@ -23,6 +23,7 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblsptjmmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapdptmodel"
 	"promise-migration/internal/model/promise_sibela/tblsuratbapmodel"
+	"strconv"
 
 	"promise-migration/internal/model/dbsibela/trxpajakmodel"
 	"promise-migration/internal/model/dbsibela/trxsptjmmodel"
@@ -450,6 +451,21 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxTte = trxttemodel.InsertNew(trxTte)
 
+		// Dapatkan kode_permintaan_pencairan_old -- start
+		var kdPermPencOld string
+		id_paket := strconv.Itoa(int(tblPaketPl.IdPaket.Int32))
+		jenis := tblPaketPl.JenisPenyedia.String
+		id_termin := strconv.Itoa(int(tblTerminPl.IdTerminPl.Int32))
+
+		if refPermintaan.Udcr.Time.Year() < 2026 {
+			// Sibela = $id_paket."-sibela-".$jenis
+			kdPermPencOld = id_paket + "-sibela-" + jenis
+		} else {
+			// Sibela = $id_paket."-".$id_termin."-sibela-".$jenis
+			kdPermPencOld = id_paket + "-" + id_termin + "-sibela-" + jenis
+		}
+		// Dapatkan kode_permintaan_pencairan_old -- end
+
 		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
 			KodeTte: trxTte.KodeTte,
@@ -458,6 +474,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			NoSuratSptjb: pgtype.Text{Valid: true, String: "-"},		// Surat Pernyataan Tanggung Jawab Belanja
 			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
 			Ucr: refPermintaan.Ucr,
+			KodePermintaanPencairanOld: pgtype.Text{Valid: true, String: kdPermPencOld},
 		}
 		
 		trxpembayaranmodel.InsertNew(trxPembayaran)

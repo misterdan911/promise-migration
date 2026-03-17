@@ -25,6 +25,7 @@ type TrxPembayaran struct {
 	Udcr                         pgtype.Timestamp
 	Udch                         pgtype.Timestamp
 	KodePermintaanPencairan      pgtype.Int4
+	KodePermintaanPencairanOld      pgtype.Text
 	StatusPengusulan             pgtype.Text
 }
 
@@ -46,6 +47,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		udcr,
 		udch,
 		kode_permintaan_pencairan,
+		kode_permintaan_pencairan_old,
 		status_pengusulan
 	) VALUES (
 		@kode_trx_riwayat_pelaksanaan,
@@ -61,6 +63,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		@udcr,
 		@udch,
 		@kode_permintaan_pencairan,
+		@kode_permintaan_pencairan_old,
 		@status_pengusulan
 	) RETURNING *`
 
@@ -78,6 +81,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		"udcr":                         trxPembayaran.Udcr,
 		"udch":                         trxPembayaran.Udch,
 		"kode_permintaan_pencairan":    trxPembayaran.KodePermintaanPencairan,
+		"kode_permintaan_pencairan_old":    trxPembayaran.KodePermintaanPencairanOld,
 		"status_pengusulan":            trxPembayaran.StatusPengusulan,
 	}
 

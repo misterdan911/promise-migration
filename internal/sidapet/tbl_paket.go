@@ -136,7 +136,7 @@ func MigrateTblPaket() {
 			}
 
 			statusDpt := pgtype.Text{Valid:true, String: ""}
-			if tblVerif.Terpilih.Int32 == 1 {
+			if refVendor.IsTetap.Bool == true {
 				statusDpt.String = "terpilih"
 			} else {
 				statusDpt.String = "tidak_terpilih"

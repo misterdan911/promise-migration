@@ -161,6 +161,7 @@ func PopulateHelperUser() {
 		}
 
 		isTetap := pgtype.Bool{Valid: true}
+		/*
 		if penyedia.PenyediaTerpilih.Int32 == 99 {
 			isTetap.Bool = false
 		} else if !penyedia.PenyediaTerpilih.Valid {
@@ -168,7 +169,13 @@ func PopulateHelperUser() {
 		} else {
 			isTetap.Bool = true
 		}
+		*/
 
+		if penyedia.PenyediaTerpilih.Int32 == 1 {
+			isTetap.Bool = true
+		} else {
+			isTetap.Bool = false
+		}
 
 		helperUser := helperusermodel.HelperUser{
 			Id:                vmsUser.Id,

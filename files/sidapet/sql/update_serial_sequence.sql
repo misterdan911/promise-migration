@@ -44,8 +44,8 @@ SELECT setval('ref_history_pengalaman_bu_kode_pengalaman_bu_history_seq', (SELEC
 SELECT setval('ref_history_pengalaman_pero_kode_pengalaman_seq', (SELECT COALESCE(MAX(kode_pengalaman), 1) FROM ref_history_pengalaman_pero));
 SELECT setval('ref_history_pengalaman_ta_kode_pengalaman_ta_history_seq', (SELECT COALESCE(MAX(kode_pengalaman_ta_history), 1) FROM ref_history_pengalaman_ta));
 SELECT setval('ref_history_pengalaman_ta_kode_pengalaman_ta_seq', (SELECT COALESCE(MAX(kode_pengalaman_ta), 1) FROM ref_history_pengalaman_ta));
-SELECT setval('ref_history_pengalaman_tp_kode_pengalaman_tp_history_seq', (SELECT COALESCE(MAX(kode_pengalaman_tp_history), 1) FROM ref_history_pengalaman_tp));
-SELECT setval('ref_history_pengalaman_tp_kode_pengalaman_tp_seq', (SELECT COALESCE(MAX(kode_pengalaman_tp), 1) FROM ref_history_pengalaman_tp));
+SELECT setval('newtable_kode_pengalaman_tp_history_seq', (SELECT COALESCE(MAX(kode_pengalaman_tp_history), 1) FROM ref_history_pengalaman_tp));
+-- SELECT setval('ref_history_pengalaman_tp_kode_pengalaman_tp_seq', (SELECT COALESCE(MAX(kode_pengalaman_tp), 1) FROM ref_history_pengalaman_tp));
 SELECT setval('ref_history_pengurus_bu_kode_pengurus_bu_seq', (SELECT COALESCE(MAX(kode_pengurus_bu), 1) FROM ref_history_pengurus_bu));
 SELECT setval('ref_history_personalia_pero_kode_personalia_seq', (SELECT COALESCE(MAX(kode_personalia), 1) FROM ref_history_personalia_pero));
 SELECT setval('ref_history_saham_bu_kode_saham_history_seq', (SELECT COALESCE(MAX(kode_saham_history), 1) FROM ref_history_saham_bu));
@@ -58,7 +58,7 @@ SELECT setval('ref_history_sertif_tp_kode_sertif_tp_seq', (SELECT COALESCE(MAX(k
 SELECT setval('ref_history_sertifikat_usaha__kode_sertifikat_usaha_history_seq', (SELECT COALESCE(MAX(kode_sertifikat_usaha_history), 1) FROM ref_history_sertifikat_usaha_bu));
 SELECT setval('ref_history_tenaga_ahli_bu_kode_tenaga_ahli_history_seq', (SELECT COALESCE(MAX(kode_tenaga_ahli_history), 1) FROM ref_history_tenaga_ahli_bu));
 SELECT setval('ref_history_tenaga_ahli_bu_kode_tenaga_ahli_seq', (SELECT COALESCE(MAX(kode_tenaga_ahli), 1) FROM ref_history_tenaga_ahli_bu));
-SELECT setval('ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq', (SELECT COALESCE(MAX(kode_history_tenaga_pendukung), 1) FROM ref_history_tenaga_pendukung_bu));
+SELECT setval('ref_history_tenaga_pendukung__kode_history_tenaga_pendukung_seq', (SELECT COALESCE(MAX(kode_tenaga_pendukung_history), 1) FROM ref_history_tenaga_pendukung_bu));
 SELECT setval('ref_history_umum_kode_umum_history_seq', (SELECT COALESCE(MAX(kode_umum_history), 1) FROM ref_history_umum));
 SELECT setval('ref_history_vendor_kode_vendor_history_seq', (SELECT COALESCE(MAX(kode_vendor_history), 1) FROM ref_history_vendor));
 SELECT setval('ref_item_tanya_kode_item_seq', (SELECT COALESCE(MAX(kode_item), 1) FROM ref_item_tanya));

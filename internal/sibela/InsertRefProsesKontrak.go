@@ -45,7 +45,7 @@ func InsertRefProsesKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 	refProsesKontrak2 = refproseskontrakmodel.InsertNewData(refProsesKontrak2)
 	InsertTrxDokumenKontrak(refPermintaan, tblPaketPl, refProsesKontrak2)
 
-	// Riwayat Pelaksanaan
+	// Riwayat Pelaksanaan (Step Serah Terima)
 	statusPengisian := GetStatusPengisian(tblPaketPl)
 	refProsesKontrak3 := refproseskontrakmodel.RefProsesKontrak{
 		KodePermintaan:    refPermintaan.KodePermintaan,

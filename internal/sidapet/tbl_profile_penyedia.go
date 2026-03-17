@@ -81,6 +81,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	) RETURNING *`
 
 	isTetap := sql.NullBool{Valid: true}
+	/*
 	if profilePenyedia.PenyediaTerpilih.Int32 == 99 {
 		isTetap.Bool = false
 	} else if !profilePenyedia.PenyediaTerpilih.Valid {
@@ -88,6 +89,14 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	} else {
 		isTetap.Bool = true
 	}
+	*/
+
+	if profilePenyedia.PenyediaTerpilih.Int32 == 1 {
+		isTetap.Bool = true
+	} else {
+		isTetap.Bool = false
+	}
+
 
 	args := pgx.NamedArgs{
 		"kode_vendor":    profilePenyedia.IdUser,

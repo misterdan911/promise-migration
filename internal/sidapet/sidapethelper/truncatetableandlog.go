@@ -66,7 +66,7 @@ func TruncateTableAndLog2() {
 	qTruncate = "DELETE FROM trx_penjaringan"
 	_, err = db.DbSidapet.Exec(ctx, qTruncate)
 	if err != nil {
-		log.Fatal("Truncate trx_penjaringan Failed, " + err.Error())
+		log.Fatal("DELETE trx_penjaringan Failed, " + err.Error())
 	}
 
 	UpdatePkSequenceFromFile()
