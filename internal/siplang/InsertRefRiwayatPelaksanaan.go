@@ -3,6 +3,7 @@ package siplang
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"promise-migration/internal/model/dbesign/trxdetailpenandatanganmodel"
 	"promise-migration/internal/model/dbesign/trxpenandatanganmodel"
 	"promise-migration/internal/model/dbsiplang/refbapemeriksaanmodel"
@@ -448,6 +449,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		}
 		trxTte = trxttemodel.InsertNew(trxTte)
 
+		/*
 		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
 			KodeTte: trxTte.KodeTte,
@@ -457,6 +459,38 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
 			Ucr: refPermintaan.Ucr,
 		}
+		*/
+
+		// Dapatkan kode_permintaan_pencairan_old -- start
+		var kdPermPencOld string
+		id_paket := strconv.Itoa(int(tblPaketPl.IdPaket.Int32))
+		jenis := tblPaketPl.JenisPenyedia.String
+		id_termin := strconv.Itoa(int(tblTerminPl.IdTerminPl.Int32))
+
+		if refPermintaan.Udcr.Time.Year() < 2026 {
+			kdPermPencOld = id_paket + "-siplang-" + jenis
+		} else {
+			kdPermPencOld = id_paket + "-" + id_termin + "-siplang-" + jenis
+		}
+		// Dapatkan kode_permintaan_pencairan_old -- end
+
+
+		// Dapatkan kode_kontrak -- start
+		kdKontrak := id_termin + "-siplang-" + jenis
+
+
+		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
+			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
+			KodeTte: trxTte.KodeTte,
+			TglSuratSpp: tblTerminPl.TanggalSpp,
+			NoSuratSpp: tblTerminPl.NomorSpp,			// Surat Permintaan Pembayaran / Surat Pembayaran
+			NoSuratSptjb: pgtype.Text{Valid: true, String: "-"},		// Surat Pernyataan Tanggung Jawab Belanja
+			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
+			Ucr: refPermintaan.Ucr,
+			KodePermintaanPencairanOld: pgtype.Text{Valid: true, String: kdPermPencOld},
+			KodeKontrak: pgtype.Text{Valid: true, String: kdKontrak},
+		}
+
 		
 		trxpembayaranmodel.InsertNew(trxPembayaran)
 		// -------------------------------------------------------------------------

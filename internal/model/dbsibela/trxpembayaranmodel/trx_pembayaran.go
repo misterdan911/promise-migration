@@ -27,6 +27,7 @@ type TrxPembayaran struct {
 	KodePermintaanPencairan      pgtype.Int4
 	KodePermintaanPencairanOld      pgtype.Text
 	StatusPengusulan             pgtype.Text
+	KodeKontrak      pgtype.Text
 }
 
 func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
@@ -48,6 +49,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		udch,
 		kode_permintaan_pencairan,
 		kode_permintaan_pencairan_old,
+		kode_kontrak,
 		status_pengusulan
 	) VALUES (
 		@kode_trx_riwayat_pelaksanaan,
@@ -64,6 +66,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		@udch,
 		@kode_permintaan_pencairan,
 		@kode_permintaan_pencairan_old,
+		@kode_kontrak,
 		@status_pengusulan
 	) RETURNING *`
 
@@ -82,6 +85,7 @@ func InsertNew(trxPembayaran TrxPembayaran) TrxPembayaran {
 		"udch":                         trxPembayaran.Udch,
 		"kode_permintaan_pencairan":    trxPembayaran.KodePermintaanPencairan,
 		"kode_permintaan_pencairan_old":    trxPembayaran.KodePermintaanPencairanOld,
+		"kode_kontrak":    trxPembayaran.KodeKontrak,
 		"status_pengusulan":            trxPembayaran.StatusPengusulan,
 	}
 

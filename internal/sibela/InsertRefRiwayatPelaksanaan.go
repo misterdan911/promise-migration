@@ -458,13 +458,16 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 		id_termin := strconv.Itoa(int(tblTerminPl.IdTerminPl.Int32))
 
 		if refPermintaan.Udcr.Time.Year() < 2026 {
-			// Sibela = $id_paket."-sibela-".$jenis
 			kdPermPencOld = id_paket + "-sibela-" + jenis
 		} else {
-			// Sibela = $id_paket."-".$id_termin."-sibela-".$jenis
 			kdPermPencOld = id_paket + "-" + id_termin + "-sibela-" + jenis
 		}
 		// Dapatkan kode_permintaan_pencairan_old -- end
+
+
+		// Dapatkan kode_kontrak -- start
+		kdKontrak := id_termin + "-sibela-" + jenis
+
 
 		trxPembayaran := trxpembayaranmodel.TrxPembayaran{
 			KodeTrxRiwayatPelaksanaan: trxRiwayatPelaksanaan.KodeTrxRiwayatPelaksanaan,
@@ -475,6 +478,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			NoSuratSrk: pgtype.Text{Valid: true, String: "-"},
 			Ucr: refPermintaan.Ucr,
 			KodePermintaanPencairanOld: pgtype.Text{Valid: true, String: kdPermPencOld},
+			KodeKontrak: pgtype.Text{Valid: true, String: kdKontrak},
 		}
 		
 		trxpembayaranmodel.InsertNew(trxPembayaran)
