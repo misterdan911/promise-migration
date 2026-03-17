@@ -45,7 +45,7 @@ type JawabItem struct {
 	Isian    string
 }
 
-func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
+func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) error {
 
 	ctx := context.Background()
 
@@ -57,6 +57,13 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		profilePenyedia = promisesibelaprofile.GetPenyediaByUserId(helperUser.VmsUserId)
 	} else {
 		log.Fatal("Invalid DbPenyedia")
+	}
+
+	statusAktifVendor := pgtype.Text{Valid: true}
+	if profilePenyedia.PStatus.Int32 == 1 {
+		statusAktifVendor.String = "aktif"
+	} else {
+		statusAktifVendor.String = "non_aktif"
 	}
 
 	qInsRefVendor := `
@@ -104,7 +111,7 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 		"nama_perusahaan":      profilePenyedia.Nama,
 		"is_tetap":             isTetap,
 		"status_form_luar_dpt": pgtype.Text{Valid: true, String: "selesai"},
-		"status_aktif_vendor":  pgtype.Text{Valid: true, String: "aktif"},
+		"status_aktif_vendor":  statusAktifVendor,
 		"udcr":                 profilePenyedia.CreateTime,
 		"udch":                 profilePenyedia.UpdateTime,
 	}
@@ -202,4 +209,5 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) {
 	sidapethelper.UpdatePkSequence("ref_vendor_register", "kode_register")
 	sidapethelper.UpdatePkSequence("ref_vendor_reg_history", "kode_register")
 
+	return nil
 }

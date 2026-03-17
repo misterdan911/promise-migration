@@ -51,7 +51,8 @@ func GetPenyediaByUserId(userId pgtype.Int4) structs.TblProfilePenyedia {
       create_time,
     	NULL as update_time
     FROM tbl_profile_penyedia
-		WHERE id_user = $1
+		WHERE
+    id_user = $1
     ORDER BY id_profil_penyedia ASC`
 
 	rwPenyedia, err := db.PromiseSibela.Query(ctx, qTblProfilePenyedia, userId)
