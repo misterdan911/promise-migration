@@ -7,6 +7,7 @@ import (
 	"promise-migration/internal/model/myvmsdb/tbldireksiperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblfasilitasperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblijinusahaperusahaanmodel"
+    "promise-migration/internal/model/myvmsdb/tblinternasionallegaldocumentmodel"
 	"promise-migration/internal/model/myvmsdb/tblkomisarisperusahaanmodel"
 	"promise-migration/internal/model/myvmsdb/tblpaketmodel"
 	"promise-migration/internal/model/myvmsdb/tblpengalaman10model"
@@ -66,7 +67,7 @@ func MigrateFileFromVmsDbTblAktaPerusahaan() {
     // vms_db.tbl_akta_perusahaan.path_akta
     if tblAktaPerusahaan.PathAkta.String != "" {
       g.LogDoc.FieldName = "vms_db.tbl_akta_perusahaan.path_akta"
-      g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
+      g.LogDoc.PkId = tblAktaPerusahaan.IdAkta.Int32
 
       originalPath.String = tblAktaPerusahaan.PathAkta.String
       ProcessOriginalPath(originalPath)
@@ -74,7 +75,7 @@ func MigrateFileFromVmsDbTblAktaPerusahaan() {
 
     if tblAktaPerusahaan.PathAktaAkhir.String != "" {
       g.LogDoc.FieldName = "vms_db.tbl_akta_perusahaan.path_akta_akhir"
-      g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
+      g.LogDoc.PkId = tblAktaPerusahaan.IdAkta.Int32
 
       originalPath.String = tblAktaPerusahaan.PathAktaAkhir.String
       ProcessOriginalPath(originalPath)
@@ -93,7 +94,7 @@ func MigrateFileFromVmsDbTblDireksiPerusahaan() {
     // vms_db.tbl_direksi_perusahaan.path_ktp_direksi
     if tblDireksiPerusahaan.PathKtpDireksi.String != "" {
       g.LogDoc.FieldName = "vms_db.tbl_direksi_perusahaan.path_ktp_direksi"
-      g.LogDoc.PkId = tblDireksiPerusahaan.IdProfilPenyedia.Int32
+      g.LogDoc.PkId = tblDireksiPerusahaan.IdDireksiPerus.Int32
 
       originalPath.String = tblDireksiPerusahaan.PathKtpDireksi.String
       ProcessOriginalPath(originalPath)
@@ -134,6 +135,24 @@ func MigrateFileFromVmsDbTblIjinUsahaPerusahaan() {
             g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdIjinUsaha.Int32
 
             originalPath.String = tblIjinUsahaPerusahaan.PathIzin.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+// tbl_internasional_legal_document
+func MigrateFileFromVmsDbTblInternasionalLegalDocument() {
+    allTblInternasionalLegalDocument, _ := tblinternasionallegaldocumentmodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, tblInternasionalLegalDocument := range allTblInternasionalLegalDocument {
+        
+        // Process path_file_ijin_usaha field
+        if tblInternasionalLegalDocument.PathDokumen.String != "" {
+            g.LogDoc.FieldName = "vms_db.tbl_internasional_legal_document.path_dokumen"
+            g.LogDoc.PkId = tblInternasionalLegalDocument.IdLegalDocument.Int32
+
+            originalPath.String = tblInternasionalLegalDocument.PathDokumen.String
             ProcessOriginalPath(originalPath)
         }
     }

@@ -75,3 +75,20 @@ func InsertNew(user RefUserExternal) {
 		fmt.Println("unable to insert ref_user_external, " + errIns.Error())
 	}
 }
+
+func UpdateStatusPengguna(refUserExternal RefUserExternal) {
+	ctx := context.Background()
+
+	qUpdate := `UPDATE ref_user_external SET status_pengguna = @status_pengguna WHERE id_user = @id_user`
+
+	args := pgx.NamedArgs{
+		"status_pengguna": refUserExternal.StatusPengguna,
+		"id_user": refUserExternal.IdUser,
+	}
+
+	_, errIns := db.DbUsman.Exec(ctx, qUpdate, args)
+	if errIns != nil {
+		fmt.Println("unable to update status_pengguna ref_user_external, " + errIns.Error())
+	}
+
+}

@@ -30,7 +30,8 @@ var DokumenCmd = &cobra.Command{
 		ghelper.TruncateLog("dokumen.log")
 
 		// g.BasePath = "https://sidapet-promiseterbuka.ut.ac.id"
-		g.UrlBasePathExisting = "https://sidapet-promiseterbuka.ut.ac.id"
+		// g.UrlBasePathExisting = "https://sidapet-promiseterbuka.ut.ac.id"
+		g.UrlBasePathExisting = "https://prodev.ut.ac.id/sidapetuat"
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
@@ -46,12 +47,13 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
+		appdoc.MigrateFileFromVmsDbTblInternasionalLegalDocument() // jalanin 1 kali aja, data hampir gak pernah berubah
 
 		// tbl_komisaris_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
 
 		// // tbl_paket
-		appdoc.MigrateFileFromVmsDbTblPaket()
+		// appdoc.MigrateFileFromVmsDbTblPaket()
 
 		// tbl_pengalaman_perorangan
 		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
@@ -174,7 +176,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
 		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

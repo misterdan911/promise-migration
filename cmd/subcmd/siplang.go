@@ -58,6 +58,9 @@ var SiplangCmd = &cobra.Command{
 		fmt.Println("InsertRefPermintaan")
 		siplang.InsertRefPermintaan()
 
+		// Update beberapa permintaan yg seharusnya masih proses
+		siplang.UpdateKodePermintaanMultiYears()
+
 		// siplang.InsertPenandatanganToSidapetRefVendorPenandatangan()
 
 	},

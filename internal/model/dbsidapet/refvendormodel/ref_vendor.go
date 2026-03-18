@@ -70,3 +70,46 @@ func GetDataByKodeVendor(kodeVendor pgtype.Int4) RefVendor {
 
 	return vendor
 }
+
+func InsertNew(refVendor RefVendor) {
+
+  ctx := context.Background()
+
+  qInsert := `
+	INSERT INTO ref_vendor (
+		kode_vendor,
+		kode_jenis_vendor, 
+		nama_perusahaan,
+		is_tetap,
+		status_form_luar_dpt,
+		status_aktif_vendor,
+		udcr,
+		udch
+	) VALUES (
+		@kode_vendor,
+		@kode_jenis_vendor,
+		@nama_perusahaan,
+		@is_tetap,
+		@status_form_luar_dpt,
+		@status_aktif_vendor,
+		@udcr,
+		@udch
+	) RETURNING *`
+
+	args := pgx.NamedArgs{
+		"kode_vendor":    			refVendor.KodeVendor,
+		"kode_jenis_vendor":    refVendor.KodeJenisVendor,
+		"nama_perusahaan":      refVendor.NamaPerusahaan,
+		"is_tetap":             refVendor.IsTetap,
+		"status_form_luar_dpt": refVendor.StatusFormLuarDpt,
+		"status_aktif_vendor":  refVendor.StatusAktifVendor,
+		"udcr":                 refVendor.Udcr,
+		"udch":                 refVendor.Udch,
+	}
+
+  _, errIns := db.DbSidapet.Exec(ctx, qInsert, args)
+  if errIns != nil {
+    log.Fatal("unable to insert ref_vendor, " + errIns.Error())
+  }
+
+}

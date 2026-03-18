@@ -1,14 +1,15 @@
 - migrasi cut off
 - migrasi File
-- migrasi penyedia internasional (ke ref_vendor, ref_user_eksternal)
+- migrasi penyedia internasional (ke ref_vendor, ref_user_eksternal) [Done]
 - perbandingan jml migrasi
 - bridging kode_kontrak [done]
 
-- paket multi years (manual aja)
+- paket multi years (manual aja) [done]
 Multiyears 2025-2026
 1. Renovasi rangka atap dan dak beton UT Bengkulu
 2. Renovasi Plafond lantai dua UT Bengkulu
-3.     PEMASANGAN KISI-KISI TANGGA DAN FLOORDUCK UT SAMARINDA
+3. PEMASANGAN KISI-KISI TANGGA DAN FLOORDUCK UT SAMARINDA
 4. Pembuatan Pondasi Tangga dan Kanopi Entrance UT Surabaya
+
 
 - 
