@@ -44,7 +44,7 @@ func MigrateFileFromPromiseSibelaTblPengalamanPerorangan() {
 		// promise_sibela.tbl_pengalaman_perorangan.path_pnglmn
 		if tblPengalamanPerorangan.PathPnglmn.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_perorangan.path_pnglmn"
-			g.LogDoc.PkId = tblPengalamanPerorangan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblPengalamanPerorangan.IdPengalaman.Int32
 
 			originalPath.String = tblPengalamanPerorangan.PathPnglmn.String
 			ProcessOriginalPath(originalPath)
@@ -62,7 +62,7 @@ func MigrateFileFromPromiseSibelaTblSertifPerorangan() {
 		// promise_sibela.tbl_sertif_perorangan.path_sertif
 		if tblSertifPerorangan.PathSertif.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_sertif_perorangan.path_sertif"
-			g.LogDoc.PkId = tblSertifPerorangan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblSertifPerorangan.IdPengalaman.Int32
 
 			originalPath.String = tblSertifPerorangan.PathSertif.String
 			ProcessOriginalPath(originalPath)
@@ -80,7 +80,7 @@ func MigrateFileFromPromiseSibelaTblAktaPerusahaan() {
 		// promise_sibela.tbl_akta_perusahaan.path_akta
 		if tblAktaPerusahaan.PathAkta.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_akta_perusahaan.path_akta"
-			g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblAktaPerusahaan.IdAkta.Int32
 
 			originalPath.String = tblAktaPerusahaan.PathAkta.String
 			ProcessOriginalPath(originalPath)
@@ -88,7 +88,7 @@ func MigrateFileFromPromiseSibelaTblAktaPerusahaan() {
 
 		if tblAktaPerusahaan.PathAktaAkhir.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_akta_perusahaan.path_akta_akhir"
-			g.LogDoc.PkId = tblAktaPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblAktaPerusahaan.IdAkta.Int32
 
 			originalPath.String = tblAktaPerusahaan.PathAktaAkhir.String
 			ProcessOriginalPath(originalPath)
@@ -107,7 +107,7 @@ func MigrateFileFromPromiseSibelaTblDireksiPerusahaan() {
 		// promise_sibela.tbl_direksi_perusahaan.path_ktp_direksi
 		if tblDireksiPerusahaan.PathKtpDireksi.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_direksi_perusahaan.path_ktp_direksi"
-			g.LogDoc.PkId = tblDireksiPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblDireksiPerusahaan.IdDireksiPerus.Int32
 
 			originalPath.String = tblDireksiPerusahaan.PathKtpDireksi.String
 			ProcessOriginalPath(originalPath)
@@ -126,7 +126,7 @@ func MigrateFileFromPromiseSibelaTblFasilitasPerusahaan() {
 		// Process path_fasilitas field
 		if tblFasilitasPerusahaan.PathFasilitas.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_fasilitas_perusahaan.path_fasilitas"
-			g.LogDoc.PkId = tblFasilitasPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblFasilitasPerusahaan.IdPeralatan.Int32
 
 			originalPath.String = tblFasilitasPerusahaan.PathFasilitas.String
 			ProcessOriginalPath(originalPath)
@@ -144,7 +144,7 @@ func MigrateFileFromPromiseSibelaTblIjinUsahaPerusahaan() {
 		// Process path_file_ijin_usaha field
 		if tblIjinUsahaPerusahaan.PathIzin.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_ijin_usaha_perusahaan.path_izin"
-			g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblIjinUsahaPerusahaan.IdIjinUsaha.Int32
 
 			originalPath.String = tblIjinUsahaPerusahaan.PathIzin.String
 			ProcessOriginalPath(originalPath)
@@ -162,7 +162,7 @@ func MigrateFileFromPromiseSibelaTblKomisarisPerusahaan() {
 		// Process path_ktp_komisaris field
 		if tblKomisarisPerusahaan.PathKtpKomisaris.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_komisaris_perusahaan.path_ktp_komisaris"
-			g.LogDoc.PkId = tblKomisarisPerusahaan.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblKomisarisPerusahaan.IdKomisaris.Int32
 
 			originalPath.String = tblKomisarisPerusahaan.PathKtpKomisaris.String
 			ProcessOriginalPath(originalPath)
@@ -198,7 +198,7 @@ func MigrateFileFromPromiseSibelaTblPengalamanSekarang() {
 		// Process path_pnglmn_skrg field
 		if tblPengalamanSekarang.PathPnglmnSkrg.String != "" {
 			g.LogDoc.FieldName = "promise_sibela.tbl_pengalaman_sekarang.path_pnglmn_skrg"
-			g.LogDoc.PkId = tblPengalamanSekarang.IdProfilPenyedia.Int32
+			g.LogDoc.PkId = tblPengalamanSekarang.IdPengalamanSekarang.Int32
 
 			originalPath.String = tblPengalamanSekarang.PathPnglmnSkrg.String
 			ProcessOriginalPath(originalPath)

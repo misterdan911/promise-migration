@@ -7,7 +7,8 @@ import (
 )
 
 type TblPersonaliaPerusahaanDocument struct {
-	IdProfilPenyedia sql.NullInt32
+	IdPersonalia sql.NullInt32
+  IdProfilPenyedia sql.NullInt32
 	PathPersonal   sql.NullString
 }
 
@@ -15,7 +16,8 @@ func GetAllDocument() ([]TblPersonaliaPerusahaanDocument, error) {
 
   qData := `
   SELECT
-		id_profil_penyedia,
+		id_personalia,
+    id_profil_penyedia,
 		path_personal
   FROM tbl_personalia_perusahaan`
 
@@ -30,6 +32,7 @@ func GetAllDocument() ([]TblPersonaliaPerusahaanDocument, error) {
   for results.Next() {
       var doc TblPersonaliaPerusahaanDocument
       err := results.Scan(
+          &doc.IdPersonalia,
           &doc.IdProfilPenyedia,
           &doc.PathPersonal,
       )

@@ -6,6 +6,7 @@ import (
 )
 
 type TblSertifPeroranganDocument struct {
+    IdPengalaman   sql.NullInt32
     IdProfilPenyedia   sql.NullInt32
     PathSertif         sql.NullString
 }
@@ -13,7 +14,7 @@ type TblSertifPeroranganDocument struct {
 func GetAllDocument() ([]TblSertifPeroranganDocument, error) {
 
   qData := `
-  SELECT id_profil_penyedia, path_pnglmn
+  SELECT id_pengalaman, id_profil_penyedia, path_pnglmn
   FROM tbl_pengalaman_perorangan`
 
   results, err := db.MyVmsDb.Query(qData)
@@ -27,6 +28,7 @@ func GetAllDocument() ([]TblSertifPeroranganDocument, error) {
   for results.Next() {
       var doc TblSertifPeroranganDocument
       err := results.Scan(
+          &doc.IdPengalaman,
           &doc.IdProfilPenyedia,
           &doc.PathSertif,
       )

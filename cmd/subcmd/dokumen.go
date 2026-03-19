@@ -47,7 +47,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
 
 		// tbl_internasional_legal_document
-		appdoc.MigrateFileFromVmsDbTblInternasionalLegalDocument() // jalanin 1 kali aja, data hampir gak pernah berubah
+		// appdoc.MigrateFileFromVmsDbTblInternasionalLegalDocument() // jalanin 1 kali aja, data hampir gak pernah berubah
 
 		// tbl_komisaris_perusahaan
 		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
@@ -65,10 +65,10 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromVmsDbTblPengalaman3()
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromVmsDbTblPengalaman10()
+		// appdoc.MigrateFileFromVmsDbTblPengalaman10() //
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan() //
 
 		// tbl_profile_penyedia
 		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
@@ -82,13 +82,13 @@ var DokumenCmd = &cobra.Command{
 		// tbl_surat_keputusan
 
 		// g.BasePath = "https://sibela-promiseterbuka.ut.ac.id"
-		g.UrlBasePathExisting = "https://sibela-promiseterbuka.ut.ac.id"
+		g.UrlBasePathExisting = "https://prodev.ut.ac.id/sibelauat"
 
 		// tbl_akta_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()
 
 		// tbl_direksi_perusahaan
-		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
+		appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
 
 		// tbl_fasilitas_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan()
@@ -158,25 +158,26 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
 
 		g.AppName = "Si-PLang"
-		g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
+		// g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
+		g.UrlBasePathExisting = "https://prodev.ut.ac.id/siplanguat"
 
 		// tbl_paket_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
+		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
 		// tbl_signature
-		// appdoc.MigrateFileFromPromiseSiplangTblSignature()
+		appdoc.MigrateFileFromPromiseSiplangTblSignature()
 
 		// tbl_sptb_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
+		appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
 
-		// appdoc.MigrateFileFromPromiseSiplangTblSptjm()
-		// appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
+		appdoc.MigrateFileFromPromiseSiplangTblSptjm()
+		appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
 
 		// tbl_surat_pesanan_pl
-		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
+		appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
-		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
+		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }

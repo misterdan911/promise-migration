@@ -7,6 +7,7 @@ import (
 )
 
 type TblDireksiPerusahaanDocument struct {
+    IdDireksiPerus   sql.NullInt32
     IdProfilPenyedia   sql.NullInt32
     PathKtpDireksi         sql.NullString
 }
@@ -15,9 +16,13 @@ func GetAllDocument() ([]TblDireksiPerusahaanDocument, error) {
 
   qData := `
   SELECT
-		id_profil_penyedia,
-		path_ktp_direksi
-  FROM tbl_direksi_perusahaan`
+    id_direksi_perus,
+    id_profil_penyedia,
+    path_ktp_direksi
+  FROM tbl_direksi_perusahaan
+  WHERE
+  id_direksi_perus > 0
+  order by id_direksi_perus ASC`
 
   results, err := db.MyPromiseSibela.Query(qData)
   if err != nil {
@@ -30,6 +35,7 @@ func GetAllDocument() ([]TblDireksiPerusahaanDocument, error) {
   for results.Next() {
       var doc TblDireksiPerusahaanDocument
       err := results.Scan(
+          &doc.IdDireksiPerus,
           &doc.IdProfilPenyedia,
           &doc.PathKtpDireksi,
       )

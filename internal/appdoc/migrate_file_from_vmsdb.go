@@ -49,7 +49,7 @@ func MigrateFileFromVmsDbTblSertifPerorangan() {
     // vms_db.tbl_sertif_perorangan.path_sertif
     if tblSertifPerorangan.PathSertif.String != "" {
       g.LogDoc.FieldName = "vms_db.tbl_sertif_perorangan.path_sertif"
-      g.LogDoc.PkId = tblSertifPerorangan.IdProfilPenyedia.Int32
+      g.LogDoc.PkId = tblSertifPerorangan.IdPengalaman.Int32
 
       originalPath.String = tblSertifPerorangan.PathSertif.String
       ProcessOriginalPath(originalPath)
@@ -241,7 +241,7 @@ func MigrateFileFromVmsDbTblPengalaman10() {
         // Process path_pnglmn_10 field
         if tblPengalaman10.PathPnglmn10.String != "" {
             g.LogDoc.FieldName = "vms_db.tbl_pengalaman10.path_pnglmn_10"
-            g.LogDoc.PkId = tblPengalaman10.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPengalaman10.IdPengalaman10.Int32
 
             originalPath.String = tblPengalaman10.PathPnglmn10.String
             ProcessOriginalPath(originalPath)
@@ -259,7 +259,7 @@ func MigrateFileFromVmsDbTblPersonaliaPerusahaan() {
         // Process path_personal field
         if tblPersonaliaPerusahaan.PathPersonal.String != "" {
             g.LogDoc.FieldName = "vms_db.tbl_personalia_perusahaan.path_personal"
-            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdProfilPenyedia.Int32
+            g.LogDoc.PkId = tblPersonaliaPerusahaan.IdPersonalia.Int32
 
             originalPath.String = tblPersonaliaPerusahaan.PathPersonal.String
             ProcessOriginalPath(originalPath)
