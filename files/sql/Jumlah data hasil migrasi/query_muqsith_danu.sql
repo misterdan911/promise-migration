@@ -38,12 +38,12 @@ and kode_jenis_vendor = 2;
 
 -- Total Luar DPT Badan Usaha
 -- ---------------------------------------------------------------------------
--- Muqsith
+-- Muqsith (1784)
 SELECT COUNT(*) FROM promise_sibela.tbl_profile_penyedia AS a
 WHERE a.id_jenis_penyedia = 1 AND a.p_status = 1;
 
--- Danu
-select count(*) as total_luardpt_bu from ref_vendor
+-- Danu (1927)
+select count(*) from ref_vendor
 where
 is_tetap = false
 and kode_jenis_vendor = 1
@@ -53,10 +53,10 @@ and status_aktif_vendor = 'aktif';
 
 -- Total Luar DPT Perorangan
 -- ---------------------------------------------------------------------------
--- Muqsith
+-- Muqsith (251)
 SELECT COUNT(*) FROM promise_sibela.tbl_profile_penyedia AS a WHERE a.id_jenis_penyedia = 2 AND a.p_status = 1;
 
--- Danu
+-- Danu (246)
 select count(*) as total_luardpt_pero from ref_vendor
 where
 is_tetap = false
@@ -65,6 +65,12 @@ and status_aktif_vendor = 'aktif';
 -- ---------------------------------------------------------------------------
 
 
+-- Total Penandatangan Eksternal
+-- ---------------------------------------------------------------------------
+-- Muqsith (2204)
+SELECT * FROM promise_esign.penyedia;
+
+-- Danu
 
 
 
