@@ -1,3 +1,15 @@
+- sidapet trx_penjaringan
+	tgl_evaluasi_awal -> tgl_verifikasi_awal
+	tgl_evaluasi_akhir -> tgl_verifikasi_akhir
+
+- Data PK masih kurang
+
+
+
+
+
+-- -----------------------------------------------------------
+
 - migrasi cut off
 - migrasi File [Done]
 - migrasi penyedia internasional (ke ref_vendor, ref_user_eksternal) [Done]
@@ -16,6 +28,7 @@ Multiyears 2025-2026
 
 - migrasi File [Done]
 - bridging kode_kontrak [done]
+- migrasi penyedia internasional (ke ref_vendor, ref_user_eksternal) [Done]
 
 - paket multi years (manual aja) [done]
 Multiyears 2025-2026
@@ -23,3 +36,269 @@ Multiyears 2025-2026
 2. Renovasi Plafond lantai dua UT Bengkulu
 3. PEMASANGAN KISI-KISI TANGGA DAN FLOORDUCK UT SAMARINDA
 4. Pembuatan Pondasi Tangga dan Kanopi Entrance UT Surabaya
+
+
+
+
+-- PPK
+Direktur Manajemen Aset, Umum, dan Pengadaan Barang/Jasa
+Sekretaris Universitas
+Dekan Fakultas Ekonomi dan Bisnis
+Dekan Fakultas Hukum, Ilmu Sosial, dan Ilmu Politik
+Dekan Fakultas Sains dan Teknologi
+Dekan Fakultas Keguruan dan Ilmu Pendidikan
+Ketua Lembaga Penelitian dan Pengabdian kepada Masyarakat
+Direktur Direktorat Administrasi Akademik dan Kemahasiswaan
+Kepala Pusat Distribusi Bahan Ajar
+Kepala Pusat Pengelolaan Ujian
+Kepala Pusat Pengelolaan Pembelajaran
+Kepala Pusat Produksi Bahan Ajar Multimedia
+Kepala Kantor Penjaminan Mutu
+Kepala Pusat Perpustakaan dan Kearsipan
+Direktur Direktorat Sumber Daya Manusia
+Direktur Direktorat Teknologi Digital
+Kepala Pusat Komunikasi Publik dan Kerja Sama
+Kepala Pusat Bisnis dan Investasi
+Kepala Pusat Pengelolaan Keuangan
+Kepala Pusat Perencanaan dan Pelaporan
+Direktur Sekolah Pascasarjana
+Kepala Kantor Pengawas Internal
+Kepala Unit Pengembangan Pembelajaran Dalam Jaringan Indonesia
+Direktur Sekolah Vokasi
+Manajer pada Unit Laboratorium Terpadu Universitas
+Manajer pada Unit Pemberdayaan Alumni, Sentra Karier, dan Penempatan Kerja
+Direktur Universitas Terbuka Layanan Luar Negeri
+Direktur Universitas Terbuka Ambon
+Direktur Universitas Terbuka Banda Aceh
+Direktur Universitas Terbuka Bandar Lampung
+Direktur Universitas Terbuka Bandung
+Direktur Universitas Terbuka Banjarmasin
+Direktur Universitas Terbuka Batam
+Direktur Universitas Terbuka Bengkulu
+Direktur Universitas Terbuka Bogor
+Direktur Universitas Terbuka Denpasar
+Direktur Universitas Terbuka Gorontalo
+Direktur Universitas Terbuka Jakarta
+Direktur Universitas Terbuka Jambi
+Direktur Universitas Terbuka Jayapura
+Direktur Universitas Terbuka Jember
+Direktur Universitas Terbuka Kendari
+Direktur Universitas Terbuka Kupang
+Direktur Universitas Terbuka Majene
+Direktur Universitas Terbuka Makassar
+Direktur Universitas Terbuka Malang
+Direktur Universitas Terbuka Manado
+Direktur Universitas Terbuka Mataram
+Direktur Universitas Terbuka Medan
+Direktur Universitas Terbuka Padang
+Direktur Universitas Terbuka Palangkaraya
+Direktur Universitas Terbuka Palembang
+Direktur Universitas Terbuka Palu
+Direktur Universitas Terbuka Pangkalpinang
+Direktur Universitas Terbuka Pekanbaru
+Direktur Universitas Terbuka Pontianak
+Direktur Universitas Terbuka Purwokerto
+Direktur Universitas Terbuka Samarinda
+Direktur Universitas Terbuka Semarang
+Direktur Universitas Terbuka Serang
+Direktur Universitas Terbuka Sorong
+Direktur Universitas Terbuka Surabaya
+Direktur Universitas Terbuka Surakarta
+Direktur Universitas Terbuka Tarakan
+Direktur Universitas Terbuka Yogyakarta
+
+
+
+
+
+-- PP
+Manajer Keuangan, Sumber Daya, dan Umum pada Direktorat Manajemen Aset, Umum, dan Pengadaan Barang/Jasa	
+Manajer Keuangan, Sumber Daya, dan Umum pada Sekretariat Universitas	
+Wakil Dekan Bidang Keuangan, Sumber Daya, dan Umum pada Fakultas Ekonomi dan Bisnis	
+Wakil Dekan Bidang Keuangan, Sumber Daya, dan Umum pada Fakultas Hukum, Ilmu Sosial, dan Ilmu Politik	
+Wakil Dekan Bidang Keuangan, Sumber Daya, dan Umum pada Fakultas Sains dan Teknologi	
+Wakil Dekan Bidang Keuangan, Sumber Daya, dan Umum pada Fakultas Keguruan dan Ilmu Pendidikan	
+Manajer Sumber Daya, dan Umum pada Lembaga Penelitian dan Pengabdian kepada Masyarakat
+Manajer Keuangan, Sumber Daya, dan Umum pada Direktorat Administrasi Akademik dan Kemahasiswaan	
+Asisten Manajer Keuangan pada Pusat Distribusi Bahan Ajar
+Asisten Manajer Keuangan pada Pusat Pengelolaan Ujian
+Asisten Manajer Keuangan pada Pusat Pengelolaan Pembelajaran
+Asisten Manajer Keuangan pada Pusat Produksi Bahan Ajar Multimedia
+Manajer Keuangan, Sumber Daya, dan Umum pada Kantor Penjaminan Mutu
+Manajer Keuangan, Sumber Daya, dan Umum pada Pusat Perpustakaan dan Kearsipan
+Manajer Keuangan, Sumber Daya, dan Umum pada Direktorat Sumber Daya Manusia
+Manajer Keuangan, Sumber Daya, dan Umum pada Direktorat Teknologi Digital
+Manajer Keuangan, Sumber Daya, dan Umum pada Pusat Komunikasi Publik dan Kerja Sama
+Manajer Keuangan, Sumber Daya, dan Umum pada Pusat Bisnis dan Investasi
+Manajer Keuangan, Sumber Daya, dan Umum pada Pusat Pengelolaan Keuangan
+Manajer Keuangan, Sumber Daya, dan Umum pada Pusat Perencanaan dan Pelaporan
+Wakil Direktur II Bidang Nonakademik pada Sekolah Pascasarjana
+Manajer Keuangan, Sumber Daya, dan Umum pada Kantor Pengawas Internal
+Kepala Subbagian Tata Usaha pada UPPDJI
+Wakil Direktur II Bidang Nonakademik pada Sekolah Vokasi
+Asisten Manajer Keuangan, Sumber Daya, dan Umum pada Unit Laboratorium Terpadu Universitas
+Asisten Manajer Keuangan, Sumber Daya, dan pada Unit Pemberdayaan Alumni, Sentra Karier, dan Penempatan Kerja
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Layanan Luar Negeri
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Ambon
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Banda Aceh
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Bandar Lampung
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Bandung
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Banjarmasin
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Batam
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Bengkulu
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Bogor
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Denpasar
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Gorontalo
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Jakarta
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Jambi
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Jayapura
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Jember
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Kendari
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Kupang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Majene
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Makassar
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Malang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Manado
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Mataram
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Medan
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Padang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Palangkaraya
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Palembang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Palu
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Pangkalpinang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Pekanbaru
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Pontianak
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Purwokerto
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Samarinda
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Semarang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Serang
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Sorong
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Surabaya
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Surakarta
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Tarakan
+Manajer Keuangan, Sumber Daya, dan Umum pada Universitas Terbuka Yogyakarta
+
+
+-- PK
+Ihrom Lestari
+Diki Senjaya Rohmatullah
+Rinaldy Akbar Rifai
+Fantio Isdeo Margono
+Muhammad Muqsith Arsyad
+Sigit Purnomo
+Endi Rekarti
+Muhamad Farhan Wirakusuma
+Eka Wirajuang Daurrohmah
+Hasta Dwi Pradana
+Nindya Farah Dwi Puspitasari
+Yadi Apriyadi
+Erika Darmayanti
+Nining Setianingsih
+Isti Rokhiyah
+Leonard Raden Hutasoit
+Supriyatno
+Ariyanti Hartari
+Faujatul Hasanah
+Naufal Rifky Cahya
+Zulfa
+Arie Aryanto
+Dewi Suranti
+Julianto Mardimpu Pasaribu
+Suwardi
+Andi Harmoko Arifin
+Habiburrahman
+Nabila Meutia Pratiwi
+Mirza Permana
+Suhartono
+Tessa Melanie Wulandari
+Abdul Rohim
+Bondan Haryono
+Rizki Annisha
+Agung Wicaksono
+Deni Rudiana Aprizal
+
+
+
+
+
+
+3
+4
+11
+17
+18
+22
+24
+47
+48
+49
+52
+53
+58
+61
+68
+69
+70
+72
+75
+76
+77
+78
+79
+81
+114
+345
+10195
+11606
+12174
+12177
+12189
+12196
+12199
+12221
+12253
+12393
+12505
+12533
+12544
+12596
+12605
+12659
+12701
+12704
+12781
+12814
+12841
+12844
+12944
+13002
+13020
+13061
+13180
+13326
+13334
+13401
+13456
+13496
+14063
+17814
+18436
+19375
+31607
+32641
+32644
+
+
+INSERT INTO trx_group_user (kode_group, id_user, status) VALUES ('G01.2', 13, '1'), ('G03.2', 13, '1'), ('G04.4', 13, '1'), ('G05.4', 13, '1');
+
+
+
+
+-- trx_user_tampung
+	INSERT INTO trx_user_tampung (nama, email, nip, kode_unit_pbj, kode_jabatan, status_aktif, sk, encrypt_key, kode_unit, nama_unit) VALUES('Arief Rahman Susila, S.E., M.Si.', 'ariefrs@ecampus.ut.ac.id', '198202132005011002', 1, 8, false, NULL, NULL, 'UN31.DMAUPBJ', 'Direktorat Manajemen Aset dan Unit Pengadaan Barang dan Jasa');
+	INSERT INTO trx_user_tampung (nama, email, nip, kode_unit_pbj, kode_jabatan, status_aktif, sk, encrypt_key, kode_unit, nama_unit) VALUES('Ihrom Lestari, S.E', 'ihrom-lestari@ecampus.ut.ac.id', '119930606202403101', 1, 39, true, '', '', 'UN31.DMAUPBJ', 'Direktorat Manajemen Aset dan Unit Pengadaan Barang dan Jasa');
+	INSERT INTO trx_user_tampung (nama, email, nip, kode_unit_pbj, kode_jabatan, status_aktif, sk, encrypt_key, kode_unit, nama_unit) VALUES('Ihrom Lestari, S.E.', 'ihrom-lestari@ecampus.ut.ac.id', '119930606202403101', 1, 35, true, NULL, NULL, 'UN31.DMAUPBJ', 'Direktorat Manajemen Aset dan Unit Pengadaan Barang dan Jasa');
+	INSERT INTO trx_user_tampung (nama, email, nip, kode_unit_pbj, kode_jabatan, status_aktif, sk, encrypt_key, kode_unit, nama_unit) VALUES('Irgy Rafliyanda, S.Kom.', 'irgyr@ecampus.ut.ac.id', '12345654321', 1, 7, true, '', '', 'UN31.DMAUPBJ', 'Direktorat Manajemen Aset dan Unit Pengadaan Barang dan Jasa');
+	INSERT INTO trx_user_tampung (nama, email, nip, kode_unit_pbj, kode_jabatan, status_aktif, sk, encrypt_key, kode_unit, nama_unit) VALUES('Madkhan Anies, S.T.', 'madkhan@ecampus.ut.ac.id', '197604252010121002', 1, 8, false, NULL, NULL, 'UN31.DMAUPBJ', 'Direktorat Manajemen Aset dan Unit Pengadaan Barang dan Jasa');
+
+

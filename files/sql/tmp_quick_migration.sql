@@ -24,6 +24,7 @@ sudo -u postgres psql -d db_siplang -f db_siplang.sql
 
 
 -- ---------------
+sudo -u postgres psql
 drop database db_siplang with(force);
 create database db_siplang;
 
@@ -39,6 +40,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT INSERT, SELECT, UPDATE, DELETE O
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO pemuda_promise;
 -- ---------------
 
+sudo -u postgres psql
 drop database db_sibela with(force);
 create database db_sibela;
 sudo -u postgres psql -d db_sibela -f db_sibela.sql
@@ -90,6 +92,26 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO pemuda_pr
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO pemuda_promise;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO pemuda_promise;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO pemuda_promise;
+
+
+-- ---------------
+sudo -u postgres psql
+drop database db_usman with(force);
+create database db_usman;
+
+sudo -u postgres psql -d db_usman -f db_usman.sql
+sudo -u postgres psql
+
+\c db_usman
+
+-- GRANT necessary previleges
+GRANT CONNECT ON DATABASE db_usman TO pemuda_promise;
+GRANT USAGE ON SCHEMA public TO pemuda_promise;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO pemuda_promise;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO pemuda_promise;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT INSERT, SELECT, UPDATE, DELETE ON TABLES TO pemuda_promise;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO pemuda_promise;
+
 
 
 

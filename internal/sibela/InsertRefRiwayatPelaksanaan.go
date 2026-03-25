@@ -394,6 +394,11 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 
 		// Pencairan - Pembayaran - trx_pembayaran
 		// -------------------------------------------------------------------------
+		trxRiwayatPelaksanaan.KodeStepRiwayatPelaksanaan.Int32 = 6 // Pencairan
+		trxRiwayatPelaksanaan.Udcr = tblTerminPl.TanggalSpp
+		trxRiwayatPelaksanaan = trxriwayatpelaksanaanmodel.InsertNew(trxRiwayatPelaksanaan)
+
+
 		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblTerminPl.SppFile)
 		pathDokumen.Valid = true
 		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {

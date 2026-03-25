@@ -27,11 +27,13 @@ func MigrateUserInternal() {
 		var kodeUnitPbj pgtype.Int4 // untuk di trx_user_tampung
 		var nip pgtype.Text
 
+		// Apakah ini user PP
 		tblPpSub := tblpejabatpembeliansubmodel.GetPpByIdUser(internalUser.Id)
 		if (tblPpSub != tblpejabatpembeliansubmodel.TblPejabatPembelianSub{}) {
 			kodeUnit = tblPpSub.KodeUnit
 			nip = tblPpSub.Nip
 		} else {
+			// Apakah ini user PPK
 			tblPpkSub := tblppksubmodel.GetPpkSubByIdUser(internalUser.Id)
 			if (tblPpkSub != tblppksubmodel.TblPpkSub{}) {
 				kodeUnit = tblPpkSub.KodeUnit
