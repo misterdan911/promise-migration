@@ -1,10 +1,3 @@
-delete from trx_group_user where kode_group in (
-'G01.2',
-'G03.2',
-'G04.4',
-'G05.4'
-);
-
 
 
 id_user: 3

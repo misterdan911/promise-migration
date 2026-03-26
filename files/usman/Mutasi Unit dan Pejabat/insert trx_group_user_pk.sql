@@ -2,6 +2,13 @@ ALTER TABLE public.trx_group_user DROP CONSTRAINT unique_kode_group_id_user;
 ALTER TABLE public.trx_group_user ADD CONSTRAINT unique_kode_group_id_user UNIQUE (kode_group, id_user);
 
 
+select setval('ref_user_id_seq', (select max(id) from ref_user));
+select setval('ref_user_internal_id_seq', (select max(id) from ref_user_internal));
+select setval('trx_group_user_id_seq', (select max(id_group_user) from trx_group_user));
+select setval('trx_user_tampung_kode_user_tampung_seq', (select max(kode_user_tampung) from trx_user_tampung));
+
+
+
 
 
 isdeo@ecampus.ut.ac.id::Fantio Isdeo Margono::119970603202403101
@@ -97,9 +104,10 @@ rahmanhasim@ecampus.ut.ac.id::Rahman Hasim::198908102019031004
 abraham@ecampus.ut.ac.id::Abraham Sarapil::119870825202307101
 edy-fitriawan@ecampus.ut.ac.id::Edy Fitriawan Syahadat::198805172020121006
 nur@ecampus.ut.ac.id::Nur Asiah::197808142002122002
+hart@ecampus.ut.ac.id::Suhartono::197007142002121001
 
 
-
+delete from ref_user where id >= 33000;
 
 INSERT INTO "public"."ref_user" ("id", "email", "password", "status_user") VALUES
 (33000, 'isdeo@ecampus.ut.ac.id', '$2b$12$K4DoerR.bOMqWyPPAhUGo.JQvzb1jz4L28HgY7.RUxt8EcOlo5E8i', 'internal');
@@ -566,7 +574,10 @@ INSERT INTO "public"."ref_user" ("id", "email", "password", "status_user") VALUE
 INSERT INTO "public"."ref_user_internal" ("id_user", "nip", "username", "udcr", "udch", "id") VALUES
 (33092, '197808142002122002', 'Nur Asiah', NULL, NULL, 33092);
 
-
+INSERT INTO "public"."ref_user" ("id", "email", "password", "status_user") VALUES
+(33093, 'hart@ecampus.ut.ac.id', '$2b$12$K4DoerR.bOMqWyPPAhUGo.JQvzb1jz4L28HgY7.RUxt8EcOlo5E8i', 'internal');
+INSERT INTO "public"."ref_user_internal" ("id_user", "nip", "username", "udcr", "udch", "id") VALUES
+(33093, '197007142002121001', 'Suhartono', NULL, NULL, 33093);
 
 
 
@@ -1518,5 +1529,8 @@ INSERT INTO trx_group_user (kode_group, id_user, status) VALUES
 ('G05.5', 14064, '1'),
 ('G02.4', 14072, '1'),
 ('G04.5', 14072, '1'),
-('G05.5', 14072, '1');
+('G05.5', 14072, '1'),
+('G02.4', 33093, '1'),
+('G04.5', 33093, '1'),
+('G05.5', 33093, '1');
 
