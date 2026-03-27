@@ -113,8 +113,8 @@ Count data :
 - SIPLANG: Jumlah Kontrak / Paket; (1359)
 
 - USMAN :
-  Jumlah PPK sesuai SK tahun 2026,
-  Jumlah PK sesuai SK tahun 2026,
-  Jumlah verifikator sesuai SK tahun 2026,
-  jumlah PP sesuai SK tahun 2026
+  Jumlah PPK sesuai SK tahun 2026, (68)
+  Jumlah PK sesuai SK tahun 2026, (233)
+  Jumlah verifikator sesuai SK tahun 2026, (5)
+  jumlah PP sesuai SK tahun 2026 (68)
 
