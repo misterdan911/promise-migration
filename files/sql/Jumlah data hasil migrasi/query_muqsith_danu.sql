@@ -78,6 +78,22 @@ SELECT * FROM promise_esign.penyedia;
 
 
 
+- SIBELA: Jumlah Kontrak / Paket;
+select count(*) from ref_permintaan;
+
+- SIPLANG: Jumlah Kontrak / Paket; (1359)
+select count(*) from ref_permintaan;
+
+
+
+
+
+select count(*) from (
+	select distinct on (email) * from trx_user_tampung where kode_jabatan = 7
+);
+
+
+select * from trx_user_tampung where kode_jabatan = 7;
 
 
 
@@ -85,8 +101,20 @@ SELECT * FROM promise_esign.penyedia;
 
 
 
+Count data :
+- SIPPAN : Jumlah data RUP; (9393)
 
+- SIDAPET:
+  Jumlah data Penyedia luar DPT; (2226)
+  jumlah data Penyedia DPT; (695)
+  Jumlah Kategori; (80)
 
+- SIBELA: Jumlah Kontrak / Paket; (8132)
+- SIPLANG: Jumlah Kontrak / Paket; (1359)
 
-
+- USMAN :
+  Jumlah PPK sesuai SK tahun 2026,
+  Jumlah PK sesuai SK tahun 2026,
+  Jumlah verifikator sesuai SK tahun 2026,
+  jumlah PP sesuai SK tahun 2026
 
