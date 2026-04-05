@@ -1,0 +1,43 @@
+kode_permintaan: 1221
+UN31.PPKU
+Audit  atas Laporan Keuangan UTPTNBH Tahun Anggaran 2025
+kode_rup: 7468
+
+Error: Tahun DRAUK Tidak Sesuai Dengan Tahun Eksisting!!
+
+Kode DRAUK yg baru: 128191
+
+-- -------------------------------------------------------------
+
+kode_permintaan:
+1212
+
+PBJ13
+Pembuatan Pondasi Tangga dan Kanopi Entrance UT Surabaya
+kode_rup: 9009
+
+
+-- -----
+
+
+kode_permintaan: 1204
+PBJ13
+PEMASANGAN KISI-KISI TANGGA DAN FLOORDUCK UT SAMARINDA
+kode_rup: 8872
+
+
+-- -----
+
+
+kode_permintaan: 1209
+PBJ13
+Renovasi rangka atap dan dak beton UT Bengkulu
+kode_rup: 8969
+
+
+
+
+
+Pembuatan Pondasi Tangga dan Kanopi Entrance UT Surabaya
+PEMASANGAN KISI-KISI TANGGA DAN FLOORDUCK UT SAMARINDA
+Renovasi rangka atap dan dak beton UT Bengkulu

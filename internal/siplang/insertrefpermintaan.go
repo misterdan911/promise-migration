@@ -97,8 +97,8 @@ func InsertRefPermintaan() {
 		kodeUnit = unitPpk.KodeUnit
 		namaUnit = unitPpk.NamaUnit
 
-		allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
-		
+		// allLogPaket := logpaketmodel.GetByIdPaket(tblPaketPl.IdPaket)
+		allLogPaket := logpaketmodel.GetPP(tblPaketPl.IdPpk, tblPaketPl.IdPaket)
 
 		// dapatkan kodeVendor
 		var profilePenyedia structs.TblProfilePenyedia
@@ -176,12 +176,11 @@ func InsertRefPermintaan() {
 		ucr.Valid = true
 
 		if len(allLogPaket) > 0 {
-
-			if allLogPaket[0].IdUser.Valid {
-				userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
-				ucr.String = userPp.VmsUserEmailReal.String + "|" + userPp.VmsUserName.String
-			} else {
-				ucr.String = userPPK.VmsUserEmailReal.String + "|" + userPPK.VmsUserName.String
+		
+			userPp := helperusermodel.GetByVmsUserId(allLogPaket[0].IdUser)
+			ucr.String = userPp.VmsUserEmailReal.String + "|" + userPp.VmsUserName.String
+			if ucr.String == "|" {
+				ucr.String = "-"
 			}
 
 		} else {

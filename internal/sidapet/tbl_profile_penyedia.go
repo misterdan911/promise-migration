@@ -189,7 +189,8 @@ func MigrateTblProfilePenyedia(helperUser helperusermodel.HelperUser) error {
 	rlanhukumbumodel.InsertRefLanHukumBu(profilePenyedia, helperUser)
 	rpengurusbumodel.InsertRefPengurusBu(profilePenyedia, helperUser)
 	rkomisarisbumodel.InsertRefKomisarisBu(profilePenyedia, helperUser)
-	rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
+	// rdireksibumodel.InsertRefDireksiBu(profilePenyedia, helperUser)
+	rdireksibumodel.InsertRefDireksiBuTemp(profilePenyedia, helperUser)
 	rizinusahabumodel.InsertRefIzinUsahaBu(profilePenyedia, helperUser)
 	//rsertifikatusahabumodel.InsertrefSertifikatUsahaBu(profilePenyedia, helperUser) // gak ada sertifikat di db lama
 	rsahambumodel.InsertrefSahamBu(profilePenyedia, helperUser)

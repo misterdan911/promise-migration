@@ -377,10 +377,6 @@ INSERT INTO trx_pembayaran (kode_trx_pencarian, kode_trx_riwayat_pelaksanaan, ko
 
 
 
-
-
-
-
 -- UN31.DTD	dpt	10417	Koneksi Jaringan VPN-IP Koneksi UT Daerah Wilayah Sumatera ke UT-Pusat Di Lingkungan Universitas Terbuka Tahun 2026 (Januari)
 -- fixing
 DELETE FROM trx_pembayaran WHERE kode_trx_pencarian=3307;
@@ -474,3 +470,72 @@ INSERT INTO trx_pembayaran (kode_trx_pencarian, kode_trx_riwayat_pelaksanaan, ko
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DELETE FROM trx_tte WHERE kode_tte=7370;
+DELETE FROM trx_pembayaran WHERE kode_trx_pencarian=1548;
+DELETE FROM trx_riwayat_pelaksanaan WHERE kode_trx_riwayat_pelaksanaan=7811;
+
+DELETE FROM trx_hasil_pajak WHERE id_hasil_pajak=6616;
+DELETE FROM trx_hasil_pajak WHERE id_hasil_pajak=6617;
+DELETE FROM trx_hasil_pajak WHERE id_hasil_pajak=6618;
+DELETE FROM trx_hasil_pajak WHERE id_hasil_pajak=6619;
+DELETE FROM trx_hasil_pajak WHERE id_hasil_pajak=6620;
+DELETE FROM trx_pajak WHERE kode_pajak=1548;
+DELETE FROM trx_riwayat_pelaksanaan WHERE kode_trx_riwayat_pelaksanaan=7810;
+
+DELETE FROM trx_kwitansi WHERE kode_kwitansi=3095;
+DELETE FROM trx_kwitansi WHERE kode_kwitansi=3096;
+DELETE FROM trx_riwayat_pelaksanaan WHERE kode_trx_riwayat_pelaksanaan=7809;	
+
+DELETE FROM trx_bast WHERE kode_bast=1548;
+DELETE FROM trx_tte WHERE kode_tte=7369;
+DELETE FROM trx_riwayat_pelaksanaan WHERE kode_trx_riwayat_pelaksanaan=7808;
+
+DELETE FROM ref_ba_pemeriksaan WHERE kode_ba_pemerikasaan=1548;
+DELETE FROM trx_tte WHERE kode_tte=7368;
+UPDATE trx_riwayat_pelaksanaan SET kode_riwayat_pelaksanaan=1548, kode_step_riwayat_pelaksanaan=1, status_step='proses pk', ucr='adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', uch=NULL, udcr=NULL, udch=NULL WHERE kode_trx_riwayat_pelaksanaan=7807;
+
+
+
+
+
+UPDATE trx_riwayat_pelaksanaan SET kode_riwayat_pelaksanaan=1548, kode_step_riwayat_pelaksanaan=1, status_step='selesai', ucr='adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', uch=NULL, udcr=NULL, udch=NULL WHERE kode_trx_riwayat_pelaksanaan=7807;
+INSERT INTO trx_tte (kode_tte, kode_trx_penandatangan, kode_permintaan, kategori_tte, path_dokumen, path_dokumen_selesai, tgl_selesai, nomor_surat) VALUES(7368, 52346, 1221, 'ba_pemeriksaan'::public.kategori_tte, '', NULL, NULL, NULL);
+INSERT INTO ref_ba_pemeriksaan (kode_ba_pemerikasaan, kode_trx_riwayat_pelaksanaan, kode_tte, tanggal_bap, denda, dok_hasil_pekerjaan, catatan, nama_pemeriksa, ucr, uch, udcr, udch) VALUES(1548, 7807, 7368, NULL, NULL, '', NULL, NULL, 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, NULL, NULL);
+
+INSERT INTO trx_riwayat_pelaksanaan (kode_trx_riwayat_pelaksanaan, kode_riwayat_pelaksanaan, kode_step_riwayat_pelaksanaan, status_step, ucr, uch, udcr, udch) VALUES(7808, 1548, 2, 'selesai', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, NULL, NULL);
+INSERT INTO trx_bast (kode_bast, kode_trx_riwayat_pelaksanaan, kode_tte, ucr, uch, udcr, udch, tgl_surat) VALUES(1548, 7808, 7369, '-', NULL, NULL, NULL, NULL);
+INSERT INTO trx_tte (kode_tte, kode_trx_penandatangan, kode_permintaan, kategori_tte, path_dokumen, path_dokumen_selesai, tgl_selesai, nomor_surat) VALUES(7369, 52347, 1221, 'ba_serah_terima'::public.kategori_tte, '', NULL, '2026-03-31 00:00:00.000', NULL);
+
+INSERT INTO trx_riwayat_pelaksanaan (kode_trx_riwayat_pelaksanaan, kode_riwayat_pelaksanaan, kode_step_riwayat_pelaksanaan, status_step, ucr, uch, udcr, udch) VALUES(7809, 1548, 3, 'selesai', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, NULL, NULL);
+INSERT INTO trx_kwitansi (kode_kwitansi, kode_trx_riwayat_pelaksanaan, nomor_kwitansi, nama_dok_kwitansi, nama_dok_kwitansi_selesai, kategori_input, ucr, uch, udcr, udch, nama_uploader, tanggal_kwitansi) VALUES(3095, 7809, NULL, '', '', 'ppk', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, '2026-03-24 01:35:10.497', '2026-03-24 01:35:10.497', NULL, '2026-03-31 00:00:00.000');
+INSERT INTO trx_kwitansi (kode_kwitansi, kode_trx_riwayat_pelaksanaan, nomor_kwitansi, nama_dok_kwitansi, nama_dok_kwitansi_selesai, kategori_input, ucr, uch, udcr, udch, nama_uploader, tanggal_kwitansi) VALUES(3096, 7809, NULL, '', '', 'penyedia', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, '2026-03-24 01:35:10.498', '2026-03-24 01:35:10.498', 'KAP Tanubrata Sutanto Fahmi Bambang dan Rekan', NULL);
+
+INSERT INTO trx_riwayat_pelaksanaan (kode_trx_riwayat_pelaksanaan, kode_riwayat_pelaksanaan, kode_step_riwayat_pelaksanaan, status_step, ucr, uch, udcr, udch) VALUES(7810, 1548, 4, 'selesai', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, '2025-11-10 10:02:02.000', NULL);
+INSERT INTO trx_pajak (kode_pajak, kode_trx_riwayat_pelaksanaan, kategori_nilai_transaksi, manajemen_fee, nilai_transaksi, jenis_mata_uang, kurs_asing, kurs_bank, kurs_kmk, tax_treaty, kode_jenis_transaksi, jenis_transaksi, kode_objek_pajak, objek_pajak, kode_detail_transaksi, detail_transaksi, ucr, uch, udcr, udch, nama_dok_efaktur, nomor_efaktur, tanggal_efaktur, nama_tabel_lama, id_sptb, biaya_tak_kena_pajak, kode_jenis_layanan) VALUES(1548, 7810, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, '2024-01-15 14:30:00.000', 'tbl_sptb_pl', 1517, NULL, NULL);
+INSERT INTO trx_hasil_pajak (id_hasil_pajak, kode_pajak, kategori_pajak, nama_formula, formula, nilai_persentase_formula, perhitungan_formula, hasil, id_sptb_pl, kategori, nilai) VALUES(6616, 1548, 'nilai_perhitungan', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO trx_hasil_pajak (id_hasil_pajak, kode_pajak, kategori_pajak, nama_formula, formula, nilai_persentase_formula, perhitungan_formula, hasil, id_sptb_pl, kategori, nilai) VALUES(6617, 1548, 'dpp_ppn', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO trx_hasil_pajak (id_hasil_pajak, kode_pajak, kategori_pajak, nama_formula, formula, nilai_persentase_formula, perhitungan_formula, hasil, id_sptb_pl, kategori, nilai) VALUES(6618, 1548, 'dpp_pph', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO trx_hasil_pajak (id_hasil_pajak, kode_pajak, kategori_pajak, nama_formula, formula, nilai_persentase_formula, perhitungan_formula, hasil, id_sptb_pl, kategori, nilai) VALUES(6619, 1548, 'ppn', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO trx_hasil_pajak (id_hasil_pajak, kode_pajak, kategori_pajak, nama_formula, formula, nilai_persentase_formula, perhitungan_formula, hasil, id_sptb_pl, kategori, nilai) VALUES(6620, 1548, 'pph', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+
+INSERT INTO trx_riwayat_pelaksanaan (kode_trx_riwayat_pelaksanaan, kode_riwayat_pelaksanaan, kode_step_riwayat_pelaksanaan, status_step, ucr, uch, udcr, udch) VALUES(7811, 1548, 6, 'selesai', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, NULL, NULL);
+INSERT INTO trx_pembayaran (kode_trx_pencarian, kode_trx_riwayat_pelaksanaan, kode_tte, tgl_surat_spp, tgl_surat_sptjb, tgl_surat_srk, no_surat_spp, no_surat_sptjb, no_surat_srk, ucr, uch, udcr, udch, kode_permintaan_pencairan, status_pengusulan, kode_permintaan_pencairan_old, kode_kontrak) VALUES(1548, 7811, 7370, NULL, NULL, NULL, '-', '-', '-', 'adpalupi@ecampus.ut.ac.id|Aulia Dian Palupi', NULL, NULL, NULL, 19734, NULL, '2664-siplang-luardpt', '1676-siplang-luardpt');
+INSERT INTO trx_tte (kode_tte, kode_trx_penandatangan, kode_permintaan, kategori_tte, path_dokumen, path_dokumen_selesai, tgl_selesai, nomor_surat) VALUES(7370, 52348, 1221, 's_pembayaran'::public.kategori_tte, '', NULL, NULL, '-');

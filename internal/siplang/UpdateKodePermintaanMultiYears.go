@@ -14,7 +14,7 @@ func UpdateKodePermintaanMultiYears() {
 
 	qUpdate := `
     UPDATE ref_permintaan SET kode_status_permintaan = 9
-    WHERE kode_permintaan IN (1209, 1214, 1204, 1212)`
+    WHERE kode_permintaan IN (1209, 1204, 1212, 1221)`
 
 	_, err := db.DbSiplang.Exec(ctx, qUpdate)
 	if err != nil {
