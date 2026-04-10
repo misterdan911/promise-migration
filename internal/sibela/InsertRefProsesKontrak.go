@@ -15,6 +15,8 @@ import (
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/promise_sibela/tbltermindptplmodel"
 	"promise-migration/internal/model/promise_sibela/tblterminplmodel"
+	"promise-migration/internal/model/promise_sibela/tblsuratpesanandptplmodel"
+	"promise-migration/internal/model/promise_sibela/tblsuratpesananplmodel"
 	"promise-migration/internal/sibela/structs"
 	"strconv"
 
@@ -92,6 +94,16 @@ func GetStatusPengisian(tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) pgtype.
 }
 
 func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblPaketPl tblpaketplonionmodel.TblPaketPlOnion) error {
+
+	var tblSuratPesanan structs.TblSuratpesananPl
+	switch tblPaketPl.JenisPenyedia.String {
+	case "luardpt":
+		tblSuratPesanan = tblsuratpesananplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
+	case "dpt":
+		tblSuratPesanan = tblsuratpesanandptplmodel.GetDataByIdPaket(tblPaketPl.IdPaket)
+	default:
+		return nil
+	}
 
 	// Persiapan Kontrak
 	refProsesKontrak := refproseskontrakmodel.RefProsesKontrak{
@@ -249,10 +261,21 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Scan("1970-01-01 08:00:00")
 		}
 
+
+		// beginDate := pgtype.Timestamp(tblSuratPesanan.TanggalSp)
+
+		// log.Printf("JenisPenyedia: %v\n", tblPaketPl.JenisPenyedia.String)
+		// log.Printf("ID PAket: %v\n", tblPaketPl.IdPaket)
+		// log.Printf("IDSuratpesananPl: %v\n", tblSuratPesanan.IDSuratpesananPl.Int32)
+		// log.Printf("Tanggal SP: %v\n", tblSuratPesanan.TanggalSp.Time)
+		// log.Printf("Tanggal SP: %v\n", pgtype.Timestamp(tblSuratPesanan.TanggalSp))
+
 		trxJangkaWaktu := trxjangkawaktumodel.TrxJangkaWaktu{
 			KodeProsesKontrak: refProsesKontrak.KodeProsesKontrak,
 			JangkaWaktu:       jangkaWaktu,
-			Dari:              allTblTermin[0].TanggalBastTerealisasi,
+			// Dari:              allTblTermin[0].TanggalBastTerealisasi,
+			// Dari:              pgtype.Timestamp(tblSuratPesanan.TanggalSp),
+			Dari:              tblSuratPesanan.TanggalSp,
 			SampaiDengan:      allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi,
 			SatuanJangkaWaktu: satuanJangkaWaktu,
 			Ucr:               refPermintaan.Ucr,

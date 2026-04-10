@@ -1,3 +1,37 @@
+
+
+- File2 masih banyak yg belum dimigrasi
+	SI-DaPeT
+   - tbl_fasilitas_perusahaan [Done]
+   - tbl_ijin_usaha_perusahaan [Done]
+   - tbl_komisaris_perusahaan [Done]
+   - tbl_pengalaman_perorangan [Done]
+   - tbl_pengalaman_sekarang [Done]
+   - tbl_pengalaman3 [Done]
+   - tbl_pengalaman10 [Done]
+   - tbl_profile_penyedia
+   - tbl_personalia_perusahaan [Done]
+   - tbl_saham_perusahaan [Done]
+
+   Si-BeLa (tidak ada)
+
+- Migrasi KAK dan dokumen pendukung SiBela SiPlang
+
+- Penandatangan aktif yang lebih dari 1 dinonaktifkan semua
+
+- Migrasi Sibela /Siplang Uang Persediaan
+
+- isi kode_kab_kota domisili di ref_datadiri [Done]
+- tanggal awal pekerjaan ambil dari tanggal SP [Done]
+
+- untuk perorangan: [Done]
+	- nama_perusahaan = nama_narahubung
+	- no_telp = no_wa_narahubung
+
+
+
+-- -------------------------------------------------------------
+
 - sidapet trx_penjaringan
 	tgl_evaluasi_awal -> tgl_verifikasi_awal
 	tgl_evaluasi_akhir -> tgl_verifikasi_akhir

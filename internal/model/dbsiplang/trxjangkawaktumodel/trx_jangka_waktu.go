@@ -14,7 +14,7 @@ type TrxJangkaWaktu struct {
 	KodeJangkaWaktu    pgtype.Int4
 	KodeProsesKontrak  pgtype.Int4
 	JangkaWaktu        pgtype.Int4
-	Dari               pgtype.Timestamp
+	Dari               pgtype.Timestamptz
 	SampaiDengan       pgtype.Timestamp
 	Ucr                pgtype.Text
 	Uch                pgtype.Text

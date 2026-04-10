@@ -16,7 +16,6 @@ func GetAllDocument() ([]TblFasilitasPerusahaanDocument, error) {
 
   qData := `
   SELECT
-  SELECT
     id_peralatan,
     id_profil_penyedia,
     path_fasilitas

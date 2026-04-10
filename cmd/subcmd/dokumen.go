@@ -35,49 +35,49 @@ var DokumenCmd = &cobra.Command{
 		g.AppName = "SI-DaPeT"
 
 		// tbl_akta_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblAktaPerusahaan()	// nothing new
 
 		// tbl_direksi_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblDireksiPerusahaan()	// nothing new
 
 		// tbl_fasilitas_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan()	// banyak yang 404
+		// appdoc.MigrateFileFromVmsDbTblFasilitasPerusahaan()	// banyak yang 404	// nothing new
 
 		// tbl_ijin_usaha_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblIjinUsahaPerusahaan()	nothing new
 
 		// tbl_internasional_legal_document
 		// appdoc.MigrateFileFromVmsDbTblInternasionalLegalDocument() // jalanin 1 kali aja, data hampir gak pernah berubah
 
 		// tbl_komisaris_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblKomisarisPerusahaan()	nothing new
 
 		// // tbl_paket
-		// appdoc.MigrateFileFromVmsDbTblPaket()
+		// appdoc.MigrateFileFromVmsDbTblPaket()	nothing new
 
 		// tbl_pengalaman_perorangan
-		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()
+		// appdoc.MigrateFileFromVmsDbTblPengalamanPerorangan()	nothing new
 
 		// tbl_pengalaman_sekarang
-		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()
+		// appdoc.MigrateFileFromVmsDbTblPengalamanSekarang()	nothing new
 
 		// tbl_pengalaman3
-		// appdoc.MigrateFileFromVmsDbTblPengalaman3()
+		// appdoc.MigrateFileFromVmsDbTblPengalaman3()	nothing new
 
 		// tbl_pengalaman10
-		// appdoc.MigrateFileFromVmsDbTblPengalaman10() //
+		// appdoc.MigrateFileFromVmsDbTblPengalaman10()	nothing new
 
 		// tbl_personalia_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan() //
+		// appdoc.MigrateFileFromVmsDbTblPersonaliaPerusahaan()	nothing new
 
 		// tbl_profile_penyedia
-		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()
+		// appdoc.MigrateFileFromVmsDbTblProfilePenyedia()	nothing new
 
 		// tbl_saham_perusahaan
-		// appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()
+		// appdoc.MigrateFileFromVmsDbTblSahamPerusahaan()	nothing new
 
 		// tbl_sertif_perorangan
-		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan()
+		// appdoc.MigrateFileFromVmsDbTblSertifPerorangan()	nothing new
 
 		// tbl_surat_keputusan
 
@@ -88,7 +88,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblAktaPerusahaan()
 
 		// tbl_direksi_perusahaan
-		appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
+		// appdoc.MigrateFileFromPromiseSibelaTblDireksiPerusahaan()
 
 		// tbl_fasilitas_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblFasilitasPerusahaan()
@@ -117,7 +117,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblPersonaliaPerusahaan()
 
 		// tbl_profile_penyedia
-		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia()
+		// appdoc.MigrateFileFromPromiseSibelaTblProfilePenyedia() // New
 
 		// tbl_saham_perusahaan
 		// appdoc.MigrateFileFromPromiseSibelaTblSahamPerusahaan()
@@ -185,3 +185,6 @@ var DokumenCmd = &cobra.Command{
 func init() {
 	// Emang Kosongz
 }
+
+
+// kode_helper_dokumen terakhir: 163178

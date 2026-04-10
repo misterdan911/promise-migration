@@ -21,6 +21,7 @@ type RefUmum struct {
   DokDomisiliBerlakuAkhir  pgtype.Date
   EncryptKeyDokDomisili    pgtype.Text
   RevisiKe                 pgtype.Int2
+  KodeKabKotaDomisili      pgtype.Text
 }
 
 func InsertNew(refUmum RefUmum) {
@@ -36,7 +37,8 @@ func InsertNew(refUmum RefUmum) {
     is_dok_domisili_selamanya,
     dok_domisili_berlaku_awal,
     dok_domisili_berlaku_akhir,
-    encrypt_key_dok_domisili
+    encrypt_key_dok_domisili,
+		kode_kab_kota_domisili
   ) VALUES (
     @kode_vendor,
     @nomor_telp,
@@ -46,7 +48,8 @@ func InsertNew(refUmum RefUmum) {
     @is_dok_domisili_selamanya,
     @dok_domisili_berlaku_awal,
     @dok_domisili_berlaku_akhir,
-    @encrypt_key_dok_domisili
+    @encrypt_key_dok_domisili,
+		@kode_kab_kota_domisili
   )`
 
   args := pgx.NamedArgs{
@@ -59,6 +62,7 @@ func InsertNew(refUmum RefUmum) {
     "dok_domisili_berlaku_awal":    refUmum.DokDomisiliBerlakuAwal,
     "dok_domisili_berlaku_akhir":   refUmum.DokDomisiliBerlakuAkhir,
     "encrypt_key_dok_domisili":     refUmum.EncryptKeyDokDomisili,
+    "kode_kab_kota_domisili":       refUmum.KodeKabKotaDomisili,
   }
 
   _, errIns := db.DbSidapet.Exec(ctx, qInsert, args)

@@ -269,7 +269,7 @@ func MigrateFileFromPromiseSibelaTblSahamPerusahaan() {
 
 		// Process path_saham field
 		if tblSahamPerusahaan.PathSaham.String != "" {
-			g.LogDoc.FieldName = "promise_sibela.tbl_personalia_perusahaan.path_saham"
+			g.LogDoc.FieldName = "promise_sibela.tbl_saham_perusahaan.path_saham"
 			g.LogDoc.PkId = tblSahamPerusahaan.IdSaham.Int32
 
 			originalPath.String = tblSahamPerusahaan.PathSaham.String
@@ -603,7 +603,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // basts_file
         if row.BastsFile.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.basts_file"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.basts_file"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.BastsFile.String
@@ -612,7 +612,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // sperkes_file
         if row.SperkesFile.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.sperkes_file"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.sperkes_file"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.SperkesFile.String
@@ -621,7 +621,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // sperkes_file_penyedia
         if row.SperkesFilePenyedia.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.sperkes_file_penyedia"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.sperkes_file_penyedia"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.SperkesFilePenyedia.String
@@ -630,7 +630,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // sperpem_file
         if row.SperpemFile.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.sperpem_file"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.sperpem_file"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.SperpemFile.String
@@ -639,7 +639,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // sperpem_file_penyedia
         if row.SperpemFilePenyedia.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.sperpem_file_penyedia"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.sperpem_file_penyedia"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.SperpemFilePenyedia.String
@@ -648,7 +648,7 @@ func MigrateFileFromPromiseSibelaTblSptjmDpt() {
 
         // sptjm_file
         if row.SptjmFile.String != "" {
-            g.LogDoc.FieldName = "promise_sibela.tbl_sptjm.sptjm_file"
+            g.LogDoc.FieldName = "promise_sibela.tbl_sptjmdpt.sptjm_file"
             g.LogDoc.PkId = row.IdSptjmdpt.Int32
 
             originalPath.String = row.SptjmFile.String
