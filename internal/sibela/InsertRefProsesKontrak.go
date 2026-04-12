@@ -224,11 +224,12 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		}
 
 		// Jangka Waktu
-		beginDate := allTblTermin[0].TanggalBastTerealisasi.Time
+		// beginDate := allTblTermin[0].TanggalBastTerealisasi.Time
+		beginDate := tblSuratPesanan.TanggalSp.Time
 		endDate := allTblTermin[len(allTblTermin)-1].TanggalBastTerealisasi.Time
 		totalDays, _ := ghelper.CountDaysBetween(beginDate, endDate)
-		totalMonths, _ := ghelper.CountMonthsBetween(beginDate, endDate)
-		totalYears, _ := ghelper.CountYearsBetween(beginDate, endDate)
+		// totalMonths, _ := ghelper.CountMonthsBetween(beginDate, endDate)
+		// totalYears, _ := ghelper.CountYearsBetween(beginDate, endDate)
 
 		// fmt.Printf("todalDays: %d\n", totalDays)
 		// fmt.Printf("totalMonths: %d\n", totalMonths)
@@ -237,6 +238,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		satuanJangkaWaktu := pgtype.Text{Valid: true}
 		jangkaWaktu := pgtype.Int4{Valid: true}
 
+		/*
 		if totalYears > 0 {
 			satuanJangkaWaktu.String = "tahunan"
 			jangkaWaktu.Int32 = int32(totalYears)
@@ -247,6 +249,10 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 			satuanJangkaWaktu.String = "harian"
 			jangkaWaktu.Int32 = int32(totalDays)
 		}
+		*/
+
+		satuanJangkaWaktu.String = "harian"
+		jangkaWaktu.Int32 = int32(totalDays)
 
 		// fmt.Printf("IdTerminPl: %d\n", allTblTermin[0].IdTerminPl.Int32)
 		// fmt.Printf("IdPaketPl: %d\n", allTblTermin[0].IdPaketPl.Int32)
