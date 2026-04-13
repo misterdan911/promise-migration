@@ -30,6 +30,7 @@ import (
 	"promise-migration/internal/model/mypromise_sibela/tbltermindptplmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblundanganplmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblundangandptplmodel"
+	"promise-migration/internal/model/mypromise_sibela/uangpersediaanbuktimodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -958,3 +959,21 @@ func MigrateFileFromPromiseSibelaTblUndanganDptPl() {
         }
     }
 }
+
+func MigrateFileFromPromiseSibelaUangPersediaanBukti() {
+    allRows, _ := uangpersediaanbuktimodel.GetAllDocument()
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+
+        // bukti
+        if row.Bukti.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_bukti.bukti"
+            g.LogDoc.PkId = row.IdUangPersediaanBukti.Int32
+
+            originalPath.String = row.Bukti.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+

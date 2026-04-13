@@ -255,7 +255,7 @@ func InsertPersiapanKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tblP
 		}
 		*/
 
-		satuanJangkaWaktu.String = "harian"
+		satuanJangkaWaktu.String = "hari"
 		jangkaWaktu.Int32 = int32(totalDays)
 		
 

@@ -156,28 +156,29 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblTerminDptPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
+		appdoc.MigrateFileFromPromiseSibelaUangPersediaanBukti()
 
 		g.AppName = "Si-PLang"
 		// g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
 		g.UrlBasePathExisting = "https://prodev.ut.ac.id/siplanguat"
 
 		// tbl_paket_pl
-		appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblPaketPl()
 
 		// tbl_signature
-		appdoc.MigrateFileFromPromiseSiplangTblSignature()
+		// appdoc.MigrateFileFromPromiseSiplangTblSignature()
 
 		// tbl_sptb_pl
-		appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblSptbPl()
 
-		appdoc.MigrateFileFromPromiseSiplangTblSptjm()
-		appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
+		// appdoc.MigrateFileFromPromiseSiplangTblSptjm()
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratBap()
 
 		// tbl_surat_pesanan_pl
-		appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblSuratPesananPl()
 
-		appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
-		appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
+		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
 	},
 }
