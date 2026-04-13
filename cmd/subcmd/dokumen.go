@@ -157,6 +157,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganPl()
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
 		appdoc.MigrateFileFromPromiseSibelaUangPersediaanBukti()
+		appdoc.MigrateFileFromPromiseSibelaUangPersediaanPajak()
 
 		g.AppName = "Si-PLang"
 		// g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"

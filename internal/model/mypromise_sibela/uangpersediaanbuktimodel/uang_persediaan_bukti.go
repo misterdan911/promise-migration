@@ -1,18 +1,17 @@
 package uangpersediaanbuktimodel
 
 import (
+	"fmt"
 	"database/sql"
 	"log"
 	"promise-migration/db"
 )
 
 type UangPersediaanBukti struct {
-	IdUangPersediaanBukti sql.NullInt64
-	IdUangPersediaan      sql.NullInt64
+	IdUangPersediaanBukti sql.NullInt32
+	IdUangPersediaan      sql.NullInt32
 	Nama                  sql.NullString
 	Bukti                 sql.NullString
-	CreatedAt             sql.NullTime
-	UpdatedAt             sql.NullTime
 }
 
 func GetAllDocument() ([]UangPersediaanBukti, error) {
@@ -21,10 +20,9 @@ func GetAllDocument() ([]UangPersediaanBukti, error) {
         id_uang_persediaan_bukti,
         id_uang_persediaan,
         nama,
-        bukti,
-        created_at,
-        updated_at
-    FROM uang_persediaan_bukti`
+        bukti
+    FROM uang_persediaan_bukti
+    order by id_uang_persediaan_bukti asc`
 
 	results, err := db.MyPromiseSibela.Query(qData)
 	if err != nil {
@@ -41,10 +39,9 @@ func GetAllDocument() ([]UangPersediaanBukti, error) {
 			&doc.IdUangPersediaan,
 			&doc.Nama,
 			&doc.Bukti,
-			&doc.CreatedAt,
-			&doc.UpdatedAt,
 		)
 		if err != nil {
+    		fmt.Println(err)
 			return nil, err
 		}
 		documents = append(documents, doc)

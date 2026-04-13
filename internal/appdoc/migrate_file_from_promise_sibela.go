@@ -1,6 +1,7 @@
 package appdoc
 
 import (
+	"fmt"
 	"promise-migration/internal/g"
 	"promise-migration/internal/model/mypromise_sibela/tblaktaperusahaanmodel"
 	"promise-migration/internal/model/mypromise_sibela/tbldireksiperusahaanmodel"
@@ -31,6 +32,7 @@ import (
 	"promise-migration/internal/model/mypromise_sibela/tblundanganplmodel"
 	"promise-migration/internal/model/mypromise_sibela/tblundangandptplmodel"
 	"promise-migration/internal/model/mypromise_sibela/uangpersediaanbuktimodel"
+	"promise-migration/internal/model/mypromise_sibela/uangpersediaanpajakmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -962,6 +964,8 @@ func MigrateFileFromPromiseSibelaTblUndanganDptPl() {
 
 func MigrateFileFromPromiseSibelaUangPersediaanBukti() {
     allRows, _ := uangpersediaanbuktimodel.GetAllDocument()
+    fmt.Printf("Jml: %d\n", len(allRows))
+    
     originalPath := pgtype.Text{Valid: true, String: ""}
 
     for _, row := range allRows {
@@ -972,6 +976,89 @@ func MigrateFileFromPromiseSibelaUangPersediaanBukti() {
             g.LogDoc.PkId = row.IdUangPersediaanBukti.Int32
 
             originalPath.String = row.Bukti.String
+            ProcessOriginalPath(originalPath)
+        }
+    }
+}
+
+
+func MigrateFileFromPromiseSibelaUangPersediaanPajak() {
+    allRows, _ := uangpersediaanpajakmodel.GetAllDocument()
+    fmt.Printf("Jml: %d\n", len(allRows))
+    
+    originalPath := pgtype.Text{Valid: true, String: ""}
+
+    for _, row := range allRows {
+
+        // dok_npwp
+        if row.DokNpwp.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.dok_npwp"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.DokNpwp.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_non_pkp
+        if row.DokNonPkp.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.dok_non_pkp"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.DokNonPkp.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus
+        if row.DokKetentuanKhusus.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.dok_ketentuan_khusus"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.DokKetentuanKhusus.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // dok_ketentuan_khusus_jenis
+        if row.DokKetentuanKhususJenis.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.dok_ketentuan_khusus_jenis"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.DokKetentuanKhususJenis.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // path_bupot
+        if row.PathBupot.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.path_bupot"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.PathBupot.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // path_dokumen
+        if row.PathDokumen.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.path_dokumen"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.PathDokumen.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // path_kurs_bank
+        if row.PathKursBank.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.path_kurs_bank"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.PathKursBank.String
+            ProcessOriginalPath(originalPath)
+        }
+
+        // path_kurs_kmk
+        if row.PathKursKmk.String != "" {
+            g.LogDoc.FieldName = "promise_sibela.uang_persediaan_pajak.path_kurs_kmk"
+            g.LogDoc.PkId = row.IdPajak.Int32
+
+            originalPath.String = row.PathKursKmk.String
             ProcessOriginalPath(originalPath)
         }
     }
