@@ -6,7 +6,7 @@ import (
 	"log"
 	"promise-migration/db"
 )
-
+ 
 type UangPersediaanBukti struct {
 	IdUangPersediaanBukti sql.NullInt32
 	IdUangPersediaan      sql.NullInt32
@@ -22,7 +22,7 @@ func GetAllDocument() ([]UangPersediaanBukti, error) {
         nama,
         bukti
     FROM uang_persediaan_bukti
-    where id_uang_persediaan_bukti > 22194
+    where id_uang_persediaan_bukti >= 41519
     order by id_uang_persediaan_bukti asc`
 
 	results, err := db.MyPromiseSibela.Query(qData)
@@ -30,7 +30,7 @@ func GetAllDocument() ([]UangPersediaanBukti, error) {
 		log.Fatal(err)
 	}
 	defer results.Close()
-
+	
 	var documents []UangPersediaanBukti
 
 	for results.Next() {

@@ -2,6 +2,7 @@ package helperdokumenmodel
 
 import (
 	"context"
+  "fmt"
 	"log"
 	"promise-migration/db"
 
@@ -59,6 +60,19 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
     encrypt_key
   FROM helper_dokumen hd
   WHERE original_path = $1`
+
+  qDokumen2 := `
+  SELECT
+    kode_helper,
+    app_name,
+    original_path,
+    newfilename,
+    encrypt_key
+  FROM helper_dokumen hd
+  WHERE original_path = '` + originalPath.String + `'`
+
+  fmt.Println(qDokumen2);
+
 
   rwDokumen, err := db.DbSidapet.Query(ctx, qDokumen, originalPath)
   if err != nil {

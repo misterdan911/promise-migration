@@ -191,17 +191,20 @@ func InsertRefPermintaan() {
 		// fmt.Println("Nama Paket: ", tblPaketPl.NamaPesanan.String)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
-			KodeRup:             kodeRup,
-			KodeUnit:            kodeUnit,
-			JenisPenyedia:       pgtype.Text{Valid: true, String: "dpt"},
-			KodeVendor:          kodeVendor,
-			NamaPaket:           tblPaketPl.NamaPesanan,
-			KodeSkemaPembayaran: kodeSkemaPembayaran,
-			KodeJenisPengadaan:  kodeJenisPengadaan,
-			KodeJenisAset:       kodeJenisAset,
-			NamaUnit:            namaUnit,
-			Ucr:                 ucr,
-			Udcr:                tblPaketPl.CreateAt,
+			KodeRup:                  kodeRup,
+			KodeUnit:                 kodeUnit,
+			JenisPenyedia:            pgtype.Text{Valid: true, String: "dpt"},
+			KodeVendor:               kodeVendor,
+			NamaPaket:                tblPaketPl.NamaPesanan,
+			KodeSkemaPembayaran:      kodeSkemaPembayaran,
+			KodeJenisPengadaan:       kodeJenisPengadaan,
+			KodeJenisAset:            kodeJenisAset,
+			FileKerangkaAk:           tblPaketPl.PathSiplang,
+			FileDokPendukung:         tblPaketPl.PathSiplang,
+			FileDokPendukungPenyedia: tblPaketPl.PathSiplangPenyedia,
+			NamaUnit:            	  namaUnit,
+			Ucr:                 	  ucr,
+			Udcr:                	  tblPaketPl.CreateAt,
 		}
 
 		fmt.Printf("tblPaketPl.IdPaket: %d\n", tblPaketPl.IdPaket.Int32)

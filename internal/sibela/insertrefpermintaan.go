@@ -2,6 +2,7 @@ package sibela
 
 import (
 	"fmt"
+	// "strings"
 	// "promise-migration/internal/model/dbesign/refpenandatanganmodel"
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsidapet/helperusermodel"
@@ -9,6 +10,7 @@ import (
 	"promise-migration/internal/model/promise_sibela/logpaketmodel"
 	"promise-migration/internal/model/promise_sibela/tblpaketplonionmodel"
 	"promise-migration/internal/model/vmsdb/tblppkmodel"
+
 	// "promise-migration/internal/model/vmsdb/tblppksubmodel"
 
 	// "promise-migration/internal/model/vmsdb/tblpejabatpembeliansubmodel"
@@ -21,6 +23,8 @@ import (
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
 	"promise-migration/internal/sibela/sibelahelper"
 	"promise-migration/internal/structs"
+
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -179,10 +183,35 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
-		// dapatkan kode_status_permintaan
+		// Dapatkan dokumen KAK & Dok. Pendukung
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblPaketPl.PathSibela)
+		var pathDokumenKerangkaAk pgtype.Text
+		pathDokumenKerangkaAk.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumenKerangkaAk.Valid = false
+		} else {
+			pathDokumenKerangkaAk.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
+
+		// dapatkan DokPendukungPenyedia
+		// tblPaketPl.PathSibelaPenyedia.String = strings.TrimSpace(tblPaketPl.PathSibelaPenyedia.String)
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblPaketPl.PathSibelaPenyedia)
+		var pathDokPendukungPenyedia pgtype.Text
+		pathDokPendukungPenyedia.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokPendukungPenyedia.Valid = false
+		} else {
+			pathDokPendukungPenyedia.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+		}
 
 
+		fmt.Println("PathSibela: " + tblPaketPl.PathSibela.String)
+		fmt.Println("PathSibelaPenyedia: " + tblPaketPl.PathSibelaPenyedia.String)
+		fmt.Println("pathDokumenKerangkaAk: " + pathDokumenKerangkaAk.String)
+		fmt.Println("pathDokPendukungPenyedia: " + pathDokPendukungPenyedia.String)
 
+
+ 
 		// dapatkan Ucr
 		var ucr pgtype.Text
 		ucr.Valid = true
@@ -203,17 +232,20 @@ func InsertRefPermintaan() {
 		// fmt.Println("Nama Paket: ", tblPaketPl.NamaPesanan.String)
 
 		refPermintaan := refpermintaanmodel.RefPermintaan{
-			KodeRup:             kodeRup,
-			KodeUnit:            kodeUnit,
-			JenisPenyedia:       tblPaketPl.JenisPenyedia,
-			KodeVendor:          kodeVendor,
-			NamaPaket:           tblPaketPl.NamaPesanan,
-			KodeSkemaPembayaran: kodeSkemaPembayaran,
-			KodeJenisPengadaan:  kodeJenisPengadaan,
-			KodeJenisAset:       kodeJenisAset,
-			NamaUnit:            namaUnit,
-			Ucr:                 ucr,
-			Udcr: 				 tblPaketPl.CreateAt,
+			KodeRup:                  kodeRup,
+			KodeUnit:                 kodeUnit,
+			JenisPenyedia:            tblPaketPl.JenisPenyedia,
+			KodeVendor:               kodeVendor,
+			NamaPaket:                tblPaketPl.NamaPesanan,
+			KodeSkemaPembayaran:      kodeSkemaPembayaran,
+			KodeJenisPengadaan:       kodeJenisPengadaan,
+			KodeJenisAset:            kodeJenisAset,
+			FileKerangkaAk:           pathDokumenKerangkaAk,
+			FileDokPendukung:         pathDokumenKerangkaAk,
+			FileDokPendukungPenyedia: pathDokPendukungPenyedia,
+			NamaUnit:                 namaUnit,
+			Ucr:                      ucr,
+			Udcr: 				      tblPaketPl.CreateAt,
 		}
 
 		refPermintaan = refpermintaanmodel.InsertNew(refPermintaan)

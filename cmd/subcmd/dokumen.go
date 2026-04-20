@@ -158,7 +158,7 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSibelaTblUndanganDptPl()
 
 		// 163485
-		appdoc.MigrateFileFromPromiseSibelaUangPersediaanBukti()
+		appdoc.MigrateFileFromPromiseSibelaUangPersediaanBukti() // belum kelar
 		// appdoc.MigrateFileFromPromiseSibelaUangPersediaanPajak()
 
 		g.AppName = "Si-PLang"

@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	// "log"
 
@@ -76,26 +77,37 @@ func DownloadFile(url string) error {
 	}
 	defer out.Close()
 
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
+	maxRetries := 5
+	for attempt := 0; attempt < maxRetries; attempt++ {
+		// Get the data
+		resp, err := http.Get(url)
+		if err != nil {
 
-		if strings.Contains(err.Error(), "invalid pdf header") {
+			if strings.Contains(err.Error(), "invalid pdf header") {
+			}
+
+			return fmt.Errorf("failed to download file: %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			return fmt.Errorf("bad status: %s", resp.Status)
 		}
 
-		return fmt.Errorf("failed to download file: %v", err)
-	}
-	defer resp.Body.Close()
+		// Write the body to file
+		_, err = io.Copy(out, resp.Body)
+		if err != nil {
 
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("bad status: %s", resp.Status)
+	        // Check if it's a GOAWAY error
+	        if strings.Contains(err.Error(), "GOAWAY") {
+	            time.Sleep(time.Duration(attempt+1) * time.Second)
+	            continue
+	        }			
+
+			return fmt.Errorf("failed to write file: %v", err)
+		}
 	}
 
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return fmt.Errorf("failed to write file: %v", err)
-	}
 
 	return nil
 }
