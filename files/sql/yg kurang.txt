@@ -1,3 +1,10 @@
+- Migrasi KAK dan dokumen pendukung SiBela SiPlang
+
+- Migrasi File Addendum
+
+- Penandatangan aktif yang lebih dari 1 dinonaktifkan semua
+
+- Migrasi Sibela /Siplang Uang Persediaan
 
 
 - File2 masih banyak yg belum dimigrasi
@@ -15,11 +22,6 @@
 
    Si-BeLa (tidak ada)
 
-- Migrasi KAK dan dokumen pendukung SiBela SiPlang
-
-- Penandatangan aktif yang lebih dari 1 dinonaktifkan semua
-
-- Migrasi Sibela /Siplang Uang Persediaan
 
 - isi kode_kab_kota domisili di ref_datadiri [Done]
 - tanggal awal pekerjaan ambil dari tanggal SP [Done]
