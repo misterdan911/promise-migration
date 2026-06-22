@@ -74,7 +74,7 @@ func InsertTrxDokumenKontrak(refPermintaan refpermintaanmodel.RefPermintaan, tbl
 
 	
 
-	// Bikin transaksi si Esign
+	// Bikin transaksi di Esign
 	// -------------------------------------------------------------
 	trxPenandatangan := trxpenandatanganmodel.TrxPenandatangan{
 		NamaAplikasi: gAppName,

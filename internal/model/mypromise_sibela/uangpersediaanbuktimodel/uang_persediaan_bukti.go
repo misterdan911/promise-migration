@@ -22,7 +22,7 @@ func GetAllDocument() ([]UangPersediaanBukti, error) {
         nama,
         bukti
     FROM uang_persediaan_bukti
-    where id_uang_persediaan_bukti >= 41519
+    where id_uang_persediaan_bukti >= 64480
     order by id_uang_persediaan_bukti asc`
 
 	results, err := db.MyPromiseSibela.Query(qData)

@@ -2,7 +2,7 @@ package helperdokumenmodel
 
 import (
 	"context"
-  "fmt"
+  // "fmt"
 	"log"
 	"promise-migration/db"
 
@@ -61,6 +61,7 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
   FROM helper_dokumen hd
   WHERE original_path = $1`
 
+/*
   qDokumen2 := `
   SELECT
     kode_helper,
@@ -72,6 +73,7 @@ func GetByOriginalPath(originalPath pgtype.Text) HelperDokumen {
   WHERE original_path = '` + originalPath.String + `'`
 
   fmt.Println(qDokumen2);
+*/
 
 
   rwDokumen, err := db.DbSidapet.Query(ctx, qDokumen, originalPath)

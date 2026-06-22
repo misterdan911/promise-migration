@@ -18,7 +18,7 @@ import (
 	sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsdbprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 
-	"promise-migration/internal/model/promise_sippan/tblruputmodel"
+	// "promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
 	"promise-migration/internal/sibela/sibelahelper"
@@ -66,7 +66,7 @@ func InsertRefPermintaan() {
 		// 	continue
 		// }
 
-		// if tblPaketPl.IdPaket.Int32 != 53 {
+		// if tblPaketPl.IdPaket.Int32 != 175 {
 		// 	continue
 		// }
 
@@ -79,6 +79,9 @@ func InsertRefPermintaan() {
 		gKodeStatusPermintaan.Int32 = 0
 
 		// dapatkan kode_rup
+		kodeRup := tblPaketPl.IdRupUt
+
+		/*
 		var kodeRup pgtype.Int4
 		kodeRup.Valid = false
 		noRup := tblruputmodel.GetNoRupByIdRupUt(tblPaketPl.IdRupUt)
@@ -87,6 +90,7 @@ func InsertRefPermintaan() {
 			kodeRup = refrupmodel.GetKodeRupByNoRup(noRup)
 			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
 		}
+		*/
 
 		// dapatkan kodeUnit & nama_unit
 		var kodeUnit pgtype.Text
@@ -190,7 +194,10 @@ func InsertRefPermintaan() {
 		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
 			pathDokumenKerangkaAk.Valid = false
 		} else {
-			pathDokumenKerangkaAk.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+			pathDokumenKerangkaAk.String = helperDokumen.Newfilename.String
+			if helperDokumen.EncryptKey.String != "" {
+				pathDokumenKerangkaAk.String = pathDokumenKerangkaAk.String + "|" + helperDokumen.EncryptKey.String
+			}
 		}
 
 		// dapatkan DokPendukungPenyedia
@@ -201,7 +208,10 @@ func InsertRefPermintaan() {
 		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
 			pathDokPendukungPenyedia.Valid = false
 		} else {
-			pathDokPendukungPenyedia.String = helperDokumen.Newfilename.String + "|" + helperDokumen.EncryptKey.String
+			pathDokPendukungPenyedia.String = helperDokumen.Newfilename.String
+			if helperDokumen.EncryptKey.String != "" {
+				pathDokPendukungPenyedia.String = pathDokPendukungPenyedia.String + "|" + helperDokumen.EncryptKey.String
+			}
 		}
 
 

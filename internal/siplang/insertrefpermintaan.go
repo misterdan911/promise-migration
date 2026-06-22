@@ -15,11 +15,13 @@ import (
 	// sibelaprofile "promise-migration/internal/model/promise_sibela/tblprofilepenyediamodel"
 	vmsdbprofile "promise-migration/internal/model/vmsdb/tblprofilepenyediamodel"
 
-	"promise-migration/internal/model/promise_sippan/tblruputmodel"
+	// "promise-migration/internal/model/promise_sippan/tblruputmodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubbarumodel"
 	"promise-migration/internal/model/vmsdb/tblunitsubmodel"
 	"promise-migration/internal/siplang/siplanghelper"
 	"promise-migration/internal/structs"
+
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -55,7 +57,7 @@ func InsertRefPermintaan() {
 		// }
 
 		// 2618 -> "Pengadaan Bahan Pendukung Pengiriman BA (Box Buku Universitas Terbuka_Tinggi 30 cm) Bulan September 2025 - PT. Multikemas Kencana Cemerlang"
-		// if tblPaketPl.IdPaket.Int32 != 2618 {
+		// if tblPaketPl.IdPaket.Int32 != 2123 {
 		// 	continue
 		// }
 
@@ -67,6 +69,8 @@ func InsertRefPermintaan() {
 		gKodeStatusPermintaan.Int32 = 0
 
 		// dapatkan kode_rup
+		kodeRup := tblPaketPl.IdRupUt
+		/*
 		var kodeRup pgtype.Int4
 		kodeRup.Valid = false
 		noRup := tblruputmodel.GetNoRupByIdRupUt(tblPaketPl.IdRupUt)
@@ -75,6 +79,7 @@ func InsertRefPermintaan() {
 			kodeRup = refrupmodel.GetKodeRupByNoRup(noRup)
 			// fmt.Printf("no_rup: %s -> kode_rup: %d\n", noRup.String, kodeRup.Int32)
 		}
+		*/
 
 		// dapatkan kodeUnit & nama_unit
 		var kodeUnit pgtype.Text
@@ -170,6 +175,34 @@ func InsertRefPermintaan() {
 			kodeJenisAset.Valid = false
 		}
 
+		// Dapatkan dokumen KAK & Dok. Pendukung
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblPaketPl.PathSiplang)
+		var pathDokumenKerangkaAk pgtype.Text
+		pathDokumenKerangkaAk.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokumenKerangkaAk.Valid = false
+		} else {
+			pathDokumenKerangkaAk.String = helperDokumen.Newfilename.String
+			if helperDokumen.EncryptKey.String != "" {
+				pathDokumenKerangkaAk.String = pathDokumenKerangkaAk.String + "|" + helperDokumen.EncryptKey.String
+			}
+		}
+
+		// dapatkan DokPendukungPenyedia
+		// tblPaketPl.PathSibelaPenyedia.String = strings.TrimSpace(tblPaketPl.PathSibelaPenyedia.String)
+		helperDokumen = helperdokumenmodel.GetByOriginalPath(tblPaketPl.PathSiplangPenyedia)
+		var pathDokPendukungPenyedia pgtype.Text
+		pathDokPendukungPenyedia.Valid = true
+		if (helperDokumen == helperdokumenmodel.HelperDokumen{}) {
+			pathDokPendukungPenyedia.Valid = false
+		} else {
+			pathDokPendukungPenyedia.String = helperDokumen.Newfilename.String
+			if helperDokumen.EncryptKey.String != "" {
+				pathDokPendukungPenyedia.String = pathDokPendukungPenyedia.String + "|" + helperDokumen.EncryptKey.String
+			}
+		}
+
+
 
 		// dapatkan Ucr
 		var ucr pgtype.Text
@@ -199,9 +232,9 @@ func InsertRefPermintaan() {
 			KodeSkemaPembayaran:      kodeSkemaPembayaran,
 			KodeJenisPengadaan:       kodeJenisPengadaan,
 			KodeJenisAset:            kodeJenisAset,
-			FileKerangkaAk:           tblPaketPl.PathSiplang,
-			FileDokPendukung:         tblPaketPl.PathSiplang,
-			FileDokPendukungPenyedia: tblPaketPl.PathSiplangPenyedia,
+			FileKerangkaAk:           pathDokumenKerangkaAk,
+			FileDokPendukung:         pathDokumenKerangkaAk,
+			FileDokPendukungPenyedia: pathDokPendukungPenyedia,
 			NamaUnit:            	  namaUnit,
 			Ucr:                 	  ucr,
 			Udcr:                	  tblPaketPl.CreateAt,

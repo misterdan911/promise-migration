@@ -1,7 +1,11 @@
 package subcmd
 
 import (
+  "fmt"
+
   "promise-migration/db"
+  "promise-migration/internal/siqut"
+
   "github.com/spf13/cobra"
 )
 
@@ -16,9 +20,15 @@ var SiqutCmd = &cobra.Command{
 
 		db.ConnectDbSiqut()
 		defer db.DbSiqut.Close()
+
+    db.ConnectPromiseSiqut()
+    defer db.PromiseSiqut.Close()
+
+    fmt.Println("Truncating Siqut table and log...")
+    siqut.TruncateTableAndLog()
+
+    siqut.MigrateSiqut()
+
   },
 }
 
-func init() {
-  // Emang Kosong
-}
