@@ -35,6 +35,8 @@ type RefPerencanaan struct {
 	JangkaWaktu              pgtype.Int4
 	TglKontrakAwal           pgtype.Date
 	TglKontrakAkhir          pgtype.Date
+	KodeJenisAsset            pgtype.Text
+	KodeUraianKelompok       pgtype.Text
 }
 
 func InsertNew(refPerencanaan RefPerencanaan) RefPerencanaan {
@@ -65,7 +67,9 @@ func InsertNew(refPerencanaan RefPerencanaan) RefPerencanaan {
 		interval_kolom,
 		jangka_waktu,
 		tgl_kontrak_awal,
-		tgl_kontrak_akhir
+		tgl_kontrak_akhir,
+		kode_jenis_asset,
+		kode_uraian_kelompok
 	) VALUES (
 		@kode_perencanaan,
 		@kode_rup,
@@ -90,7 +94,9 @@ func InsertNew(refPerencanaan RefPerencanaan) RefPerencanaan {
 		@interval_kolom,
 		@jangka_waktu,
 		@tgl_kontrak_awal,
-		@tgl_kontrak_akhir
+		@tgl_kontrak_akhir,
+		@kode_jenis_asset,
+		@kode_uraian_kelompok
 	) RETURNING *`
 	
 	args := pgx.NamedArgs{
@@ -118,6 +124,8 @@ func InsertNew(refPerencanaan RefPerencanaan) RefPerencanaan {
 		"jangka_waktu":            refPerencanaan.JangkaWaktu,
 		"tgl_kontrak_awal":            refPerencanaan.TglKontrakAwal,
 		"tgl_kontrak_akhir":            refPerencanaan.TglKontrakAkhir,
+		"kode_jenis_asset":            refPerencanaan.KodeJenisAsset,
+		"kode_uraian_kelompok":            refPerencanaan.KodeUraianKelompok,
 	}
 
 	rwIns, errIns := db.DbSiqut.Query(ctx, qIns, args)
