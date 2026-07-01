@@ -70,3 +70,62 @@ func InsertNewData(refProsesKontrak RefProsesKontrak) RefProsesKontrak {
 
 	return allProsesKontrak[0]
 }
+
+func GetNomorDanTglKontrak(kodePermintaan pgtype.Int4) pgtype.Text {
+
+	ctx := context.Background()
+
+	qSelect := `
+	SELECT
+		concat(tdk.nomor_surat_pesanan, ' tanggal ', TO_CHAR(tdk.tgl_surat, 'YYYY-MM-DD')) as nomor_dan_tgl
+	FROM ref_proses_kontrak rpk
+	LEFT JOIN trx_dokumen_kontrak tdk on tdk.kode_proses_kontrak = rpk.kode_proses_kontrak 
+	WHERE
+	kode_permintaan = $1 AND
+	kode_status_kontrak = 2`
+
+  var nomorDanTgl pgtype.Text
+  
+  err := db.DbSibela.QueryRow(ctx, qSelect, kodePermintaan).Scan(&nomorDanTgl)
+  if err != nil {
+    if err == pgx.ErrNoRows {
+      return pgtype.Text{String: "", Valid: false}
+    }
+    log.Fatal("failed querying GetNomorDanTglKontrak, " + err.Error())
+  }
+  
+  return nomorDanTgl
+}
+
+
+type JangkaWaktu struct {
+	JangkaWaktu        pgtype.Int4
+	TglMulaiAkhir           pgtype.Text
+}
+
+func GetTrxJangkaWaktuByKodePermintaan(kodePermintaan pgtype.Int4) JangkaWaktu {
+
+	ctx := context.Background()
+
+	qSelect := `
+	SELECT
+		tjw.jangka_waktu,
+		concat(TO_CHAR(tjw.dari, 'YYYY-MM-DD'), ' s.d ', TO_CHAR(tjw.sampai_dengan, 'YYYY-MM-DD')) as tgl_mulai_akhir
+	FROM ref_proses_kontrak rpk
+	LEFT JOIN trx_jangka_waktu tjw  on tjw.kode_proses_kontrak = rpk.kode_proses_kontrak 
+	WHERE
+	kode_permintaan = $1 AND
+	kode_status_kontrak = 1`
+
+	var jangkaWaktu JangkaWaktu
+	
+	err := db.DbSibela.QueryRow(ctx, qSelect, kodePermintaan).Scan(&jangkaWaktu.JangkaWaktu, &jangkaWaktu.TglMulaiAkhir)
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return JangkaWaktu{}
+		}
+		log.Fatal("failed querying GetTrxJangkaWaktuByKodePermintaan, " + err.Error())
+	}
+	
+	return jangkaWaktu
+}

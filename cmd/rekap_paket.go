@@ -8,8 +8,13 @@ import (
 	"github.com/spf13/cobra"
 	// "promise-migration/cmd/subcmd"
 	"promise-migration/db"
+	
 	"promise-migration/internal/model/dbsibela/refpermintaanmodel"
 	"promise-migration/internal/model/dbsibela/refproseskontrakmodel"
+
+	refpermintaanmodel2 "promise-migration/internal/model/dbsiplang/refpermintaanmodel"
+	refproseskontrakmodel2 "promise-migration/internal/model/dbsiplang/refproseskontrakmodel"
+
 	"promise-migration/internal/model/dbsippan/refrupmodel"
 	"promise-migration/internal/model/dbusman/refmetodepengadaanmodel"
 	"promise-migration/internal/model/dbusman/refjenispengadaanmodel"
@@ -56,7 +61,6 @@ var RekapPaket = &cobra.Command{
 		defer db.DbSibela.Close()
 
 
-		allRefPermintaan := refpermintaanmodel.GetAllDataRekap_2025_2026()
 
     file, err := os.Create("people.csv")
     if err != nil {
@@ -88,6 +92,8 @@ var RekapPaket = &cobra.Command{
         panic(err)
     }
 
+		allRefPermintaan := refpermintaanmodel.GetAllDataRekap_2025_2026()
+
     // Write data from struct
     for _, refPermintaan := range allRefPermintaan {
 
@@ -117,14 +123,6 @@ var RekapPaket = &cobra.Command{
 				refUnitPbj := refunitpbjmodel.GetByKodePbj(refPermintaan.KodeUnit)
 
 				// jml_pagu
-				/*
-				var jmlPaguStr string
-				err = refRup.JmlPagu.Scan(&jmlPaguStr)
-				if err == nil {
-					fmt.Printf("String: %s\n", jmlPaguStr)
-				}
-				*/
-
 				jmlPaguValue, _ := refRup.JmlPagu.Value()
 				jmlPaguStr := fmt.Sprintf("%v", jmlPaguValue)
 
@@ -150,6 +148,61 @@ var RekapPaket = &cobra.Command{
         }
     }
 
+		allRefPermintaan2 := refpermintaanmodel2.GetAllDataRekap_2025_2026()
+
+    // Write data from struct
+		for _, refPermintaan := range allRefPermintaan2 {
+
+				refRup := refrupmodel.GetByKodeRup(refPermintaan.KodeRup)
+
+				// Get ref_metode_pengadaan
+				refMetodePengadaan := refmetodepengadaanmodel.GetByKodeMetodePengadaan(refRup.KodeMetodePengadaan)
+				// nomor dan tgl kontrak
+				nomorDanTglKontrak := refproseskontrakmodel2.GetNomorDanTglKontrak(refPermintaan.KodePermintaan)
+				// nama Penyedia
+				refUserExternal := refuserexternalmodel.GetById(refPermintaan.KodeVendor)
+				// jangka_waktu
+				jangkaWaktu := refproseskontrakmodel.GetTrxJangkaWaktuByKodePermintaan(refPermintaan.KodePermintaan)
+
+				// status pelaksanaan Pekerjaan
+				var statusPermintaan string
+				if refPermintaan.KodeStatusPermintaan.Int32 == 9 {
+					statusPermintaan = "Selesai"
+				} else {
+					statusPermintaan = "Sedang Berjalan"
+				}
+
+				// jenis_pengadaan
+				refJenisPengadaan := refjenispengadaanmodel.GetByKodeJenisPengadaan(refRup.KodeJenisPengadaan)
+
+				// unit_kerja
+				refUnitPbj := refunitpbjmodel.GetByKodePbj(refPermintaan.KodeUnit)
+
+				// jml_pagu
+				jmlPaguValue, _ := refRup.JmlPagu.Value()
+				jmlPaguStr := fmt.Sprintf("%v", jmlPaguValue)
+
+        // Convert all fields to strings
+        row := []string{
+            refPermintaan.NamaPaket.String,
+						refRup.SumberDana.String,
+						refMetodePengadaan.MetodePengadaan.String,
+						nomorDanTglKontrak.String,
+						strconv.FormatInt(int64(refPermintaan.NilaiHps.Int32), 10),
+						refUserExternal.Username.String,
+						strconv.FormatInt(int64(jangkaWaktu.JangkaWaktu.Int32), 10),
+						jangkaWaktu.TglMulaiAkhir.String,
+						"-",
+						statusPermintaan,
+						refJenisPengadaan.JenisPengadaan.String,
+						refUnitPbj.NamaPbj.String,
+						jmlPaguStr,
+						strconv.FormatInt(int64(refRup.TahunAnggaran.Int32), 10),
+					}
+        if err := writer.Write(row); err != nil {
+            panic(err)
+        }
+    }
     println("CSV from struct created successfully!")
 
 
