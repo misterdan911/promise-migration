@@ -51,4 +51,5 @@ func init() {
 	rootCmd.AddCommand(MigrateCmd)
 	rootCmd.AddCommand(TesKoneksi)
 	rootCmd.AddCommand(BukaAkses)
+	rootCmd.AddCommand(RekapPaket)
 }

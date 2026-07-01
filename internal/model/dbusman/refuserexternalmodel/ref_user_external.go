@@ -3,6 +3,8 @@ package refuserexternalmodel
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"promise-migration/db"
 
 	"github.com/jackc/pgx/v5"
@@ -91,4 +93,40 @@ func UpdateStatusPengguna(refUserExternal RefUserExternal) {
 		fmt.Println("unable to update status_pengguna ref_user_external, " + errIns.Error())
 	}
 
+}
+
+func GetById(idUserExternal pgtype.Int4) RefUserExternal {
+	var refUserExternal RefUserExternal
+	ctx := context.Background()
+
+	qSelect := `
+	SELECT
+		id_user,
+		username,
+		nama,
+		nik,
+		siup,
+		status_pengguna,
+		udcr,
+		udch,
+		id
+	FROM ref_user_external
+	WHERE id = $1`
+
+	rwSelect, err := db.DbUsman.Query(ctx, qSelect, idUserExternal)
+	if err != nil {
+		log.Fatal("qSelect ref_user_external.GetById Failed, " + err.Error() + " " + qSelect)
+	}
+	defer rwSelect.Close()
+
+	allRow, err := pgx.CollectRows(rwSelect, pgx.RowToStructByName[RefUserExternal])
+	if err != nil {
+		log.Fatal("failed collecting rwSelect (ref_user_external.GetById), " + err.Error())
+	}
+
+	if len(allRow) > 0 {
+		refUserExternal = allRow[0]
+	}
+
+	return refUserExternal
 }

@@ -210,6 +210,61 @@ func GetAllData() []RefPermintaan {
 	return allData
 }
 
+func GetAllDataRekap_2025_2026() []RefPermintaan {
+	ctx := context.Background()
+
+	qAllData := `
+	SELECT
+		kode_permintaan,
+		kode_unit,
+		jenis_penyedia,
+		kode_vendor,
+		nama_paket,
+		kode_skema_pembayaran,
+		kode_jenis_pengadaan,
+		kode_jenis_aset,
+		kode_uraian_klmpk,
+		file_kerangka_ak,
+		nilai_hps,
+		file_rincian_hps,
+		file_dok_pendukung,
+		file_dok_pendukung_penyedia,
+		kode_jenis_kontrak,
+		tgl_kirim_ke_penyedia,
+		tgl_selesai_kontrak,
+		tgl_berita_acara,
+		isi_berita_acara,
+		kode_status_permintaan,
+		ucr,
+		uch,
+		udcr,
+		udch,
+		ruang_lingkup,
+		nama_unit,
+		deskripsi_pendukung_penyedia,
+		kode_rup,
+		tgl_selesai_negosiasi
+	FROM ref_permintaan
+	WHERE
+	(DATE_PART('year', udcr) between 2025 and 2026) and 
+	kode_status_permintaan > 0
+	ORDER BY kode_permintaan
+	`
+
+	rwRefPermintaan, errQuery := db.DbSibela.Query(ctx, qAllData)
+	if errQuery != nil {
+		log.Fatal("q GetAllDataRekap_2025_2026 Failed, " + errQuery.Error() + " " + qAllData)
+	}
+
+	allData, errCollect := pgx.CollectRows(rwRefPermintaan, pgx.RowToStructByName[RefPermintaan])
+	if errCollect != nil {
+		log.Fatal("failed collecting rows GetAllDataRekap_2025_2026, " + errCollect.Error())
+	}
+	defer rwRefPermintaan.Close()
+
+	return allData
+}
+
 func DeleteByKodePermintaan(kodePermintaan pgtype.Int4) {
 	ctx := context.Background()
 
