@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"encoding/csv"
-	// "fmt"
+	"fmt"
 	"os"
 	"strconv"
 	"github.com/spf13/cobra"
@@ -14,6 +14,9 @@ import (
 	"promise-migration/internal/model/dbusman/refmetodepengadaanmodel"
 	"promise-migration/internal/model/dbusman/refjenispengadaanmodel"
 	"promise-migration/internal/model/dbusman/refuserexternalmodel"
+	"promise-migration/internal/model/dbusman/refunitpbjmodel"
+	
+	// "github.com/jackc/pgx/v5/pgtype"
 )
 
 type Person struct {
@@ -77,6 +80,9 @@ var RekapPaket = &cobra.Command{
 			"Jumlah Addendum",
 			"Status Pelaksanaan Pekerjaan",
 			"Jenis (B/J/K/JK)",
+			"Unit Kerja",
+			"Nilai RUP (Rp)",
+			"Tahun Anggaran",
 		}
     if err := writer.Write(header); err != nil {
         panic(err)
@@ -107,6 +113,21 @@ var RekapPaket = &cobra.Command{
 				// jenis_pengadaan
 				refJenisPengadaan := refjenispengadaanmodel.GetByKodeJenisPengadaan(refRup.KodeJenisPengadaan)
 
+				// unit_kerja
+				refUnitPbj := refunitpbjmodel.GetByKodePbj(refPermintaan.KodeUnit)
+
+				// jml_pagu
+				/*
+				var jmlPaguStr string
+				err = refRup.JmlPagu.Scan(&jmlPaguStr)
+				if err == nil {
+					fmt.Printf("String: %s\n", jmlPaguStr)
+				}
+				*/
+
+				jmlPaguValue, _ := refRup.JmlPagu.Value()
+				jmlPaguStr := fmt.Sprintf("%v", jmlPaguValue)
+
         // Convert all fields to strings
         row := []string{
             refPermintaan.NamaPaket.String,
@@ -120,7 +141,10 @@ var RekapPaket = &cobra.Command{
 						"-",
 						statusPermintaan,
 						refJenisPengadaan.JenisPengadaan.String,
-				}
+						refUnitPbj.NamaPbj.String,
+						jmlPaguStr,
+						strconv.FormatInt(int64(refRup.TahunAnggaran.Int32), 10),
+					}
         if err := writer.Write(row); err != nil {
             panic(err)
         }
