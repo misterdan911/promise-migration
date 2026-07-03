@@ -48,7 +48,7 @@ func init() {
 	//rootCmd.SetArgs([]string{"migrate", "usman"})
 	//rootCmd.SetArgs([]string{"migrate", "sidapet"})
 	//rootCmd.SetArgs([]string{"migrate", "sibela"})
-	rootCmd.AddCommand(MigrateCmd)
+	// rootCmd.AddCommand(MigrateCmd)
 	rootCmd.AddCommand(TesKoneksi)
 	rootCmd.AddCommand(BukaAkses)
 	rootCmd.AddCommand(RekapPaket)

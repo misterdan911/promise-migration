@@ -33,22 +33,15 @@ type Person struct {
 }
 
 var RekapPaket = &cobra.Command{
-	Use:   "rekap",
+	Use:   "rekap_paket",
 	Short: "Rekap Paket 2025 - 2026",
 	Long: `Rekap Paket 2025 - 2026`,
 	Run: func(cmd *cobra.Command, args []string) {
 
 
 		/*
-		db.ConnectDbEsign()
-		defer db.DbEsign.Close()
-
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
-
-
-		db.ConnectDbSiplang()
-		defer db.DbSiplang.Close()
 		*/
 
 		db.ConnectDbUsman()
@@ -60,9 +53,10 @@ var RekapPaket = &cobra.Command{
 		db.ConnectDbSibela()
 		defer db.DbSibela.Close()
 
+		db.ConnectDbSiplang()
+		defer db.DbSiplang.Close()
 
-
-    file, err := os.Create("people.csv")
+    file, err := os.Create("rekap.csv")
     if err != nil {
         panic(err)
     }
@@ -148,6 +142,16 @@ var RekapPaket = &cobra.Command{
         }
     }
 
+
+        row := []string{
+            "",
+					}
+        if err := writer.Write(row); err != nil {
+            panic(err)
+        }
+
+
+
 		allRefPermintaan2 := refpermintaanmodel2.GetAllDataRekap_2025_2026()
 
     // Write data from struct
@@ -162,7 +166,7 @@ var RekapPaket = &cobra.Command{
 				// nama Penyedia
 				refUserExternal := refuserexternalmodel.GetById(refPermintaan.KodeVendor)
 				// jangka_waktu
-				jangkaWaktu := refproseskontrakmodel.GetTrxJangkaWaktuByKodePermintaan(refPermintaan.KodePermintaan)
+				jangkaWaktu := refproseskontrakmodel2.GetTrxJangkaWaktuByKodePermintaan(refPermintaan.KodePermintaan)
 
 				// status pelaksanaan Pekerjaan
 				var statusPermintaan string
@@ -183,7 +187,7 @@ var RekapPaket = &cobra.Command{
 				jmlPaguStr := fmt.Sprintf("%v", jmlPaguValue)
 
         // Convert all fields to strings
-        row := []string{
+        row2 := []string{
             refPermintaan.NamaPaket.String,
 						refRup.SumberDana.String,
 						refMetodePengadaan.MetodePengadaan.String,
@@ -199,7 +203,7 @@ var RekapPaket = &cobra.Command{
 						jmlPaguStr,
 						strconv.FormatInt(int64(refRup.TahunAnggaran.Int32), 10),
 					}
-        if err := writer.Write(row); err != nil {
+        if err := writer.Write(row2); err != nil {
             panic(err)
         }
     }

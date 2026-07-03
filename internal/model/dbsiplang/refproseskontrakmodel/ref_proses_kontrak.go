@@ -86,7 +86,7 @@ func GetNomorDanTglKontrak(kodePermintaan pgtype.Int4) pgtype.Text {
 
   var nomorDanTgl pgtype.Text
   
-  err := db.DbSibela.QueryRow(ctx, qSelect, kodePermintaan).Scan(&nomorDanTgl)
+  err := db.DbSiplang.QueryRow(ctx, qSelect, kodePermintaan).Scan(&nomorDanTgl)
   if err != nil {
     if err == pgx.ErrNoRows {
       return pgtype.Text{String: "", Valid: false}
@@ -119,7 +119,7 @@ func GetTrxJangkaWaktuByKodePermintaan(kodePermintaan pgtype.Int4) JangkaWaktu {
 
 	var jangkaWaktu JangkaWaktu
 	
-	err := db.DbSibela.QueryRow(ctx, qSelect, kodePermintaan).Scan(&jangkaWaktu.JangkaWaktu, &jangkaWaktu.TglMulaiAkhir)
+	err := db.DbSiplang.QueryRow(ctx, qSelect, kodePermintaan).Scan(&jangkaWaktu.JangkaWaktu, &jangkaWaktu.TglMulaiAkhir)
 	if err != nil {
 		if err == pgx.ErrNoRows {
 			return JangkaWaktu{}

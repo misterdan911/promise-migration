@@ -225,7 +225,13 @@ func GetAllDataRekap_2025_2026() []RefPermintaan {
 		kode_jenis_aset,
 		kode_uraian_klmpk,
 		file_kerangka_ak,
-		nilai_hps,
+		(
+			select sum(tjs.nilai_rupiah) as nilai_kontrak 
+			from ref_proses_kontrak rpk
+			left join trx_sistem_pembayaran tsp on tsp.kode_proses_kontrak = rpk.kode_proses_kontrak 
+			left join trx_jenis_sispembayaran tjs on tjs.kode_sistem_pembayaran = tsp.kode_sistem_pembayaran 
+			where kode_permintaan = rp.kode_permintaan and kode_status_kontrak = 1
+		)as nilai_hps,
 		file_rincian_hps,
 		file_dok_pendukung,
 		file_dok_pendukung_penyedia,
@@ -244,11 +250,11 @@ func GetAllDataRekap_2025_2026() []RefPermintaan {
 		deskripsi_pendukung_penyedia,
 		kode_rup,
 		tgl_selesai_negosiasi
-	FROM ref_permintaan
+	FROM ref_permintaan rp
 	WHERE
 	(DATE_PART('year', udcr) between 2025 and 2026) and 
-	kode_status_permintaan > 0
-	ORDER BY kode_permintaan
+	kode_status_permintaan > 1
+	ORDER BY kode_permintaan ASC
 	`
 
 	rwRefPermintaan, errQuery := db.DbSibela.Query(ctx, qAllData)
