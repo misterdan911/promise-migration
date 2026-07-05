@@ -53,8 +53,8 @@ create table ref_produk_media (
 );
 comment on table ref_produk_media is '1 produk bisa punya banyak foto atau video'
 
-create table trx_produk_rating (
-  kode_trx_rating serial primary key,
+create table trx_rating (
+  kode_rating serial primary key,
   kode_produk int4,
   nilai_rating int2,
   ulasan text,
@@ -63,6 +63,14 @@ create table trx_produk_rating (
   udcr timestamptz,
   udch timestamptz
 }
+
+create table trx_rating_media (
+  kode_rating_media serial primary key,
+  kode_rating int4,
+  media varchar(255),
+  view_order int4
+);
+comment on table trx_rating_media is '1 rating bisa punya banyak foto atau video'
 
 create table trx_produk_whishlist (
   kode_whistlist serial primary key,
