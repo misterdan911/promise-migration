@@ -13,6 +13,10 @@ create type status_produk as enum (
   'nonaktif',
 );
 
+drop type if exists moda cascade;
+create type moda as enum
+('darat', 'laut', 'udara');
+
 create table ref_kat_produk (
   kode_kat_produk serial primary key,
   parent int4,
@@ -38,12 +42,16 @@ create table ref_produk (
   jml_terjual int4,
   status_produk status_produk,
   alasan_status_produk text,
+  kode_kualifikasi_usaha int2,    -- 1:Kecil 2:Memengah 3:Besar 4:Non Kecil
+  kode_kab_kota varchar(5),
+  is_dpt boolean,
   ucr varchar(80),
   uch varchar(80),
   udcr timestamptz,
   udch timestamptz
 );
 comment on column ref_produk.dari_aplikasi is 'sibela, siplang, siqut, sipung';
+comment on column ref_produk.status_produk is 'draft, proses_verifikasi, butuh_perbaikan, aktif, nonaktif';
 
 create table ref_produk_media (
   kode_media serial primary key,
@@ -78,16 +86,59 @@ create table trx_produk_whishlist (
   ucr varchar(80)
 );
 
-create table ref_prod_detail_barang (
-  kode_barang serial primary key,
-  nama varchar(255),
+CREATE TABLE ref_produk_detail_bahanajar (
+	kode_detail_bahanajar serial primary_key,
+	kode_produk int4 NULL,
+	ukuran varchar(5) NULL,
+	warna varchar(50) NULL,
+	oplah_min int4 NULL,
+	oplah_max int4 NULL,
+	hal_min int4 NULL,
+	hal_max int4 NULL,
+	satuan varchar(50) NULL,
+	harga numeric NULL
+);
+
+CREATE TABLE ref_produk_detail_cetak_kirim (
+	kode_detail_cetak_kirim serial primary_key,
+	kode_produk int4 NULL,
+	hal_min int4 NULL,
+	hal_max int4 NULL,
+	harga numeric NULL
+);
+
+CREATE TABLE ref_produk_detail_pengiriman_door_to_door (
+	kode_detail_pengiriman_door_to_door serial primary key,
+	kode_produk int4 NULL,
+	kode_kab_kota varchar NULL,
+	kode_kecamatan varchar NULL,
+	moda moda NULL,
+	lead_time int4 NULL,
+	harga numeric NULL
+);
+
+CREATE TABLE ref_produk_detail_pengiriman_ut_daerah (
+	kode_produk_detail_pengiriman_ut_daerah serial primary key,
+	kode_produk int4 NULL,
+	kode_unit_asal varchar NULL,
+	kode_unit_tujuan varchar NULL,
+	moda moda NULL,
+	lead_time int4 NULL,
+	harga numeric NULL
+);
+
+create table trx_keranjang_pengiriman_door_to-door (
+  kode_trx_keranjang serial primary key,
+	kode_detail_pengiriman_door_to_door int4,
+  kode_barang int4,
+  nomor_do int4,
+  nama_mahasiswa varchar(100),
+  no_telp varchar(15),
+  alamat text,
+  kode_unit varchar,
+  kode_kab_kota varchar,
+  kode_kecamatan varchar,
+  kode_pos int4,
+  berat int4
 }
 
-create table trx_barang (
-  kode_trx serial primary key,
-  kode_barang int4
-}
-
-create table trx_pesanan (
-  kode_kat_kontrak int4
-}
