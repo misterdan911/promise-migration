@@ -29,8 +29,8 @@ CREATE TABLE ref_kat_kontrak (
 );
 comment on table ref_kat_kontrak is 'Bahan Ajar, Barang, Cetak Kirim, Pengiriman UT Daerah, Pengiriman Door to Door, Jasa Lainnya';
 
-create table ref_produk (
-  kode_produk serial primary key,
+create table ref_produk_header (
+  kode_produk_header serial primary key,
   kode_vendor int4,
   dari_aplikasi dari_aplikasi,
   kode_kat_produk int4,           -- Nanti terserah mau diisi apa sama mas Afan
@@ -38,7 +38,8 @@ create table ref_produk (
   nama_produk varchar(255),
   model_produk varchar(255),
   deskiripsi text,
-  harga numeric,
+  harga_dari numeric,
+  harga_sampai numeric,
   jml_terjual int4,
   status_produk status_produk,
   alasan_status_produk text,
@@ -50,20 +51,20 @@ create table ref_produk (
   udcr timestamptz,
   udch timestamptz
 );
-comment on column ref_produk.dari_aplikasi is 'sibela, siplang, siqut, sipung';
-comment on column ref_produk.status_produk is 'draft, proses_verifikasi, butuh_perbaikan, aktif, nonaktif';
+comment on column ref_produk_header.dari_aplikasi is 'sibela, siplang, siqut, sipung';
+comment on column ref_produk_header.status_produk is 'draft, proses_verifikasi, butuh_perbaikan, aktif, nonaktif';
 
-create table ref_produk_media (
+create table ref_produk_header_media (
   kode_media serial primary key,
-  kode_produk int4,
+  kode_produk_header int4,
   media varchar(255),
   view_order int4
 );
-comment on table ref_produk_media is '1 produk bisa punya banyak foto atau video'
+comment on table ref_produk_header_media is '1 produk bisa punya banyak foto atau video'
 
 create table trx_rating (
   kode_rating serial primary key,
-  kode_produk int4,
+  kode_produk_header int4,
   nilai_rating int2,
   ulasan text,
   ucr varchar(80),
@@ -82,13 +83,13 @@ comment on table trx_rating_media is '1 rating bisa punya banyak foto atau video
 
 create table trx_produk_whishlist (
   kode_whistlist serial primary key,
-  kode_produk int4,
+  kode_produk_header int4,
   ucr varchar(80)
 );
 
-CREATE TABLE ref_produk_detail_bahanajar (
-	kode_detail_bahanajar serial primary_key,
-	kode_produk int4 NULL,
+CREATE TABLE ref_produk_bahanajar (
+	kode_produk_bahanajar serial primary_key,
+	kode_produk_header int4 NULL,
 	ukuran varchar(5) NULL,
 	warna varchar(50) NULL,
 	oplah_min int4 NULL,
@@ -99,17 +100,17 @@ CREATE TABLE ref_produk_detail_bahanajar (
 	harga numeric NULL
 );
 
-CREATE TABLE ref_produk_detail_cetak_kirim (
-	kode_detail_cetak_kirim serial primary_key,
-	kode_produk int4 NULL,
+CREATE TABLE ref_produk_cetak_kirim (
+	kode_produk_cetak_kirim serial primary_key,
+	kode_produk_header int4 NULL,
 	hal_min int4 NULL,
 	hal_max int4 NULL,
 	harga numeric NULL
 );
 
-CREATE TABLE ref_produk_detail_pengiriman_door_to_door (
-	kode_detail_pengiriman_door_to_door serial primary key,
-	kode_produk int4 NULL,
+CREATE TABLE ref_produk_pengiriman_door_to_door (
+	kode_produk_pengiriman_door_to_door serial primary key,
+	kode_produk_header int4 NULL,
 	kode_kab_kota varchar NULL,
 	kode_kecamatan varchar NULL,
 	moda moda NULL,
@@ -117,9 +118,9 @@ CREATE TABLE ref_produk_detail_pengiriman_door_to_door (
 	harga numeric NULL
 );
 
-CREATE TABLE ref_produk_detail_pengiriman_ut_daerah (
-	kode_produk_detail_pengiriman_ut_daerah serial primary key,
-	kode_produk int4 NULL,
+CREATE TABLE ref_produk_pengiriman_ut_daerah (
+	kode_produk_pengiriman_ut_daerah serial primary key,
+	kode_produk_header int4 NULL,
 	kode_unit_asal varchar NULL,
 	kode_unit_tujuan varchar NULL,
 	moda moda NULL,
@@ -127,10 +128,11 @@ CREATE TABLE ref_produk_detail_pengiriman_ut_daerah (
 	harga numeric NULL
 );
 
-create table trx_keranjang_pengiriman_door_to-door (
-  kode_trx_keranjang serial primary key,
-	kode_detail_pengiriman_door_to_door int4,
-  kode_barang int4,
+-- Keranjang-keranjang
+create table trx_keranjang_pengiriman_door_to_door (
+  kode_keranjang_pengiriman_door_to_door serial primary key,
+  kode_keranjang_header int4,
+	kode_produk_pengiriman_door_to_door int4,
   nomor_do int4,
   nama_mahasiswa varchar(100),
   no_telp varchar(15),
@@ -142,3 +144,10 @@ create table trx_keranjang_pengiriman_door_to-door (
   berat int4
 }
 
+CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
+	kode_keranjang_pengiriman_ut_daerah serial primary key,
+  kode_keranjang_header int4,
+	kode_produk_pengiriman_ut_daerah int4 NULL,
+  berat int4
+	total_harga numeric NULL
+);
