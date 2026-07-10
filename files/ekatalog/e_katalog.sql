@@ -1,3 +1,11 @@
+create table ref_vendor_info (
+  kode_vendor int4 primary key,
+  kode_kualifikasi_usaha int2,    -- 1:Kecil 2:Memengah 3:Besar 4:Non Kecil
+  kode_kab_kota varchar(5),
+  is_dpt boolean
+);
+comment on table ref_vendor is 'info vendor untuk mempermudah filter vendor di katalog';
+
 create type dari_aplikasi as enum (
   'sibela',
   'siplang',
@@ -43,9 +51,6 @@ create table ref_produk_header (
   jml_terjual int4,
   status_produk status_produk,
   alasan_status_produk text,
-  kode_kualifikasi_usaha int2,    -- 1:Kecil 2:Memengah 3:Besar 4:Non Kecil
-  kode_kab_kota varchar(5),
-  is_dpt boolean,
   ucr varchar(80),
   uch varchar(80),
   udcr timestamptz,
