@@ -116,6 +116,7 @@ DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak (
 	kode_produk_bahan_ajar_cetak serial primary key,
 	kode_produk_header int4 NULL,
+
 	ukuran varchar(5) NULL,
 	warna varchar(50) NULL,
 	oplah_min int4 NULL,
@@ -123,7 +124,7 @@ CREATE TABLE ref_produk_bahan_ajar_cetak (
 	hal_min int4 NULL,
 	hal_max int4 NULL,
 	satuan varchar(50) NULL,
-  penawaran ???,
+  penawaran numeric,
 	harga numeric NULL
 );
 ALTER TABLE ref_produk_bahan_ajar_cetak ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
@@ -148,6 +149,8 @@ CREATE TABLE ref_produk_pengiriman_door_to_door (
 	lead_time int4 NULL,
 	harga numeric NULL
 );
+ALTER TABLE ref_produk_pengiriman_door_to_door ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+
 
 DROP TABLE IF EXISTS ref_produk_pengiriman_ut_daerah CASCADE;
 CREATE TABLE ref_produk_pengiriman_ut_daerah (
@@ -182,14 +185,15 @@ create table trx_keranjang_produk_header(
   harga_dari numeric,
   harga_sampai numeric
 );
+ALTER TABLE trx_keranjang_produk_header ADD FOREIGN KEY (kode_keranjang) REFERENCES trx_keranjang(kode_keranjang);
+
 
 DROP TABLE IF EXISTS trx_keranjang_barang CASCADE;
 create table trx_keranjang_barang(
   kode_keranjang_barang serial primary key,
   kode_keranjang_produk_header int4,
-  jenis ???,
   kuantitas int4,
-  ruangan ???,
+  kode_ruang varchar,
   info varchar,
   tanggal date,
   harga_subtotal numeric
@@ -199,22 +203,27 @@ DROP TABLE IF EXISTS trx_keranjang_jasa CASCADE;
 create table trx_keranjang_jasa(
   kode_keranjang_jasa serial primary key,
   kode_keranjang_produk_header int4,
-  jenis ???,
   kuantitas int4,
   info varchar,
   tanggal date,
   harga_subtotal numeric
 );
 
+DROP TABLE IF EXISTS create CASCADE;
+create table ref_jenis_ba(
+  kode_jenis_ba int2 primary key,
+  jenis_ba varchar(50)
+);
+
 DROP TABLE IF EXISTS trx_keranjang_bahan_ajar_cetak CASCADE;
 create table trx_keranjang_bahan_ajar_cetak (
   kode_keranjang_bahan_ajar_cetak serial primary key,
   kode_keranjang_produk_header int4,
-  kode_produk_bahan_ajar_cetak int4,
 
+  kode_produk_bahan_ajar_cetak int4,
   kode_ba varchar,
   nama_ba varchar,
-  jenis_ba ???,
+  kode_jenis_ba int2,
   edisi int4,
 
   ukuran varchar(5) NULL,
@@ -223,12 +232,41 @@ create table trx_keranjang_bahan_ajar_cetak (
   oplah_max int4 NULL,
   hal_min int4 NULL,
   hal_max int4 NULL,
-  satuan ??? kenapa gak ada  di form Masukan Keranjang,
-  penawaran ???,
+  satuan varchar,
+  penawaran numeric,
   harga numeric NULL,
 
   jml_oplah int4,
   jml_halaman int,
+  harga_subtotal numeric
+);
+
+drop type if exists jenis_tgl_kirim;
+create type jenis_tgl_kirim as enum (
+  'range',
+  'semua'
+);
+
+DROP TABLE IF EXISTS trx_keranjang_bahan_ajar_cetak_kirim CASCADE;
+create table trx_keranjang_bahan_ajar_cetak_kirim (
+  kode_keranjang_bahan_ajar_cetak_kirim serial primary key,
+  kode_keranjang_produk_header int4,
+
+  kode_produk_bahan_ajar_cetak_kirim int4,
+  ukuran varchar(5) NULL,
+  warna varchar(50) NULL,
+  oplah_min int4 NULL,
+  oplah_max int4 NULL,
+  hal_min int4 NULL,
+  hal_max int4 NULL,
+  satuan varchar,
+  penawaran numeric,
+  harga numeric NULL,
+
+  satuan varchar,
+  jenis_tgl_kirim jenis_tgl_kirim,
+  tgl_awal date,
+  tgl_akhir date,
   harga_subtotal numeric
 );
 
@@ -268,4 +306,25 @@ CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
   harga_subtotal numeric
 );
 
+drop table if exists ref_status_perencanaan;
+CREATE TABLE ref_status_perencanaan (
+	kode_status_perencanaan int4 primary key,
+	status varchar(255)
+);
 
+drop table if exists ref_perencanaan;
+create table ref_perencanaan (
+  kode_perencanaan
+  kode_rup
+  kode_unit
+  kode_vendor
+  nama_paket
+  kode_keranjang
+  kode_status_perencanaan
+  kode_kat_kontrak_payung
+  no_surat_pesanan
+  ucr
+  uch
+  udcr
+  udch
+);
