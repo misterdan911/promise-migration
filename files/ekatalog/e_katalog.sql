@@ -52,9 +52,7 @@ create table ref_produk_header (
   nama_produk varchar(255),
   model_produk varchar(255),
   deskiripsi text,
-  harga_dari numeric,
-  harga_sampai numeric,
-  jml_terjual int4,
+  total_terjual int4,
   status_produk status_produk,
   alasan_status_produk text,
   ucr varchar(80),
@@ -111,6 +109,23 @@ create table trx_produk_whishlist (
   ucr varchar(80)
 );
 ALTER TABLE trx_produk_whishlist ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+
+DROP TABLE IF EXISTS ref_produk_barang CASCADE;
+create table ref_produk_barang(
+  kode_produk_barang serial primary key,
+	kode_produk_header int4,
+  harga numeric,
+  subtotal_terjual int4
+);
+
+DROP TABLE IF EXISTS ref_produk_jasa CASCADE;
+create table ref_produk_jasa(
+  kode_produk_jasa serial primary key,
+	kode_produk_header int4 NULL,
+  harga numeric,
+  subtotal_terjual int4
+);
+
 
 DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak (
@@ -196,6 +211,7 @@ create table trx_keranjang_barang(
   kode_ruang varchar,
   info varchar,
   tanggal date,
+  harga numeric,
   harga_subtotal numeric
 );
 
@@ -209,11 +225,6 @@ create table trx_keranjang_jasa(
   harga_subtotal numeric
 );
 
-DROP TABLE IF EXISTS create CASCADE;
-create table ref_jenis_ba(
-  kode_jenis_ba int2 primary key,
-  jenis_ba varchar(50)
-);
 
 DROP TABLE IF EXISTS trx_keranjang_bahan_ajar_cetak CASCADE;
 create table trx_keranjang_bahan_ajar_cetak (
@@ -223,7 +234,7 @@ create table trx_keranjang_bahan_ajar_cetak (
   kode_produk_bahan_ajar_cetak int4,
   kode_ba varchar,
   nama_ba varchar,
-  kode_jenis_ba int2,
+  jenis_ba varchar,
   edisi int4,
 
   ukuran varchar(5) NULL,
@@ -241,7 +252,7 @@ create table trx_keranjang_bahan_ajar_cetak (
   harga_subtotal numeric
 );
 
-drop type if exists jenis_tgl_kirim;
+drop type if exists jenis_tgl_kirim cascade;
 create type jenis_tgl_kirim as enum (
   'range',
   'semua'
@@ -263,7 +274,6 @@ create table trx_keranjang_bahan_ajar_cetak_kirim (
   penawaran numeric,
   harga numeric NULL,
 
-  satuan varchar,
   jenis_tgl_kirim jenis_tgl_kirim,
   tgl_awal date,
   tgl_akhir date,
@@ -285,7 +295,7 @@ create table trx_keranjang_pengiriman_door_to_door (
   kode_kecamatan varchar,
   kode_pos int4,
   moda moda,
-  lead_time, int4,
+  lead_time int4,
   harga numeric,
   berat_paket int4,
   harga_subtotal numeric
@@ -299,7 +309,7 @@ CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
   kode_produk_pengiriman_ut_daerah int4,
   kode_unit_asal varchar,
   kode_unit_tujuan varchar,
-  moda mode,
+  moda moda,
   lead_time int4,
   harga numeric,
   berat int4,
@@ -312,6 +322,7 @@ CREATE TABLE ref_status_perencanaan (
 	status varchar(255)
 );
 
+/*
 drop table if exists ref_perencanaan;
 create table ref_perencanaan (
   kode_perencanaan
@@ -328,3 +339,4 @@ create table ref_perencanaan (
   udcr
   udch
 );
+*/
