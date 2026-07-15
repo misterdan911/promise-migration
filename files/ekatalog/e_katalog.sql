@@ -117,6 +117,7 @@ create table ref_produk_barang(
   harga numeric,
   subtotal_terjual int4
 );
+ALTER TABLE ref_produk_barang ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_jasa CASCADE;
 create table ref_produk_jasa(
@@ -125,7 +126,7 @@ create table ref_produk_jasa(
   harga numeric,
   subtotal_terjual int4
 );
-
+ALTER TABLE ref_produk_jasa ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak (
@@ -186,7 +187,6 @@ create table trx_keranjang (
   kode_vendor int4,
   harga_total numeric
 );
-ALTER TABLE trx_keranjang ADD FOREIGN KEY (kode_vendor) REFERENCES ref_vendor_info (kode_vendor);
 
 DROP TABLE IF EXISTS trx_keranjang_produk_header CASCADE;
 create table trx_keranjang_produk_header(
@@ -196,12 +196,10 @@ create table trx_keranjang_produk_header(
 
   nama_produk varchar(255),
   model_produk varchar(255),
-  deskiripsi text,
-  harga_dari numeric,
-  harga_sampai numeric
+  deskiripsi text
 );
 ALTER TABLE trx_keranjang_produk_header ADD FOREIGN KEY (kode_keranjang) REFERENCES trx_keranjang(kode_keranjang);
-
+ALTER TABLE trx_keranjang_produk_header ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_barang CASCADE;
 create table trx_keranjang_barang(
@@ -214,6 +212,7 @@ create table trx_keranjang_barang(
   harga numeric,
   harga_subtotal numeric
 );
+ALTER TABLE trx_keranjang_barang ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_jasa CASCADE;
 create table trx_keranjang_jasa(
@@ -224,7 +223,7 @@ create table trx_keranjang_jasa(
   tanggal date,
   harga_subtotal numeric
 );
-
+ALTER TABLE trx_keranjang_jasa ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_bahan_ajar_cetak CASCADE;
 create table trx_keranjang_bahan_ajar_cetak (
@@ -251,6 +250,8 @@ create table trx_keranjang_bahan_ajar_cetak (
   jml_halaman int,
   harga_subtotal numeric
 );
+ALTER TABLE trx_keranjang_bahan_ajar_cetak ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+ALTER TABLE trx_keranjang_bahan_ajar_cetak ADD FOREIGN KEY (kode_produk_bahan_ajar_cetak) REFERENCES ref_produk_bahan_ajar_cetak(kode_produk_bahan_ajar_cetak);
 
 drop type if exists jenis_tgl_kirim cascade;
 create type jenis_tgl_kirim as enum (
@@ -279,7 +280,8 @@ create table trx_keranjang_bahan_ajar_cetak_kirim (
   tgl_akhir date,
   harga_subtotal numeric
 );
-
+ALTER TABLE trx_keranjang_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+ALTER TABLE trx_keranjang_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_produk_bahan_ajar_cetak_kirim) REFERENCES ref_produk_bahan_ajar_cetak_kirim(kode_produk_bahan_ajar_cetak_kirim);
 
 DROP TABLE IF EXISTS trx_keranjang_pengiriman_door_to_door CASCADE;
 create table trx_keranjang_pengiriman_door_to_door (
@@ -300,6 +302,8 @@ create table trx_keranjang_pengiriman_door_to_door (
   berat_paket int4,
   harga_subtotal numeric
 );
+ALTER TABLE trx_keranjang_pengiriman_door_to_door ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+ALTER TABLE trx_keranjang_pengiriman_door_to_door ADD FOREIGN KEY (kode_produk_pengiriman_door_to_door) REFERENCES ref_produk_pengiriman_door_to_door(kode_produk_pengiriman_door_to_door);
 comment on column trx_keranjang_pengiriman_door_to_door.kode_unit is 'UPBJJ';
 
 DROP TABLE IF EXISTS trx_keranjang_pengiriman_ut_daerah CASCADE;
@@ -315,6 +319,8 @@ CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
   berat int4,
   harga_subtotal numeric
 );
+ALTER TABLE trx_keranjang_pengiriman_ut_daerah ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+ALTER TABLE trx_keranjang_pengiriman_ut_daerah ADD FOREIGN KEY (kode_produk_pengiriman_ut_daerah) REFERENCES ref_produk_pengiriman_ut_daerah(kode_produk_pengiriman_ut_daerah);
 
 drop table if exists ref_status_perencanaan;
 CREATE TABLE ref_status_perencanaan (
