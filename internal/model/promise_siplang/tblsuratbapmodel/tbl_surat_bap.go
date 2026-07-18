@@ -23,7 +23,7 @@ func GetByIdTerminPl(idTerminPl pgtype.Int4) structs.TblSuratBap {
 		nomor_bap,
 		tanggal_bap,
 		path_bap,
-		nominal_denda,
+		CAST(NULLIF(TRIM(nominal_denda), '') AS numeric) as nominal_denda,
 		bap_file,
 		hash_dokumen,
 		file_scan_bap,

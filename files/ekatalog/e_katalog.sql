@@ -77,6 +77,7 @@ create table ref_produk_header_media (
   view_order int4
 );
 ALTER TABLE ref_produk_header_media ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_header_media (kode_produk_header);
 comment on table ref_produk_header_media is '1 produk bisa punya banyak foto atau video';
 
 DROP TABLE IF EXISTS trx_rating CASCADE;
@@ -91,6 +92,7 @@ create table trx_rating (
   udch timestamptz
 );
 ALTER TABLE trx_rating ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON trx_rating (kode_produk_header);
 
 DROP TABLE IF EXISTS trx_rating_media CASCADE;
 create table trx_rating_media (
@@ -100,6 +102,7 @@ create table trx_rating_media (
   view_order int4
 );
 ALTER TABLE trx_rating_media ADD FOREIGN KEY (kode_rating) REFERENCES trx_rating (kode_rating);
+CREATE INDEX ON trx_rating_media (kode_rating);
 comment on table trx_rating_media is '1 rating bisa punya banyak foto atau video';
 
 DROP TABLE IF EXISTS trx_produk_whishlist CASCADE;
@@ -109,6 +112,7 @@ create table trx_produk_whishlist (
   ucr varchar(80)
 );
 ALTER TABLE trx_produk_whishlist ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON trx_produk_whishlist (kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_barang CASCADE;
 create table ref_produk_barang(
@@ -118,6 +122,7 @@ create table ref_produk_barang(
   subtotal_terjual int4
 );
 ALTER TABLE ref_produk_barang ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_barang (kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_jasa CASCADE;
 create table ref_produk_jasa(
@@ -127,6 +132,7 @@ create table ref_produk_jasa(
   subtotal_terjual int4
 );
 ALTER TABLE ref_produk_jasa ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_jasa (kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak (
@@ -144,6 +150,7 @@ CREATE TABLE ref_produk_bahan_ajar_cetak (
 	harga numeric NULL
 );
 ALTER TABLE ref_produk_bahan_ajar_cetak ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_bahan_ajar_cetak (kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak_kirim CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak_kirim (
@@ -154,6 +161,7 @@ CREATE TABLE ref_produk_bahan_ajar_cetak_kirim (
 	harga numeric NULL
 );
 ALTER TABLE ref_produk_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_bahan_ajar_cetak_kirim (kode_produk_header);
 
 DROP TABLE IF EXISTS ref_produk_pengiriman_door_to_door CASCADE;
 CREATE TABLE ref_produk_pengiriman_door_to_door (
@@ -166,6 +174,7 @@ CREATE TABLE ref_produk_pengiriman_door_to_door (
 	harga numeric NULL
 );
 ALTER TABLE ref_produk_pengiriman_door_to_door ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_pengiriman_door_to_door (kode_produk_header);
 
 
 DROP TABLE IF EXISTS ref_produk_pengiriman_ut_daerah CASCADE;
@@ -179,6 +188,7 @@ CREATE TABLE ref_produk_pengiriman_ut_daerah (
 	harga numeric NULL
 );
 ALTER TABLE ref_produk_pengiriman_ut_daerah ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON ref_produk_pengiriman_ut_daerah (kode_produk_header);
 
 -- Keranjang-keranjang
 DROP TABLE IF EXISTS trx_keranjang CASCADE;
@@ -199,7 +209,9 @@ create table trx_keranjang_produk_header(
   deskiripsi text
 );
 ALTER TABLE trx_keranjang_produk_header ADD FOREIGN KEY (kode_keranjang) REFERENCES trx_keranjang(kode_keranjang);
+CREATE INDEX ON trx_keranjang_produk_header (kode_keranjang);
 ALTER TABLE trx_keranjang_produk_header ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
+CREATE INDEX ON trx_keranjang_produk_header (kode_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_barang CASCADE;
 create table trx_keranjang_barang(
@@ -213,6 +225,7 @@ create table trx_keranjang_barang(
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_barang ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_barang (kode_keranjang_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_jasa CASCADE;
 create table trx_keranjang_jasa(
@@ -224,6 +237,7 @@ create table trx_keranjang_jasa(
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_jasa ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_jasa (kode_keranjang_produk_header);
 
 DROP TABLE IF EXISTS trx_keranjang_bahan_ajar_cetak CASCADE;
 create table trx_keranjang_bahan_ajar_cetak (
@@ -251,7 +265,9 @@ create table trx_keranjang_bahan_ajar_cetak (
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_bahan_ajar_cetak ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_bahan_ajar_cetak (kode_keranjang_produk_header);
 ALTER TABLE trx_keranjang_bahan_ajar_cetak ADD FOREIGN KEY (kode_produk_bahan_ajar_cetak) REFERENCES ref_produk_bahan_ajar_cetak(kode_produk_bahan_ajar_cetak);
+CREATE INDEX ON trx_keranjang_bahan_ajar_cetak (kode_produk_bahan_ajar_cetak);
 
 drop type if exists jenis_tgl_kirim cascade;
 create type jenis_tgl_kirim as enum (
@@ -281,7 +297,9 @@ create table trx_keranjang_bahan_ajar_cetak_kirim (
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_bahan_ajar_cetak_kirim (kode_keranjang_produk_header);
 ALTER TABLE trx_keranjang_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_produk_bahan_ajar_cetak_kirim) REFERENCES ref_produk_bahan_ajar_cetak_kirim(kode_produk_bahan_ajar_cetak_kirim);
+CREATE INDEX ON trx_keranjang_bahan_ajar_cetak_kirim (kode_produk_bahan_ajar_cetak_kirim);
 
 DROP TABLE IF EXISTS trx_keranjang_pengiriman_door_to_door CASCADE;
 create table trx_keranjang_pengiriman_door_to_door (
@@ -303,7 +321,9 @@ create table trx_keranjang_pengiriman_door_to_door (
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_pengiriman_door_to_door ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_pengiriman_door_to_door (kode_keranjang_produk_header);
 ALTER TABLE trx_keranjang_pengiriman_door_to_door ADD FOREIGN KEY (kode_produk_pengiriman_door_to_door) REFERENCES ref_produk_pengiriman_door_to_door(kode_produk_pengiriman_door_to_door);
+CREATE INDEX ON trx_keranjang_pengiriman_door_to_door (kode_produk_pengiriman_door_to_door);
 comment on column trx_keranjang_pengiriman_door_to_door.kode_unit is 'UPBJJ';
 
 DROP TABLE IF EXISTS trx_keranjang_pengiriman_ut_daerah CASCADE;
@@ -320,7 +340,9 @@ CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_pengiriman_ut_daerah ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
+CREATE INDEX ON trx_keranjang_pengiriman_ut_daerah (kode_keranjang_produk_header);
 ALTER TABLE trx_keranjang_pengiriman_ut_daerah ADD FOREIGN KEY (kode_produk_pengiriman_ut_daerah) REFERENCES ref_produk_pengiriman_ut_daerah(kode_produk_pengiriman_ut_daerah);
+CREATE INDEX ON trx_keranjang_pengiriman_ut_daerah (kode_produk_pengiriman_ut_daerah);
 
 drop table if exists ref_status_perencanaan;
 CREATE TABLE ref_status_perencanaan (

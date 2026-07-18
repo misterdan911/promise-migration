@@ -95,7 +95,7 @@ type TblSuratBap struct {
     NomorBap       pgtype.Text
     TanggalBap     pgtype.Timestamp
     PathBap        pgtype.Text
-    NominalDenda   pgtype.Text
+    NominalDenda   pgtype.Numeric
     BapFile        pgtype.Text
     HashDokumen    pgtype.Text
     FileScanBap    pgtype.Text

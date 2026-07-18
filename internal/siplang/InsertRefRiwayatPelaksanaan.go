@@ -180,6 +180,7 @@ func InsertRefRiwayatPelaksanaan(refPermintaan refpermintaanmodel.RefPermintaan,
 			TanggalBap:                tblSuratBap.TanggalBap,
 			DokHasilPekerjaan:         pathDokumen,
 			NamaPemeriksa:             helperUser.VmsUserName,
+			Denda:                     tblSuratBap.NominalDenda,
 			Ucr:                       refPermintaan.Ucr,
 		}
 		refbapemeriksaanmodel.InsertNew(refBaPemeriksaan)
