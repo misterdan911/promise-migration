@@ -219,6 +219,7 @@ create table trx_keranjang_barang(
   kode_keranjang_produk_header int4,
   kuantitas int4,
   kode_ruang varchar,
+  waktu int4,
   info varchar,
   tanggal date,
   harga numeric,
@@ -356,6 +357,8 @@ create table ref_perencanaan (
   kode_perencanaan
   kode_rup
   kode_unit
+  id_user_ppk
+  id_user_pp
   kode_vendor
   nama_paket
   kode_keranjang
