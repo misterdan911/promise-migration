@@ -345,29 +345,100 @@ CREATE INDEX ON trx_keranjang_pengiriman_ut_daerah (kode_keranjang_produk_header
 ALTER TABLE trx_keranjang_pengiriman_ut_daerah ADD FOREIGN KEY (kode_produk_pengiriman_ut_daerah) REFERENCES ref_produk_pengiriman_ut_daerah(kode_produk_pengiriman_ut_daerah);
 CREATE INDEX ON trx_keranjang_pengiriman_ut_daerah (kode_produk_pengiriman_ut_daerah);
 
+
+/*
 drop table if exists ref_status_perencanaan;
 CREATE TABLE ref_status_perencanaan (
 	kode_status_perencanaan int4 primary key,
 	status varchar(255)
 );
 
-/*
+create type jenis_aset as enum (
+  'aset_lancar',
+  'aset_tetap',
+  'non_aset'
+);
+
+create type metode_pemesanan as enum (
+  'kit_ipa',
+  'lainnya'
+);
+
+create table ref_alamat_kirim(
+  kode_alamat_kirim serial primary key,
+  label_alamat varchar(50),
+  alamat_lengkap text
+);
+
+
+create type jenis_pembayaran as enum (
+  'sekaligus',
+  'termin'
+);
+
+create type konfirmasi_terima_pesanan as enum (
+  'terima',
+  'tolak'
+);
+
 drop table if exists ref_perencanaan;
 create table ref_perencanaan (
-  kode_perencanaan
-  kode_rup
-  kode_unit
-  id_user_ppk
-  id_user_pp
-  kode_vendor
-  nama_paket
-  kode_keranjang
-  kode_status_perencanaan
-  kode_kat_kontrak_payung
-  no_surat_pesanan
-  ucr
-  uch
-  udcr
-  udch
+  kode_perencanaan serial primary key,
+  kode_unit varchar,
+  id_user_ppk int4,
+  id_user_pp int4,
+  kode_rup int4,
+  kode_kat_kontrak_payung int4,
+  jenis_aset jenis_aset,
+  kode_uraian_kelompok int4,
+  metode_pemesanan metode_pemesanan,
+
+  kode_vendor int4,
+  nama_paket varchar,
+  kode_keranjang int4
+  kode_status_perencanaan int4,
+
+  tgl_surat_pesanan timestamptz
+  nomor_surat_pesanan varchar,
+  file_rincian varchar,
+  encrypt_key_rincian varchar,
+
+  kode_alamat_kirim int4,
+  jenis_pembayaran jenis_pembayaran,
+
+  konfirmasi_terima_pesanan konfirmasi_terima_pesanan,
+  alasan_tolak_pesanan text,
+
+  ucr varchar,
+  uch varchar,
+  udcr timestamptz,
+  udch timestamptz
+);
+
+create table trx_pembayaran_termin(
+  kode_pembayaran_termin serial primary key,
+  kode_perencanaan int4,
+  nama_sispembayaran varchar,
+  persentase numeric,
+  nilai_rupiah numeric,
+  tgl_perkiraan_pencairan timestamptz
+);
+
+CREATE TABLE trx_tte (
+	kode_tte serial primary key,
+	kode_trx_penandatangan int4 NULL,
+  kode_perencanaan int4,
+	kategori_tte kategori_tte NOT NULL,
+	path_dokumen varchar NULL,
+	path_dokumen_selesai varchar NULL,
+	tgl_selesai timestamp NULL,
+	nomor_surat varchar NULL
+);
+
+create table trx_dokumen (
+  kode_dok serial primary key,
+  file_dok varchar(255),
+  encrypt_key varchar(255),
+  kode_trx_penandatangan int4,
 );
 */
