@@ -8,8 +8,6 @@ DROP TABLE IF EXISTS trx_head CASCADE;
 DROP TABLE IF EXISTS ref_pengajuan CASCADE;
 
 
--- ref_project referenced by trx_head
-DROP TABLE IF EXISTS ref_project CASCADE;
 
 
 
@@ -39,19 +37,24 @@ DROP TABLE IF EXISTS ref_pengajuan CASCADE;
 create table ref_pengajuan(
   id_pengajuan serial primary key,
   refrenceId varchar,
+  refrenceNo varchar,
   partnerRefrenceNo varchar,
   id_head_ref int4,
   kode_unit varchar,
+  kode_paket int4,
   kode_vendor int4,
   status status_pengajuan,
   kode_aplikasi varchar(2),
   closureType closure_type,
+  file_bukti_pengajuan varchar,
+  encrypt_key_file_bukti_pengajuan varchar,
   ucr varchar,
   uch varchar,
   udcr timestamptz,
   udch timestamptz
 );
-
+ALTER TABLE ref_pengajuan ADD FOREIGN KEY (id_head_ref) REFERENCES trx_head (id_head_ref);
+CREATE INDEX ON ref_pengajuan(id_head_ref);
 
 -- ref_additional_info referenced by trx_head
 DROP TABLE IF EXISTS ref_additional_info CASCADE;
@@ -67,8 +70,11 @@ create table ref_additional_info(
   email varchar
 );
 
+-- ref_project referenced by trx_head
+DROP TABLE IF EXISTS ref_project CASCADE;
 create table ref_project(
   id_project serial primary key,
+  projectName varchar,
   contractNumber varchar,
   contractDate date
 );
