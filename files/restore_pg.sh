@@ -83,7 +83,15 @@ for db in "${databases[@]}"; do
   psql -h localhost -U postgres -d postgres -c "CREATE DATABASE ${db};"
 
   # Restore Database
-  psql -h localhost -U postgres -d "${db}" -f "$extracted_file"
+  # psql -h localhost -U postgres -d "${db}" -f "$extracted_file"
+  
+  # Restore Database with ON_ERROR_STOP
+  if PGOPTIONS="-c client_min_messages=WARNING" psql -h localhost -U postgres -d "${db}" -v ON_ERROR_STOP=1 -f "$extracted_file"; then
+      echo "✅ Restore completed successfully"
+  else
+      echo "❌ Restore failed"
+      exit 1
+  fi
 
   # Get just the size value without the header and footer
   DB_SIZE=$(psql -h localhost -U postgres -d postgres -t -A -c "SELECT pg_size_pretty(pg_database_size('$db'));")
