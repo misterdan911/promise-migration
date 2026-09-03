@@ -20,7 +20,8 @@ func ProcessOriginalPath(originalPath pgtype.Text) error {
 	// }
 
 	// reset FilePath
-	g.FilePath = "D:/Danu/repo/golang/promise-migration/files/tmp"
+	// g.FilePath = "D:/Danu/repo/golang/promise-migration/files/tmp"
+	g.FilePath = "/home/danu/repo/golang/promise-migration/tmp"
 
 	// Cek apakah dokumen sudah pernah berhasil di proses
 	helperDokumen := helperdokumenmodel.GetByOriginalPath(originalPath)

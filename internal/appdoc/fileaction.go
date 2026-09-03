@@ -94,12 +94,28 @@ func DownloadFile(url string) error {
 			return fmt.Errorf("bad status: %s", resp.Status)
 		}
 
+		// IMPORTANT: Truncate file on retry to remove partial data
+		if attempt > 0 {
+			if err := out.Truncate(0); err != nil {
+				return fmt.Errorf("failed to truncate file: %v", err)
+			}
+			if _, err := out.Seek(0, 0); err != nil {
+				return fmt.Errorf("failed to seek file: %v", err)
+			}
+		}
+
 		// Write the body to file
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
 
 	        // Check if it's a GOAWAY error
 	        if strings.Contains(err.Error(), "GOAWAY") {
+	            time.Sleep(time.Duration(attempt+1) * time.Second)
+	            continue
+	        }			
+
+	        // Check if it's a GOAWAY error
+	        if strings.Contains(err.Error(), "connection reset by peer") {
 	            time.Sleep(time.Duration(attempt+1) * time.Second)
 	            continue
 	        }			
