@@ -37,6 +37,7 @@ type RefPerencanaan struct {
 	TglKontrakAkhir          pgtype.Date
 	KodeJenisAsset            pgtype.Text
 	KodeUraianKelompok       pgtype.Text
+	KodePengisianPerItem       pgtype.Int4
 }
 
 func InsertNew(refPerencanaan RefPerencanaan) RefPerencanaan {

@@ -24,7 +24,7 @@ var SiqutCmd = &cobra.Command{
     db.ConnectPromiseSiqut()
     defer db.PromiseSiqut.Close()
 
-    fmt.Println("Truncating Siqut table and loggggggg...")
+    fmt.Println("Truncating Siqut table and log...")
     siqut.TruncateTableAndLog()
 
     siqut.MigrateSiqut()

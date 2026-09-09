@@ -5,6 +5,7 @@ import (
   "promise-migration/internal/model/promise_siqut/tblsiqutdppmodel"
   "promise-migration/internal/model/dbsiqut/refperencanaanmodel"
   "promise-migration/internal/model/dbsiqut/bridgingkoderupmodel"
+  "promise-migration/internal/model/dbsiqut/bridgingusermodel"
 )
 
 func MigrateSiqut() {
@@ -16,11 +17,13 @@ func MigrateSiqut() {
 		
 		// kode_rup
 		kodeRup := bridgingkoderupmodel.GetKodeRup(tblSiqut.IdRup)
+		ucr := bridgingusermodel.GetNama(tblSiqut.IdPpk)
 
     refPerencanaan := refperencanaanmodel.RefPerencanaan{
       KodePerencanaan: tblSiqut.IdSiqutDpp,
       KodeRup: kodeRup,
       KodeUnit: tblSiqut.KodeUnit,
+      Ucr: ucr,
     }
 
     _ = refperencanaanmodel.InsertNew(refPerencanaan)
