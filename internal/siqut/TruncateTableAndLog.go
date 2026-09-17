@@ -20,6 +20,7 @@ func TruncateTableAndLog() {
 	}
 	
 	// UpdatePrimaryKeySequenceFromFile()
+	ResetPrimaryKeySequenceFromFile()
 }
 
 func UpdatePrimaryKeySequenceFromFile() {
@@ -27,6 +28,25 @@ func UpdatePrimaryKeySequenceFromFile() {
 	var path string
 
 	path = filepath.Join("files", "siqut", "sql", "update_serial_sequence.sql")
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatal("Error ReadFile: " + err.Error())
+	}
+
+	qFk := string(data)
+	ctx := context.Background()
+	_, errQFk := db.DbSiqut.Exec(ctx, qFk)
+	if errQFk != nil {
+		log.Fatal("Siqut UpdatePkSequenceFromFile Failed, " + errQFk.Error())
+	}
+}
+
+func ResetPrimaryKeySequenceFromFile() {
+
+	var path string
+
+	path = filepath.Join("files", "siqut", "sql", "reset_serial_sequence.sql")
 
 	data, err := os.ReadFile(path)
 	if err != nil {
