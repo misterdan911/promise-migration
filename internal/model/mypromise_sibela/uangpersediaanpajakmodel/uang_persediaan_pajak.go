@@ -32,6 +32,7 @@ func GetAllDocument() ([]UangPersediaanPajak, error) {
         path_kurs_bank,
         path_kurs_kmk
     FROM uang_persediaan_pajak
+		WHERE id_pajak >= 123486
     order by id_pajak asc`
 
 	results, err := db.MyPromiseSibela.Query(qData)
