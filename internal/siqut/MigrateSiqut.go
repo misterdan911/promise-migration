@@ -7,6 +7,7 @@ import (
   "promise-migration/internal/model/dbsiqut/bridgingkoderupmodel"
   "promise-migration/internal/model/dbsiqut/bridgingusermodel"
   "promise-migration/internal/model/dbsiqut/trxkajiulangmodel"
+  "promise-migration/internal/model/dbsiqut/trxpersiapanpemilihanmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -54,6 +55,17 @@ func MigrateSiqut() {
 			KodePerencanaan: refPerencanaan.KodePerencanaan,
 		}
 		trxKajiUlang = trxkajiulangmodel.InsertNew(trxKajiUlang)
+
+		kodeMetodePemasukanDok := pgtype.Int4{Valid: false}
+		if tblSiqut.MetodePemasukan.String == "Metode satu file" {
+			kodeMetodePemasukanDok = pgtype.Int4{Valid: true, Int32: 1}
+		}
+
+		trxPersiapanPemilihan := trxpersiapanpemilihanmodel.TrxPersiapanPemilihan{
+			KodeKu: trxKajiUlang.KodeKu,
+			KodeMetodePemasukanDok: kodeMetodePemasukanDok,
+		}
+		trxPersiapanPemilihan = trxpersiapanpemilihanmodel.InsertNew(trxPersiapanPemilihan)
   }
 
 	refperencanaanmodel.UpdateSequence()

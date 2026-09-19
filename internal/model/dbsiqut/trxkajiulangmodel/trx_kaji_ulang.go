@@ -45,21 +45,3 @@ func InsertNew(trxKajiUlang TrxKajiUlang) TrxKajiUlang {
 	return allRows[0]
 }
 
-
-func UpdateSequence() {
-	ctx := context.Background()
-	qUpdate := "SELECT setval('trx_kaji_ulang_kode_ku_seq', (SELECT MAX(kode_ku) FROM trx_kaji_ulang))"
-	_, err := db.DbSiqut.Exec(ctx, qUpdate)
-	if err != nil {
-		log.Fatal("Update Sequence Failed (siqut trx_kaji_ulang.go), " + err.Error())
-	}
-}
-
-func ResetSequence() {
-	ctx := context.Background()
-	qUpdate := "SELECT setval('trx_kaji_ulang_kode_ku_seq', 1, false)"
-	_, err := db.DbSiqut.Exec(ctx, qUpdate)
-	if err != nil {
-		log.Fatal("Reset Sequence Failed (siqut trx_kaji_ulang.go), " + err.Error())
-	}
-}
