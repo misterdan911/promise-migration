@@ -47,6 +47,8 @@ func MigrateSiqut() {
       KodeJenisPengadaan: kodeJenisPengadaan,
       NilaiHps: tblSiqut.NilaiHps,
 			KodeJenisKontrak: kodeJenisKontrak,
+			Udcr: tblSiqut.CreatedAt,
+			Udch: tblSiqut.UpdatedAt,
     }
 
     _ = refperencanaanmodel.InsertNew(refPerencanaan)
@@ -61,9 +63,17 @@ func MigrateSiqut() {
 			kodeMetodePemasukanDok = pgtype.Int4{Valid: true, Int32: 1}
 		}
 
+		kodeMetodeEvaluasi := pgtype.Int4{Valid: false}
+		if tblSiqut.MetodeEvaluasi.String == "Harga Terendah" {
+			kodeMetodeEvaluasi = pgtype.Int4{Valid: true, Int32: 1}
+		} else if tblSiqut.MetodeEvaluasi.String == "Sistem Nilai" {
+			kodeMetodeEvaluasi = pgtype.Int4{Valid: true, Int32: 2}
+		}
+		
 		trxPersiapanPemilihan := trxpersiapanpemilihanmodel.TrxPersiapanPemilihan{
 			KodeKu: trxKajiUlang.KodeKu,
 			KodeMetodePemasukanDok: kodeMetodePemasukanDok,
+			KodeMetodeEvaluasi: kodeMetodeEvaluasi,
 		}
 		trxPersiapanPemilihan = trxpersiapanpemilihanmodel.InsertNew(trxPersiapanPemilihan)
   }

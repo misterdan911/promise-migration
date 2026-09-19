@@ -14,6 +14,7 @@ type TrxPersiapanPemilihan struct {
 	KodePersiapanPemilihan pgtype.Int4
 	KodeKu pgtype.Int4
 	KodeMetodePemasukanDok pgtype.Int4
+	KodeMetodeEvaluasi pgtype.Int4
 }
 
 func InsertNew(trxPersiapanPemilihan TrxPersiapanPemilihan) TrxPersiapanPemilihan {
@@ -22,15 +23,18 @@ func InsertNew(trxPersiapanPemilihan TrxPersiapanPemilihan) TrxPersiapanPemiliha
 	qIns := `
 	INSERT INTO trx_persiapan_pemilihan(
 		kode_ku,
-		kode_metode_pemasukan_dok
+		kode_metode_pemasukan_dok,
+		kode_metode_evaluasi
 	) VALUES (
 		@kode_ku,
-		@kode_metode_pemasukan_dok
-	) RETURNING kode_persiapan_pemilihan, kode_ku, kode_metode_pemasukan_dok`
+		@kode_metode_pemasukan_dok,
+		@kode_metode_evaluasi
+	) RETURNING kode_persiapan_pemilihan, kode_ku, kode_metode_pemasukan_dok, kode_metode_evaluasi`
 	
 	args := pgx.NamedArgs{
 		"kode_ku":          						trxPersiapanPemilihan.KodeKu,
 		"kode_metode_pemasukan_dok":    trxPersiapanPemilihan.KodeMetodePemasukanDok,
+		"kode_metode_evaluasi":    trxPersiapanPemilihan.KodeMetodeEvaluasi,
 	}
 
 	rwIns, errIns := db.DbSiqut.Query(ctx, qIns, args)
