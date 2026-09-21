@@ -18,6 +18,9 @@ var SiqutCmd = &cobra.Command{
 		db.ConnectDbUsman()
 		defer db.DbUsman.Close()
 
+		db.ConnectDbSidapet()
+		defer db.DbSidapet.Close()
+
 		db.ConnectDbSiqut()
 		defer db.DbSiqut.Close()
 

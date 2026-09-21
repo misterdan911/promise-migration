@@ -1,13 +1,15 @@
 package siqut
 
 import (
-  // "fmt"
-  "promise-migration/internal/model/promise_siqut/tblsiqutdppmodel"
-  "promise-migration/internal/model/dbsiqut/refperencanaanmodel"
-  "promise-migration/internal/model/dbsiqut/bridgingkoderupmodel"
-  "promise-migration/internal/model/dbsiqut/bridgingusermodel"
-  "promise-migration/internal/model/dbsiqut/trxkajiulangmodel"
-  "promise-migration/internal/model/dbsiqut/trxpersiapanpemilihanmodel"
+	// "fmt"
+	"promise-migration/internal/model/dbsidapet/helperdokumenmodel"
+	"promise-migration/internal/model/dbsiqut/bridgingkoderupmodel"
+	"promise-migration/internal/model/dbsiqut/bridgingusermodel"
+	"promise-migration/internal/model/dbsiqut/refperencanaanmodel"
+	"promise-migration/internal/model/dbsiqut/trxdokumenmodel"
+	"promise-migration/internal/model/dbsiqut/trxkajiulangmodel"
+	"promise-migration/internal/model/dbsiqut/trxpersiapanpemilihanmodel"
+	"promise-migration/internal/model/promise_siqut/tblsiqutdppmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -38,6 +40,8 @@ func MigrateSiqut() {
 		kodeJenisPengadaan := pgtype.Int4{Valid: true, Int32: arrJenisPengadaan[tblSiqut.JenisKriteria.String]}
 		kodeJenisKontrak := pgtype.Int4{Valid: true, Int32: arrJenisKontrak[tblSiqut.JenisKontrak.String]}
 		
+		// helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSiqut.PathRancanganKontrak)
+
     refPerencanaan := refperencanaanmodel.RefPerencanaan{
       KodePerencanaan: tblSiqut.IdSiqutDpp,
       KodeRup: kodeRup,
@@ -50,8 +54,14 @@ func MigrateSiqut() {
 			Udcr: tblSiqut.CreatedAt,
 			Udch: tblSiqut.UpdatedAt,
     }
-
     _ = refperencanaanmodel.InsertNew(refPerencanaan)
+
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSiqut.PathRancanganKontrak)
+		trxDokumenModel := trxdokumenmodel.TrxDokumen{
+			KodePerencanaan: refPerencanaan.KodePerencanaan,
+			FileDok: helperDokumen.Newfilename,
+		}
+		trxdokumenmodel.InsertNew(trxDokumenModel)
 
 		trxKajiUlang := trxkajiulangmodel.TrxKajiUlang{
 			KodePerencanaan: refPerencanaan.KodePerencanaan,
