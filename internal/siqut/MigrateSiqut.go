@@ -9,6 +9,8 @@ import (
 	"promise-migration/internal/model/dbsiqut/trxdokumenmodel"
 	"promise-migration/internal/model/dbsiqut/trxkajiulangmodel"
 	"promise-migration/internal/model/dbsiqut/trxpersiapanpemilihanmodel"
+	"promise-migration/internal/model/dbsiqut/trxpokjaterpilihmodel"
+	"promise-migration/internal/model/promise_siqut/helperdpppokjamodel"
 	"promise-migration/internal/model/promise_siqut/tblsiqutdppmodel"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -39,8 +41,6 @@ func MigrateSiqut() {
 		ucr := bridgingusermodel.GetNama(tblSiqut.IdPpk)
 		kodeJenisPengadaan := pgtype.Int4{Valid: true, Int32: arrJenisPengadaan[tblSiqut.JenisKriteria.String]}
 		kodeJenisKontrak := pgtype.Int4{Valid: true, Int32: arrJenisKontrak[tblSiqut.JenisKontrak.String]}
-		
-		// helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSiqut.PathRancanganKontrak)
 
     refPerencanaan := refperencanaanmodel.RefPerencanaan{
       KodePerencanaan: tblSiqut.IdSiqutDpp,
@@ -56,12 +56,7 @@ func MigrateSiqut() {
     }
     _ = refperencanaanmodel.InsertNew(refPerencanaan)
 
-		helperDokumen := helperdokumenmodel.GetByOriginalPath(tblSiqut.PathRancanganKontrak)
-		trxDokumenModel := trxdokumenmodel.TrxDokumen{
-			KodePerencanaan: refPerencanaan.KodePerencanaan,
-			FileDok: helperDokumen.Newfilename,
-		}
-		trxdokumenmodel.InsertNew(trxDokumenModel)
+		InsertDokumenFromTblSiqutDpp(tblSiqut, refPerencanaan)
 
 		trxKajiUlang := trxkajiulangmodel.TrxKajiUlang{
 			KodePerencanaan: refPerencanaan.KodePerencanaan,
@@ -74,19 +69,87 @@ func MigrateSiqut() {
 		}
 
 		kodeMetodeEvaluasi := pgtype.Int4{Valid: false}
-		if tblSiqut.MetodeEvaluasi.String == "Harga Terendah" {
+		switch tblSiqut.MetodeEvaluasi.String {
+		case "Harga Terendah":
 			kodeMetodeEvaluasi = pgtype.Int4{Valid: true, Int32: 1}
-		} else if tblSiqut.MetodeEvaluasi.String == "Sistem Nilai" {
+		case "Sistem Nilai":
 			kodeMetodeEvaluasi = pgtype.Int4{Valid: true, Int32: 2}
 		}
-		
+
 		trxPersiapanPemilihan := trxpersiapanpemilihanmodel.TrxPersiapanPemilihan{
 			KodeKu: trxKajiUlang.KodeKu,
 			KodeMetodePemasukanDok: kodeMetodePemasukanDok,
 			KodeMetodeEvaluasi: kodeMetodeEvaluasi,
 		}
 		trxPersiapanPemilihan = trxpersiapanpemilihanmodel.InsertNew(trxPersiapanPemilihan)
+
+		allHelperDppPokja := helperdpppokjamodel.GetPokjaTerpilih(tblSiqut.IdSiqutDpp)
+
+		for _, helperDppPokja := range allHelperDppPokja {
+			// fmt.Printf("helperDppPokja: %d\n", helperDppPokja.IdPokja.Int32)
+
+			trxPokjaTerpilih := trxpokjaterpilihmodel.TrxPokjaTerpilih{
+				KodePerencanaan: tblSiqut.IdSiqutDpp,
+				Id: helperDppPokja.UserIdV2,
+				NamaPokja: helperDppPokja.Name,
+				Nip: helperDppPokja.Nip,
+				Email: helperDppPokja.EmailReal,
+			}
+			_ = trxpokjaterpilihmodel.InsertNew(trxPokjaTerpilih)
+		}
+
   }
 
 	refperencanaanmodel.UpdateSequence()
 }
+
+func InsertDokumenFromTblSiqutDpp(tblSiqut tblsiqutdppmodel.TblSiqutDpp, refPerencanaan refperencanaanmodel.RefPerencanaan) {
+	paths := []pgtype.Text{
+		tblSiqut.PathRancanganKontrak,
+		tblSiqut.PathKak,
+		tblSiqut.PathSpek,
+		tblSiqut.PathQuotation,
+		tblSiqut.PathDokBa,
+		tblSiqut.PathDokAddendum,
+	}
+
+	for _, path := range paths {
+
+		if !path.Valid || path.String == "" {
+			continue
+		}
+
+		kodeKelDok := pgtype.Int4{Valid: false}
+
+		if path == tblSiqut.PathRancanganKontrak {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 3
+		} else if path == tblSiqut.PathKak {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 1
+		} else if path == tblSiqut.PathSpek {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 1
+		} else if path == tblSiqut.PathQuotation {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 7
+		} else if path == tblSiqut.PathDokBa {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 9
+		} else if path == tblSiqut.PathDokAddendum {
+			kodeKelDok.Valid = true
+			kodeKelDok.Int32 = 10
+		}
+
+		helperDokumen := helperdokumenmodel.GetByOriginalPath(path)
+		if !helperDokumen.Newfilename.Valid { continue }
+		trxdokumenmodel.InsertNew(trxdokumenmodel.TrxDokumen{
+			KodePerencanaan: refPerencanaan.KodePerencanaan,
+			FileDok:         helperDokumen.Newfilename,
+			EncryptKey:      helperDokumen.EncryptKey,
+			KodeKelDok:      kodeKelDok,
+			Udcr:            tblSiqut.CreatedAt,
+		})
+	}
+}
+
