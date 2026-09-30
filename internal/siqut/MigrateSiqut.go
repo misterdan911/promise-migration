@@ -87,7 +87,6 @@ func MigrateSiqut() {
 
 		for _, helperDppPokja := range allHelperDppPokja {
 			// fmt.Printf("helperDppPokja: %d\n", helperDppPokja.IdPokja.Int32)
-
 			trxPokjaTerpilih := trxpokjaterpilihmodel.TrxPokjaTerpilih{
 				KodePerencanaan: tblSiqut.IdSiqutDpp,
 				Id: helperDppPokja.UserIdV2,
@@ -97,6 +96,8 @@ func MigrateSiqut() {
 			}
 			_ = trxpokjaterpilihmodel.InsertNew(trxPokjaTerpilih)
 		}
+
+		MigrateTblSiqutBeriPenjelasan(tblSiqut.IdSiqutDpp, trxPersiapanPemilihan.KodePersiapanPemilihan)
 
   }
 
