@@ -33,7 +33,7 @@ func GetAllPenjelasanPerPaket(idSiqutDpp pgtype.Int4) []TblSiqutBeriPenjelasan {
     id_user,
     penjelasan,
     created_at
-  FROM promise_siqut.tbl_siqut_beri_penjelasan
+  FROM tbl_siqut_beri_penjelasan
 	WHERE id_siqut_dpp = $1
   ORDER BY id_siqut_beri_penjelasan ASC`
 

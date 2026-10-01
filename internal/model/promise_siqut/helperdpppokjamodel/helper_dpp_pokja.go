@@ -32,7 +32,7 @@ func GetPokjaTerpilih(idSiqutDpp pgtype.Int4) []HelperDppPokja {
     email_real,
     name,
     nip
-  FROM promise_siqut.helper_dpp_pokja
+  FROM helper_dpp_pokja
 	WHERE id_siqut_dpp = $1
   ORDER BY id_siqut_dpp_pokja ASC`
 
