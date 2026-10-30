@@ -24,7 +24,7 @@ type TblSiqutDpp struct {
   Pengadaan        pgtype.Text
   Pengadaan2       pgtype.Text
   Pagu             pgtype.Int4
-  NilaiHps         pgtype.Int8
+  NilaiHps         pgtype.Numeric
   TahunAnggaran    pgtype.Int4
   Rka              pgtype.Int4
   Program          pgtype.Text
