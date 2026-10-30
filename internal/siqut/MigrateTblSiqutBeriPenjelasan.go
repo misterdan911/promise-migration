@@ -21,13 +21,19 @@ func MigrateTblSiqutBeriPenjelasan(idSiqutDpp pgtype.Int4, kodePersiapanPemiliha
 
 	for _, tblSBP := range allTblSBP {
 		if tblSBP.KomenPenjelasan.Int32 == 999999 {
-			isiPenjelsan.String += tblSBP.Penjelasan.String	+ "\n"
+			isiPenjelsan.String += tblSBP.Penjelasan.String	+ "\n\n"
 		}
 	}
 
 	trxPemberianPenjelasan = trxpemberianpenjelasanmodel.TrxPemberianPenjelasan{
 		KodePersiapanPemilihan: kodePersiapanPemilihan,
 		IsiPenjelasan: isiPenjelsan,
+		IsDppRevisi: pgtype.Bool{Valid: true, Bool: false},
+		IsMdpRevisi: pgtype.Bool{Valid: true, Bool: false},
+		IsLdpRevisi: pgtype.Bool{Valid: true, Bool: false},
+		IsLdkRevisi: pgtype.Bool{Valid: true, Bool: false},
+		IsJadwalRevisi: pgtype.Bool{Valid: true, Bool: false},
+		PpkRevisi: pgtype.Bool{Valid: true, Bool: false},
 	}
 	trxPemberianPenjelasan = trxpemberianpenjelasanmodel.InsertNew(trxPemberianPenjelasan)
 
