@@ -1,0 +1,84 @@
+INSERT INTO public.ref_ba_pemeriksaan
+(kode_ba_pemerikasaan, kode_trx_riwayat_pelaksanaan, kode_tte, tanggal_bap, denda, dok_hasil_pekerjaan, catatan, nama_pemeriksa, ucr, uch, udcr, udch)
+VALUES(10070, 51094, NULL, NULL, NULL, NULL, NULL, NULL, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:24:43.334', '2026-10-06 11:24:43.334');
+
+
+INSERT INTO public.trx_riwayat_pelaksanaan
+(kode_trx_riwayat_pelaksanaan, kode_riwayat_pelaksanaan, kode_step_riwayat_pelaksanaan, status_step, ucr, uch, udcr, udch)
+VALUES(51094, 10063, 1, 'proses pk', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:24:43.331', '2026-10-06 11:24:43.331');
+
+
+INSERT INTO public.ref_riwayat_pelaksanaan
+(kode_riwayat_pelaksanaan, kode_proses_kontrak, kode_trx_jenis_sispembayaran, status_riwayat_pelaksanaan, ucr, uch, udcr, udch)
+VALUES(10063, 26797, 10414, 'proses', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:24:43.330', '2026-10-06 11:24:43.330');
+
+
+INSERT INTO public.ref_proses_kontrak
+(kode_proses_kontrak, kode_permintaan, kode_status_kontrak, kode_step_persiapan_kontrak, ucr, uch, udcr, udch, status_pengisian)
+VALUES(26797, 9244, 3, NULL, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:24:43.329', '2026-10-06 11:24:43.329', 'Belum Diisi');
+
+-- Dokumen kontrak
+INSERT INTO public.ref_proses_kontrak
+(kode_proses_kontrak, kode_permintaan, kode_status_kontrak, kode_step_persiapan_kontrak, ucr, uch, udcr, udch, status_pengisian)
+VALUES(26796, 9244, 2, NULL, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:23:20.103', '2026-10-06 11:24:43.328', 'Selesai');o
+
+
+INSERT INTO public.trx_sistem_pembayaran
+(kode_sistem_pembayaran, kode_proses_kontrak, jenis_pembayaran, kategori_sispembayaran, ucr, uch, udcr, udch)
+VALUES(8768, 26785, 'sekaligus', 'sekaligus'::public.kategori_sispembayaran, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:21:12.208', '2026-10-06 11:21:12.208');
+
+
+INSERT INTO public.trx_serah_terima
+(kode_serah_terima, kode_proses_kontrak, kategori_serah_terima, rincian, persentase, nilai_rupiah, status_serah_terima, ucr, uch, udcr, udch)
+VALUES(8756, 26785, 'sekaligus'::public.kategori_serah_terima, 'Pekerjaan sesuai dengan ruang lingkup dan negosiasi teknis yg tercantum pada KAK', 100, 18868725, 1, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:23:20.101', '2026-10-06 11:23:20.101');
+
+
+INSERT INTO public.trx_jenis_laporan
+(kode_trx_jenis_laporan, kode_proses_kontrak, path_dokumen, ucr, uch, udcr, udch, nama_laporan)
+VALUES(8948, 26785, NULL, 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:20:36.839', '2026-10-06 11:20:36.839', 'Laporan Akhir');
+
+
+INSERT INTO public.trx_jangka_waktu
+(kode_jangka_waktu, kode_proses_kontrak, jangka_waktu, dari, sampai_dengan, ucr, uch, udcr, udch, satuan_jangka_waktu)
+VALUES(8768, 26785, 39, '2026-08-29 07:00:00.000', '2026-10-06 07:00:00.000', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:35.794', '2026-10-06 11:22:35.794', 'hari');
+
+
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343392, 26785, 'Penyedia memahami kontrak dan spesifikasi', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343393, 26785, 'Penyedia memiliki personalia dengan kemampuan dan kecakapan yang sesuai', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343394, 26785, 'Kualitas hasil pekerjaan sesuai dengan spesifikasi teknis', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343395, 26785, 'Volume/jumlah item pekerjaan pada pelaksanaan sesuai kontrak', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343396, 26785, 'Kesesuaian nilai/harga selama masa pelaksanaan', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343397, 26785, 'Kemudahan/kecepatan proses penyelesaian penagihan', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343398, 26785, 'Ketepatan waktu selama masa pelaksanaan', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343399, 26785, 'Kecepatan dan penanganan respon penyedia terhadap pengguna jasa', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343400, 26785, 'Kualitas pengerjaan dokumen administrasi', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+INSERT INTO public.ref_keluaran_proses_kontrak
+(kode_keluaran, kode_proses_kontrak, keluaran, ucr, uch, udcr, udch, status_aktif)
+VALUES(343401, 26785, 'Proaktif dalam penyelesaian masalah', 'heri-indrawan@ecampus.ut.ac.id', NULL, '2026-10-06 11:22:41.866', '2026-10-06 11:22:41.866', 0);
+
+
+
+INSERT INTO public.ref_proses_kontrak
+(kode_proses_kontrak, kode_permintaan, kode_status_kontrak, kode_step_persiapan_kontrak, ucr, uch, udcr, udch, status_pengisian)
+VALUES(26785, 9244, 1, 6, 'pregalestarismd@yahoo.co.id', NULL, '2026-10-06 09:13:53.565', '2026-10-06 11:23:20.102', 'Selesai');
+
+
+

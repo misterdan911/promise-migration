@@ -24,6 +24,9 @@ var DokumenCmd = &cobra.Command{
 		db.ConnectMyPromiseSiplang()
 		defer db.MyPromiseSiplang.Close()
 
+		db.ConnectMyPromiseSiqut()
+		defer db.MyPromiseSiqut.Close()
+
 		db.ConnectDbSidapet()
 		defer db.DbSidapet.Close()
 
@@ -159,7 +162,7 @@ var DokumenCmd = &cobra.Command{
 
 		// 163485
 		// appdoc.MigrateFileFromPromiseSibelaUangPersediaanBukti()
-		appdoc.MigrateFileFromPromiseSibelaUangPersediaanPajak()
+		// appdoc.MigrateFileFromPromiseSibelaUangPersediaanPajak()
 
 		g.AppName = "Si-PLang"
 		// g.UrlBasePathExisting = "https://siplang-promiseterbuka.ut.ac.id"
@@ -183,6 +186,11 @@ var DokumenCmd = &cobra.Command{
 		// appdoc.MigrateFileFromPromiseSiplangTblTerminPl()
 		// appdoc.MigrateFileFromPromiseSiplangTblUndanganPl()
 
+		g.AppName = "Si-Qut"
+		g.UrlBasePathExisting = "https://siqut-promiseterbuka.ut.ac.id"
+
+		// tbl_siqut_dpp
+		appdoc.MigrateFileFromPromiseSiqutTblSiqutDpp()
 	},
 }
 

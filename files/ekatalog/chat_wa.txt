@@ -1,0 +1,38 @@
+[2:08 PM, 10/6/2026] Rachma - UT: pesanannya : tbl_checkout
+termin di pesanannya : tbl_checkout_pembayaran
+nah rinciannya:
+bahan ajar : tbl_ba_pesanan
+barjas : tbl_barjas_pesanan
+pengiriman ut daerah : tbl_upbj_pesanan
+pengiriman door to door : tbl_bac_pesanan
+
+khusus untuk yang bahan ajar cetak kirim (paramita) dia ada di tbl_ba_pesanan tapi detailnya lagi ada di tbl_do_mahasiswa + tbl_do_mahasiswa_sub + tbl_do_tracking
+[2:08 PM, 10/6/2026] Rachma - UT: bahan ajar cetak cuma pake tbl_ba_pesanan
+
+[2:13 PM, 10/6/2026] Rachma - UT: nah tbl_do_mahasiswa itu ditarik dari db sitta yang ada di unit puslaba ya pak, kalo mau coba liat akses ini aja
+host='172.16.40.81',
+user='promise',
+password='Pr0m1s3',
+database='db_distribusi4g',
+[2:13 PM, 10/6/2026] Rachma - UT: di tabel yang t_do_kirim_vendor
+[2:17 PM, 10/6/2026] Rachma - UT: di sitta mentahnya begini pak, satu nomor do ada lebih dari 1 baris datanya. nah di ekatalog dibuat satu induknya di tbl_do_mahasiswa, nah sub nya ada di tbl_do_mahasiswa_sub
+[2:17 PM, 10/6/2026] Rachma - UT: sub nya itu untuk detail bukunya
+[2:19 PM, 10/6/2026] Rachma - UT: kalo di sitta kan belum ada data pengirimannya apakah sudah deliv atau belum, di promise ada satu tabel lagi tbl_do_tracking untuk store data pengiriman per do nya
+[2:19 PM, 10/6/2026] Rachma - UT: bisa sambil diliat2 dulu aja pak db nya
+[2:21 PM, 10/6/2026] Danu: bisa sambil diliat2 dulu aja pak db nya
+Iya mba ini lg menyelam ke DB ekatalog
+[2:21 PM, 10/6/2026] Rachma - UT: di ekatalog ada tabel ini untuk kebutuhan si vendor paramita, tertera:
+harga (perhitungan harga buku dari total halaman)
+id_hps (index ke hps nya)
+id_tahap (index ke vendor yang mana)
+
+ini untuk kebutuhan di python ketika tarik data dari SITTA ke promise, dari tabel apa ke tabel apa
+[2:21 PM, 10/6/2026] Rachma - UT: woke pak siap
+[2:21 PM, 10/6/2026] Rachma - UT: kalo kurang jelas tanya langsung aja yak
+[2:25 PM, 10/6/2026] Rachma - UT: Kalo tabel new_integrasi ini ada tambahan sumber data HPS dari siqut sm tender pak, karena sebelumnya cuma dari sipung. Nah untuk mempermudah get data dari masing2 db dibuat si tabel ini untuk looping. Kalo ini kan datanya gak terpusat di satu db yaa jdnya sengaja dibuat begini
+
+
+
+https://ekatalog-promiseterbuka.ut.ac.id/
+riza@ecampus.ut.ac.id
+user1234

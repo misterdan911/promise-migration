@@ -47,6 +47,7 @@ create table ref_produk_header (
   kode_produk_header serial primary key,
   kode_vendor int4,
   dari_aplikasi dari_aplikasi,
+  kode_perencanaan_origin int4,
   kode_kat_produk int4,           -- Nanti terserah mau diisi apa sama mas Afan
   kode_kat_kontrak_payung int4,
   nama_produk varchar(255),
@@ -66,8 +67,10 @@ ALTER TABLE ref_produk_header ADD FOREIGN KEY (kode_kat_produk) REFERENCES ref_k
 CREATE INDEX ON ref_produk_header(kode_vendor);
 CREATE INDEX ON ref_produk_header (kode_kat_kontrak_payung);
 CREATE INDEX ON ref_produk_header (kode_kat_produk);
+comment on column ref_produk_header.kode_perencanaan_origin is 'kode perencanaan dari aplikasinya berasal';
 comment on column ref_produk_header.dari_aplikasi is 'sibela, siplang, siqut, sipung';
 comment on column ref_produk_header.status_produk is 'draft, proses_verifikasi, butuh_perbaikan, aktif, nonaktif';
+
 
 DROP TABLE IF EXISTS ref_produk_header_media CASCADE;
 create table ref_produk_header_media (
@@ -118,21 +121,38 @@ DROP TABLE IF EXISTS ref_produk_barang CASCADE;
 create table ref_produk_barang(
   kode_produk_barang serial primary key,
 	kode_produk_header int4,
-  harga numeric,
+  kode_barang int4,
+  kode_bmut varchar,
+  kode_boq_barang int4,
+  keterangan text,
+  waktu int4,
+  harga_satuan numeric,
+  satuan varchar(50),
+  kuantitas int4,
   subtotal_terjual int4
 );
 ALTER TABLE ref_produk_barang ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_barang (kode_produk_header);
+comment on column ref_produk_barang.kuantitas is 'jumlah stok barang yang ada';
+comment on column ref_produk_barang.subtotal_terjual is 'jumlah barang yang telah terjual';
+
 
 DROP TABLE IF EXISTS ref_produk_jasa CASCADE;
 create table ref_produk_jasa(
   kode_produk_jasa serial primary key,
 	kode_produk_header int4 NULL,
-  harga numeric,
+	kode_boq_jasa_lainya int4 NULL,
+	nama varchar(255) NULL,
+	keterangan text NULL,
+	waktu int4 NULL,
+	kuantitas int4 NULL,
+	harga_satuan numeric NULL,
+	satuan varchar NULL,
   subtotal_terjual int4
 );
 ALTER TABLE ref_produk_jasa ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_jasa (kode_produk_header);
+
 
 DROP TABLE IF EXISTS ref_produk_bahan_ajar_cetak CASCADE;
 CREATE TABLE ref_produk_bahan_ajar_cetak (
@@ -146,8 +166,7 @@ CREATE TABLE ref_produk_bahan_ajar_cetak (
 	hal_min int4 NULL,
 	hal_max int4 NULL,
 	satuan varchar(50) NULL,
-  penawaran numeric,
-	harga numeric NULL
+	harga_satuan numeric NULL
 );
 ALTER TABLE ref_produk_bahan_ajar_cetak ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_bahan_ajar_cetak (kode_produk_header);
@@ -158,7 +177,7 @@ CREATE TABLE ref_produk_bahan_ajar_cetak_kirim (
 	kode_produk_header int4 NULL,
 	hal_min int4 NULL,
 	hal_max int4 NULL,
-	harga numeric NULL
+	harga_satuan numeric NULL
 );
 ALTER TABLE ref_produk_bahan_ajar_cetak_kirim ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_bahan_ajar_cetak_kirim (kode_produk_header);
@@ -171,7 +190,7 @@ CREATE TABLE ref_produk_pengiriman_door_to_door (
 	kode_kecamatan varchar NULL,
 	moda moda NULL,
 	lead_time int4 NULL,
-	harga numeric NULL
+	harga_satuan numeric NULL
 );
 ALTER TABLE ref_produk_pengiriman_door_to_door ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_pengiriman_door_to_door (kode_produk_header);
@@ -185,7 +204,7 @@ CREATE TABLE ref_produk_pengiriman_ut_daerah (
 	kode_unit_tujuan varchar NULL,
 	moda moda NULL,
 	lead_time int4 NULL,
-	harga numeric NULL
+	harga_satuan numeric NULL
 );
 ALTER TABLE ref_produk_pengiriman_ut_daerah ADD FOREIGN KEY (kode_produk_header) REFERENCES ref_produk_header(kode_produk_header);
 CREATE INDEX ON ref_produk_pengiriman_ut_daerah (kode_produk_header);
@@ -222,7 +241,7 @@ create table trx_keranjang_barang(
   waktu int4,
   info varchar,
   tanggal date,
-  harga numeric,
+  harga_satuan numeric,
   harga_subtotal numeric
 );
 ALTER TABLE trx_keranjang_barang ADD FOREIGN KEY (kode_keranjang_produk_header) REFERENCES trx_keranjang_produk_header(kode_keranjang_produk_header);
@@ -259,7 +278,7 @@ create table trx_keranjang_bahan_ajar_cetak (
   hal_max int4 NULL,
   satuan varchar,
   penawaran numeric,
-  harga numeric NULL,
+  harga_satuan numeric NULL,
 
   jml_oplah int4,
   jml_halaman int,
@@ -290,7 +309,7 @@ create table trx_keranjang_bahan_ajar_cetak_kirim (
   hal_max int4 NULL,
   satuan varchar,
   penawaran numeric,
-  harga numeric NULL,
+  harga_satuan numeric NULL,
 
   jenis_tgl_kirim jenis_tgl_kirim,
   tgl_awal date,
@@ -317,7 +336,7 @@ create table trx_keranjang_pengiriman_door_to_door (
   kode_pos int4,
   moda moda,
   lead_time int4,
-  harga numeric,
+  harga_satuan numeric,
   berat_paket int4,
   harga_subtotal numeric
 );
@@ -336,7 +355,7 @@ CREATE TABLE trx_keranjang_pengiriman_ut_daerah (
   kode_unit_tujuan varchar,
   moda moda,
   lead_time int4,
-  harga numeric,
+  harga_satuan numeric,
   berat int4,
   harga_subtotal numeric
 );

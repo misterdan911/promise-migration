@@ -1,0 +1,18 @@
+UPDATE public.ref_user
+SET email='kam@apsupports.com', "password"='$2b$10$g3jEFTU5K0efkL3LdMs6b.jOeMHfAXA9X5il33KLiNts4MlGpieZG', api_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxMjA0NCwiaWF0IjoxNzkxMzQzNzI1LCJleHAiOjE3OTE0MzAxMjV9.yrprYu08MAn0WaVQTFALALarlBqgNsG17gAs5ZkQIZA', is_login='Y', ucr=NULL, uch=NULL, udcr='2021-11-16 12:00:25.000', udch='2026-10-07 10:28:45.353', user_photo=NULL, status_user='eksternal', forget_token_pass=NULL, otp=NULL, otp_time=NULL
+WHERE id=12044;
+UPDATE public.ref_user
+SET email='oks.hdq@apsupports.com', "password"='$2b$10$c1rP0X3b3uoOGTdspojgIuXuSZ1IGK4fp0MAYVnred66q01vVGXqe', api_token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoxMjA1NSwiaWF0IjoxNzkxNDMwMDY4LCJleHAiOjE3OTE1MTY0Njh9.443ni68XWgq5Al3lSf3SsJmf-IFMOh0-UaLO_qE3nz4', is_login='Y', ucr=NULL, uch=NULL, udcr='2021-11-17 21:19:29.000', udch='2026-10-08 10:27:48.800', user_photo=NULL, status_user='eksternal', forget_token_pass=NULL, otp=NULL, otp_time=NULL
+WHERE id=12055;
+
+
+
+
+UPDATE public.ref_vendor_register
+SET kode_jenis_vendor=1, nama_perusahaan='PT ANGKASA PURA SUPORT', email='kam@apsupports.com', "password"='$2b$10$g3jEFTU5K0efkL3LdMs6b.jOeMHfAXA9X5il33KLiNts4MlGpieZG', no_telp='02126051930', nama_narahubung='Faishal Faza', no_wa_narahubung='081938362007', swafoto=NULL, status_register='terima'::public.status_persetujuan, alasan_ditolak=NULL, user_verif=NULL, udcr='2022-07-19 10:54:47.000', udch=NULL, message=NULL, similarity=NULL, distance_percentage=NULL, distance_point=NULL, keypass=NULL, kode_vendor=12044, npwp='01.061.392.5.093.000', file_npwp='SI-DaPeT_1758103784833-507231305.pdf', encrypt_key_npwp='oSOLoABp76UXQchHiML0mLlyrrL-WBlSWN6Ju7CfyOA=', nik=NULL
+WHERE kode_register=12044;
+UPDATE public.ref_vendor_register
+SET kode_jenis_vendor=1, nama_perusahaan='Angkasa Pura Suport', email='oks.hdq@apsupports.com', "password"='$2b$10$c1rP0X3b3uoOGTdspojgIuXuSZ1IGK4fp0MAYVnred66q01vVGXqe', no_telp='02126051930', nama_narahubung='Indi Aisyah', no_wa_narahubung='', swafoto=NULL, status_register='terima'::public.status_persetujuan, alasan_ditolak=NULL, user_verif=NULL, udcr='2024-05-17 13:06:09.000', udch='2021-11-18 16:26:17.000', message=NULL, similarity=NULL, distance_percentage=NULL, distance_point=NULL, keypass=NULL, kode_vendor=12055, npwp='01.061.392.5-093.000', file_npwp='SI-DaPeT_1753155361333-386158415.pdf', encrypt_key_npwp='lX70SY7sr_nQdsi69tZbCSmxSVEg4LD_zPspj_ParVo=', nik=NULL
+WHERE kode_register=12055;oks
+
+
